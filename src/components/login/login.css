@@ -43,7 +43,7 @@
       margin-bottom: 3em;
   }
   p.loginSubhead span a {
-      color: #8e21d8;
+      color: rgb(73, 174, 209);
   }
   .login-form .ant-input{
       height:45px;
@@ -71,11 +71,14 @@
   {
       text-align: left;
   }
+  .LoginBtn{
+    text-align: center;
+  }
   .login-form .ant-btn-primary {
       color: #fff;
-      background-color: #8d3dd9;
-      border-color: #8d3dd9;
-      float: right;
+      background-color: rgb(73, 174, 209);
+      border-color: rgb(73, 174, 209);
+      /* float: right; */
       padding: 0 35px;
       border-radius: 30px;
       font-weight: 500;
@@ -90,9 +93,9 @@
       transform: rotate(0) scale(1);
       position: absolute;
       display: table;
-      border: 2px solid #8d3dd9;
+      border: 2px solid rgb(73, 174, 209);
       border-top: 0;
-      background: #8d3dd9;
+      background: rgb(73, 174, 209);
   }
   .login-form .ant-checkbox-inner{
       border-radius: 0;
@@ -131,12 +134,18 @@
     z-index: 0;
       right: 0;
       z-index: 0;
-      background: 
+
+      /*background: 
       linear-gradient(  rgba(143, 34, 217, 0.9),        
       rgba(137, 62, 225, 0.8),          
       rgba(74, 147, 188, 0.9)  72%    ),         
-       url(../../Images/triangle.jpg);
+       url(../../Images/triangle.jpg);*/
            /*background: linear-gradient( to right, rgb(10, 28, 37),rgba(63, 81, 181, 0.6784313725490196),rgba(63, 81, 181, 0.07058823529411765) ),  url(/static/media/triangle.67f70852.jpg);*/
+
+      background: linear-gradient( to right, rgba(60, 162, 197, 0.81),
+       rgba(103, 58, 183, 0.8), rgba(73, 174, 209, 0.72) 72% ), 
+       url(/static/media/triangle.67f70852.jpg);
+
   
       background-repeat: no-repeat;
       background-size:cover;
@@ -200,7 +209,17 @@
   }
   
   
-  
+  @media only screen 
+  and (min-width: 768px) 
+  and (max-width: 1024px) {
+
+    .loginFormsec {
+      padding: 1em 2em 1em 1em;
+      margin-left: 1em;
+  }
+
+
+  }
   @media only screen 
   and (min-width: 320px) 
   and (max-width: 767px) {
@@ -210,6 +229,7 @@
       .imgsec {
           padding-top: 11em;
           width: 100%;
+          display:none;
       }
       .loginmainForm {
           height: auto;
@@ -227,31 +247,50 @@
       }
       .loginCard{
           width: 95%;
-       
+       box-shadow: none;
+
+       display: flex;
+       height: 100vh;
+       justify-content: center;
+       align-items: center;
+      }
+
+      .loginFormsec {
+        padding: 1em 1em 1em 1em;
+        margin-left: 0em;
+      } 
+      .LoginBtn{
+          text-align: center;
+      }  
+      .login-form .ant-btn-primary{
+          float:none;
       }
   }
-  @media only screen 
-  and (min-width: 768px) 
-  and (max-width: 1024px) {
+
+  @media only screen and (min-width: 768px) and (max-width:1024px){
       .login-formsec {
           padding:30px 60px 30px 15px;
       }
+      .loginFormsec {
+        padding: 1em 2em 1em 1em;
+        margin-left: 1em;
+    }
       .imgsec {
           width: 490px;
           height:492px;
+          display:none;
       }
     
       .loginCard{
           width: 90%;
-       
       }
-      .imgsec:before {
-       left:-2px;
-          border-bottom: 493px solid white;
-          border-right: 489px solid transparent;
-      }
+   
   
-  
+    
+    .loginFormsec {
+      padding: 1em 2em 1em 1em;
+      margin-left: 1em;
+  }
   }
   @media only screen 
   and (height: 1025px) 
@@ -267,7 +306,7 @@
    
       .imgsec {
           width: 800px;
-          height:491px;
+          height:471px;
       }
       .imgsec:before {
           left: -2px;  

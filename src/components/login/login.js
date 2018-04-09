@@ -24,19 +24,19 @@ class NormalLoginForm extends React.Component {
                 axios.get(config.apiUrl + 'user/login?username=' + values.email + '&password=' + values.password, conf)
                     .then((response) => {
                         console.log(response.data);
-                        if (response.data.error){
+                        if (response.data.error) {
                             alert('No such user');
                             return;
                         }
                         if (response.data && response.data.lastLogin) {
-                            sessionStorage.setItem('id',response.data._id)
+                            sessionStorage.setItem('id', response.data._id)
                             this.props.history.push('/dashboard');
                         }
                         else if (response.data && !response.data.lastLogin) {
-                            sessionStorage.setItem('id',response.data._id)
+                            sessionStorage.setItem('id', response.data._id)
                             this.props.history.push('/passwordchange');
                         }
-                        
+
                     })
                     .catch((error) => {
                         console.log(error);
@@ -83,16 +83,18 @@ class NormalLoginForm extends React.Component {
 
                         </FormItem>
                         <FormItem >
+                            <div className="LoginBtn">
                             <Button type="primary" htmlType="submit" className="login-form-button">
                                 LOGIN
                    </Button>
+                   </div>
                         </FormItem>
                     </Form>
                    
                 </div>
             </Col>
-            <Col  md={{ span: 12, order:2 }} xs={{ span: 24, order:2 }}>
-                <div className="imgsec">
+            <Col  md={{ span: 12, order:2 }} xs={{ span: 24, order:2 }} sm={0}>
+                <div className="imgsec" sm={0}>
                     {/* <img src={triangleimg} alt="triangle" /> */}
                     <span>Welcome<br></br> Back.</span>
                    <Row> 
@@ -126,8 +128,8 @@ class NormalLoginForm extends React.Component {
             </Button>
                 </FormItem>
             </Form> */}
-</div>
-</div>
+                </div>
+            </div>
 
 
 
