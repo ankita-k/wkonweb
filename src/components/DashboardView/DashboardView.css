@@ -1,8 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Roboto');
 /* dashboardviewcustomer */
 .cusTotal {
     background: #fff;
-    width: 50%;
+    width: 90%;
     padding: 2em;
     border-radius: 8px;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    margin-bottom:1em;
+}
+h1.customer {
+    font-size: 22px;
+    margin-bottom: 1em;
+    margin-left: 1em;
+}
+span.totalContent {
+    font-family: 'Roboto', sans-serif;
+    color: rgba(0, 0, 0, 0.91);
+    font-size: 20px;
+    font-weight: 500;
+}
+img.totalImg {
+    margin-right: 1em;
+    vertical-align: bottom;
+    height: 35px;
+    width: auto;
+}
+h1.totalNumber {
+    color: #428afe;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+}
+.dashboardView {
+    margin-bottom: 3em;
 }
 /* dashboardviewcustomer */
+/* Responsivedashboardviewcustomer */
+@media (min-width: 320px) and (max-width: 767px) {
+    .cusTotal {
+        width: 100%;
+    }
+}
+/* Responsivedashboardviewcustomer */
