@@ -96,7 +96,7 @@ class NormalLoginForm extends React.Component {
             <Col  md={{ span: 12, order:2 }} xs={{ span: 24, order:2 }} sm={0}>
                 <div className="imgsec" sm={0}>
                     {/* <img src={triangleimg} alt="triangle" /> */}
-                    <span>Welcome<br></br> Back.</span>
+                    <span>Welcome</span>
                    <Row> 
                    <Col span={24}>
                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
