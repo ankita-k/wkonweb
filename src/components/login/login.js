@@ -83,16 +83,18 @@ class NormalLoginForm extends React.Component {
 
                         </FormItem>
                         <FormItem >
+                            <div className="LoginBtn">
                             <Button type="primary" htmlType="submit" className="login-form-button">
                                 LOGIN
                    </Button>
+                   </div>
                         </FormItem>
                     </Form>
                    
                 </div>
             </Col>
-            <Col  md={{ span: 12, order:2 }} xs={{ span: 24, order:2 }}>
-                <div className="imgsec">
+            <Col  md={{ span: 12, order:2 }} xs={{ span: 24, order:2 }} sm={0}>
+                <div className="imgsec" sm={0}>
                     {/* <img src={triangleimg} alt="triangle" /> */}
                     <span>Welcome<br></br> Back.</span>
                    <Row> 
