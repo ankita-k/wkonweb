@@ -48,7 +48,75 @@ class NormalLoginForm extends React.Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <div className="login">
+            <div className="loginmainForm">
+            <div className="loginCard">
+        <Row type="flex">
+          <Col  md={{ span: 12, order:1 }} xs={{ span: 24, order:1 }}>
+                <div className="loginFormsec">
+                    <p className="loginHead"><b>Login</b></p>
+                    <p className="loginSubhead">Don't have an account? <span><a>Create your account</a></span></p>
+                    <Form onSubmit={this.handleSubmit} className="login-form" >
+                        <FormItem>
+                            {getFieldDecorator('userName', {
+                                rules: [{ required: true, message: 'Please input your username!' }],
+                            })(
+                                <Input placeholder="Username" />
+                                )}
+                        </FormItem>
+                        <FormItem>
+                            {getFieldDecorator('password', {
+                                rules: [{ required: true, message: 'Please input your Password!' }],
+                            })(
+                                <Input type="password" placeholder="Password" />
+                                )}
+                        </FormItem>
+                        <FormItem className="text-left">
+                            {getFieldDecorator('remember', {
+                                valuePropName: 'checked',
+                                initialValue: true,
+                            })(
+                                <Checkbox>Remember me</Checkbox>
+                                )}
+                            <a className="loginFormforgot" href="">Forgot password?</a>
+
+
+                        </FormItem>
+                        <FormItem >
+                            <Button type="primary" htmlType="submit" className="login-form-button">
+                                LOGIN
+                   </Button>
+                        </FormItem>
+                    </Form>
+                    <div className="socialIconsec">
+                        <Row>
+                            <Col md="6" xs={10}>
+                                <p>Or login with</p>
+                            </Col>
+                            <Col md="12" xs={14}>
+                                <span className="fbicon"><img src={fblogo} alt="fb" /></span>
+                                <span className="twitlogo"><img src={twitterlogo} alt="twitter" /></span>
+
+                            </Col>
+                        </Row>
+                    </div>
+                </div>
+            </Col>
+            <Col  md={{ span: 12, order:2 }} xs={{ span: 24, order:2 }}>
+                <div className="imgsec">
+                    {/* <img src={triangleimg} alt="triangle" /> */}
+                    <span>Welcome<br></br> Back.</span>
+                   <Row> 
+                   <Col span={24}>
+                       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+                       </Col>
+                    </Row>
+                </div>
+            </Col>
+
+        </Row>
+    </div>
+            {/* <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormItem >
                     {getFieldDecorator('email', {
                         rules: [{ required: true, message: 'Please input your email!' }],
@@ -68,7 +136,27 @@ class NormalLoginForm extends React.Component {
                         Log in
             </Button>
                 </FormItem>
-            </Form>
+            </Form> */}
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         );
     }
 }

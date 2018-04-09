@@ -1,7 +1,270 @@
-#components-layout-demo-top .logo {
+/* #components-layout-demo-top .logo {
     width: 120px;
     height: 31px;
     background: rgba(255,255,255,.2);  
     margin: 16px 24px 16px 0;
     float: left;
+  } */
+
+  @import url('https://fonts.googleapis.com/css?family=Lato');
+  @import url('https://fonts.googleapis.com/css?family=Roboto:900');
+  
+  .loginmainForm{
+      background: #f7f7f7;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
   }
+  .loginCard{
+      background: white;
+      box-shadow: 0px 0px 10px 2px rgba(0, 0, 0,.1);
+      width: 70%;
+   
+  }
+  .login-formsec{
+      padding: 30px 50px 30px 30px;
+      position: relative;
+      z-index: 999;
+  }
+  .loginHead{
+      font-size: 32px;
+      text-align: left;
+      margin-bottom: 3px;
+      color: #434343;
+      font-family: 'Lato', sans-serif;
+  }
+  p.loginSubhead {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.8);
+      text-align: left;
+      font-family: 'Lato', sans-serif;
+      margin-bottom: 3em;
+  }
+  p.loginSubhead span a {
+      color: #8e21d8;
+  }
+  .login-form .ant-input{
+      height:45px;
+      border-radius: 8px;
+  border:2px solid #d4d4d4;
+  }
+  .ant-input:focus{
+      border-color:#d4d4d4;
+      box-shadow: none;
+  }
+  .login-formforgot{
+      float: right;
+      color: rgba(0, 0, 0, 0.6);
+      font-weight: 500;
+      text-decoration: none;
+  }
+  .login-formforgot:active, .login-formforgot:hover{
+      color: #8d3dd9;
+  }
+  .login-form .ant-checkbox + span{
+      color: rgba(0, 0, 0, 0.6);
+      font-weight: 500;
+  }
+  .text-left
+  {
+      text-align: left;
+  }
+  .login-form .ant-btn-primary {
+      color: #fff;
+      background-color: #8d3dd9;
+      border-color: #8d3dd9;
+      float: right;
+      padding: 0 35px;
+      border-radius: 30px;
+      font-weight: 500;
+      height: 35px;
+  }
+  .login-form .ant-checkbox-checked .ant-checkbox-inner, .login-form .ant-checkbox-indeterminate .ant-checkbox-inner {
+      background-color: white;
+      border-color: #d4d4d4;
+  }
+  
+  .login-form .ant-checkbox-checked .ant-checkbox-inner:after{
+      transform: rotate(0) scale(1);
+      position: absolute;
+      display: table;
+      border: 2px solid #8d3dd9;
+      border-top: 0;
+      background: #8d3dd9;
+  }
+  .login-form .ant-checkbox-inner{
+      border-radius: 0;
+  }
+  .login-form .ant-checkbox:hover .ant-checkbox-inner{
+      border-color:#d4d4d4;
+  }
+  .login-form .ant-checkbox-inner:after{
+      left: 3px;
+      top: 2px;
+      width: 8px;
+  }
+  span.fbicon {
+      background: #476898;
+      padding: 2px 25px 7px;
+      border-radius: 30px;
+      vertical-align: middle;
+  }
+  .socialIconsec{
+      margin-top: 3em;
+  }
+  .socialIconsec p{
+      margin-top: 5px;
+  }
+  .imgsec img{
+      width:100%;
+      height: 100%;
+  }
+  .imgsec{
+    
+      height: 492px;
+      /* width: 510px; */
+      width:612px;
+      position: absolute;
+      right: 0;
+      z-index: 0;
+      background: 
+      linear-gradient(  rgba(143, 34, 217, 0.9),        
+      rgba(137, 62, 225, 0.8),          
+      rgba(74, 147, 188, 0.9)  72%    ),         
+       url(/static/media/triangle.67f70852.jpg);
+  
+      background-repeat: no-repeat;
+      background-size:cover;
+  }
+  .imgsec:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left:0;
+      bottom: 0;
+      width: 0;
+      height: 0;
+      border-bottom: 492px solid white;
+      /* border-right: 509px solid transparent; */
+      border-right: 611px solid transparent;
+      
+  
+  }
+  .imgsec p{
+      text-align: right;
+      width: 44%;
+      padding: 15px 25px 30px 0;
+      float: right;
+      font-weight: 600;
+      font-family: lato;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+  }
+  .imgsec span {
+      font-size: 50px;
+      float: right;
+      text-align: right;
+      font-weight: 800;
+      color: white;
+      line-height: 65px;
+      margin-top: 30px;
+      padding-right: 20px;
+      font-family: 'Roboto', sans-serif;
+  }
+  
+  .fbicon img{
+      width:14px;
+      height: 14px;
+  }
+  .twitlogo img{
+      width:14px;
+      height: 14px;
+  }
+  span.twitlogo{
+      background: rgb(26, 163, 243);
+      border:1px solid rgb(73, 174, 209);
+      padding: 2px 25px 7px;
+      border-radius: 30px;
+      vertical-align: middle;
+      margin-left: 10px;
+  }
+  
+  
+  
+  @media only screen 
+  and (min-width: 320px) 
+  and (max-width: 767px) {
+      .login-formsec {
+          padding: 30px 10px 30px 10px;
+      }
+      .imgsec {
+          padding-top: 11em;
+          width: 100%;
+      }
+      .loginmainForm {
+          height: auto;
+      }
+      .imgsec span {
+          float: none;
+      }
+      .imgsec p {
+          text-align: center;
+          width: 100%;
+          padding: 15px 15px 30px 15px;
+      }
+      .imgsec:before {
+        display: none;
+      }
+      .loginCard{
+          width: 95%;
+       
+      }
+  }
+  @media only screen 
+  and (min-width: 768px) 
+  and (max-width: 1024px) {
+      .login-formsec {
+          padding:30px 60px 30px 15px;
+      }
+      .imgsec {
+          width: 490px;
+          height:492px;
+      }
+    
+      .loginCard{
+          width: 90%;
+       
+      }
+      .imgsec:before {
+       left:-2px;
+          border-bottom: 493px solid white;
+          border-right: 489px solid transparent;
+      }
+  
+  
+  }
+  @media only screen 
+  and (height: 1025px) 
+  and (width: 1366px) {
+      .imgsec:before {
+          left: -2px;  
+          border-bottom: 493px solid white;
+      }
+  
+  }
+  @media only screen 
+  and (width: 1920px)  {
+   
+      .imgsec {
+          width: 800px;
+          height:491px;
+      }
+      .imgsec:before {
+          left: -2px;  
+          border-right: 801px solid transparent;
+      }
+  }
+  
