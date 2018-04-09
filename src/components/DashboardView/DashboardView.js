@@ -46,67 +46,188 @@ class DashboardView extends Component {
                     </Row>
                 </div>
                 {/* dashboardviewcustomer */}
-                 {/* Project section start */}
+                {/* Project section start */}
+                <div className="dashboardView">
+                    <h1 className="customer">PROJECTS</h1>
+                    <Row>
+                        <Col xs={24} sm={24} md={8} lg={8}>
+                            <div className="cusTotal">
+                                <p>
+                                    <img src={projecttotal} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
+                                </p>
+                                <h1 class="totalNumber">300</h1>
+                            </div>
+                        </Col>
+                        <Col xs={24} sm={24} md={8} lg={8}>
+                            <div className="cusTotal">
+                                <p>
+                                    <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent">In Progress</span>
+                                </p>
+                                <h1 class="totalNumber">250</h1>
+                            </div>
 
-                 <div className="ProjectSection">
-                 <h1 className="ProjectHead">PROJECTS</h1>
-                 <div className="ProjectDetails">
-                 <Row>
-                     <Col xs={24} sm={24} md={8} lg={8}>
-                         <div className="ProjectTotal">
-                         <p>
-                                 <img src={projecttotal} alt="Customer" /><span>Total</span>
-                         </p>
-                         <h1 class="ProjectNumber">300</h1>
-                         </div>
-                     </Col>
-                     <Col xs={24} sm={24} md={8} lg={8}>
-                      <div className="ProjectTotal">
-                      <p>
-                                 <img src={progress} alt="Customer" /><span>In Progress</span>
-                         </p>
-                         <h1 class="ProjectNumber">250</h1>
-                         </div>
-                         </Col>
-                     <Col xs={24} sm={24} md={8} lg={8}>
-                      <div className="ProjectTotal">
-                      <p>
-                                 <img src={projectpipe} alt="Customer" /><span>Pipeline</span>
-                         </p>
-                         <h1 class="ProjectNumber">200</h1>
-                         </div>
-                         </Col>
-                 </Row>
-                 </div>
-                 </div>
- 
-                  {/* Project section end */}
-                {/* Recentactivity */}
+                        </Col>
+                        <Col xs={24} sm={24} md={8} lg={8}>
+                            <div className="cusTotal">
+                                <p>
+                                    <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">Pipeline</span>
+                                </p>
+                                <h1 class="totalNumber">200</h1>
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
+                {/* Project section end */}
+                {/* Recentactivity start*/}
                 <div className="recentactivity">
-                <h1>RECENT ACTIVITY</h1>
+                    <h1>RECENT ACTIVITY</h1>
 
-                <div className="firstman">
-                    <Row>
-                        <Col lg={4}>
-                            <img src={man} /></Col>
-                        <Col lg={12}>
-                            <p>Mr. Stacey R.Eshelman our recently converted customer.</p></Col>
-                        <Col lg={6}><p className="date">09.04.2018</p></Col>
-                    </Row>
+                    <div className="firstman1">
+                        <Row>
+                            <Col lg={11} className="firstman">
+                                <Row className="padng20">
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} />
+                                    </Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey R.Eshelman our recently converted customer.</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                            <Col lg={1}></Col>
+                            <Col lg={11} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey R.Eshelman our recently converted customer.</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                        </Row>
+
+                    </div>
+                    <div className="firstman1">
+                        <Row>
+                            <Col lg={11} className="firstman">
+                                <Row className="padng20">
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} />
+                                    </Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey R.Eshelman our recently converted customer.</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                            <Col lg={1}></Col>
+                            <Col lg={11} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey R.Eshelman our recently converted customer.</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                        </Row>
+
+                    </div>
+
+
+
                 </div>
+                {/* Recentactivity end*/}
+                {/* payment area start*/}
+                <div className="recentactivity">
+                    <h1>PAYMENT</h1>
 
-                <div className="secondman">
-                    <Row>
-                        <Col lg={4}>
-                            <img src={mantwo} /></Col>
-                        <Col lg={12}>
-                            <p>Mr.Felix D.Navarro in the pipeline customer</p></Col>
-                        <Col lg={6}><p className="date">01.03.2018</p></Col>
-                    </Row>
+                    <div className="firstman1">
+                        <Row>
+                            <Col lg={11} className="firstman">
+                                <Row className="padng20">
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} />
+                                    </Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey successfully paided</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                            <Col lg={1}></Col>
+                            <Col lg={11} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey successfully paided</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                        </Row>
+
+                    </div>
+                    <div className="firstman1">
+                        <Row>
+                            <Col lg={11} className="firstman">
+                                <Row className="padng20">
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} />
+                                    </Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey successfully paided</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                            <Col lg={1}></Col>
+                            <Col lg={11} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey successfully paided</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                        </Row>
+
+                    </div>
+
+
+
                 </div>
-
-            </div>
-                {/* Recentactivity */}
+                {/* payment area end*/}
             </div>
         );
     }

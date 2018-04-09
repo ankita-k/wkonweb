@@ -10,10 +10,10 @@ class Dashboard extends Component {
             <div>
                 
                 <Layout>
-    {/* <Header className="header">
+    <Header className="header">
       <div className="logo" />
       <p style={{color: '#fff'}}> Hello {sessionStorage.getItem('name')}</p>
-    </Header> */}
+    </Header>
     <Layout>
       <Sider width={200} style={{ background: '#fff' }}>
         <Menu
