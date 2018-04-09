@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import './login.css';
+import './login.css';
 // import MainLayout from './layout.js';
 import { Layout } from 'antd';
 import axios from 'axios';
@@ -88,18 +88,7 @@ class NormalLoginForm extends React.Component {
                    </Button>
                         </FormItem>
                     </Form>
-                    <div className="socialIconsec">
-                        <Row>
-                            <Col md="6" xs={10}>
-                                <p>Or login with</p>
-                            </Col>
-                            <Col md="12" xs={14}>
-                                <span className="fbicon"><img src={fblogo} alt="fb" /></span>
-                                <span className="twitlogo"><img src={twitterlogo} alt="twitter" /></span>
-
-                            </Col>
-                        </Row>
-                    </div>
+                   
                 </div>
             </Col>
             <Col  md={{ span: 12, order:2 }} xs={{ span: 24, order:2 }}>
@@ -162,39 +151,39 @@ class NormalLoginForm extends React.Component {
 }
 
 const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
+export default WrappedNormalLoginForm;
 
 
+// class Login extends Component {
+//     constructor(props) {
+//         super(props);
+//         this.state = {
+//             data: []
+//         }
+//     }
 
-class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: []
-        }
-    }
+//     render() {
+//         return (
+//             <div className="App">
+//                 <Layout className="layout">
+//                     <Header>
 
-    render() {
-        return (
-            <div className="App">
-                <Layout className="layout">
-                    <Header>
+//                     </Header>
+//                     <Content style={{ padding: '0 50px' }}>
+//                         <div style={{ background: '#ffffff', padding: '30px' }}>
 
-                    </Header>
-                    <Content style={{ padding: '0 50px' }}>
-                        <div style={{ background: '#ffffff', padding: '30px' }}>
+//                             <Row type="flex" align="middle">
+//                                 <Col span={16} offset={4}> <WrappedNormalLoginForm {...this.props}></WrappedNormalLoginForm></Col>
+//                             </Row>
+//                         </div>
+//                     </Content>
+//                     <Footer style={{ textAlign: 'center' }}>
+//                         WKON ©2016 Created by MeMe Information Technology
+//                     </Footer>
+//                 </Layout>
+//             </div>
+//         );
+//     }
+// }
 
-                            <Row type="flex" align="middle">
-                                <Col span={16} offset={4}> <WrappedNormalLoginForm {...this.props}></WrappedNormalLoginForm></Col>
-                            </Row>
-                        </div>
-                    </Content>
-                    <Footer style={{ textAlign: 'center' }}>
-                        WKON ©2016 Created by MeMe Information Technology
-                    </Footer>
-                </Layout>
-            </div>
-        );
-    }
-}
-
-export default Login;
+// export default Login;

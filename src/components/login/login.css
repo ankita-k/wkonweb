@@ -123,21 +123,27 @@
   }
   .imgsec{
     
-      height: 492px;
-      /* width: 510px; */
-      width:612px;
-      position: absolute;
+    height: 402px;
+    width: 610px;
+    
+    position: absolute;
+    right: 9px;
+    z-index: 0;
       right: 0;
       z-index: 0;
       background: 
       linear-gradient(  rgba(143, 34, 217, 0.9),        
       rgba(137, 62, 225, 0.8),          
       rgba(74, 147, 188, 0.9)  72%    ),         
-       url(/static/media/triangle.67f70852.jpg);
+       url(../../Images/triangle.jpg);
   
       background-repeat: no-repeat;
       background-size:cover;
   }
+  .loginFormsec {
+    padding: 1em 10em 1em 1em;
+    margin-left: 2em;
+}
   .imgsec:before {
       content: '';
       position: absolute;
@@ -146,7 +152,7 @@
       bottom: 0;
       width: 0;
       height: 0;
-      border-bottom: 492px solid white;
+      border-bottom: 402px solid white;
       /* border-right: 509px solid transparent; */
       border-right: 611px solid transparent;
       

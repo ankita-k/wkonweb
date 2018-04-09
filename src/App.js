@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import logo from './logo.svg';
 import './App.css';
-import MainLayout from './layout.js';
+// import MainLayout from './layout.js';
 // import axios from 'axios';
 // import { Table } from 'antd';
 import Routes from './routes';
