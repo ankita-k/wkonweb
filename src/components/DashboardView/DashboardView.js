@@ -49,6 +49,7 @@ class DashboardView extends Component {
                 {/* Project section start */}
                 <div className="dashboardView">
                     <h1 className="customer">PROJECTS</h1>
+                    
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
                             <div className="cusTotal">
