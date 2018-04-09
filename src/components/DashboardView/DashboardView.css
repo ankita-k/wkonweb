@@ -9,15 +9,14 @@
     margin-bottom:1em;
 }
 h1.customer {
-    font-size: 22px;
     margin-bottom: 1em;
-    margin-left: 1em;
 }
 span.totalContent {
-    font-family: 'Roboto', sans-serif;
-    color: rgba(0, 0, 0, 0.91);
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+    font-weight: 400;
+    margin: 0 12px;
+    font-family: 'Lato', sans-serif;
 }
 img.totalImg {
     margin-right: 1em;
@@ -26,9 +25,11 @@ img.totalImg {
     width: auto;
 }
 h1.totalNumber {
-    color: #428afe;
+    color: rgb(66, 138, 254);
     font-family: 'Lato', sans-serif;
     font-weight: 500;
+    font-size: 35px;
+    margin-bottom:0;
 }
 .dashboardView {
     margin-bottom: 3em;
@@ -41,3 +42,153 @@ h1.totalNumber {
     }
 }
 /* Responsivedashboardviewcustomer */
+
+
+
+
+/* dashboardview project css start */
+
+.ProjectSection{
+    margin:3em 0;
+}
+.ProjectSection ProjectHead{
+    color: rgb(23, 23, 23);
+}
+.ProjectDetails {
+    margin: 3em 0;
+}
+.ProjectTotal{
+    background: #fff;
+    width: 90%;
+    padding: 2em;
+    border-radius: 8px; 
+    font-family: 'Lato', sans-serif;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+}
+.ProjectTotal span {
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+    font-weight: 400;
+    margin: 0 12px;
+    font-family: 'Lato', sans-serif;
+    margin-left: 1em;
+}
+.ProjectNumber{
+    font-size: 35px;
+    font-weight: 300;
+    color: rgb(68, 139, 255);
+    font-family: 'Lato', sans-serif;
+    padding-top: 0px;
+    margin-bottom: 0;
+}
+
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .ProjectTotal span {
+        font-size: 16px;
+    }
+}
+@media (width: 600px) and (height: 960px) {
+    .ProjectTotal span {
+        font-size: 16px !important;
+    }
+}
+
+@media (min-width: 320px) and (max-width: 767px) {
+    .ProjectTotal span {
+        font-size: 13px;
+    }
+    .ProjectTotal{
+        margin-bottom: 20px;
+    }
+}
+
+/* dashboardview project css ends */
+
+/* 
+recent activity css start */
+
+.firstman {
+    margin-top: 25px;
+    background: #fff;
+    border-radius: 12px;
+}
+.recentactivity h1 {
+    margin-top: 20px;
+}
+.firstman p {
+    padding-top: 12px;
+    font-weight: 500;
+    text-align: left;
+    font-size: 19px;
+    margin-top: 29px;
+    margin-bottom: 1em;
+}
+.firstman img {
+    padding-top: 23px;
+    padding-left: 68px;
+}
+.date{
+    font-size: 19px;
+    color: rgb(149, 152, 154);
+    text-align: right;
+}
+.date {
+    padding-top: 2em !important;
+    padding-left: 4em;
+}
+.secondman p {
+    padding-top: 2px;
+    font-weight: 500;
+    text-align: left;
+    font-size: 19px;
+    margin-top: 29px;
+    margin-bottom: 1em;
+}
+.secondman img {
+    margin-bottom: 20px;
+    padding-top: 29px;
+    padding-left: 68px;
+}
+.secondman{
+    margin-top: 35px;
+    background: #fff;
+    border-radius: 12px;
+}
+/*responsive start*/
+@media only screen and (min-width: 320px) and (max-width:1024px){
+
+
+    .firstman p {
+    /* padding-top: 12px; */
+    font-weight: 500;
+    text-align: center;
+    font-size: 19px;
+    margin-top: 29px;
+    font-family: 'Lato',sans-serif;
+    /* margin-bottom: 1em; */
+}
+.firstman img {
+    padding-top: 23px;
+    padding-left: 100px;
+}
+.recentactivity h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+    .secondman p {
+    /* padding-top: 12px; */
+    font-weight: 500;
+    text-align: center;
+    font-size: 19px;
+    margin-top: 29px;
+    /* margin-bottom: 1em; */
+}
+.secondman img {
+    padding-top: 23px;
+    padding-left: 100px;
+}
+}
+/* 
+recent activity css end */
