@@ -84,6 +84,9 @@
       font-weight: 500;
       height: 35px;
   }
+  .login-form .ant-btn-primary:hover{
+    background-color: rgb(50, 141, 173);
+  }
   .login-form .ant-checkbox-checked .ant-checkbox-inner, .login-form .ant-checkbox-indeterminate .ant-checkbox-inner {
       background-color: white;
       border-color: #d4d4d4;
