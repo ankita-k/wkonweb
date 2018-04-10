@@ -88,7 +88,27 @@ class DashboardView extends Component {
                 {/* Project section start */}
                 <div className="dashboardView">
                     <h1 className="customer">PROJECTS</h1>
+                    <Row>
+                        <div className="addButton">
+                            <Button onClick={this.showModal}>+</Button>
 
+                            <Modal
+                                title="New Customer"
+                                wrapClassName="vertical-center-modal"
+                                visible={this.state.visible}
+                                onOk={this.handleOk}
+                                onCancel={this.handleCancel}
+                                className="modalcustom">
+                                <p><Input placeholder="Customer Name" /></p>
+                                <p><Input placeholder="Customer Number" /></p>
+                                <Row>
+                                    <div className="savebutton">
+                                        <Button className="modalbuttonSave" loading={this.state.iconLoading} onClick={this.IndividualSubscription}>Save</Button>
+                                    </div>
+                                </Row>
+                            </Modal>
+                        </div>
+                    </Row>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
                             <div className="cusTotal">
