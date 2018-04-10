@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'antd';
+import { Modal, Button, AutoComplete, Select, Input, Row, Col } from 'antd';
 import './DashboardView.css';
 import total from '../../Images/total.png';
 import convert from '../../Images/convert.png';
@@ -9,14 +9,53 @@ import progress from '../../Images/progress.png';
 import projectpipe from '../../Images/projectpipe.png';
 import man from '../../Images/wkon-2-21.png';
 import mantwo from '../../Images/wkon-2-22.png';
+const Option = Select.Option;
 class DashboardView extends Component {
-
+    state = { visible: false }
+    showModal = () => {
+        this.setState({
+            visible: true,
+        });
+    }
+    handleOk = (e) => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    }
+    handleCancel = (e) => {
+        console.log(e);
+        this.setState({
+            visible: false,
+        });
+    }
     render() {
         return (
             <div className="dashboardMain">
                 {/* dashboardviewcustomer */}
                 <div className="dashboardView">
                     <h1 className="customer">CUSTOMERS</h1>
+                    <Row>
+                        <div className="addButton">
+                            <Button onClick={this.showModal}>+</Button>
+
+                            <Modal
+                                title="New Customer"
+                                wrapClassName="vertical-center-modal"
+                                visible={this.state.visible}
+                                onOk={this.handleOk}
+                                onCancel={this.handleCancel}
+                                className="modalcustom">
+                                <p><Input placeholder="Customer Name" /></p>
+                                <p><Input placeholder="Customer Number" /></p>
+                                <Row>
+                                    <div className="savebutton">
+                                        <Button className="modalbuttonSave" loading={this.state.iconLoading} onClick={this.IndividualSubscription}>Save</Button>
+                                    </div>
+                                </Row>
+                            </Modal>
+                        </div>
+                    </Row>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
                             <div className="cusTotal">
@@ -49,7 +88,7 @@ class DashboardView extends Component {
                 {/* Project section start */}
                 <div className="dashboardView">
                     <h1 className="customer">PROJECTS</h1>
-                    
+
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
                             <div className="cusTotal">
