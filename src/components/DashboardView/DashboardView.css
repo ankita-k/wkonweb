@@ -79,13 +79,23 @@ h1.totalNumber {
     height: 36px;
     border-radius: 0px;
 }
+.modalcustom .ant-form-item-control {
+    line-height: 0;
+}
+.ant-modal.modalcustom {
+    width: 700px !important;
+}
 .modalcustom .ant-modal-body {
-    padding: 4em;
+    padding: 3em 2em 2em 3em;
+}
+.modalcustom .ant-select-selection__placeholder, .ant-select-search__field__placeholder {
+    top: 60%;
+}
+.statuspipeline.ant-select.ant-select-enabled {
+    color: rgba(158, 158, 158, 0.8);
 }
 .modalcustom .ant-select-selection {
-    border-width: 1px;
-    line-height: 1.5;
-    height: 36px;
+    height: 39px;
     border-radius: 0;
 }
 .modalcustom .inputText input.ant-input.ant-select-search__field {
@@ -103,6 +113,7 @@ h1.totalNumber {
 .modalcustom .ant-modal-footer{
     display:none;
 }
+
 .addButton button {
     float: right;
     margin-right: 4em;
@@ -117,6 +128,17 @@ h1.totalNumber {
     font-size: 14px;
     font-weight: 900;
 }
+.inputModal .ant-input {
+    height: 39px;
+    border-radius: 0px;
+    border: 1px solid #d4d4d4;
+}
+.inputModal .ant-row.ant-form-item {
+    height: 10px;
+    width: 94%;
+    margin-bottom: 4em;
+}
+
 .addButton button:hover {
     box-shadow: 0 10px 45px -10px rgba(0,0,0,0.25), 0 -1px 22px -10px rgba(0,0,0,0.22);
     color: rgb(158, 158, 158);
@@ -132,12 +154,17 @@ h1.totalNumber {
 .savebutton {
     text-align: center;
 }
+.statesDropdown.ant-select.ant-select-enabled {
+    width: 100%;
+    color: #bbb6c2;
+}
 .modalcustom .ant-modal-header {
     background: rgb(66, 138, 254) !important;
     border-bottom: none !important;
 }
 
-/* -- modal css start-- */
+
+/* -- modal css end-- */
 /* Responsivedashboardviewcustomer */
 @media (min-width: 320px) and (max-width: 767px) {
     .addButton button {
