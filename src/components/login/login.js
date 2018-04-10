@@ -17,7 +17,7 @@ class NormalLoginForm extends React.Component {
     }
 
     handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 let conf = config.headers;
@@ -58,7 +58,7 @@ class NormalLoginForm extends React.Component {
                     <p className="loginSubhead">Don't have an account? <span><a>Create your account</a></span></p>
                     <Form onSubmit={this.handleSubmit} className="login-form" >
                         <FormItem>
-                            {getFieldDecorator('userName', {
+                            {getFieldDecorator('email', {
                                 rules: [{ required: true, message: 'Please input your username!' }],
                             })(
                                 <Input placeholder="Username" />
