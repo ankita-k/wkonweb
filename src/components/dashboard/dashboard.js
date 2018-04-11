@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
+import NewProject from '../NewProject/NewProject';
 import NewInformation from '../NewInformation/NewInformation';
 import DashboardView from '../DashboardView/DashboardView';
 import ChangePassword from '../passwordChange/passwordChange';
@@ -51,6 +52,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}`} component={DashboardView} />
                 <Route exact  path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/newinfo`} component={NewInformation} />
+                <Route exact path={`${this.props.match.url}/newproject`} component={NewProject} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>

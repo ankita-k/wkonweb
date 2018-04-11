@@ -77,7 +77,7 @@ class DashboardView extends Component {
                     <h1 className="customer">PROJECTS</h1>
                     <Row>
                         <div className="addButton">
-                            <Button>+</Button>
+                            <Button onClick={()=>{this.props.history.push('/dashboard/newproject')}}>+</Button>
                         </div>
                     </Row>
                     <Row>

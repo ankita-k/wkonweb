@@ -86,9 +86,15 @@ class NewInformation extends Component {
                                 <Col xs={24} sm={24} md={24} lg={24}>
                                     <FormItem label="Country">
                                         {getFieldDecorator('country', {
-                                            rules: [{ required: true, message: 'Please input your Country!' }],
+                                            rules: [{ required: true, message: 'Please select your Country!' }],
                                         })(
-                                            <Input placeholder="Country" />
+                                            <Select className="statuspipeline"
+                                                placeholder="Country"
+                                                onChange={this.handleSelectChange}
+                                            >
+                                                <Option value="India">India</Option>
+                                                <Option value="England">England</Option>
+                                            </Select>
                                         )}
                                     </FormItem>
                                 </Col>

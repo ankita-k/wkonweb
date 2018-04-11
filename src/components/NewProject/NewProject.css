@@ -1,0 +1,18 @@
+/* newProject css */
+.inputForminfo.informationProject input {
+    width: 85%;
+}
+.inputForminfo.informationProject  .ant-select-selection--single {
+    height: 43px;
+    width: 85%;
+}
+.innercardContent.cardProject .ant-card-body {
+    padding: 0;
+}
+.inputForminfo.informationProject {
+    padding: 0 0 0 4em;
+}
+.innercardContent.cardProject h1.NewCustomer{
+    margin: 10px 0 10px 27px;
+}
+/* newProject css */
