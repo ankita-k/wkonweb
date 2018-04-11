@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
+import NewInformation from '../NewInformation/NewInformation';
 import DashboardView from '../DashboardView/DashboardView';
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -44,7 +45,8 @@ class Dashboard extends Component {
       </Sider>
       <Layout style={{ padding: '0 24px 24px' }}>
         <Content style={{ background: '#f0f4f5', padding: 24, margin: 0, minHeight: 280 }}>
-          <DashboardView></DashboardView>
+          {/* <DashboardView></DashboardView> */}
+          <NewInformation></NewInformation>
         </Content>
       </Layout>
     </Layout>
