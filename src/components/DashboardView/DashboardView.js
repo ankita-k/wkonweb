@@ -61,7 +61,7 @@ class DashboardView extends Component {
                             <Button onClick={this.showModal}>+</Button>
 
                             <Modal
-                                title="New Customer"
+                                title="Add New Customer"
                                 wrapClassName="vertical-center-modal"
                                 visible={this.state.visible}
                                 onOk={this.handleOk}
@@ -139,7 +139,7 @@ class DashboardView extends Component {
                                     </div>
                                     <FormItem>
                                         <div className="savebutton">
-                                            <Button htmlType="submit" className="modalbuttonSave login-form-button">Log in</Button>
+                                            <Button htmlType="submit" className="modalbuttonSave login-form-button">Submit</Button>
                                         </div>
                                     </FormItem>
                                   
