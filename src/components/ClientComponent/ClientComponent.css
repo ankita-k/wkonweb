@@ -1,20 +1,12 @@
 /* card css */
 .innercardContent {
     margin: 0 auto !important;
-    width: 50% !important;
+    width: 70% !important;
 }
-/* h1.NewCustomer:after {
-    bottom: -10px;
-    content: "";
-    display: block;
-    height: 6px;
-    position: relative;
-    width: 100px;
-    background: rgb(66, 138, 254);
-} */
 .inputForminfo .ant-row {
     margin-bottom: 2em;
 }
+
 .underLine {
     margin: 0px 0 12px 0;
 }
@@ -25,14 +17,26 @@
 .inputForminfo .ant-select-selection--single {
     height: 43px;
 }
-/* .inputForminfo .login-form .ant-input {
-    height: 45px;
-    border-radius: 5px !important;
-} */
 .inputForminfo .ant-input {
     height: 45px;
     border-radius: 5px;
     border: 1px solid #d4d4d4;
+}
+
+.inputForminfo .ant-select-selection:hover {
+    border-color: #d4d4d4;
+}
+.inputForminfo .ant-select-selection:focus {
+    border-color: #d4d4d4;
+}
+.innercardContent .ant-card-body {
+    padding: 0;
+}
+.innercardContent h1.NewCustomer{
+    margin: 10px 0 10px 27px;
+}
+.inputForminfo{
+    padding: 0 4em 0 4em;
 }
 .inputForminfo .ant-form-item-label label {
     color: rgba(7, 7, 7, 0.65);
@@ -47,6 +51,7 @@
     line-height: 40px;
 }
 .savebutton {
+    padding-bottom:1em;
     text-align: center;
 }
 .linea {
@@ -72,3 +77,11 @@ button.ant-btn.cardbuttonSave.login-form-button {
     font-size: 16px;
 }
 /* card css */
+
+/* ResponsiveNewInformation  */
+@media (min-width: 320px) and (max-width: 767px) {
+    .innercardContent {
+        width: 100% !important;
+    }
+}
+/* ResponsiveNewInformation  */

@@ -17,7 +17,9 @@ const reducer =((state={}, action) => {
               case "RECEIVE_PWD":
               return action.json
               break;
-             
+              case "COUNTRY_LIST":
+              return action.list
+              break;
             default:
               return state
           }
