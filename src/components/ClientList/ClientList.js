@@ -16,9 +16,17 @@ const columns = [{
     dataIndex: 'email',
     key: 'email',
   }, {
+    title: 'Domain',
+    dataIndex: 'domain',
+    key: 'domain',
+  }, {
     title: 'Country',
     dataIndex: 'country',
     key: 'country',
+  }, {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
   }, {
     title: 'Task',
     key: 'action',
@@ -36,19 +44,25 @@ const columns = [{
     name: 'Sukanta Sinha',
     phone:876778906,
     email: 'sukantasinha@memeinfotech.com',
+    domain:'Lorem',
     country: 'New York',
+    status:'Pipeline',
   }, {
     key: '2',
     name: 'Payel Dutta',
     phone:826778906,
     email: 'payeldutta@memeinfotech.com',
+    domain:'Lorem',
     country: 'London',
+    status:'Pipeline',
   }, {
     key: '3',
     name: 'Priyanka Saha',
     phone:846778906,
     email: 'priyankasaha@memeinfotech.com',
+    domain:'Lorem',
     country: 'Sydney',
+    status:'Pipeline',
   }];
 class ClientList extends Component {
  
