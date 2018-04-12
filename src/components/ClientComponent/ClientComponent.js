@@ -1,14 +1,37 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button, Row, Col, Card, Select } from 'antd';
-import './NewInformation.css';
+import './ClientComponent.css';
 import { Divider } from 'antd';
+import * as actioncreators from '../../redux/action';
+import { connect } from "react-redux";
 const FormItem = Form.Item;
 const Option = Select.Option;
-class NewInformation extends Component {
+class ClientComponent extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+
+        }
+    }
+
+    // TAKE INPUT FIELD VALUE
+    inputValue = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+        console.log('onchangeinputfield', e.target.value, '+', e.target.name)
+    }
+
+    // STATUS INPUT
+    handleSelectChange = (e) => {
+        this.setState({ status: e });
+        console.log(e)
+    }
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                console.log(values)
+                // this.props.createClient()
                 console.log('Received values of form: ', values);
             }
         });
@@ -44,7 +67,7 @@ class NewInformation extends Component {
                                         {getFieldDecorator('email', {
                                             rules: [{ required: true, message: 'Please input your Email!' }],
                                         })(
-                                            <Input placeholder="Email" />
+                                            <Input placeholder="Email" name="email"  />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -55,7 +78,7 @@ class NewInformation extends Component {
                                         {getFieldDecorator('phone', {
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
                                         })(
-                                            <Input placeholder="Phone No." />
+                                            <Input placeholder="Phone No." name="phoneNumber"  />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -66,7 +89,7 @@ class NewInformation extends Component {
                                         {getFieldDecorator('name', {
                                             rules: [{ required: true, message: 'Please input your Name!' }],
                                         })(
-                                            <Input placeholder="Name" />
+                                            <Input placeholder="Name" name="name"  />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -77,7 +100,7 @@ class NewInformation extends Component {
                                         {getFieldDecorator('domain', {
                                             rules: [{ required: true, message: 'Please input your Domain!' }],
                                         })(
-                                            <Input placeholder="Domain" />
+                                            <Input placeholder="Domain" name="domain"  />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -88,7 +111,7 @@ class NewInformation extends Component {
                                         {getFieldDecorator('country', {
                                             rules: [{ required: true, message: 'Please input your Country!' }],
                                         })(
-                                            <Input placeholder="Country" />
+                                            <Input placeholder="Country" name="country"  />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -127,5 +150,10 @@ class NewInformation extends Component {
         );
     }
 }
-const WrappedNewInformation = Form.create()(NewInformation);
-export default WrappedNewInformation;
+
+const mapStateToProps = (state) => {
+    return state
+}
+
+const WrappedClientComponent= Form.create()(ClientComponent);
+export default connect(mapStateToProps, actioncreators)(WrappedClientComponent);

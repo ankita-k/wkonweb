@@ -2,7 +2,7 @@ import React from 'react';
 import Login from './components/login/login';
 import Dashboard from './components/dashboard/dashboard';
 import DashboardView from './components/DashboardView/DashboardView';
-import NewInformation from './components/NewInformation/NewInformation';
+// import NewInformation from './components/NewInformation/NewInformation';
 import ChangePassword from './components/passwordChange/passwordChange';
 // import UserSubscription from './Components/UserSubscription/UserSubscription';
 // import BankDetails from './Components/BankDetails/BankDetails';
