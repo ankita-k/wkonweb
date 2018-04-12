@@ -26,12 +26,12 @@ class NormalLoginForm extends React.Component {
                 // axios.get(config.apiUrl + 'user/login?username=' + values.email + '&password=' + values.password, conf)
                 this.props.login( values.email,values.password).then((response) => {
                         console.log(response);
-                         if (response.result.error) {
-                             alert('No such user');
+                         if (response.error) {
+                            this.props.opentoast('error','No Such User Exists!');
                             return;
                      }
                           if (response.result && response.result.lastLogin) {
-                            sessionStorage.setItem('id', response.result._id)
+                            sessionStorage.setItem('id', response.result._id);
                             this.props.history.push('/dashboard');
                         }
                          else if (response.result && !response.result.lastLogin) {
@@ -41,11 +41,7 @@ class NormalLoginForm extends React.Component {
 
                  },err=>{
 
-                     })
-                    // // .catch((error) => {
-                    // //     console.log(error);
-                    // //     alert("some error occured");
-                    //  });
+                     });
             }
         });
     }
