@@ -194,7 +194,7 @@ export function client(userId, page, limit) {
         });
     }
 }
-//clientlist 
+//clientlist func
 function client(list) {
     return {
         type: "CLIENT_LIST",
