@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Row, Col, Card, DatePicker, Select } from 'antd';
-import '../NewInformation/NewInformation.css';
+import { Form, Icon, Input, Button, Row, Col, Card, Select,DatePicker } from 'antd';
+import '../ClientComponent/ClientComponent.css';
 import './NewProject.css';
 import { Divider } from 'antd';
 const FormItem = Form.Item;

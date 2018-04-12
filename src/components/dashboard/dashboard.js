@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
+import ClientComponent from '../ClientComponent/ClientComponent';
 import NewProject from '../NewProject/NewProject';
 import './dashboard.css';
-import NewInformation from '../NewInformation/NewInformation';
 import DashboardView from '../DashboardView/DashboardView';
 import ClientList from '../ClientList/ClientList';
 import ChangePassword from '../passwordChange/passwordChange';
@@ -53,7 +53,7 @@ class Dashboard extends Component {
               <Content style={{ background: '#f0f4f5', padding: 24, margin: 0 }}>
                 <Route exact path={`${this.props.match.url}`} component={DashboardView} />
                 <Route exact  path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
-                <Route exact path={`${this.props.match.url}/newinfo`} component={NewInformation} />
+                <Route exact path={`${this.props.match.url}/clientcreate`} component={ClientComponent} />
                 <Route exact path={`${this.props.match.url}/newproject`} component={NewProject} />
                 <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />                
                 {/* <DashboardView></DashboardView> */}
