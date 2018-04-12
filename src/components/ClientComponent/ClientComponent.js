@@ -11,9 +11,23 @@ class ClientComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            countrylist: []
         }
     }
+
+
+    componentWillMount() {
+        // GET COUNTRY LIST
+
+        console.log('component will mount')
+        this.props.countrylist().then((data) => {
+            this.setState({ countrylist: data });
+            console.log(this.state.countrylist)
+        }, err => {
+
+        })
+    }
+
 
     // TAKE INPUT FIELD VALUE
     inputValue = (e) => {
@@ -22,17 +36,40 @@ class ClientComponent extends Component {
     }
 
     // STATUS INPUT
-    handleSelectChange = (e) => {
+    selectStatus = (e) => {
         this.setState({ status: e });
         console.log(e)
     }
+
+    //  COUNTRY SELECTED
+    selectCountry = (e) => {
+        this.setState({ country: e });
+        console.log(e)
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log(values)
-                // this.props.createClient()
-                console.log('Received values of form: ', values);
+                let data = {
+                    status: values.status,
+                    country: values.country,
+                    phoneNumber: values.phoneNumber,
+                    email: values.email,
+                    name: values.name,
+                    userId: "5acc8400d1f70b1d7bf43a55",
+                    domain: values.domain
+                }
+                this.props.createClient(data).then(result => {
+                    console.log(result);
+                    if (!result.error) {
+                        this.props.history.push('/dashboard')
+                    }
+                }, err => {
+
+                })
+
             }
         });
     }
@@ -67,7 +104,7 @@ class ClientComponent extends Component {
                                         {getFieldDecorator('email', {
                                             rules: [{ required: true, message: 'Please input your Email!' }],
                                         })(
-                                            <Input placeholder="Email" name="email"  />
+                                            <Input placeholder="Email" name="email" />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -78,7 +115,7 @@ class ClientComponent extends Component {
                                         {getFieldDecorator('phone', {
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
                                         })(
-                                            <Input placeholder="Phone No." name="phoneNumber"  />
+                                            <Input placeholder="Phone No." name="phoneNumber" />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -89,7 +126,7 @@ class ClientComponent extends Component {
                                         {getFieldDecorator('name', {
                                             rules: [{ required: true, message: 'Please input your Name!' }],
                                         })(
-                                            <Input placeholder="Name" name="name"  />
+                                            <Input placeholder="Name" name="name" />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -100,7 +137,7 @@ class ClientComponent extends Component {
                                         {getFieldDecorator('domain', {
                                             rules: [{ required: true, message: 'Please input your Domain!' }],
                                         })(
-                                            <Input placeholder="Domain" name="domain"  />
+                                            <Input placeholder="Domain" name="domain" />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -109,9 +146,17 @@ class ClientComponent extends Component {
                                 <Col xs={24} sm={24} md={24} lg={24}>
                                     <FormItem label="Country">
                                         {getFieldDecorator('country', {
-                                            rules: [{ required: true, message: 'Please input your Country!' }],
+                                            rules: [{ required: true, message: 'Please select your Country!' }],
                                         })(
-                                            <Input placeholder="Country" name="country"  />
+                                            <Select className="statuspipeline"
+                                                placeholder="Country"
+                                                onChange={this.selectCountry}
+                                            >
+                                                {this.state.countrylist.map((item, index) => {
+                                                    return <Option key={index} value={item.name}>{item.name}</Option>
+                                                })}
+
+                                            </Select>
                                         )}
                                     </FormItem>
                                 </Col>
@@ -124,7 +169,7 @@ class ClientComponent extends Component {
                                         })(
                                             <Select className="statuspipeline"
                                                 placeholder="Status"
-                                                onChange={this.handleSelectChange}
+                                                onChange={this.selectStatus}
                                             >
                                                 <Option value="Interested">Interested</Option>
                                                 <Option value="Pipeline">Pipeline</Option>
@@ -155,5 +200,5 @@ const mapStateToProps = (state) => {
     return state
 }
 
-const WrappedClientComponent= Form.create()(ClientComponent);
+const WrappedClientComponent = Form.create()(ClientComponent);
 export default connect(mapStateToProps, actioncreators)(WrappedClientComponent);

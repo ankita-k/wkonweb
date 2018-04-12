@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import ClientComponent from '../ClientComponent/ClientComponent';
+import NewProject from '../NewProject/NewProject';
 import DashboardView from '../DashboardView/DashboardView';
 import ChangePassword from '../passwordChange/passwordChange';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
@@ -51,6 +52,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}`} component={DashboardView} />
                 <Route exact  path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/clientcreate`} component={ClientComponent} />
+                <Route exact path={`${this.props.match.url}/newproject`} component={NewProject} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>
