@@ -33,7 +33,7 @@ p.expecteDate4 {
 .startDate input.ant-calendar-picker-input.ant-input {
     width: 100%;
 }
-.startDate span.ant-calendar-picker:hover {
+.startDate span.ant-calendar-picker:focus {
     border: 1px solid #d4d4d4;
 }
 .spaceLess .ant-row {
