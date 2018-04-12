@@ -1,0 +1,29 @@
+ /* clientlist css*/
+/* .table-operations {
+    margin-bottom: 16px;
+  }
+  
+  .table-operations > button {
+    margin-right: 8px;
+  } */
+  .ant-table-pagination.ant-pagination {
+    display: none;
+}
+button.ant-btn.edit {
+    background: #81d2ff;
+    border: none;
+    color: #fff;
+}
+button.ant-btn.delete {
+    background: #ff8181;
+    margin-left: 1em;
+    border: none;
+    color: #fff;
+}
+.innercardContenta .ant-card-body {
+    padding: 0;
+}
+.innercardContenta {
+    margin: 0 auto !important;
+}
+ /* clientlist css*/
