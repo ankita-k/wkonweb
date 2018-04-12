@@ -5,6 +5,8 @@ import axios from 'axios';
 import '../login/login.css';
 import './passwordChange.css';
 import { config } from '../../config';
+import {connect} from "react-redux";
+import * as actioncreators from '../../redux/action';
 
 const FormItem = Form.Item;
 
@@ -41,16 +43,18 @@ class ChangePasswordForm extends Component {
                 console.log('Received values of form: ', values);
                 let conf = config.headers;
                 let data = {
-                    id: sessionStorage.getItem('id'),
+                    id:'5acc8400d1f70b1d7bf43a55',
                     password: values.oldPassword,
                     newPassword: values.password
 
                 }
-                axios.put(config.apiUrl + 'user/resetPassword', data, conf)
+                // axios.put(config.apiUrl + 'user/resetPassword', data, conf)
+                this.props.password(data)
                     .then((response) => {
-                        if (response.data & response.data._id) {
-                            this.props.history.push('/dashboard');
-                        }
+                        console.log(response);
+                        // if (response.data & response.data._id) {
+                        //     this.props.history.push('/dashboard');
+                        // }
                     })
                     .catch((error) => {
                         console.log(error);
@@ -192,8 +196,11 @@ class ChangePasswordForm extends Component {
         );
     }
 }
-
+const mapStateToProps=(state)=>{
+    return state
+}
 const ChangePassword = Form.create()(ChangePasswordForm);
+export default connect(mapStateToProps,actioncreators)(ChangePassword);
 
 
-export default ChangePassword;
+//export default ChangePassword;
