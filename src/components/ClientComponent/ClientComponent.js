@@ -58,12 +58,14 @@ class ClientComponent extends Component {
                     phoneNumber: values.phoneNumber,
                     email: values.email,
                     name: values.name,
-                    userId: "5acc8400d1f70b1d7bf43a55",
+                    userId:sessionStorage.getItem('id'),
                     domain: values.domain
                 }
+              
                 this.props.createClient(data).then(result => {
                     console.log(result);
                     if (!result.error) {
+                        this.props.opentoast('success','Customer Added Successfully!');
                         this.props.history.push('/dashboard')
                     }
                 }, err => {

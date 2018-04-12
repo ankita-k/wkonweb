@@ -1,4 +1,7 @@
 import { config } from '../../src/config';
+
+
+
 let conf = config.headers;
 
 
@@ -140,4 +143,29 @@ export function countrylist() {
     }
 }
 
+// DISPATCH TOAST VALUE
+export function opentoast(type, message) {
+    return (dispatch) => {
+  dispatch(toast(type, message))
+  }
+}
 
+// SHOW TOAST NOTIFICATIONS
+function toast(type, message) {
+    switch (type) {
+        case "success":
+            return { type: "TOAST", toastype: type, message }
+            break;
+        case "info":
+            return { type: 'TOAST', toastype: type, message }
+            break;
+        case "warning":
+            return { type: "TOAST", toastype: type, message }
+            break;
+        case "error":
+            return { type: "TOAST", toastype: type, message }
+            break;
+        default: return console.log('no notification')
+    }
+
+}

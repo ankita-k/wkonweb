@@ -52,7 +52,11 @@ class ChangePasswordForm extends Component {
                     .then((response) => {
                         console.log(response);
                         if (!response.error) {
+                            this.props.opentoast('success','Password Changed Successfully!');
                             this.props.history.push('/dashboard');
+                        }
+                        else {
+                            this.props.opentoast('error','Wrong Password !');  
                         }
                     }, err => {
 
