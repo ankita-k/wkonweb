@@ -47,7 +47,7 @@ class Dashboard extends Component {
           </SubMenu> */}
               </Menu>
             </Sider>
-            <Layout style={{ padding: '0 24px 24px' }}>
+            <Layout style={{ padding: '0 0px 0px' }}>
               <Content style={{ background: '#f0f4f5', padding: 24, margin: 0, minHeight: 280 }}>
                 <Route exact path={`${this.props.match.url}`} component={DashboardView} />
                 <Route exact  path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
