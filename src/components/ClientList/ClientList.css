@@ -1,11 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Roboto');
  /* clientlist css*/
-/* .table-operations {
-    margin-bottom: 16px;
-  }
-  
-  .table-operations > button {
-    margin-right: 8px;
-  } */
   .ant-table-pagination.ant-pagination {
     display: none;
 }
@@ -23,7 +17,17 @@ button.ant-btn.delete {
 .innercardContenta .ant-card-body {
     padding: 0;
 }
+h1.clientList {
+    font-family: 'Lato', sans-serif;
+    margin-bottom: 1em;
+}
 .innercardContenta {
     margin: 0 auto !important;
+}
+.addButton.clientadd {
+    position: absolute;
+    top: -4em;
+    right: 0;
+    z-index: 9;
 }
  /* clientlist css*/

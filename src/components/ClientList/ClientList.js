@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Divider } from 'antd';
+import { Card, Table, Button, Icon, Row, Divider } from 'antd';
 import '../NewProject/NewProject.css';
 import './ClientList.css';
 const columns = [{
@@ -56,6 +56,12 @@ class ClientList extends Component {
      
         return (
             <div>
+                    <h1 className="clientList">CLIENT LIST</h1>
+                    <Row>
+                        <div className="addButton clientadd">
+                            <Button onClick={()=>{this.props.history.push('/dashboard/clientcreate')}}>+</Button>
+                        </div>
+                    </Row>
                 {/* clientlist */}
                 <Card className="innercardContenta" bordered={false}>
                 <Table columns={columns} dataSource={data} />
