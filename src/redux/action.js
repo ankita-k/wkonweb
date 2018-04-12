@@ -27,7 +27,7 @@ function changepwd(json) {
 }
 
 
-// API CALL FOR LOGIN
+// API call for login
 export function login(username, password) {
 
     return (dispatch) => {
@@ -146,8 +146,8 @@ export function countrylist() {
 // DISPATCH TOAST VALUE
 export function opentoast(type, message) {
     return (dispatch) => {
-  dispatch(toast(type, message))
-  }
+        dispatch(toast(type, message))
+    }
 }
 
 // SHOW TOAST NOTIFICATIONS
@@ -168,4 +168,37 @@ function toast(type, message) {
         default: return console.log('no notification')
     }
 
+}
+//Client list api 
+export function client(userId, page, limit) {
+
+    return (dispatch) => {
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+            fetch(config.apiUrl + 'client/clientlist?userId=' + userId + '&page=' + page + '&limit=' + limit,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(client(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+//clientlist 
+function client(list) {
+    return {
+        type: "CLIENT_LIST",
+        list
+
+    }
 }

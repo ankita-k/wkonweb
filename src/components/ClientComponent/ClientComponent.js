@@ -63,6 +63,7 @@ class ClientComponent extends Component {
                 }
               
                 this.props.createClient(data).then(result => {
+                    
                     console.log(result);
                     if (!result.error) {
                         this.props.opentoast('success','Customer Added Successfully!');

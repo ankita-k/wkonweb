@@ -30,8 +30,9 @@ class Dashboard extends Component {
                 style={{ height: '100%', borderRight: 0 }}
               >
                 <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}>
-                  <Menu.Item key="1">Clients</Menu.Item>
+                  <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
                   <Menu.Item key="2">Projects</Menu.Item>
+                  
                   {/* <Menu.Item key="3">option3</Menu.Item>
             <Menu.Item key="4">option4</Menu.Item> */}
                 </SubMenu>
