@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Row, Col, Card, Select } from 'antd';
+import { Form, Icon, Input, Button, Row, Col, Card, DatePicker, Select } from 'antd';
 import '../NewInformation/NewInformation.css';
 import './NewProject.css';
 import { Divider } from 'antd';
@@ -16,6 +16,20 @@ class NewProject extends Component {
     }
     render() {
         const { getFieldDecorator } = this.props.form;
+        const formItemLayout = {
+            labelCol: {
+                xs: { span: 24 },
+                sm: { span: 8 },
+            },
+            wrapperCol: {
+                xs: { span: 24 },
+                lg: { span: 24 },
+                // sm: { span: 16 },
+            },
+        };
+        const config = {
+            rules: [{ type: 'object', required: true, message: 'Please select time!' }],
+        };
         return (
             <div>
                 <Card className="innercardContent cardProject" bordered={false}>
@@ -26,7 +40,7 @@ class NewProject extends Component {
                     </div>
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="inputForminfo informationProject">
-                        <Row>
+                            <Row>
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem label="Name">
                                         {getFieldDecorator('name', {
@@ -37,7 +51,7 @@ class NewProject extends Component {
                                     </FormItem>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
-                                <FormItem label="Brief Requirement">
+                                    <FormItem label="Brief Requirement">
                                         {getFieldDecorator('requirement', {
                                             rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
                                         })(
@@ -48,7 +62,7 @@ class NewProject extends Component {
                             </Row>
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={12}>
-                                <FormItem label="Status">
+                                    <FormItem label="Status">
                                         {getFieldDecorator('status', {
                                             rules: [{ required: true, message: 'Please select your status!' }],
                                         })(
@@ -64,7 +78,7 @@ class NewProject extends Component {
                                     </FormItem>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
-                                <FormItem label="Technology">
+                                    <FormItem label="Technology">
                                         {getFieldDecorator('technology', {
                                             rules: [{ required: true, message: 'Please input your Technology!' }],
                                         })(
@@ -73,48 +87,63 @@ class NewProject extends Component {
                                     </FormItem>
                                 </Col>
                             </Row>
-    
-                
+
+                            <div className="spaceLess">
+                                <Row>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
+                                        <div className="startDate">
+                                            <p className="expecteDate">Expected Start Date</p>
+                                            <FormItem
+                                                {...formItemLayout}
+                                            >
+                                                {getFieldDecorator('date-picker', config)(
+                                                    <p><DatePicker /></p>
+                                                )}
+                                            </FormItem>
+                                        </div>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
+                                        <div className="startDate">
+                                            <p className="expecteDate">Actual Start Date</p>
+                                            <FormItem
+                                                {...formItemLayout}
+                                            >
+                                                {getFieldDecorator('date-picker', config)(
+                                                    <p><DatePicker /></p>
+                                                )}
+                                            </FormItem>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </div>
+                            <div className="spaceLess">
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Expected Start Date">
-                                        {getFieldDecorator('start', {
-                                            rules: [{ required: true, message: 'Please input your Start date!' }],
-                                        })(
-                                            <Input placeholder="Expected Start Date" />
-                                        )}
-                                    </FormItem>
+                                    <div className="startDate">
+                                        <p className="expecteDate4">Expected End Date</p>
+                                        <FormItem
+                                            {...formItemLayout}
+                                        >
+                                            {getFieldDecorator('date-picker', config)(
+                                                <p><DatePicker /></p>
+                                            )}
+                                        </FormItem>
+                                    </div>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Actual Start Date">
-                                        {getFieldDecorator('actualt', {
-                                            rules: [{ required: true, message: 'Please input your start date!' }],
-                                        })(
-                                            <Input placeholder="Actual Start Date" />
-                                        )}
-                                    </FormItem>
+                                    <div className="startDate">
+                                        <p className="expecteDate4">Actual End Date</p>
+                                        <FormItem
+                                            {...formItemLayout}
+                                        >
+                                            {getFieldDecorator('date-picker', config)(
+                                                <p><DatePicker /></p>
+                                            )}
+                                        </FormItem>
+                                    </div>
                                 </Col>
                             </Row>
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Expected End Date">
-                                        {getFieldDecorator('actuale', {
-                                            rules: [{ required: true, message: 'Please input your expected date!' }],
-                                        })(
-                                            <Input placeholder="Expected End Date" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                                <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Actual End Date">
-                                        {getFieldDecorator('actualn', {
-                                            rules: [{ required: true, message: 'Please input your field!' }],
-                                        })(
-                                            <Input placeholder="Actual End Date" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                            </Row>
+                            </div>
                         </div>
                         <FormItem>
                             <div className="savebutton">
