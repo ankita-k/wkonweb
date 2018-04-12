@@ -5,7 +5,7 @@ import axios from 'axios';
 import '../login/login.css';
 import './passwordChange.css';
 import { config } from '../../config';
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 
 const FormItem = Form.Item;
@@ -43,23 +43,20 @@ class ChangePasswordForm extends Component {
                 console.log('Received values of form: ', values);
                 let conf = config.headers;
                 let data = {
-                    id:'5acc8400d1f70b1d7bf43a55',
+                    id: sessionStorage.getItem('id'),
                     password: values.oldPassword,
                     newPassword: values.password
 
                 }
-                // axios.put(config.apiUrl + 'user/resetPassword', data, conf)
                 this.props.password(data)
                     .then((response) => {
                         console.log(response);
-                        // if (response.data & response.data._id) {
-                        //     this.props.history.push('/dashboard');
-                        // }
+                        if (!response.error) {
+                            this.props.history.push('/dashboard');
+                        }
+                    }, err => {
+
                     })
-                    .catch((error) => {
-                        console.log(error);
-                        alert("An error occurred");
-                    });
             }
         });
     }
@@ -105,7 +102,7 @@ class ChangePasswordForm extends Component {
                                 <Col md={{ span: 12, order: 1 }} xs={{ span: 24, order: 1 }}>
                                     <div className="loginFormsec">
                                         <p className="loginHead"><b>Reset Password</b></p>
-                                        <p className="loginSubhead">What would you like your new password to be? 
+                                        <p className="loginSubhead">What would you like your new password to be?
                                         {/* <span><a>Create your account</a></span> */}
                                         </p>
                                         <Form onSubmit={this.handleSubmit} className="login-form" >
@@ -146,10 +143,10 @@ class ChangePasswordForm extends Component {
                                             </FormItem> */}
                                             <FormItem >
                                                 <div className="SubmitBtn">
-                                                <Button type="primary" htmlType="submit" className="login-form-button">
-                                                    SUBMIT
+                                                    <Button type="primary" htmlType="submit" className="login-form-button">
+                                                        SUBMIT
                    </Button>
-                   </div>
+                                                </div>
                                             </FormItem>
                                         </Form>
 
@@ -196,11 +193,11 @@ class ChangePasswordForm extends Component {
         );
     }
 }
-const mapStateToProps=(state)=>{
+const mapStateToProps = (state) => {
     return state
 }
 const ChangePassword = Form.create()(ChangePasswordForm);
-export default connect(mapStateToProps,actioncreators)(ChangePassword);
+export default connect(mapStateToProps, actioncreators)(ChangePassword);
 
 
 //export default ChangePassword;
