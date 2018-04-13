@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Card, Table, Button, Icon, Row } from 'antd';
 import '../NewProject/NewProject.css';
 import './ClientList.css';
+import { connect } from "react-redux";
+import * as actioncreators from '../../redux/action';
 const columns = [{
     title: 'Name',
     dataIndex: 'name',
@@ -9,8 +11,8 @@ const columns = [{
   
   }, {
     title: 'Phone',
-    dataIndex: 'phone',
-    key: 'phone',
+    dataIndex: 'phoneNumber',
+    key: 'phoneNumber',
   }, {
     title: 'Email',
     dataIndex: 'email',
@@ -65,7 +67,33 @@ const columns = [{
     status:'Pipeline',
   }];
 class ClientList extends Component {
- 
+  constructor(props) {
+    super(props);
+    this.state = {
+        clientlist: []
+        
+
+    }
+}
+
+
+componentWillMount() {
+
+
+    // GET CLIENT LIST
+
+    console.log('component will mount')
+    this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
+      
+      console.log(data);
+          this.setState({ clientlist: data.result });
+          console.log(this.state.clientlist);
+    }, err => {
+
+    })
+}
+
+
     render() {
      
         return (
@@ -78,11 +106,16 @@ class ClientList extends Component {
                     </Row>
                 {/* clientlist */}
                 <Card className="innercardContenta" bordered={false}>
-                <Table columns={columns} dataSource={data} />
+                <Table columns={columns} dataSource={this.state.clientlist} />
                 </Card>
                 {/* clientlist */}
             </div>
         );
     }
 }
-export default ClientList;
+const mapStateToProps = (state) => {
+  console.log(state);
+  return state
+}
+//export default ClientList;
+export default connect(mapStateToProps, actioncreators)(ClientList);
