@@ -170,7 +170,7 @@ function toast(type, message) {
 
 }
 //Client list api 
-export function client(userId, page, limit) {
+export function clientlist(userId, page, limit) {
 
     return (dispatch) => {
         console.log(config.apiUrl)
