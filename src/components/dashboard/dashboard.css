@@ -8,3 +8,13 @@
   .ant-layout-content {
     height: 100vh;
 }
+button.ant-btn.wkonlogout {
+  float: right;
+  margin-top: 17px;
+  font-weight: 500;
+  background: transparent;
+  color: #fff;
+  padding-bottom: 3px;
+  border: 2px solid #fff;
+  border-radius: 50px;
+}

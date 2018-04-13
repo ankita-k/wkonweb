@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Button, Icon } from 'antd';
 import ClientComponent from '../ClientComponent/ClientComponent';
 import NewProject from '../NewProject/NewProject';
 import './dashboard.css';
@@ -19,8 +19,8 @@ class Dashboard extends Component {
 
         <Layout>
           <Header className="header">
-            <div className="logo" />
-            <p style={{ color: '#fff' }}> Hello {sessionStorage.getItem('name')}</p>
+            {/* <div className="logo" /> */}
+            <p style={{ color: '#fff' }}> Hello, John Doe {sessionStorage.getItem('name')} <Button className="wkonlogout">Log Out</Button></p>
           </Header>
           <Layout>
             <Sider width={200} style={{ background: '#fff' }}>
