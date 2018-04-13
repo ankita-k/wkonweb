@@ -22,6 +22,9 @@ const reducer = ((state = {}, action) => {
     case "COUNTRY_LIST":                  // FOR COUNTRY LIST
       return action.list
       break;
+    case "PROJECT_LIST":
+      return action.json
+      break;
     case "TOAST":                         // FOR SHOWING NOTIFICATION
       notification[action.toastype]({
         message: action.message,

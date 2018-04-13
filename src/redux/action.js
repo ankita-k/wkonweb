@@ -172,8 +172,8 @@ export function addProject(data) {
 // DISPATCH TOAST VALUE
 export function opentoast(type, message) {
     return (dispatch) => {
-  dispatch(toast(type, message))
-  }
+        dispatch(toast(type, message))
+    }
 }
 
 // SHOW TOAST NOTIFICATIONS
@@ -194,4 +194,35 @@ function toast(type, message) {
         default: return console.log('no notification')
     }
 
+}
+// PROJECTLIST  ACTION
+function allProjectlist(json) {
+    return {
+        type: "PROJECT_LIST",
+        json
+
+    }
+}
+// FUNCTION FOR APICALL OF PROJECT LIST
+export function projectList(userId, page, limit) {
+    return (dispatch) => {
+        return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'project/projectlist?userId=' + userId + '&page=' + page + '&limit=' + limit, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(allProjectlist(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
 }
