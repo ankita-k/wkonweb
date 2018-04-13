@@ -16,10 +16,10 @@ class ClientComponent extends Component {
     }
 
 
-    componentWillMount() {
+    componentDidMount() {
         // GET COUNTRY LIST
 
-        console.log('component will mount')
+        console.log('component will didmount')
         this.props.countrylist().then((data) => {
             this.setState({ countrylist: data });
             console.log(this.state.countrylist)
@@ -55,7 +55,7 @@ class ClientComponent extends Component {
                 let data = {
                     status: values.status,
                     country: values.country,
-                    phoneNumber: values.phoneNumber,
+                    phoneNumber: values.phone,
                     email: values.email,
                     name: values.name,
                     userId:sessionStorage.getItem('id'),
@@ -63,6 +63,7 @@ class ClientComponent extends Component {
                 }
               
                 this.props.createClient(data).then(result => {
+                    
                     console.log(result);
                     if (!result.error) {
                         this.props.opentoast('success','Customer Added Successfully!');
