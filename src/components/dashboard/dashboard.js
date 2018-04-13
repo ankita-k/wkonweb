@@ -32,7 +32,7 @@ class Dashboard extends Component {
               >
                 <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}>
                   <Menu.Item key="1">Clients</Menu.Item>
-                  <Menu.Item key="2">Projects</Menu.Item>
+                  <Menu.Item key="2"><NavLink to="dashboard/newproject">Projects</NavLink></Menu.Item>
                   {/* <Menu.Item key="3">option3</Menu.Item>
             <Menu.Item key="4">option4</Menu.Item> */}
                 </SubMenu>
