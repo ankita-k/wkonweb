@@ -4,13 +4,16 @@
 }
 .inputForminfo.informationProject  .ant-select-selection--single {
     height: 43px;
-    width: 85%;
+    width: 100%;
 }
 .innercardContent.cardProject .ant-card-body {
     padding: 0;
 }
 .inputForminfo.informationProject {
     padding: 0 0 0 4em;
+}
+.inputForminfo.informationProject .statuspipeline.ant-select.ant-select-enabled {
+    width: 85%;
 }
 .innercardContent.cardProject h1.NewCustomer{
     margin: 10px 0 10px 27px;
@@ -41,8 +44,11 @@ p.expecteDateclient {
     height: 45px;
     width: 100%;
 }
-.clientHere .ant-select-selection.ant-select-selection--single {
+.clientHere {
     width: 93% !important;
+}
+.clientHere .ant-select-selection.ant-select-selection--single {
+    width: 100% !important;
 }
 .startDate input.ant-calendar-picker-input.ant-input {
     width: 100%;
