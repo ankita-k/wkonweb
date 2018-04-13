@@ -3,6 +3,7 @@ import { Layout, Menu, Icon } from 'antd';
 import ClientComponent from '../ClientComponent/ClientComponent';
 import NewProject from '../NewProject/NewProject';
 import './dashboard.css';
+import ProjectlistView from '../ProjectlistView/ProjectlistView';
 import DashboardView from '../DashboardView/DashboardView';
 import ClientList from '../ClientList/ClientList';
 import ChangePassword from '../passwordChange/passwordChange';
@@ -55,7 +56,8 @@ class Dashboard extends Component {
                 <Route exact  path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/clientcreate`} component={ClientComponent} />
                 <Route exact path={`${this.props.match.url}/newproject`} component={NewProject} />
-                <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />                
+                <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />     
+                <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />             
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>

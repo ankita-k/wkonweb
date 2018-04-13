@@ -4,15 +4,15 @@
     display: none;
 }
 button.ant-btn.edit {
-    background: #81d2ff;
+    padding:0;
+    background:transparent;
+    color: #81d2ff;
     border: none;
-    color: #fff;
 }
 button.ant-btn.delete {
-    background: #ff8181;
-    margin-left: 1em;
+    background:transparent;
+    color:#ff8181;
     border: none;
-    color: #fff;
 }
 .innercardContenta .ant-card-body {
     padding: 0;
@@ -23,6 +23,12 @@ h1.clientList {
 }
 .innercardContenta {
     margin: 0 auto !important;
+}
+button.ant-btn.edit i.anticon.anticon-edit {
+    font-size: 18px;
+}
+button.ant-btn.delete i.anticon.anticon-delete {
+    font-size: 18px;
 }
 .addButton.clientadd {
     position: absolute;

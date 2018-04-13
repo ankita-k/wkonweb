@@ -1,11 +1,25 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Row, Col, Card, Select,DatePicker } from 'antd';
+import { Form, Input, Button, Row, Col, Card, Select, AutoComplete, DatePicker } from 'antd';
 import '../ClientComponent/ClientComponent.css';
 import './NewProject.css';
 import { Divider } from 'antd';
+const Option1 = AutoComplete.Option1;
 const FormItem = Form.Item;
 const Option = Select.Option;
 class NewProject extends Component {
+    state = {
+        result: [],
+      }
+    
+      handleSearch = (value) => {
+        let result;
+        if (!value || value.indexOf('@') >= 0) {
+          result = [];
+        } else {
+          result = ['gmail.com', '163.com', 'qq.com'].map(domain => `${value}@${domain}`);
+        }
+        this.setState({ result });
+      }
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -15,6 +29,10 @@ class NewProject extends Component {
         });
     }
     render() {
+        const { result } = this.state;
+        const children = result.map((email) => {
+          return <Option key={email}>{email}</Option>;
+        });
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -58,6 +76,21 @@ class NewProject extends Component {
                                             <Input placeholder="Brief Requirement" />
                                         )}
                                     </FormItem>
+                                    {/* <FormItem label="Client List">
+                                        {getFieldDecorator('client', {
+                                            rules: [{ required: true, message: 'Please select your client!' }],
+                                        })(
+                                            <Select className="statuspipeline"
+                                                placeholder="Choose Client"
+                                                onChange={this.handleSelectChange}
+                                            >
+                                                <Option value="Client1">Client1</Option>
+                                                <Option value="Client2">Client2</Option>
+                                                <Option value="Client3">Client3</Option>
+                                            </Select>
+                                        )}
+                                    </FormItem> */}
+                                
                                 </Col>
                             </Row>
                             <Row>
@@ -92,7 +125,7 @@ class NewProject extends Component {
                                 <Row>
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <div className="startDate">
-                                            <p className="expecteDate">Expected Start Date</p>
+                                            <p className="expecteDate">Expected Start Date :</p>
                                             <FormItem
                                                 {...formItemLayout}
                                             >
@@ -104,7 +137,7 @@ class NewProject extends Component {
                                     </Col>
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <div className="startDate">
-                                            <p className="expecteDate">Actual Start Date</p>
+                                            <p className="expecteDate">Actual Start Date :</p>
                                             <FormItem
                                                 {...formItemLayout}
                                             >
@@ -117,32 +150,44 @@ class NewProject extends Component {
                                 </Row>
                             </div>
                             <div className="spaceLess">
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={12}>
-                                    <div className="startDate">
-                                        <p className="expecteDate4">Expected End Date</p>
-                                        <FormItem
-                                            {...formItemLayout}
-                                        >
-                                            {getFieldDecorator('date-picker', config)(
-                                                <p><DatePicker /></p>
-                                            )}
-                                        </FormItem>
-                                    </div>
-                                </Col>
-                                <Col xs={24} sm={24} md={24} lg={12}>
-                                    <div className="startDate">
-                                        <p className="expecteDate4">Actual End Date</p>
-                                        <FormItem
-                                            {...formItemLayout}
-                                        >
-                                            {getFieldDecorator('date-picker', config)(
-                                                <p><DatePicker /></p>
-                                            )}
-                                        </FormItem>
-                                    </div>
-                                </Col>
-                            </Row>
+                                <Row>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
+                                        <div className="startDate">
+                                            <p className="expecteDate4">Expected End Date :</p>
+                                            <FormItem
+                                                {...formItemLayout}
+                                            >
+                                                {getFieldDecorator('date-picker', config)(
+                                                    <p><DatePicker /></p>
+                                                )}
+                                            </FormItem>
+                                        </div>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
+                                        <div className="startDate">
+                                            <p className="expecteDate4">Actual End Date :</p>
+                                            <FormItem
+                                                {...formItemLayout}
+                                            >
+                                                {getFieldDecorator('date-picker', config)(
+                                                    <p><DatePicker /></p>
+                                                )}
+                                            </FormItem>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                    <p className="expecteDateclient">Choose Client :</p>
+                                    <AutoComplete
+                                   className="clientHere"
+                                        onSearch={this.handleSearch}
+                                        placeholder="Choose Client"
+                                    >
+                                        {children}
+                                    </AutoComplete>
+                                    </Col>
+                                </Row>
                             </div>
                         </div>
                         <FormItem>

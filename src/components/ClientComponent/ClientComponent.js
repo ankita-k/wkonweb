@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Row, Col, Card, Select } from 'antd';
+import { Form, Input, Button, Row, Col, Card, Select } from 'antd';
 import './ClientComponent.css';
 import { Divider } from 'antd';
 import * as actioncreators from '../../redux/action';
