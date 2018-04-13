@@ -143,6 +143,32 @@ export function countrylist() {
     }
 }
 
+
+// FUNCTION FOR APICALL OF PROJECT CREATION 
+export function addProject(data) {
+    return (dispatch) => {
+        return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'project', {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(receivePosts(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+
 // DISPATCH TOAST VALUE
 export function opentoast(type, message) {
     return (dispatch) => {

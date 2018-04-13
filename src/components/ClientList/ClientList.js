@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Row, Divider } from 'antd';
+import { Card, Table, Button, Icon, Row } from 'antd';
 import '../NewProject/NewProject.css';
 import './ClientList.css';
 import { connect } from "react-redux";
@@ -30,13 +30,13 @@ const columns = [{
     dataIndex: 'status',
     key: 'status',
   }, {
-    title: 'Task',
+    title: 'Action',
     key: 'action',
     render: (text, record) => (
       <span>
           <Button className="edit">
-        <a href="javascript:;">Edit</a></Button>
-        <Button className="delete"><a href="javascript:;">Delete</a></Button>
+        <a href="javascript:;"><Icon type="edit" /></a></Button>
+        <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
       </span>
     ),
   }];

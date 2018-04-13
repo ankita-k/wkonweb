@@ -3,6 +3,7 @@ import { Layout, Menu, Icon } from 'antd';
 import ClientComponent from '../ClientComponent/ClientComponent';
 import NewProject from '../NewProject/NewProject';
 import './dashboard.css';
+import ProjectlistView from '../ProjectlistView/ProjectlistView';
 import DashboardView from '../DashboardView/DashboardView';
 import ClientList from '../ClientList/ClientList';
 import ChangePassword from '../passwordChange/passwordChange';
@@ -31,7 +32,7 @@ class Dashboard extends Component {
               >
                 <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}>
                   <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
-                  <Menu.Item key="2">Projects</Menu.Item>
+                  <Menu.Item key="2"><NavLink to="../dashboard/newproject">Projects</NavLink></Menu.Item>
                   
                   {/* <Menu.Item key="3">option3</Menu.Item>
             <Menu.Item key="4">option4</Menu.Item> */}
@@ -56,7 +57,8 @@ class Dashboard extends Component {
                 <Route exact  path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/clientcreate`} component={ClientComponent} />
                 <Route exact path={`${this.props.match.url}/newproject`} component={NewProject} />
-                <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />                
+                <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />     
+                <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />             
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>
