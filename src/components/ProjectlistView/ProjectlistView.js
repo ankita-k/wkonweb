@@ -176,18 +176,8 @@ class ProjectlistView extends Component {
           showSpinner={false}
         />
         <h1 className="clientList">PROJECT LIST</h1>
-        <div>
-          <Select defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
-            <Option value="All">All</Option>
-            <Option value="New">New</Option>
-            <Option value="InDiscussion">InDiscussion</Option>
-            <Option value="Scoping">Scoping</Option>
-            <Option value="InProgess">InProgess</Option>
-            <Option value="Stalled">Stalled</Option>
-            <Option value="Completed">Completed</Option>
-
-          </Select>
-        </div>
+     
+        <div className="AllProjects">
         <Search
           placeholder="input search text"
           onSearch={value => { this.searchproject(value) }}
@@ -198,12 +188,21 @@ class ProjectlistView extends Component {
 
 
         />
-        <div className="AllProjects">
-          <Button onClick={() => {
-            this.setState({ searchedList: this.state.projectList });
-            this.setState({ searchinput: '' })
-          }}>All Projects</Button>
-        </div>
+         <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+            <Option value="All">All</Option>
+            <Option value="New">New</Option>
+            <Option value="InDiscussion">InDiscussion</Option>
+            <Option value="Scoping">Scoping</Option>
+            <Option value="InProgess">InProgess</Option>
+            <Option value="Stalled">Stalled</Option>
+            <Option value="Completed">Completed</Option>
+
+          </Select>
+            <Button className="allprojectbtn" onClick={() => {
+              this.setState({searchedList: this.state.projectList});
+              this.setState({searchinput: ''})
+            }}>All Projects</Button>
+          </div>
 
         <Row>
           <div className="addButton clientadd">

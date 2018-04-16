@@ -135,6 +135,7 @@ class ClientList extends Component {
           </div>
         </Row>
         <Row>
+        <div className="AllProjects">
           <Search
             placeholder="input search text"
             onSearch={(value) => { this.searchClient(value) }}
@@ -148,6 +149,7 @@ class ClientList extends Component {
             this.setState({ searchedclient: this.state.clientlist });
             this.setState({ searchinput: '' })
           }}>Show All</Button>
+          </div>
         </Row>
 
         {/* clientlist */}
