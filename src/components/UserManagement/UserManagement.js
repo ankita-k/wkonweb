@@ -125,7 +125,7 @@ class UserManagement extends Component {
                                     <AutoComplete
                                    className="clientHere"
                                         onSearch={this.handleSearch}
-                                        // placeholder="Choose Reporting Manager"
+                                        placeholder="Choose Reporting Manager"
                                     >
                                         {children}
                                     </AutoComplete>

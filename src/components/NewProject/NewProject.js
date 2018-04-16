@@ -306,6 +306,7 @@ class NewProject extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                                <Button htmlType="submit" className="cardbuttonCancel login-form-button">Cancel</Button>
                             </div>
                         </FormItem>
 
