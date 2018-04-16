@@ -27,6 +27,13 @@ h1.clientList {
 .AllProjects {
     margin-bottom: 1em;
 }
+.scoping.ant-select.ant-select-enabled {
+    margin-left: 1em;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    color: rgba(158, 158, 158, 0.8);
+    border: none;
+    border-radius: 5px;
+}
 button.ant-btn.allprojectbtn {
     box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
     color: rgba(158, 158, 158, 0.8);

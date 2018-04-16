@@ -7,6 +7,8 @@ import './passwordChange.css';
 import { config } from '../../config';
 import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 
 const FormItem = Form.Item;
 
@@ -15,6 +17,7 @@ class ChangePasswordForm extends Component {
         super(props);
         this.state = {
             formLayout: 'horizontal',
+            show: true  //loading-bar
         };
         this.handleSubmit = this.handleSubmit.bind(this);
 
@@ -50,13 +53,14 @@ class ChangePasswordForm extends Component {
                 }
                 this.props.password(data)
                     .then((response) => {
+                        this.setState({ show: false });
                         console.log(response);
                         if (!response.error) {
-                            this.props.opentoast('success','Password Changed Successfully!');
+                            this.props.opentoast('success', 'Password Changed Successfully!');
                             this.props.history.push('/dashboard');
                         }
                         else {
-                            this.props.opentoast('error','Wrong Password !');  
+                            this.props.opentoast('error', 'Wrong Password !');
                         }
                     }, err => {
 
@@ -70,6 +74,11 @@ class ChangePasswordForm extends Component {
 
         return (
             <div>
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
                 {/* <Form onSubmit={this.handleSubmit}>
                     <FormItem label="Old Password">
                         {getFieldDecorator('oldPassword', {
