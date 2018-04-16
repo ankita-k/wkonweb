@@ -50,7 +50,7 @@ class NewProject extends Component {
                     actualEndDate: values.actualend ? values.actualend._d : '',
                     name: values.name,
                     userId: sessionStorage.getItem('id'),
-                    client:values.client
+                    client: values.client
 
                 }
                 console.log(data)
@@ -238,9 +238,12 @@ class NewProject extends Component {
                                                 placeholder="Status"
                                                 onChange={this.handleSelectChange}
                                             >
-                                                <Option value="Interested">Interested</Option>
-                                                <Option value="Pipeline">Pipeline</Option>
-                                                <Option value="Committed">Committed</Option>
+                                                <Option value="New">New</Option>
+                                                <Option value="InDiscussion">InDiscussion</Option>
+                                                <Option value="Scoping">Scoping</Option>
+                                                <Option value="InProgess">InProgess</Option>
+                                                <Option value="Stalled">Stalled</Option>
+                                                <Option value="Completed">Completed</Option>
                                             </Select>
                                         )}
                                     </FormItem>
@@ -352,7 +355,7 @@ class NewProject extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
-                                <Button htmlType="submit" className="cardbuttonCancel login-form-button">Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={()=>{this.props.history.push('/dashboard/projectlist')}} >Cancel</Button>
                             </div>
                         </FormItem>
 

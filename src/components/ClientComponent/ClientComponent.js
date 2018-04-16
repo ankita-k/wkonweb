@@ -186,7 +186,7 @@ class ClientComponent extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
-                                <Button htmlType="submit" className="cardbuttonCancel login-form-button">Cancel</Button>
+                                <Button  className="cardbuttonCancel login-form-button"  onClick={()=>{this.props.history.push('/dashboard/clientlist')}}>Cancel</Button>
                             </div>
                         </FormItem>
 
