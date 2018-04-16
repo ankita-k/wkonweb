@@ -140,6 +140,8 @@ this.setState({searchedList:newarray})
     return (
       <div className="projectListdiv">
         <h1 className="clientList">PROJECT LIST</h1>
+     
+        <div className="AllProjects">
         <Search
           placeholder="input search text"
           onSearch={value => {this.searchproject(value)}}
@@ -150,8 +152,7 @@ this.setState({searchedList:newarray})
           
 
         />
-        <div className="AllProjects">
-            <Button onClick={() => {
+            <Button className="allprojectbtn" onClick={() => {
               this.setState({searchedList: this.state.projectList});
               this.setState({searchinput: ''})
             }}>All Projects</Button>
