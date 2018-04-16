@@ -8,6 +8,8 @@ import DashboardView from '../DashboardView/DashboardView';
 import ClientList from '../ClientList/ClientList';
 import ChangePassword from '../passwordChange/passwordChange';
 import UserManagement from '../UserManagement/UserManagement';
+import * as actioncreators from '../../redux/action';
+import { connect } from "react-redux";
 
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 
@@ -17,8 +19,22 @@ const { Header, Content, Sider } = Layout;
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    this.state={
+      username:''
+    }
   }
 
+  //GET USER NAME
+  componentDidMount() {
+    this.props.username(sessionStorage.getItem('id')).then((data) => {
+
+        console.log(data);
+        this.setState({ username: data.name });
+        console.log(this.state.username);
+    }, err => {
+
+    })
+}
   
   render() {
     return (
@@ -27,7 +43,7 @@ class Dashboard extends Component {
         <Layout>
           <Header className="header">
             {/* <div className="logo" /> */}
-            <p style={{ color: '#fff' }}> Hello {sessionStorage.getItem('id')} <Button className="wkonlogout"onClick={()=>{ sessionStorage.clear();
+            <p style={{ color: '#fff' }}> Hello {this.state.username} <Button className="wkonlogout"onClick={()=>{ sessionStorage.clear();
     this.props.history.push('/login')}}>Log Out</Button></p>
           </Header>
           <Layout>
@@ -78,5 +94,9 @@ class Dashboard extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return state
+}
+export default connect(mapStateToProps, actioncreators)(Dashboard);
 
-export default Dashboard;
+//export default Dashboard;
