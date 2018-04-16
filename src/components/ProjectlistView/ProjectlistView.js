@@ -150,9 +150,9 @@ class ProjectlistView extends Component {
       })
 
       this.setState({ searchedList: data });
-    
-    }, err => {
 
+    }, err => {
+      this.setState({ show: false });
     });
   }
 
@@ -190,19 +190,19 @@ class ProjectlistView extends Component {
           showSpinner={false}
         />
         <h1 className="clientList">PROJECT LIST</h1>
-     
+
         <div className="AllProjects">
-        <Search className="SearchValue"
-          placeholder="input search text"
-          onSearch={value => { this.searchproject(value) }}
-          style={{ width: 200 }}
-          onChange={(e) => { this.showallList(e.target.value) }}
-          enterButton
-          value={this.state.searchinput}
+          <Search className="SearchValue"
+            placeholder="input search text"
+            onSearch={value => { this.searchproject(value) }}
+            style={{ width: 200 }}
+            onChange={(e) => { this.showallList(e.target.value) }}
+            enterButton
+            value={this.state.searchinput}
 
 
-        />
-         <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+          />
+          <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
             <Option value="All">All</Option>
             <Option value="New">New</Option>
             <Option value="InDiscussion">InDiscussion</Option>
@@ -212,11 +212,11 @@ class ProjectlistView extends Component {
             <Option value="Completed">Completed</Option>
 
           </Select>
-            <Button className="allprojectbtn" onClick={() => {
-              this.setState({searchedList: this.state.projectList});
-              this.setState({searchinput: ''})
-            }}>All Projects</Button>
-          </div>
+          <Button className="allprojectbtn" onClick={() => {
+            this.setState({ searchedList: this.state.projectList });
+            this.setState({ searchinput: '' })
+          }}>All Projects</Button>
+        </div>
 
         <Row>
           <div className="addButton clientadd">
