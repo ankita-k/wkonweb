@@ -29,29 +29,31 @@ const columns = [{
   title: 'Expected Start Date',
   dataIndex: 'estart',
   key: 'estart',
-}, {
-  title: 'Actual Start Date',
-  dataIndex: 'astart',
-  key: 'astart',
-}, {
-  title: 'Expected End Date',
-  dataIndex: 'expectedtask',
-  key: 'expectedtask',
-}, {
-  title: 'Actual End Date',
-  dataIndex: 'taskend',
-  key: 'taskend',
-}, {
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <span>
-      <Button className="edit">
-        <a href="javascript:;"><Icon type="edit" /></a></Button>
-      <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
-    </span>
-  ),
-}];
+},
+// {
+//   title: 'Actual Start Date',
+//   dataIndex: 'astart',
+//   key: 'astart',
+// }, {
+//   title: 'Expected End Date',
+//   dataIndex: 'expectedtask',
+//   key: 'expectedtask',
+// }, {
+//   title: 'Actual End Date',
+//   dataIndex: 'taskend',
+//   key: 'taskend',
+// }, {
+//   title: 'Action',
+//   key: 'action',
+//   render: (text, record) => (
+//     <span>
+//       <Button className="edit">
+//         <a href="javascript:;"><Icon type="edit" /></a></Button>
+//       <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
+//     </span>
+//   ),
+// }
+];
 
 // const data = [{
 //   key: '1',
