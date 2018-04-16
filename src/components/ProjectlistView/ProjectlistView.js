@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Row ,Input} from 'antd';
+import { Card, Table, Button, Icon, Row, Input } from 'antd';
 import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import { Select } from 'antd';
@@ -139,12 +139,12 @@ class ProjectlistView extends Component {
 
 
   //SearchProject
-  searchproject =(val)=>{
-    let newarray = this.state.projectList.filter(f =>{
+  searchproject = (val) => {
+    let newarray = this.state.projectList.filter(f => {
       return f.name.indexOf(val) > -1
     });
-console.log(newarray)
-this.setState({searchedList:newarray})
+    console.log(newarray)
+    this.setState({ searchedList: newarray })
 
 
   }
@@ -152,12 +152,12 @@ this.setState({searchedList:newarray})
   //Show All project list
   showallList = (e) => {
     console.log(e);
-    this.setState({searchinput:e})
-    if (e == ''){
-      this.setState({searchedList: this.state.projectList})
+    this.setState({ searchinput: e })
+    if (e == '') {
+      this.setState({ searchedList: this.state.projectList })
     }
   }
-  
+
 
   render() {
     console.log('render')
@@ -178,20 +178,20 @@ this.setState({searchedList:newarray})
         </div>
         <Search
           placeholder="input search text"
-          onSearch={value => {this.searchproject(value)}}
+          onSearch={value => { this.searchproject(value) }}
           style={{ width: 200 }}
-          onChange={(e) => {this.showallList(e.target.value)}}
-           enterButton
-           value={this.state.searchinput}
-          
+          onChange={(e) => { this.showallList(e.target.value) }}
+          enterButton
+          value={this.state.searchinput}
+
 
         />
         <div className="AllProjects">
-            <Button onClick={() => {
-              this.setState({searchedList: this.state.projectList});
-              this.setState({searchinput: ''})
-            }}>All Projects</Button>
-          </div>
+          <Button onClick={() => {
+            this.setState({ searchedList: this.state.projectList });
+            this.setState({ searchinput: '' })
+          }}>All Projects</Button>
+        </div>
 
         <Row>
           <div className="addButton clientadd">
