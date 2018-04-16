@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Button, AutoComplete, Select, Input, Row, Col } from 'antd';
+import { Modal, Button, AutoComplete, Select, Input, Form, Icon, Checkbox, Row, Col } from 'antd';
 import './DashboardView.css';
 import total from '../../Images/total.png';
 import convert from '../../Images/convert.png';
@@ -10,50 +10,37 @@ import projectpipe from '../../Images/projectpipe.png';
 import man from '../../Images/wkon-2-21.png';
 import mantwo from '../../Images/wkon-2-22.png';
 const Option = Select.Option;
+
+const FormItem = Form.Item;
+function handleChange(value) {
+    console.log(`selected ${value}`);
+}
 class DashboardView extends Component {
-    state = { visible: false }
-    showModal = () => {
-        this.setState({
-            visible: true,
+    handleSelectChange = (value) => {
+        console.log(value);
+        this.props.form.setFieldsValue({
+            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
         });
     }
-    handleOk = (e) => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
-    }
-    handleCancel = (e) => {
-        console.log(e);
-        this.setState({
-            visible: false,
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
         });
     }
     render() {
+        const { getFieldDecorator } = this.props.form;
         return (
+
             <div className="dashboardMain">
                 {/* dashboardviewcustomer */}
                 <div className="dashboardView">
                     <h1 className="customer">CUSTOMERS</h1>
                     <Row>
                         <div className="addButton">
-                            <Button onClick={this.showModal}>+</Button>
-
-                            <Modal
-                                title="New Customer"
-                                wrapClassName="vertical-center-modal"
-                                visible={this.state.visible}
-                                onOk={this.handleOk}
-                                onCancel={this.handleCancel}
-                                className="modalcustom">
-                                <p><Input placeholder="Customer Name" /></p>
-                                <p><Input placeholder="Customer Number" /></p>
-                                <Row>
-                                    <div className="savebutton">
-                                        <Button className="modalbuttonSave" loading={this.state.iconLoading} onClick={this.IndividualSubscription}>Save</Button>
-                                    </div>
-                                </Row>
-                            </Modal>
+                            <Button onClick={()=>{this.props.history.push('/dashboard/clientcreate')}}>+</Button>
                         </div>
                     </Row>
                     <Row>
@@ -62,7 +49,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                 </p>
-                                <h1 class="totalNumber">1833</h1>
+                                <h1 className="totalNumber">1833</h1>
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
@@ -70,7 +57,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Converted</span>
                                 </p>
-                                <h1 class="totalNumber">1000</h1>
+                                <h1 className="totalNumber">1000</h1>
                             </div>
 
                         </Col>
@@ -79,7 +66,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={pipeline} className="totalImg" alt="Pipeline" /><span className="totalContent">Pipeline</span>
                                 </p>
-                                <h1 class="totalNumber">500</h1>
+                                <h1 className="totalNumber">500</h1>
                             </div>
                         </Col>
                     </Row>
@@ -90,23 +77,7 @@ class DashboardView extends Component {
                     <h1 className="customer">PROJECTS</h1>
                     <Row>
                         <div className="addButton">
-                            <Button onClick={this.showModal}>+</Button>
-
-                            <Modal
-                                title="New Project"
-                                wrapClassName="vertical-center-modal"
-                                visible={this.state.visible}
-                                onOk={this.handleOk}
-                                onCancel={this.handleCancel}
-                                className="modalcustom">
-                                <p><Input placeholder="Project Name" /></p>
-                                <p><Input placeholder="Project Description" /></p>
-                                <Row>
-                                    <div className="savebutton">
-                                        <Button className="modalbuttonSave" loading={this.state.iconLoading} onClick={this.IndividualSubscription}>Save</Button>
-                                    </div>
-                                </Row>
-                            </Modal>
+                            <Button onClick={()=>{this.props.history.push('/dashboard/newproject')}}>+</Button>
                         </div>
                     </Row>
                     <Row>
@@ -115,7 +86,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={projecttotal} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                 </p>
-                                <h1 class="totalNumber">300</h1>
+                                <h1 className="totalNumber">300</h1>
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
@@ -123,7 +94,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent">In Progress</span>
                                 </p>
-                                <h1 class="totalNumber">250</h1>
+                                <h1 className="totalNumber">250</h1>
                             </div>
 
                         </Col>
@@ -132,7 +103,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">Pipeline</span>
                                 </p>
-                                <h1 class="totalNumber">200</h1>
+                                <h1 className="totalNumber">200</h1>
                             </div>
                         </Col>
                     </Row>
@@ -292,5 +263,5 @@ class DashboardView extends Component {
         );
     }
 }
-
-export default DashboardView;
+const WrappedDashboardView = Form.create()(DashboardView);
+export default WrappedDashboardView;

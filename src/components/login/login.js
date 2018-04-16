@@ -5,6 +5,8 @@ import { Layout } from 'antd';
 import axios from 'axios';
 import { Form, Icon, Input, Button, Checkbox, Row, Col } from 'antd';
 import { config } from '../../config';
+import {connect} from "react-redux";
+import * as actioncreators from '../../redux/action';
 const { Header, Content, Footer } = Layout;
 
 const FormItem = Form.Item;
@@ -17,31 +19,29 @@ class NormalLoginForm extends React.Component {
     }
 
     handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                let conf = config.headers;
-                axios.get(config.apiUrl + 'user/login?username=' + values.email + '&password=' + values.password, conf)
-                    .then((response) => {
-                        console.log(response.data);
-                        if (response.data.error) {
-                            alert('No such user');
+             
+                // axios.get(config.apiUrl + 'user/login?username=' + values.email + '&password=' + values.password, conf)
+                this.props.login( values.email,values.password).then((response) => {
+                        console.log(response);
+                         if (response.error) {
+                            this.props.opentoast('error','No Such User Exists!');
                             return;
-                        }
-                        if (response.data && response.data.lastLogin) {
-                            sessionStorage.setItem('id', response.data._id)
+                     }
+                          if (response.result && response.result.lastLogin) {
+                            sessionStorage.setItem('id', response.result._id);
                             this.props.history.push('/dashboard');
                         }
-                        else if (response.data && !response.data.lastLogin) {
-                            sessionStorage.setItem('id', response.data._id)
+                         else if (response.result && !response.result.lastLogin) {
+                            sessionStorage.setItem('id', response.result._id)
                             this.props.history.push('/passwordchange');
-                        }
+                         }
 
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        alert("some error occured");
-                    });
+                 },err=>{
+
+                     });
             }
         });
     }
@@ -58,7 +58,7 @@ class NormalLoginForm extends React.Component {
                     <p className="loginSubhead">Don't have an account? <span><a>Create your account</a></span></p>
                     <Form onSubmit={this.handleSubmit} className="login-form" >
                         <FormItem>
-                            {getFieldDecorator('userName', {
+                            {getFieldDecorator('email', {
                                 rules: [{ required: true, message: 'Please input your username!' }],
                             })(
                                 <Input placeholder="Username" />
@@ -151,9 +151,14 @@ class NormalLoginForm extends React.Component {
         );
     }
 }
-
+const mapStateToProps=(state)=>{
+    return state
+}
 const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
-export default WrappedNormalLoginForm;
+//export default WrappedNormalLoginForm;
+
+
+export default connect(mapStateToProps,actioncreators)(WrappedNormalLoginForm);
 
 
 // class Login extends Component {

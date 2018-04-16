@@ -1,0 +1,124 @@
+/* newProject css */
+.inputForminfo.informationProject input {
+    width: 85%;
+}
+.inputForminfo.informationProject  .ant-select-selection--single {
+    height: 43px;
+    width: 100%;
+}
+.innercardContent.cardProject .ant-card-body {
+    padding: 0;
+}
+.inputForminfo.informationProject {
+    padding: 0 0 0 4em;
+}
+.inputForminfo.informationProject .statuspipeline.ant-select.ant-select-enabled {
+    width: 85%;
+}
+.innercardContent.cardProject h1.NewCustomer{
+    margin: 10px 0 10px 27px;
+}
+p.expecteDate {
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+p.expecteDate4 {
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+p.expecteDateclient {
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+.clientHere.ant-select-auto-complete.ant-select .ant-input {
+    height: 45px;
+    width: 100%;
+}
+.clientHere {
+    width: 93% !important;
+}
+.clientHere .ant-select-selection.ant-select-selection--single {
+    width: 100% !important;
+}
+.startDate input.ant-calendar-picker-input.ant-input {
+    width: 100%;
+}
+.startDate span.ant-calendar-picker:focus {
+    border: 1px solid #d4d4d4;
+}
+.spaceLess .ant-row {
+    margin-bottom: 0;
+}
+.startDate span.ant-calendar-picker {
+    width: 85%;
+}
+/* newProject css */
+/* ResponsiveNewProject  */
+@media (min-width: 320px) and (max-width: 767px) {
+    .inputForminfo.informationProject {
+        padding: 0 2em;
+    }
+    .inputForminfo.informationProject input {
+        width: 100%;
+    }
+    .inputForminfo.informationProject .ant-select-selection--single {
+        width: 100%;
+    }
+    .startDate span.ant-calendar-picker {
+        width: 100%;
+    }
+    .inputForminfo .ant-row {
+        margin-bottom: 0em;
+    }
+    .spaceLess .ant-row {
+        margin-bottom: 0 !important;
+    }
+    .inputForminfo .ant-row.ant-form-item {
+        margin-top: 1em;
+    }
+}
+@media (min-width: 600px) and (max-width: 1024px) {
+    .innercardContent {
+        width: 90% !important;
+    }
+}
+@media (min-width: 767px) and (max-width: 1024px) and (orientation:portrait) {
+    .inputForminfo.informationProject {
+        padding: 0 2em;
+    }
+    .inputForminfo.informationProject input {
+        width: 100%;
+    }
+    .inputForminfo.informationProject .ant-select-selection--single {
+        width: 100%;
+    }
+    .startDate span.ant-calendar-picker {
+        width: 100% !important;
+    }
+    .spaceLess {
+        margin-top: 18px;
+    }
+    p.expecteDate {
+        margin-top: 0;
+    }
+    .inputForminfo .ant-row {
+        margin-bottom: 0em;
+    }
+    .spaceLess .ant-row {
+        margin-bottom: 0 !important;
+    }
+    .inputForminfo .ant-row.ant-form-item {
+        margin-top: 1em;
+    }
+}
+/* ResponsiveNewProject  */
