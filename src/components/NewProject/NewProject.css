@@ -9,6 +9,9 @@
 .innercardContent.cardProject .ant-card-body {
     padding: 0;
 }
+.clientHere.clieHere.ant-select-show-search.ant-select-auto-complete.ant-select.ant-select-combobox.ant-select-enabled {
+    width: 85% !important;
+}
 .inputForminfo.informationProject {
     padding: 0 0 0 4em;
 }

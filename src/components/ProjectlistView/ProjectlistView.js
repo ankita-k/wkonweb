@@ -178,7 +178,7 @@ class ProjectlistView extends Component {
         <h1 className="clientList">PROJECT LIST</h1>
      
         <div className="AllProjects">
-        <Search
+        <Search className="SearchValue"
           placeholder="input search text"
           onSearch={value => { this.searchproject(value) }}
           style={{ width: 200 }}
