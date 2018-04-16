@@ -235,11 +235,11 @@ class NewProject extends Component {
                                         </FormItem>
                                     </Col>
                                     <Col xs={24} sm={24} md={24} lg={12}>
-                                        <FormItem label="Name">
+                                        <FormItem label="Project Name">
                                             {getFieldDecorator('name', {
                                                 rules: [{ required: true, message: 'Please input your Name!' }],
                                             })(
-                                                <Input placeholder="Name" />
+                                                <Input maxLength="50" placeholder="Name" />
                                             )}
                                         </FormItem>
                                         {/* <FormItem label="Brief Requirement">
@@ -274,7 +274,7 @@ class NewProject extends Component {
                                             rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
                                         })(
                                             // <Input placeholder="Brief Requirement" />
-                                            <TextArea maxLength="10" rows={4} className="textRequirement" placeholder="Brief Requirement" />
+                                            <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -355,7 +355,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('actualstart', {
-                                                    rules: [{ type: 'object', required: true, message: 'Please select actualdate!' }, {
+                                                    rules: [{ type: 'object', required: false, message: 'Please select actualdate!' }, {
                                                         validator: this.validatetoactualend
                                                     }]
                                                 })(
