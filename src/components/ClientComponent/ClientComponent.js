@@ -4,14 +4,18 @@ import './ClientComponent.css';
 import { Divider } from 'antd';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 const FormItem = Form.Item;
 const Option = Select.Option;
+
 class ClientComponent extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            countrylist: []
+            countrylist: [],
+            show: false  //loading-bar
         }
     }
 
@@ -21,6 +25,7 @@ class ClientComponent extends Component {
 
         console.log('component will didmount')
         this.props.countrylist().then((data) => {
+            // this.setState({ show: false });
             this.setState({ countrylist: data });
             console.log(this.state.countrylist)
         }, err => {
@@ -49,6 +54,7 @@ class ClientComponent extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log(values)
@@ -63,11 +69,11 @@ class ClientComponent extends Component {
                 }
 
                 this.props.createClient(data).then(result => {
-
+                    this.setState({ show: false });
                     console.log(result);
                     if (!result.error) {
                         this.props.opentoast('success', 'Customer Added Successfully!');
-                        this.props.history.push('/dashboard')
+                        this.props.history.push('/dashboard/clientlist')
                     }
                 }, err => {
 
@@ -80,6 +86,11 @@ class ClientComponent extends Component {
         const { getFieldDecorator } = this.props.form;
         return (
             <div>
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
                 <Card className="innercardContent" bordered={false}>
                     {/* --new customer details-- */}
                     <div className="newCustomerform">
@@ -107,10 +118,10 @@ class ClientComponent extends Component {
                                         {getFieldDecorator('name', {
                                             rules: [{ required: true, message: 'Please input your Name!' }],
                                         })(
-                                            <Input 
-                                            maxLength="15"
-                                            placeholder="Name" name="name" />
-                                            )}
+                                            <Input
+                                                maxLength="15"
+                                                placeholder="Name" name="name" />
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -124,10 +135,10 @@ class ClientComponent extends Component {
                                             { required: true, message: 'Please input your Email!' }],
 
                                         })(
-                                            <Input 
-                                            maxLength="20"
-                                            placeholder="Email" name="email" />
-                                            )}
+                                            <Input
+                                                maxLength="20"
+                                                placeholder="Email" name="email" />
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -138,10 +149,10 @@ class ClientComponent extends Component {
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
                                         })(
                                             <Input
-                                            type="test"
-                                            maxLength="15"
-                                             placeholder="Phone No." name="phoneNumber" />
-                                            )}
+                                                type="test"
+                                                maxLength="15"
+                                                placeholder="Phone No." name="phoneNumber" />
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -153,7 +164,7 @@ class ClientComponent extends Component {
                                             rules: [{ required: true, message: 'Please input your Domain!' }],
                                         })(
                                             <Input placeholder="Domain" name="domain" />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -172,7 +183,7 @@ class ClientComponent extends Component {
                                                 })}
 
                                             </Select>
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -190,7 +201,7 @@ class ClientComponent extends Component {
                                                 <Option value="Pipeline">Pipeline</Option>
                                                 <Option value="Committed">Committed</Option>
                                             </Select>
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -198,7 +209,7 @@ class ClientComponent extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
-                                <Button  className="cardbuttonCancel login-form-button"  onClick={()=>{this.props.history.push('/dashboard/clientlist')}}>Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
                             </div>
                         </FormItem>
 

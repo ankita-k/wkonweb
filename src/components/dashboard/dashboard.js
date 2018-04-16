@@ -13,7 +13,8 @@ import { connect } from "react-redux";
 
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 
-const { SubMenu } = Menu;
+// const { SubMenu } = Menu;
+const SubMenu = Menu.SubMenu;
 const { Header, Content, Sider } = Layout;
 
 class Dashboard extends Component {
@@ -54,36 +55,49 @@ class Dashboard extends Component {
                 defaultOpenKeys={['sub1']}
                 style={{ height: '100%', borderRight: 0 }}
               >
-                <SubMenu key="sub1" title={<span><NavLink to="../dashboard"><Icon type="home" />Home</NavLink></span>}>
-                  <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
-                  <Menu.Item key="2"><NavLink to="../dashboard/projectlist">Projects</NavLink></Menu.Item>
-                  <Menu.Item key="3"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
-                  {/* <Menu.Item key="3">option3</Menu.Item>
-            <Menu.Item key="4">option4</Menu.Item> */}
+                <Menu.Item key="1">
+                  <Icon type="home" />
+                  <span>Home</span>
+                  <NavLink to="../dashboard" activeClassName="active"></NavLink>
+                </Menu.Item>
+                <SubMenu key="sub1" title={<span>Clients</span>}>
+                  <Menu.Item key="3">
+                    <span>Client Create</span>
+                    <NavLink to="../dashboard/clientcreate" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                  <Menu.Item key="4">
+                    <span>Client List</span>
+                    <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
+                  </Menu.Item>
                 </SubMenu>
-                {/* <SubMenu key="sub2" title={<span><Icon type="laptop" />subnav 2</span>}>
-            <Menu.Item key="5">option5</Menu.Item>
-            <Menu.Item key="6">option6</Menu.Item>
-            <Menu.Item key="7">option7</Menu.Item>
-            <Menu.Item key="8">option8</Menu.Item>
-          </SubMenu>
-          <SubMenu key="sub3" title={<span><Icon type="notification" />subnav 3</span>}>
-            <Menu.Item key="9">option9</Menu.Item>
-            <Menu.Item key="10">option10</Menu.Item>
-            <Menu.Item key="11">option11</Menu.Item>
-            <Menu.Item key="12">option12</Menu.Item>
-          </SubMenu> */}
+                <SubMenu key="sub2" title={<span>Projects</span>}>
+                  <Menu.Item key="5">
+                    <span>Project Create</span>
+                    <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                  <Menu.Item key="6">
+                    <span>Project List</span>
+                    <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                </SubMenu>
+              <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
+                
+                {/* <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}> */}
+                {/* <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
+                  <Menu.Item key="2"><NavLink to="../dashboard/projectlist">Projects</NavLink></Menu.Item>
+                  <Menu.Item key="3"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item> */}
+            
               </Menu>
             </Sider>
             <Layout style={{ padding: '0 0px 0px' }}>
               <Content style={{ background: '#f0f4f5', padding: 24, margin: 0 }}>
                 <Route exact path={`${this.props.match.url}`} component={DashboardView} />
-                <Route exact  path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
+                <Route exact path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/clientcreate`} component={ClientComponent} />
                 <Route exact path={`${this.props.match.url}/newproject`} component={NewProject} />
-                <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />     
-                <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />   
-                <Route exact path={`${this.props.match.url}/usermanagement`} component={UserManagement} />                       
+                <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />
+                <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />
+                <Route exact path={`${this.props.match.url}/usermanagement`} component={UserManagement} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>
