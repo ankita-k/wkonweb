@@ -73,7 +73,7 @@ class ClientComponent extends Component {
                     console.log(result);
                     if (!result.error) {
                         this.props.opentoast('success', 'Customer Added Successfully!');
-                        this.props.history.push('/dashboard')
+                        this.props.history.push('/dashboard/clientlist')
                     }
                 }, err => {
 
