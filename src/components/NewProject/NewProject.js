@@ -11,20 +11,33 @@ const Option = Select.Option;
 const Option1 = AutoComplete.Option1;
 class NewProject extends Component {
 
-    state = {
-        result: [],
-      }
     
-      
+
+
     constructor(props) {
         super(props);
+        this.state = {
+            clientlist: [],
+            clientarray: []
+        }
     }
 
+    componentWillMount() {
+        // GET CLIENT LIST
+        this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
+
+            console.log(data);
+            this.setState({ clientlist: data.result });
+            console.log(this.state.clientlist);
+        }, err => {
+
+        })
+    }
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-           
+
             if (!err) {
                 console.log('Received values of form: ', values);
                 let data = {
@@ -34,7 +47,7 @@ class NewProject extends Component {
                     expectedStartDate: values.expecstart._d,
                     actualStartDate: values.actualstart._d,
                     expectedEndDate: values.expecend._d,
-                    actualEndDate: values.actualend? values.actualend._d:'',
+                    actualEndDate: values.actualend ? values.actualend._d : '',
                     name: values.name,
                     userId: sessionStorage.getItem('id')
 
@@ -114,20 +127,33 @@ class NewProject extends Component {
         }
     }
 
+    // clientarray = (item) => {
+    //     return <Option key={item._id}>{item.name}</Option>;
+    // }
+
     handleSearch = (value) => {
-        let result;
-        if (!value || value.indexOf('@') >= 0) {
-          result = [];
-        } else {
-          result = ['gmail.com', '163.com', 'qq.com'].map(domain => `${value}@${domain}`);
-        }
-        this.setState({ result });
-      }
-    render() {
-        const { result } = this.state;
-        const children = result.map((email) => {
-          return <Option key={email}>{email}</Option>;
+        console.log(value);
+        let clientarray;
+        if (value){
+             clientarray = this.state.clientlist.filter(d => {
+                return d.name.indexOf(value) > -1
+                
         });
+            this.setState({ clientarray })  
+            console.log(this.state.clientarray)
+       
+       }
+        
+        
+      
+
+    }
+    render() {
+        // const { clientarray } = this.state;
+        // console.log(this.state.clientarray)
+        // const children = clientarray.map((list) => {
+        //     return <Option1 key={list._id}>{list.name}</Option1>;
+        // });
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -162,7 +188,7 @@ class NewProject extends Component {
                                             rules: [{ required: true, message: 'Please input your Name!' }],
                                         })(
                                             <Input placeholder="Name" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
@@ -171,7 +197,7 @@ class NewProject extends Component {
                                             rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
                                         })(
                                             <Input placeholder="Brief Requirement" />
-                                        )}
+                                            )}
                                     </FormItem>
                                     {/* <FormItem label="Client List">
                                         {getFieldDecorator('client', {
@@ -187,7 +213,7 @@ class NewProject extends Component {
                                             </Select>
                                         )}
                                     </FormItem> */}
-                                
+
                                 </Col>
                             </Row>
                             <Row>
@@ -204,7 +230,7 @@ class NewProject extends Component {
                                                 <Option value="Pipeline">Pipeline</Option>
                                                 <Option value="Committed">Committed</Option>
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
@@ -213,7 +239,7 @@ class NewProject extends Component {
                                             rules: [{ required: true, message: 'Please input your Technology!' }],
                                         })(
                                             <Input placeholder="Technology" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -232,7 +258,7 @@ class NewProject extends Component {
                                                     }]
                                                 })(
                                                     <DatePicker />
-                                                )}
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
@@ -248,7 +274,7 @@ class NewProject extends Component {
                                                     }]
                                                 })(
                                                     <DatePicker />
-                                                )}
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
@@ -268,7 +294,7 @@ class NewProject extends Component {
                                                     }]
                                                 })(
                                                     <DatePicker />
-                                                )}
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
@@ -284,21 +310,23 @@ class NewProject extends Component {
                                                     }]
                                                 })(
                                                     <DatePicker disabled={true} />
-                                                )}
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col xs={24} sm={24} md={24} lg={24}>
-                                    <p className="expecteDateclient">Choose Client :</p>
-                                    <AutoComplete
-                                   className="clientHere"
-                                        onSearch={this.handleSearch}
-                                        placeholder="Choose Client"
-                                    >
-                                        {children}
-                                    </AutoComplete>
+                                        <p className="expecteDateclient">Choose Client :</p>
+                                        <AutoComplete
+                                            className="clientHere"
+                                            onSearch={this.handleSearch}
+                                            placeholder="Choose Client"
+                                        // dataSource={this.state.clientlist.map((item) => { return this.clientarray(item) })}
+                                        >
+                                    
+                                            {/* {children} */}
+                                        </AutoComplete>
                                     </Col>
                                 </Row>
                             </div>
@@ -321,5 +349,6 @@ class NewProject extends Component {
 const mapStateToProps = (state) => {
     return state
 }
+
 const WrappedNewProject = Form.create()(NewProject);
 export default connect(mapStateToProps, actioncreators)(WrappedNewProject);
