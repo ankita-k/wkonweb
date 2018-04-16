@@ -302,6 +302,7 @@ function user(list) {
 }
 //API CALL FOR DELETE
 export function deleteproject(id) {
+    console.log(id)
     
         return (dispatch) => {
             

@@ -11,67 +11,7 @@ const Option = Select.Option;
 const Search = Input.Search;
 // import { Input } from 'antd';
 
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
-
-}, {
-  title: 'Brief Requirement',
-  dataIndex: 'requirement',
-  key: 'requirement',
-}, {
-  title: 'Status',
-  dataIndex: 'status',
-  key: 'status',
-}, {
-  title: 'Technology',
-  dataIndex: 'technology',
-  key: 'technology',
-}, {
-  title: 'Expected Start Date',
-  dataIndex: 'expectedStartDate',
-  key: 'expectedStartDate',
-},
-// {
-//   title: 'Actual Start Date',
-//   dataIndex: 'astart',
-//   key: 'astart',
-// }, {
-//   title: 'Expected End Date',
-//   dataIndex: 'expectedtask',
-//   key: 'expectedtask',
-// }, {
-//   title: 'Actual End Date',
-//   dataIndex: 'taskend',
-//   key: 'taskend',
-//},
-{
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <span>
-      {/* <span style={{ marginLeft: 8 }}>
-        {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
-      </span> */}
-
-      <Button className="edit">
-        <a href="javascript:;"><Icon type="edit" /></a></Button>
-      <Button className="delete" onClick={() => { deleteProject(record,text)}}><a href="javascript:;"><Icon type="delete" /></a></Button>
-    </span>
-  ),
-}
-];
 // remaining
-
-//  const deleteProject = (data,text) => {
-//    this.props.deleteproject(data._id).then(response=>{
-// console.log(response)
-//    },err=>{
-
-//    })
-//   console.log(data)
-// }
 
 // const data = [{
 //   key: '1',
@@ -119,10 +59,68 @@ class ProjectlistView extends Component {
       limit: 20,
       userId: sessionStorage.getItem('id'),
       selectedRowKeys: [],
-      show: true  //loading-bar
+      show: true,  //loading-bar
+      column: [{
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
 
+      }, {
+        title: 'Brief Requirement',
+        dataIndex: 'requirement',
+        key: 'requirement',
+      }, {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+      }, {
+        title: 'Technology',
+        dataIndex: 'technology',
+        key: 'technology',
+      }, {
+        title: 'Expected Start Date',
+        dataIndex: 'expectedStartDate',
+        key: 'expectedStartDate',
+      },
+      // {
+      //   title: 'Actual Start Date',
+      //   dataIndex: 'astart',
+      //   key: 'astart',
+      // }, {
+      //   title: 'Expected End Date',
+      //   dataIndex: 'expectedtask',
+      //   key: 'expectedtask',
+      // }, {
+      //   title: 'Actual End Date',
+      //   dataIndex: 'taskend',
+      //   key: 'taskend',
+      //},
+      {
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => (
+          <span>
+            {/* <span style={{ marginLeft: 8 }}>
+              {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+            </span> */}
 
+            <Button className="edit">
+              <a href="javascript:;"><Icon type="edit" /></a></Button>
+            <Button className="delete" onClick={() => { this.deleteProject(record) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
+          </span>
+        ),
+      }
+      ]
     }
+  }
+
+  deleteProject = (data) => {
+    console.log(data);
+    this.props.deleteproject(data._id).then(response => {
+      console.log(response)
+    }, err => {
+      console.log(err)
+    })
   }
 
 
@@ -162,8 +160,9 @@ class ProjectlistView extends Component {
           requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
           status: item.status,
           technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
-          expectedStartDate: moment(item.expectedStartDate).format("MMM Do YY")
-
+          expectedStartDate: moment(item.expectedStartDate).format("MMM Do YY"),
+          key: Math.random() * 1000000000000000000,
+          _id:item._id
         }
       })
 
@@ -199,6 +198,7 @@ class ProjectlistView extends Component {
 
   render() {
     console.log('render')
+    const columns = this.state.column;
     return (
 
       <div className="projectListdiv">
