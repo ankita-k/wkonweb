@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Row } from 'antd';
+import { Card, Table, Button, Icon, Row, Input } from 'antd';
 import '../NewProject/NewProject.css';
 import './ClientList.css';
 import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
+const Search = Input.Search;
 const columns = [{
   title: 'Name',
   dataIndex: 'name',
@@ -73,8 +74,10 @@ class ClientList extends Component {
     super(props);
     this.state = {
       clientlist: [],
-      show: true  //loading-bar        
+      show: true , //loading-bar        
 
+      searchedclient: [],
+      searchinput: ''
     }
   }
 
@@ -86,15 +89,35 @@ class ClientList extends Component {
 
     console.log('component will mount')
     this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
+      this.setState({ show: false });      
       console.log(data);
       this.setState({ clientlist: data.result });
-      this.setState({ show: false });
+      this.setState({ searchedclient: data.result })
       console.log(this.state.clientlist);
     }, err => {
 
     })
   }
 
+  // SEACRH CLIENT LIST ACCORDING TO INPUT 
+  searchClient = (e) => {
+    console.log('search data', e);
+    let newarray = this.state.clientlist.filter(d => {
+      return d.name.indexOf(e) > -1
+
+    });
+    console.log(newarray)
+    this.setState({ searchedclient: newarray })
+  }
+
+  // SHOW ALL CLIENT LIST
+  showallList = (e) => {
+    console.log('target value', e)
+    this.setState({ searchinput: e })
+    if (e == '') {
+      this.setState({ searchedclient: this.state.clientlist })
+    }
+  }
 
   render() {
 
@@ -111,9 +134,25 @@ class ClientList extends Component {
             <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
           </div>
         </Row>
+        <Row>
+          <Search
+            placeholder="input search text"
+            onSearch={(value) => { this.searchClient(value) }}
+            size="large"
+            style={{ width: 200 }}
+            onChange={(e) => { this.showallList(e.target.value) }}
+            enterButton
+            value={this.state.searchinput}
+          />
+          <Button onClick={() => {
+            this.setState({ searchedclient: this.state.clientlist });
+            this.setState({ searchinput: '' })
+          }}>Show All</Button>
+        </Row>
+
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
-          <Table columns={columns} dataSource={this.state.clientlist} />
+          <Table columns={columns} dataSource={this.state.searchedclient} />
         </Card>
         {/* clientlist */}
       </div>

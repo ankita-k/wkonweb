@@ -29,10 +29,8 @@ class Dashboard extends Component {
         <Layout>
           <Header className="header">
             {/* <div className="logo" /> */}
-            <p style={{ color: '#fff' }}> Hello, John Doe {sessionStorage.getItem('name')} <Button className="wkonlogout" onClick={() => {
-              sessionStorage.clear();
-              this.props.history.push('/login')
-            }}>Log Out</Button></p>
+            <p style={{ color: '#fff' }}> Hello {sessionStorage.getItem('id')} <Button className="wkonlogout"onClick={()=>{ sessionStorage.clear();
+    this.props.history.push('/login')}}>Log Out</Button></p>
           </Header>
           <Layout>
             <Sider width={200} style={{ background: '#fff' }}>

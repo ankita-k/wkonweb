@@ -53,7 +53,7 @@ class UserManagement extends Component {
                     {/* --UserManagement-- */}
                     <div className="newCustomerform">
                         <h1 className="userManagementa">User Management</h1>
-                        <Divider dashed className="underLine" />
+                        {/* <Divider dashed className="underLine" /> */}
 
                     </div>
                     <Form onSubmit={this.handleSubmit} className="login-form">
