@@ -26,7 +26,7 @@ class NewProject extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         // GET CLIENT LIST
         this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
             // this.setState({ show: false });
@@ -136,12 +136,11 @@ class NewProject extends Component {
 
     // SEARCH FROM CLIENT ARRAY
     handleSearch = (value) => {
-        console.log(value);
         let clientarray;
         if (value) {
+            console.log("Inside value");
             clientarray = this.state.clientlist.filter(d => {
                 return d.name.indexOf(value) > -1
-
             });
             this.setState({ clientarray })
             console.log(this.state.clientarray)

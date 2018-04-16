@@ -74,7 +74,7 @@ class ClientList extends Component {
     super(props);
     this.state = {
       clientlist: [],
-      show: true , //loading-bar        
+      show: true, //loading-bar        
 
       searchedclient: [],
       searchinput: ''
@@ -82,14 +82,14 @@ class ClientList extends Component {
   }
 
 
-  componentWillMount() {
+  componentDidMount() {
 
 
     // GET CLIENT LIST
-
+    this.setState({ show: true })
     console.log('component will mount')
     this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
-      this.setState({ show: false });      
+      this.setState({ show: false });
       console.log(data);
       this.setState({ clientlist: data.result });
       this.setState({ searchedclient: data.result })
