@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import { Select } from 'antd';
 import '../ClientList/ClientList.css';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 const Option = Select.Option;
 const Search = Input.Search;
 // import { Input } from 'antd';
@@ -29,29 +31,31 @@ const columns = [{
   title: 'Expected Start Date',
   dataIndex: 'estart',
   key: 'estart',
-}, {
-  title: 'Actual Start Date',
-  dataIndex: 'astart',
-  key: 'astart',
-}, {
-  title: 'Expected End Date',
-  dataIndex: 'expectedtask',
-  key: 'expectedtask',
-}, {
-  title: 'Actual End Date',
-  dataIndex: 'taskend',
-  key: 'taskend',
-}, {
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <span>
-      <Button className="edit">
-        <a href="javascript:;"><Icon type="edit" /></a></Button>
-      <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
-    </span>
-  ),
-}];
+},
+// {
+//   title: 'Actual Start Date',
+//   dataIndex: 'astart',
+//   key: 'astart',
+// }, {
+//   title: 'Expected End Date',
+//   dataIndex: 'expectedtask',
+//   key: 'expectedtask',
+// }, {
+//   title: 'Actual End Date',
+//   dataIndex: 'taskend',
+//   key: 'taskend',
+// }, {
+//   title: 'Action',
+//   key: 'action',
+//   render: (text, record) => (
+//     <span>
+//       <Button className="edit">
+//         <a href="javascript:;"><Icon type="edit" /></a></Button>
+//       <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
+//     </span>
+//   ),
+// }
+];
 
 // const data = [{
 //   key: '1',
@@ -98,6 +102,7 @@ class ProjectlistView extends Component {
       page: 0,
       limit: 20,
       userId: sessionStorage.getItem('id'),
+      show: true  //loading-bar
 
     }
 
@@ -128,6 +133,7 @@ class ProjectlistView extends Component {
     // debugger
     console.log('project List')
     this.props.projectList(this.state.userId, this.state.page, this.state.limit).then((sucess) => {
+      this.setState({show:false});
       console.log(sucess);
       this.setState({ projectList: sucess.result });
       this.setState({ searchedList: sucess.result });
@@ -162,7 +168,13 @@ this.setState({searchedList:newarray})
   render() {
     console.log('render')
     return (
+      
       <div className="projectListdiv">
+      <Loading
+        show={this.state.show}
+        color="red"
+        showSpinner={false}
+      />
         <h1 className="clientList">PROJECT LIST</h1>
         <div>
           <Select defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>

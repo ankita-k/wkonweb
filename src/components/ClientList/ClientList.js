@@ -4,6 +4,8 @@ import '../NewProject/NewProject.css';
 import './ClientList.css';
 import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 const Search = Input.Search;
 const columns = [{
   title: 'Name',
@@ -72,6 +74,8 @@ class ClientList extends Component {
     super(props);
     this.state = {
       clientlist: [],
+      show: true , //loading-bar        
+
       searchedclient: [],
       searchinput: ''
     }
@@ -85,7 +89,7 @@ class ClientList extends Component {
 
     console.log('component will mount')
     this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
-
+      this.setState({ show: false });      
       console.log(data);
       this.setState({ clientlist: data.result });
       this.setState({ searchedclient: data.result })
@@ -119,6 +123,11 @@ class ClientList extends Component {
 
     return (
       <div className="clientListdiv">
+        <Loading
+          show={this.state.show}
+          color="red"
+          showSpinner={false}
+        />
         <h1 className="clientList">CLIENT LIST</h1>
         <Row>
           <div className="addButton clientadd">

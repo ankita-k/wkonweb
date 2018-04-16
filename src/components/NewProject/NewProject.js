@@ -6,6 +6,8 @@ import { Divider } from 'antd';
 import moment from 'moment'
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const Option = Select.Option;
@@ -14,18 +16,20 @@ class NewProject extends Component {
 
 
 
+
     constructor(props) {
         super(props);
         this.state = {
             clientlist: [],
-            clientarray: []
+            clientarray: [],
+            show: false  //loading-bar
         }
     }
 
     componentWillMount() {
         // GET CLIENT LIST
         this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
-
+            // this.setState({ show: false });
             console.log(data);
             this.setState({ clientlist: data.result });
             console.log(this.state.clientlist);
@@ -36,6 +40,7 @@ class NewProject extends Component {
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
+        this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
 
             if (!err) {
@@ -55,6 +60,7 @@ class NewProject extends Component {
                 }
                 console.log(data)
                 this.props.addProject(data).then(response => {
+                    this.setState({ show: false });
                     console.log(response)
                     if (!response.error) {
                         this.props.opentoast('success', 'Project Added Successfully!');
@@ -186,6 +192,11 @@ class NewProject extends Component {
         };
         return (
             <div>
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
                 
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
