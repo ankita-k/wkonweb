@@ -259,3 +259,44 @@ function client(list) {
 
     }
 }
+//Api call for fetching loggedin user on header
+export function username(id) {
+    
+        return (dispatch) => {
+            
+            console.log(config.apiUrl)
+            return new Promise((resolve, reject) => {
+                
+                
+    
+                fetch(config.apiUrl + 'user/'+id,
+                    {
+                        headers: {
+                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                        },
+                        method: 'GET'
+                    })
+                    .then((response) => response.json())
+                    .then((responseJSON) => {
+                        
+                        console.log('response');
+
+                        dispatch(user(responseJSON))
+                        resolve(responseJSON);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        }
+    }
+
+    //function for loggedin username 
+    //clientlist func
+function user(list) {
+    return {
+        type: "USER_NAME",
+        list
+
+    }
+}
