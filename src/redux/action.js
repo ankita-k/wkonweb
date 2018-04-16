@@ -300,3 +300,43 @@ function user(list) {
 
     }
 }
+//API CALL FOR DELETE
+export function deleteproject(id) {
+    
+        return (dispatch) => {
+            
+            console.log(config.apiUrl)
+            return new Promise((resolve, reject) => {
+                
+                
+    
+                fetch(config.apiUrl + 'project/'+id,
+                    {
+                        headers: {
+                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                        },
+                        method: 'DELETE'
+                    })
+                    .then((response) => response.json())
+                    .then((responseJSON) => {
+                        
+                        console.log('response');
+
+                        dispatch(deleterow(responseJSON))
+                        resolve(responseJSON);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        }
+    }
+    
+    function deleterow(list) {
+        return {
+            type: "DELETE_PROJECT",
+            list
+    
+        }
+    }
+
