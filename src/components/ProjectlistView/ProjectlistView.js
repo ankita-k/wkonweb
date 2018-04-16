@@ -32,29 +32,29 @@ const columns = [{
   dataIndex: 'estart',
   key: 'estart',
 },
-// {
-//   title: 'Actual Start Date',
-//   dataIndex: 'astart',
-//   key: 'astart',
-// }, {
-//   title: 'Expected End Date',
-//   dataIndex: 'expectedtask',
-//   key: 'expectedtask',
-// }, {
-//   title: 'Actual End Date',
-//   dataIndex: 'taskend',
-//   key: 'taskend',
-// }, {
-//   title: 'Action',
-//   key: 'action',
-//   render: (text, record) => (
-//     <span>
-//       <Button className="edit">
-//         <a href="javascript:;"><Icon type="edit" /></a></Button>
-//       <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
-//     </span>
-//   ),
-// }
+  // {
+  //   title: 'Actual Start Date',
+  //   dataIndex: 'astart',
+  //   key: 'astart',
+  // }, {
+  //   title: 'Expected End Date',
+  //   dataIndex: 'expectedtask',
+  //   key: 'expectedtask',
+  // }, {
+  //   title: 'Actual End Date',
+  //   dataIndex: 'taskend',
+  //   key: 'taskend',
+  // }, {
+  //   title: 'Action',
+  //   key: 'action',
+  //   render: (text, record) => (
+  //     <span>
+  //       <Button className="edit">
+  //         <a href="javascript:;"><Icon type="edit" /></a></Button>
+  //       <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
+  //     </span>
+  //   ),
+  // }
 ];
 
 // const data = [{
@@ -103,11 +103,10 @@ class ProjectlistView extends Component {
       limit: 20,
       userId: sessionStorage.getItem('id'),
       show: true  //loading-bar
-
     }
-
-
   }
+
+
   handleChange = (value) => {
     console.log(`selected ${value}`);
     let searchedList;
@@ -125,15 +124,16 @@ class ProjectlistView extends Component {
     }
 
   }
-  componentWillMount() {
+  componentDidMount() {
     this.viewProject();
   }
   // GET ALL PROJECT LIST
   viewProject = () => {
     // debugger
-    console.log('project List')
+    console.log('project List');
+    this.setState({ show: true })
     this.props.projectList(this.state.userId, this.state.page, this.state.limit).then((sucess) => {
-      this.setState({show:false});
+      this.setState({ show: false });
       console.log(sucess);
       this.setState({ projectList: sucess.result });
       this.setState({ searchedList: sucess.result });
@@ -168,13 +168,13 @@ class ProjectlistView extends Component {
   render() {
     console.log('render')
     return (
-      
+
       <div className="projectListdiv">
-      <Loading
-        show={this.state.show}
-        color="red"
-        showSpinner={false}
-      />
+        <Loading
+          show={this.state.show}
+          color="red"
+          showSpinner={false}
+        />
         <h1 className="clientList">PROJECT LIST</h1>
         <div>
           <Select defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>

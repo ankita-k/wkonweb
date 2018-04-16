@@ -26,7 +26,7 @@ class NewProject extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         // GET CLIENT LIST
         this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
             // this.setState({ show: false });
@@ -136,12 +136,11 @@ class NewProject extends Component {
 
     // SEARCH FROM CLIENT ARRAY
     handleSearch = (value) => {
-        console.log(value);
         let clientarray;
         if (value) {
+            console.log("Inside value");
             clientarray = this.state.clientlist.filter(d => {
                 return d.name.indexOf(value) > -1
-
             });
             this.setState({ clientarray })
             console.log(this.state.clientarray)
@@ -197,7 +196,7 @@ class NewProject extends Component {
                     color="red"
                     showSpinner={false}
                 />
-                
+
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
                     <div className="newCustomerform">
@@ -206,49 +205,49 @@ class NewProject extends Component {
                     </div>
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="inputForminfo informationProject">
-                        <div className="spaceLess">
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={12}>
-                                    {/* <FormItem label="Name">
+                            <div className="spaceLess">
+                                <Row>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
+                                        {/* <FormItem label="Name">
                                         {getFieldDecorator('name', {
                                             rules: [{ required: true, message: 'Please input your Name!' }],
                                         })(
                                             <Input placeholder="Name" />
                                         )}
                                     </FormItem> */}
-                                    <p className="expecteDateclient">Choose Client :</p>
-                                    <FormItem>
-                                        {getFieldDecorator('client', {
-                                            rules: [{ required: true, message: 'Please select a client!' },]
-                                        })(
-                                            <AutoComplete
-                                                className="clientHere"
-                                                onSearch={this.handleSearch}
-                                                placeholder="Choose Client"
-                                                dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
-                                                onSelect={this.onSelect}
-                                            >
+                                        <p className="expecteDateclient">Choose Client :</p>
+                                        <FormItem>
+                                            {getFieldDecorator('client', {
+                                                rules: [{ required: true, message: 'Please select a client!' },]
+                                            })(
+                                                <AutoComplete
+                                                    className="clientHere"
+                                                    onSearch={this.handleSearch}
+                                                    placeholder="Choose Client"
+                                                    dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
+                                                    onSelect={this.onSelect}
+                                                >
 
-                                            </AutoComplete>
-                                        )}
-                                    </FormItem>
-                                </Col>
-                                <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Name">
-                                        {getFieldDecorator('name', {
-                                            rules: [{ required: true, message: 'Please input your Name!' }],
-                                        })(
-                                            <Input placeholder="Name" />
-                                        )}
-                                    </FormItem>
-                                    {/* <FormItem label="Brief Requirement">
+                                                </AutoComplete>
+                                            )}
+                                        </FormItem>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
+                                        <FormItem label="Name">
+                                            {getFieldDecorator('name', {
+                                                rules: [{ required: true, message: 'Please input your Name!' }],
+                                            })(
+                                                <Input placeholder="Name" />
+                                            )}
+                                        </FormItem>
+                                        {/* <FormItem label="Brief Requirement">
                                         {getFieldDecorator('requirement', {
                                             rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
                                         })(
                                             <Input placeholder="Brief Requirement" />
                                         )}
                                     </FormItem> */}
-                                    {/* <FormItem label="Client List">
+                                        {/* <FormItem label="Client List">
                                         {getFieldDecorator('client', {
                                             rules: [{ required: true, message: 'Please select your client!' }],
                                         })(
@@ -263,8 +262,8 @@ class NewProject extends Component {
                                         )}
                                     </FormItem> */}
 
-                                </Col>
-                            </Row>
+                                    </Col>
+                                </Row>
                             </div>
                             <Row className="briefRequire">
                                 <Col xs={24} sm={24} md={24} lg={24}>
@@ -273,7 +272,7 @@ class NewProject extends Component {
                                             rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
                                         })(
                                             // <Input placeholder="Brief Requirement" />
-                                            <TextArea         maxLength="10" rows={4} className="textRequirement" placeholder="Brief Requirement"/>
+                                            <TextArea maxLength="10" rows={4} className="textRequirement" placeholder="Brief Requirement" />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -347,7 +346,7 @@ class NewProject extends Component {
                             </div>
                             <div className="spaceLess">
                                 <Row>
-                                <Col xs={24} sm={24} md={24} lg={12}>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
                                         <div className="startDate">
                                             <p className="expecteDate4">Actual Start Date :</p>
                                             <FormItem
@@ -405,7 +404,7 @@ class NewProject extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={()=>{this.props.history.push('/dashboard/projectlist')}} >Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
                             </div>
                         </FormItem>
 
