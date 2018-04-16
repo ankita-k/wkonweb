@@ -7,6 +7,8 @@ import ProjectlistView from '../ProjectlistView/ProjectlistView';
 import DashboardView from '../DashboardView/DashboardView';
 import ClientList from '../ClientList/ClientList';
 import ChangePassword from '../passwordChange/passwordChange';
+import UserManagement from '../UserManagement/UserManagement';
+
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 
 const { SubMenu } = Menu;
@@ -33,7 +35,7 @@ class Dashboard extends Component {
                 <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}>
                   <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
                   <Menu.Item key="2"><NavLink to="../dashboard/projectlist">Projects</NavLink></Menu.Item>
-                  
+                  <Menu.Item key="3"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
                   {/* <Menu.Item key="3">option3</Menu.Item>
             <Menu.Item key="4">option4</Menu.Item> */}
                 </SubMenu>
@@ -58,7 +60,8 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/clientcreate`} component={ClientComponent} />
                 <Route exact path={`${this.props.match.url}/newproject`} component={NewProject} />
                 <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />     
-                <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />             
+                <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />   
+                <Route exact path={`${this.props.match.url}/usermanagement`} component={UserManagement} />                       
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>
