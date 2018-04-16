@@ -210,20 +210,13 @@ class NewProject extends Component {
                             <div className="spaceLess">
                                 <Row>
                                     <Col xs={24} sm={24} md={24} lg={12}>
-                                        {/* <FormItem label="Name">
-                                        {getFieldDecorator('name', {
-                                            rules: [{ required: true, message: 'Please input your Name!' }],
-                                        })(
-                                            <Input placeholder="Name" />
-                                        )}
-                                    </FormItem> */}
                                         <p className="expecteDateclient">Choose Client :</p>
                                         <FormItem>
                                             {getFieldDecorator('client', {
                                                 rules: [{ required: true, message: 'Please select a client!' },]
                                             })(
                                                 <AutoComplete
-                                                    className="clientHere"
+                                                    className="clientHere clieHere"
                                                     onSearch={this.handleSearch}
                                                     placeholder="Choose Client"
                                                     dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
@@ -304,7 +297,7 @@ class NewProject extends Component {
                                         {getFieldDecorator('technology', {
                                             rules: [{ required: true, message: 'Please input your Technology!' }],
                                         })(
-                                            <Input placeholder="Technology" />
+                                            <Input  maxLength="50" placeholder="Technology" />
                                         )}
                                     </FormItem>
                                 </Col>
