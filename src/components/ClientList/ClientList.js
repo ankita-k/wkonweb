@@ -136,16 +136,15 @@ class ClientList extends Component {
         </Row>
         <Row>
         <div className="AllProjects">
-          <Search
+          <Search className="SearchValue"
             placeholder="input search text"
             onSearch={(value) => { this.searchClient(value) }}
-            size="large"
             style={{ width: 200 }}
             onChange={(e) => { this.showallList(e.target.value) }}
             enterButton
             value={this.state.searchinput}
           />
-          <Button onClick={() => {
+          <Button className="allprojectbtn" onClick={() => {
             this.setState({ searchedclient: this.state.clientlist });
             this.setState({ searchinput: '' })
           }}>Show All</Button>

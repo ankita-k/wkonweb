@@ -6,6 +6,7 @@ import { Select } from 'antd';
 import '../ClientList/ClientList.css';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
+import moment from 'moment';
 const Option = Select.Option;
 const Search = Input.Search;
 // import { Input } from 'antd';
@@ -29,8 +30,8 @@ const columns = [{
   key: 'technology',
 }, {
   title: 'Expected Start Date',
-  dataIndex: 'estart',
-  key: 'estart',
+  dataIndex: 'expectedStartDate',
+  key: 'expectedStartDate',
 },
   // {
   //   title: 'Actual Start Date',
@@ -127,21 +128,34 @@ class ProjectlistView extends Component {
   componentDidMount() {
     this.viewProject();
   }
+
   // GET ALL PROJECT LIST
   viewProject = () => {
-    // debugger
     console.log('project List');
     this.setState({ show: true })
     this.props.projectList(this.state.userId, this.state.page, this.state.limit).then((sucess) => {
       this.setState({ show: false });
       console.log(sucess);
       this.setState({ projectList: sucess.result });
-      this.setState({ searchedList: sucess.result });
-      console.log(this.state.projectList)
+      var data = sucess.result;
+      data.map(function (item, index) {
+        return data[index] = {
+          name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+          requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
+          status: item.status,
+          technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
+          expectedStartDate: moment(item.expectedStartDate).format("MMM Do YY")
+
+        }
+      })
+
+      this.setState({ searchedList: data });
+    
     }, err => {
 
     });
   }
+
 
 
   //SearchProject
@@ -178,7 +192,7 @@ class ProjectlistView extends Component {
         <h1 className="clientList">PROJECT LIST</h1>
      
         <div className="AllProjects">
-        <Search
+        <Search className="SearchValue"
           placeholder="input search text"
           onSearch={value => { this.searchproject(value) }}
           style={{ width: 200 }}
