@@ -7,6 +7,7 @@ import moment from 'moment'
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 const FormItem = Form.Item;
+const { TextArea } = Input;
 const Option = Select.Option;
 const Option1 = AutoComplete.Option1;
 class NewProject extends Component {
@@ -193,7 +194,33 @@ class NewProject extends Component {
                     </div>
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="inputForminfo informationProject">
+                        <div className="spaceLess">
                             <Row>
+                                <Col xs={24} sm={24} md={24} lg={12}>
+                                    {/* <FormItem label="Name">
+                                        {getFieldDecorator('name', {
+                                            rules: [{ required: true, message: 'Please input your Name!' }],
+                                        })(
+                                            <Input placeholder="Name" />
+                                        )}
+                                    </FormItem> */}
+                                    <p className="expecteDateclient">Choose Client :</p>
+                                    <FormItem>
+                                        {getFieldDecorator('client', {
+                                            rules: [{ required: true, message: 'Please select a client!' },]
+                                        })(
+                                            <AutoComplete
+                                                className="clientHere"
+                                                onSearch={this.handleSearch}
+                                                placeholder="Choose Client"
+                                                dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
+                                                onSelect={this.onSelect}
+                                            >
+
+                                            </AutoComplete>
+                                        )}
+                                    </FormItem>
+                                </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem label="Name">
                                         {getFieldDecorator('name', {
@@ -202,15 +229,13 @@ class NewProject extends Component {
                                             <Input placeholder="Name" />
                                         )}
                                     </FormItem>
-                                </Col>
-                                <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Brief Requirement">
+                                    {/* <FormItem label="Brief Requirement">
                                         {getFieldDecorator('requirement', {
                                             rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
                                         })(
                                             <Input placeholder="Brief Requirement" />
                                         )}
-                                    </FormItem>
+                                    </FormItem> */}
                                     {/* <FormItem label="Client List">
                                         {getFieldDecorator('client', {
                                             rules: [{ required: true, message: 'Please select your client!' }],
@@ -226,6 +251,19 @@ class NewProject extends Component {
                                         )}
                                     </FormItem> */}
 
+                                </Col>
+                            </Row>
+                            </div>
+                            <Row className="briefRequire">
+                                <Col xs={24} sm={24} md={24} lg={24}>
+                                    <FormItem label="Brief Requirement">
+                                        {getFieldDecorator('textRequirement', {
+                                            rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
+                                        })(
+                                            // <Input placeholder="Brief Requirement" />
+                                            <TextArea rows={4} className="textRequirement" placeholder="Brief Requirement"/>
+                                        )}
+                                    </FormItem>
                                 </Col>
                             </Row>
                             <Row>
@@ -279,27 +317,7 @@ class NewProject extends Component {
                                     </Col>
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <div className="startDate">
-                                            <p className="expecteDate">Actual Start Date :</p>
-                                            <FormItem
-                                                {...formItemLayout}
-                                            >
-                                                {getFieldDecorator('actualstart', {
-                                                    rules: [{ type: 'object', required: true, message: 'Please select actualdate!' }, {
-                                                        validator: this.validatetoactualend
-                                                    }]
-                                                })(
-                                                    <DatePicker />
-                                                )}
-                                            </FormItem>
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </div>
-                            <div className="spaceLess">
-                                <Row>
-                                    <Col xs={24} sm={24} md={24} lg={12}>
-                                        <div className="startDate">
-                                            <p className="expecteDate4">Expected End Date</p>
+                                            <p className="expecteDate">Expected End Date :</p>
                                             <FormItem
                                                 {...formItemLayout}
                                             >
@@ -313,9 +331,29 @@ class NewProject extends Component {
                                             </FormItem>
                                         </div>
                                     </Col>
+                                </Row>
+                            </div>
+                            <div className="spaceLess">
+                                <Row>
+                                <Col xs={24} sm={24} md={24} lg={12}>
+                                        <div className="startDate">
+                                            <p className="expecteDate4">Actual Start Date :</p>
+                                            <FormItem
+                                                {...formItemLayout}
+                                            >
+                                                {getFieldDecorator('actualstart', {
+                                                    rules: [{ type: 'object', required: true, message: 'Please select actualdate!' }, {
+                                                        validator: this.validatetoactualend
+                                                    }]
+                                                })(
+                                                    <DatePicker />
+                                                )}
+                                            </FormItem>
+                                        </div>
+                                    </Col>
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <div className="startDate">
-                                            <p className="expecteDate4">Actual End Date</p>
+                                            <p className="expecteDate4">Actual End Date :</p>
                                             <FormItem
                                                 {...formItemLayout}
                                             >
@@ -330,7 +368,7 @@ class NewProject extends Component {
                                         </div>
                                     </Col>
                                 </Row>
-                                <Row>
+                                {/* <Row>
                                     <Col xs={24} sm={24} md={24} lg={24}>
                                         <p className="expecteDateclient">Choose Client :</p>
                                         <FormItem>
@@ -349,7 +387,7 @@ class NewProject extends Component {
                                             )}
                                         </FormItem>
                                     </Col>
-                                </Row>
+                                </Row> */}
                             </div>
                         </div>
                         <FormItem>

@@ -14,16 +14,4 @@ h1.userManagementa {
 .userManagement .clientHere {
     width: 100% !important;
 }
-.userManagement {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
 /* userManagement css */
-/*responsive start*/
-@media only screen and (min-width: 600px) and (max-width:1024px){
-    .userManagement {
-        align-items: baseline;
-    }
-}
