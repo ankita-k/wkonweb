@@ -147,7 +147,9 @@ class NewProject extends Component {
             console.log(this.state.clientlist)
 
         }
-
+        else {
+            this.setState({ clientarray: [] })
+        }
 
 
 
