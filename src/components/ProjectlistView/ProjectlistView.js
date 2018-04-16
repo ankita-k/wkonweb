@@ -112,7 +112,7 @@ class ProjectlistView extends Component {
   render() {
 console.log('render')
     return (
-      <div>
+      <div className="projectListdiv">
         <h1 className="clientList">PROJECT LIST</h1>
         <Row>
           <div className="addButton clientadd">

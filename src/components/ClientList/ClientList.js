@@ -97,7 +97,7 @@ componentWillMount() {
     render() {
      
         return (
-            <div>
+            <div className="clientListdiv">
                     <h1 className="clientList">CLIENT LIST</h1>
                     <Row>
                         <div className="addButton clientadd">

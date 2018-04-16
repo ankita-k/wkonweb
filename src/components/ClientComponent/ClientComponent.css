@@ -65,6 +65,18 @@
 .formcustomer {
     width: 50%;
 }
+button.ant-btn.cardbuttonCancel.login-form-button {
+    border: 1px solid #428afe;
+    border-radius: 5px;
+    color: #428afe;
+    margin-top: 2em;
+    line-height: 0;
+    height: 38px;
+    background: border-box;
+    width: 98px;
+    font-size: 16px;
+    margin-left: 1em;
+}
 button.ant-btn.cardbuttonSave.login-form-button {
     border: 1px solid #428afe;
     color: #ffffff;

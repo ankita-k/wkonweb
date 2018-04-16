@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Lato|Roboto');
  /* clientlist css*/
-  .ant-table-pagination.ant-pagination {
-    display: none;
+ .clientListdiv .ant-table-pagination.ant-pagination {
+    margin: 16px 17px;
+}
+.projectListdiv .ant-table-pagination.ant-pagination {
+    margin: 16px 17px;
 }
 button.ant-btn.edit {
     padding:0;
