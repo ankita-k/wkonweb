@@ -13,6 +13,11 @@ const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  
   render() {
     return (
       <div>
@@ -20,7 +25,8 @@ class Dashboard extends Component {
         <Layout>
           <Header className="header">
             {/* <div className="logo" /> */}
-            <p style={{ color: '#fff' }}> Hello, John Doe {sessionStorage.getItem('name')} <Button className="wkonlogout">Log Out</Button></p>
+            <p style={{ color: '#fff' }}> Hello, John Doe {sessionStorage.getItem('name')} <Button className="wkonlogout"onClick={()=>{ sessionStorage.clear();
+    this.props.history.push('/login')}}>Log Out</Button></p>
           </Header>
           <Layout>
             <Sider width={200} style={{ background: '#fff' }}>
