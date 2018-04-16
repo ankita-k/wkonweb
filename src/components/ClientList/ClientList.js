@@ -33,15 +33,15 @@ const columns = [{
   dataIndex: 'status',
   key: 'status',
 }, {
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <span>
-      <Button className="edit">
-        <a href="javascript:;"><Icon type="edit" /></a></Button>
-      <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
-    </span>
-  ),
+  // title: 'Action',
+  // key: 'action',
+  // render: (text, record) => (
+  //   <span>
+  //     <Button className="edit">
+  //       <a href="javascript:;"><Icon type="edit" /></a></Button>
+  //     <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
+  //   </span>
+  // ),
 }];
 
 const data = [{
