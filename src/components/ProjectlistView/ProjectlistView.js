@@ -6,6 +6,7 @@ import { Select } from 'antd';
 import '../ClientList/ClientList.css';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
+import moment from 'moment';
 const Option = Select.Option;
 const Search = Input.Search;
 // import { Input } from 'antd';
@@ -29,8 +30,8 @@ const columns = [{
   key: 'technology',
 }, {
   title: 'Expected Start Date',
-  dataIndex: 'estart',
-  key: 'estart',
+  dataIndex: 'expectedStartDate',
+  key: 'expectedStartDate',
 },
 // {
 //   title: 'Actual Start Date',
@@ -145,21 +146,34 @@ class ProjectlistView extends Component {
   componentDidMount() {
     this.viewProject();
   }
+
   // GET ALL PROJECT LIST
   viewProject = () => {
-    // debugger
     console.log('project List');
     this.setState({ show: true })
     this.props.projectList(this.state.userId, this.state.page, this.state.limit).then((sucess) => {
       this.setState({ show: false });
       console.log(sucess);
       this.setState({ projectList: sucess.result });
-      this.setState({ searchedList: sucess.result });
-      console.log(this.state.projectList)
+      var data = sucess.result;
+      data.map(function (item, index) {
+        return data[index] = {
+          name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+          requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
+          status: item.status,
+          technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
+          expectedStartDate: moment(item.expectedStartDate).format("MMM Do YY")
+
+        }
+      })
+
+      this.setState({ searchedList: data });
+    
     }, err => {
 
     });
   }
+
 
 
   //SearchProject
@@ -194,19 +208,9 @@ class ProjectlistView extends Component {
           showSpinner={false}
         />
         <h1 className="clientList">PROJECT LIST</h1>
-        <div>
-          <Select defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
-            <Option value="All">All</Option>
-            <Option value="New">New</Option>
-            <Option value="InDiscussion">InDiscussion</Option>
-            <Option value="Scoping">Scoping</Option>
-            <Option value="InProgess">InProgess</Option>
-            <Option value="Stalled">Stalled</Option>
-            <Option value="Completed">Completed</Option>
-
-          </Select>
-        </div>
-        <Search
+     
+        <div className="AllProjects">
+        <Search className="SearchValue"
           placeholder="input search text"
           onSearch={value => { this.searchproject(value) }}
           style={{ width: 200 }}
@@ -216,12 +220,21 @@ class ProjectlistView extends Component {
 
 
         />
-        <div className="AllProjects">
-          <Button onClick={() => {
-            this.setState({ searchedList: this.state.projectList });
-            this.setState({ searchinput: '' })
-          }}>All Projects</Button>
-        </div>
+         <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+            <Option value="All">All</Option>
+            <Option value="New">New</Option>
+            <Option value="InDiscussion">InDiscussion</Option>
+            <Option value="Scoping">Scoping</Option>
+            <Option value="InProgess">InProgess</Option>
+            <Option value="Stalled">Stalled</Option>
+            <Option value="Completed">Completed</Option>
+
+          </Select>
+            <Button className="allprojectbtn" onClick={() => {
+              this.setState({searchedList: this.state.projectList});
+              this.setState({searchinput: ''})
+            }}>All Projects</Button>
+          </div>
 
         <Row>
           <div className="addButton clientadd">
