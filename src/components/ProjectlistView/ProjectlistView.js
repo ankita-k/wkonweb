@@ -33,30 +33,45 @@ const columns = [{
   dataIndex: 'expectedStartDate',
   key: 'expectedStartDate',
 },
-  // {
-  //   title: 'Actual Start Date',
-  //   dataIndex: 'astart',
-  //   key: 'astart',
-  // }, {
-  //   title: 'Expected End Date',
-  //   dataIndex: 'expectedtask',
-  //   key: 'expectedtask',
-  // }, {
-  //   title: 'Actual End Date',
-  //   dataIndex: 'taskend',
-  //   key: 'taskend',
-  // }, {
-  //   title: 'Action',
-  //   key: 'action',
-  //   render: (text, record) => (
-  //     <span>
-  //       <Button className="edit">
-  //         <a href="javascript:;"><Icon type="edit" /></a></Button>
-  //       <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
-  //     </span>
-  //   ),
-  // }
+// {
+//   title: 'Actual Start Date',
+//   dataIndex: 'astart',
+//   key: 'astart',
+// }, {
+//   title: 'Expected End Date',
+//   dataIndex: 'expectedtask',
+//   key: 'expectedtask',
+// }, {
+//   title: 'Actual End Date',
+//   dataIndex: 'taskend',
+//   key: 'taskend',
+//},
+{
+  title: 'Action',
+  key: 'action',
+  render: (text, record) => (
+    <span>
+      {/* <span style={{ marginLeft: 8 }}>
+        {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+      </span> */}
+
+      <Button className="edit">
+        <a href="javascript:;"><Icon type="edit" /></a></Button>
+      <Button className="delete" onClick={() => { deleteProject(record,text)}}><a href="javascript:;"><Icon type="delete" /></a></Button>
+    </span>
+  ),
+}
 ];
+// remaining
+
+//  const deleteProject = (data,text) => {
+//    this.props.deleteproject(data._id).then(response=>{
+// console.log(response)
+//    },err=>{
+
+//    })
+//   console.log(data)
+// }
 
 // const data = [{
 //   key: '1',
@@ -103,7 +118,10 @@ class ProjectlistView extends Component {
       page: 0,
       limit: 20,
       userId: sessionStorage.getItem('id'),
+      selectedRowKeys: [],
       show: true  //loading-bar
+
+
     }
   }
 
@@ -226,7 +244,13 @@ class ProjectlistView extends Component {
         </Row>
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
-          <Table columns={columns} dataSource={this.state.searchedList} />
+          <Table
+            onRow={(record) => {
+              return {
+                onClick: () => { console.log(record) },       // click row
+              };
+            }}
+            columns={columns} dataSource={this.state.searchedList} />
         </Card>
         {/* clientlist */}
       </div>
