@@ -138,7 +138,7 @@ this.setState({searchedList:newarray})
   render() {
     console.log('render')
     return (
-      <div>
+      <div className="projectListdiv">
         <h1 className="clientList">PROJECT LIST</h1>
         <Search
           placeholder="input search text"

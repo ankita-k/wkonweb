@@ -38,7 +38,7 @@ class Dashboard extends Component {
                 defaultOpenKeys={['sub1']}
                 style={{ height: '100%', borderRight: 0 }}
               >
-                <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}>
+                <SubMenu key="sub1" title={<span><NavLink to="../dashboard"><Icon type="home" />Home</NavLink></span>}>
                   <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
                   <Menu.Item key="2"><NavLink to="../dashboard/projectlist">Projects</NavLink></Menu.Item>
                   <Menu.Item key="3"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
