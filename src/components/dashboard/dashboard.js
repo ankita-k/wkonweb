@@ -29,8 +29,10 @@ class Dashboard extends Component {
         <Layout>
           <Header className="header">
             {/* <div className="logo" /> */}
-            <p style={{ color: '#fff' }}> Hello {sessionStorage.getItem('id')} <Button className="wkonlogout"onClick={()=>{ sessionStorage.clear();
-    this.props.history.push('/login')}}>Log Out</Button></p>
+            <p style={{ color: '#fff' }}> Hello {sessionStorage.getItem('id')} <Button className="wkonlogout" onClick={() => {
+              sessionStorage.clear();
+              this.props.history.push('/login')
+            }}>Log Out</Button></p>
           </Header>
           <Layout>
             <Sider width={200} style={{ background: '#fff' }}>
@@ -45,7 +47,7 @@ class Dashboard extends Component {
                   <span>Home</span>
                   <NavLink to="../dashboard" activeClassName="active"></NavLink>
                 </Menu.Item>
-                <SubMenu key="sub1" title={<span>Clients</span>}>
+                <SubMenu key="sub1" title={<span>Clients</span>} subMenuCloseDelay={0.1}>
                   <Menu.Item key="3">
                     <span>Client Create</span>
                     <NavLink to="../dashboard/clientcreate" activeClassName="active"></NavLink>
@@ -55,7 +57,7 @@ class Dashboard extends Component {
                     <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
                   </Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub2" title={<span>Projects</span>}>
+                <SubMenu key="sub2" title={<span>Projects</span>} subMenuCloseDelay={0.1}>
                   <Menu.Item key="5">
                     <span>Project Create</span>
                     <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
@@ -65,13 +67,13 @@ class Dashboard extends Component {
                     <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                   </Menu.Item>
                 </SubMenu>
-              <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
-                
+                <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
+
                 {/* <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}> */}
                 {/* <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
                   <Menu.Item key="2"><NavLink to="../dashboard/projectlist">Projects</NavLink></Menu.Item>
                   <Menu.Item key="3"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item> */}
-            
+
               </Menu>
             </Sider>
             <Layout style={{ padding: '0 0px 0px' }}>

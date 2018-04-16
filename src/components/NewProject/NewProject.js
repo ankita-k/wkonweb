@@ -140,7 +140,7 @@ class NewProject extends Component {
         if (value) {
             console.log("Inside value");
             clientarray = this.state.clientlist.filter(d => {
-                return d.name.indexOf(value) > -1
+                return d.name.toLowerCase().indexOf(value.toLowerCase()) > -1
             });
             this.setState({ clientarray })
             console.log(this.state.clientarray)
