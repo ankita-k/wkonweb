@@ -41,7 +41,7 @@ class NewProject extends Component {
             if (!err) {
                 console.log('Received values of form: ', values);
                 let data = {
-                    requirement: values.requirement,
+                    requirement: values.textRequirement,
                     status: values.status,
                     technology: values.technology,
                     expectedStartDate: values.expecstart._d,
