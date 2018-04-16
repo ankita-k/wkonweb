@@ -147,7 +147,7 @@ class ProjectlistView extends Component {
   //SearchProject
   searchproject = (val) => {
     let newarray = this.state.projectList.filter(f => {
-      return f.name.indexOf(val) > -1
+      return f.name.toLowerCase().indexOf(val.toLowerCase()) > -1
     });
     console.log(newarray)
     this.setState({ searchedList: newarray })

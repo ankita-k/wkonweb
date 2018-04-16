@@ -103,7 +103,7 @@ class ClientList extends Component {
   searchClient = (e) => {
     console.log('search data', e);
     let newarray = this.state.clientlist.filter(d => {
-      return d.name.indexOf(e) > -1
+      return d.name.toLowerCase().indexOf(e.toLowerCase()) > -1
 
     });
     console.log(newarray)

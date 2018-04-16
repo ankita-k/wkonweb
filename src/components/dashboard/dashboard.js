@@ -80,7 +80,7 @@ class Dashboard extends Component {
                     <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                   </Menu.Item>
                 </SubMenu>
-                <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
+                {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item> */}
 
                 {/* <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}> */}
                 {/* <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
