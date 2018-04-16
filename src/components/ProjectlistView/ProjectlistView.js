@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Row } from 'antd';
+import { Card, Table, Button, Icon, Row ,Input} from 'antd';
 import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import { Select } from 'antd';
 import '../ClientList/ClientList.css';
 const Option = Select.Option;
+const Search = Input.Search;
+// import { Input } from 'antd';
 
 const columns = [{
   title: 'Name',
@@ -92,7 +94,7 @@ class ProjectlistView extends Component {
     super(props);
     this.state = {
       projectList: [],
-      projectArray: [],
+      searchedList: [],
       page: 0,
       limit: 20,
       userId: sessionStorage.getItem('id'),
@@ -103,17 +105,17 @@ class ProjectlistView extends Component {
   }
   handleChange = (value) => {
     console.log(`selected ${value}`);
-    let projectArray;
+    let searchedList;
     if (value) {
       if (value == 'All') {
-        this.setState({ projectArray: this.state.projectList });
+        this.setState({ searchedList: this.state.projectList });
       }
       else {
-        projectArray = this.state.projectList.filter(a => {
+        searchedList = this.state.projectList.filter(a => {
           return a.status.indexOf(value) > -1
         });
-        this.setState({ projectArray })
-        console.log("filtered data", this.state.projectArray);
+        this.setState({ searchedList })
+        console.log("filtered data", this.state.searchedList);
       }
     }
 
@@ -128,13 +130,34 @@ class ProjectlistView extends Component {
     this.props.projectList(this.state.userId, this.state.page, this.state.limit).then((sucess) => {
       console.log(sucess);
       this.setState({ projectList: sucess.result });
-      this.setState({ projectArray: sucess.result });
+      this.setState({ searchedList: sucess.result });
       console.log(this.state.projectList)
     }, err => {
 
     });
   }
 
+
+  //SearchProject
+  searchproject =(val)=>{
+    let newarray = this.state.projectList.filter(f =>{
+      return f.name.indexOf(val) > -1
+    });
+console.log(newarray)
+this.setState({searchedList:newarray})
+
+
+  }
+
+  //Show All project list
+  showallList = (e) => {
+    console.log(e);
+    this.setState({searchinput:e})
+    if (e == ''){
+      this.setState({searchedList: this.state.projectList})
+    }
+  }
+  
 
   render() {
     console.log('render')
@@ -153,6 +176,23 @@ class ProjectlistView extends Component {
 
           </Select>
         </div>
+        <Search
+          placeholder="input search text"
+          onSearch={value => {this.searchproject(value)}}
+          style={{ width: 200 }}
+          onChange={(e) => {this.showallList(e.target.value)}}
+           enterButton
+           value={this.state.searchinput}
+          
+
+        />
+        <div className="AllProjects">
+            <Button onClick={() => {
+              this.setState({searchedList: this.state.projectList});
+              this.setState({searchinput: ''})
+            }}>All Projects</Button>
+          </div>
+
         <Row>
           <div className="addButton clientadd">
             <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>
@@ -161,7 +201,7 @@ class ProjectlistView extends Component {
         </Row>
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
-          <Table columns={columns} dataSource={this.state.projectArray} />
+          <Table columns={columns} dataSource={this.state.searchedList} />
         </Card>
         {/* clientlist */}
       </div>
