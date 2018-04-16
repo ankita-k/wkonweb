@@ -20,23 +20,34 @@ const { Header, Content, Sider } = Layout;
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-    this.state={
-      username:''
+    this.state = {
+      username: '',
+      selectedKey: ['home']
+    }
+  }
+
+  renderSidemenuSelection = () => {
+    console.log(this.props.location.pathname);
+    if (this.props.location.pathname != '/dashboard') {
+      this.props.history.push('/dashboard');
     }
   }
 
   //GET USER NAME
   componentDidMount() {
-    this.props.username(sessionStorage.getItem('id')).then((data) => {
 
-        console.log(data);
-        this.setState({ username: data.name });
-        console.log(this.state.username);
+    console.log(this.props.location.pathname);
+
+    this.props.username(sessionStorage.getItem('id')).then((data) => {
+      console.log(data);
+      this.setState({ username: data.name });
+      console.log(this.state.username);
     }, err => {
 
     })
-}
-  
+    this.renderSidemenuSelection();
+  }
+
   render() {
     return (
       <div>
@@ -44,38 +55,40 @@ class Dashboard extends Component {
         <Layout>
           <Header className="header">
             {/* <div className="logo" /> */}
-            <p style={{ color: '#fff' }}> Hello {this.state.username} <Button className="wkonlogout"onClick={()=>{ sessionStorage.clear();
-    this.props.history.push('/login')}}>Log Out</Button></p>
+            <p style={{ color: '#fff' }}> Hello {this.state.username} <Button className="wkonlogout" onClick={() => {
+              sessionStorage.clear();
+              this.props.history.push('/login')
+            }}>Log Out</Button></p>
           </Header>
           <Layout>
             <Sider width={200} style={{ background: '#fff' }}>
               <Menu
                 mode="inline"
-                defaultSelectedKeys={['1']}
-                defaultOpenKeys={['sub1']}
+                defaultSelectedKeys={this.state.selectedKey}
+                defaultOpenKeys={this.state.selectedKey}
                 style={{ height: '100%', borderRight: 0 }}
               >
-                <Menu.Item key="1">
+                <Menu.Item key="home">
                   <Icon type="home" />
                   <span>Home</span>
                   <NavLink to="../dashboard" activeClassName="active"></NavLink>
                 </Menu.Item>
-                <SubMenu key="sub1" title={<span>Clients</span>} subMenuCloseDelay={0.1}>
-                  <Menu.Item key="3">
+                <SubMenu key="client" title={<span>Clients</span>} subMenuCloseDelay={0.1}>
+                  <Menu.Item key="create_client">
                     <span>Client Create</span>
                     <NavLink to="../dashboard/clientcreate" activeClassName="active"></NavLink>
                   </Menu.Item>
-                  <Menu.Item key="4">
+                  <Menu.Item key="client_list">
                     <span>Client List</span>
                     <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
                   </Menu.Item>
                 </SubMenu>
-                <SubMenu key="sub2" title={<span>Projects</span>} subMenuCloseDelay={0.1}>
-                  <Menu.Item key="5">
+                <SubMenu key="projects" title={<span>Projects</span>} subMenuCloseDelay={0.1}>
+                  <Menu.Item key="create_project">
                     <span>Project Create</span>
                     <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
                   </Menu.Item>
-                  <Menu.Item key="6">
+                  <Menu.Item key="project_list">
                     <span>Project List</span>
                     <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                   </Menu.Item>
