@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Row } from 'antd';
+import { Card, Table, Button, Icon, Row ,Input} from 'antd';
 import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import '../ClientList/ClientList.css';
+const Search = Input.Search;
+// import { Input } from 'antd';
+
 const columns = [{
   title: 'Name',
   dataIndex: 'name',
@@ -88,6 +91,7 @@ class ProjectlistView extends Component {
     super(props);
     this.state = {
       projectList: [],
+      searchedList: [],
       page: 0,
       limit: 20,
       userId: sessionStorage.getItem('id'),
@@ -103,17 +107,56 @@ class ProjectlistView extends Component {
     console.log('project List')
     this.props.projectList(this.state.userId, this.state.page, this.state.limit).then((sucess) => {
       console.log(sucess);
-      this.setState({ projectList:sucess.result });
+      this.setState({ projectList: sucess.result });
+      this.setState({searchedList: sucess.result});
       // console.log(this.state.projectList)
     }, err => {
 
     });
   }
+  //SearchProject
+  searchproject =(val)=>{
+    let newarray = this.state.projectList.filter(f =>{
+      return f.name.indexOf(val) > -1
+    });
+console.log(newarray)
+this.setState({searchedList:newarray})
+
+
+  }
+
+  //Show All project list
+  showallList = (e) => {
+    console.log(e);
+    this.setState({searchinput:e})
+    if (e == ''){
+      this.setState({searchedList: this.state.projectList})
+    }
+  }
+  
+
   render() {
-console.log('render')
+    console.log('render')
     return (
       <div className="projectListdiv">
         <h1 className="clientList">PROJECT LIST</h1>
+        <Search
+          placeholder="input search text"
+          onSearch={value => {this.searchproject(value)}}
+          style={{ width: 200 }}
+          onChange={(e) => {this.showallList(e.target.value)}}
+           enterButton
+           value={this.state.searchinput}
+          
+
+        />
+        <div className="AllProjects">
+            <Button onClick={() => {
+              this.setState({searchedList: this.state.projectList});
+              this.setState({searchinput: ''})
+            }}>All Projects</Button>
+          </div>
+
         <Row>
           <div className="addButton clientadd">
             <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>
@@ -121,7 +164,7 @@ console.log('render')
         </Row>
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
-          <Table columns={columns} dataSource={this.state.projectList} />
+          <Table columns={columns} dataSource={this.state.searchedList} />
         </Card>
         {/* clientlist */}
       </div>
@@ -134,4 +177,4 @@ const mapStateToProps = (state) => {
 }
 // const WrappedProjectlistView 
 
-export default connect(mapStateToProps,actioncreators)(ProjectlistView);
+export default connect(mapStateToProps, actioncreators)(ProjectlistView);

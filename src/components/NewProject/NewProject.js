@@ -14,7 +14,6 @@ class NewProject extends Component {
 
 
 
-
     constructor(props) {
         super(props);
         this.state = {
@@ -139,6 +138,7 @@ class NewProject extends Component {
 
             });
             this.setState({ clientarray })
+            console.log(this.state.clientarray)
             console.log(this.state.clientlist)
 
         }
@@ -186,6 +186,7 @@ class NewProject extends Component {
         };
         return (
             <div>
+                
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
                     <div className="newCustomerform">
@@ -261,7 +262,7 @@ class NewProject extends Component {
                                             rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
                                         })(
                                             // <Input placeholder="Brief Requirement" />
-                                            <TextArea rows={4} className="textRequirement" placeholder="Brief Requirement"/>
+                                            <TextArea         maxLength="10" rows={4} className="textRequirement" placeholder="Brief Requirement"/>
                                         )}
                                     </FormItem>
                                 </Col>
@@ -276,9 +277,12 @@ class NewProject extends Component {
                                                 placeholder="Status"
                                                 onChange={this.handleSelectChange}
                                             >
-                                                <Option value="Interested">Interested</Option>
-                                                <Option value="Pipeline">Pipeline</Option>
-                                                <Option value="Committed">Committed</Option>
+                                                <Option value="New">New</Option>
+                                                <Option value="InDiscussion">InDiscussion</Option>
+                                                <Option value="Scoping">Scoping</Option>
+                                                <Option value="InProgess">InProgess</Option>
+                                                <Option value="Stalled">Stalled</Option>
+                                                <Option value="Completed">Completed</Option>
                                             </Select>
                                         )}
                                     </FormItem>
@@ -390,7 +394,7 @@ class NewProject extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
-                                <Button htmlType="submit" className="cardbuttonCancel login-form-button">Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={()=>{this.props.history.push('/dashboard/projectlist')}} >Cancel</Button>
                             </div>
                         </FormItem>
 
