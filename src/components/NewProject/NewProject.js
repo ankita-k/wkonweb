@@ -11,7 +11,6 @@ const Option = Select.Option;
 const Option1 = AutoComplete.Option1;
 class NewProject extends Component {
 
-    
 
 
     constructor(props) {
@@ -134,18 +133,18 @@ class NewProject extends Component {
     handleSearch = (value) => {
         console.log(value);
         let clientarray;
-        if (value){
-             clientarray = this.state.clientlist.filter(d => {
+        if (value) {
+            clientarray = this.state.clientlist.filter(d => {
                 return d.name.indexOf(value) > -1
-                
-        });
-            this.setState({ clientarray })  
+
+            });
+            this.setState({ clientarray })
             console.log(this.state.clientarray)
-       
-       }
-        
-        
-      
+
+        }
+
+
+
 
     }
     render() {
@@ -173,6 +172,7 @@ class NewProject extends Component {
         };
         return (
             <div>
+                
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
                     <div className="newCustomerform">
@@ -196,7 +196,9 @@ class NewProject extends Component {
                                         {getFieldDecorator('requirement', {
                                             rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
                                         })(
-                                            <Input placeholder="Brief Requirement" />
+                                            <Input
+                                                maxLength="10"
+                                                placeholder="Brief Requirement" />
                                             )}
                                     </FormItem>
                                     {/* <FormItem label="Client List">
@@ -324,7 +326,7 @@ class NewProject extends Component {
                                             placeholder="Choose Client"
                                         // dataSource={this.state.clientlist.map((item) => { return this.clientarray(item) })}
                                         >
-                                    
+
                                             {/* {children} */}
                                         </AutoComplete>
                                     </Col>
