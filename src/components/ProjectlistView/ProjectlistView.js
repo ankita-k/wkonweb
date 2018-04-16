@@ -3,6 +3,8 @@ import { Card, Table, Button, Icon, Row } from 'antd';
 import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import '../ClientList/ClientList.css';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 const columns = [{
   title: 'Name',
   dataIndex: 'name',
@@ -91,6 +93,7 @@ class ProjectlistView extends Component {
       page: 0,
       limit: 20,
       userId: sessionStorage.getItem('id'),
+      show: true  //loading-bar
 
     }
   }
@@ -103,16 +106,23 @@ class ProjectlistView extends Component {
     console.log('project List')
     this.props.projectList(this.state.userId, this.state.page, this.state.limit).then((sucess) => {
       console.log(sucess);
-      this.setState({ projectList:sucess.result });
+      this.setState({ projectList: sucess.result });
+      this.setState({show:false});      
       // console.log(this.state.projectList)
     }, err => {
 
     });
   }
   render() {
-console.log('render')
+    console.log('render')
     return (
+      
       <div className="projectListdiv">
+      <Loading
+        show={this.state.show}
+        color="red"
+        showSpinner={false}
+      />
         <h1 className="clientList">PROJECT LIST</h1>
         <Row>
           <div className="addButton clientadd">
@@ -134,4 +144,4 @@ const mapStateToProps = (state) => {
 }
 // const WrappedProjectlistView 
 
-export default connect(mapStateToProps,actioncreators)(ProjectlistView);
+export default connect(mapStateToProps, actioncreators)(ProjectlistView);

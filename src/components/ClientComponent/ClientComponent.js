@@ -4,14 +4,18 @@ import './ClientComponent.css';
 import { Divider } from 'antd';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 const FormItem = Form.Item;
 const Option = Select.Option;
+
 class ClientComponent extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            countrylist: []
+            countrylist: [],
+            show: false  //loading-bar
         }
     }
 
@@ -21,6 +25,7 @@ class ClientComponent extends Component {
 
         console.log('component will didmount')
         this.props.countrylist().then((data) => {
+            // this.setState({ show: false });
             this.setState({ countrylist: data });
             console.log(this.state.countrylist)
         }, err => {
@@ -49,6 +54,7 @@ class ClientComponent extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log(values)
@@ -58,15 +64,16 @@ class ClientComponent extends Component {
                     phoneNumber: values.phone,
                     email: values.email,
                     name: values.name,
-                    userId:sessionStorage.getItem('id'),
+                    userId: sessionStorage.getItem('id'),
                     domain: values.domain
                 }
-              
+
                 this.props.createClient(data).then(result => {
-                    
+                    this.setState({ show: false });
+
                     console.log(result);
                     if (!result.error) {
-                        this.props.opentoast('success','Customer Added Successfully!');
+                        this.props.opentoast('success', 'Customer Added Successfully!');
                         this.props.history.push('/dashboard')
                     }
                 }, err => {
@@ -80,6 +87,11 @@ class ClientComponent extends Component {
         const { getFieldDecorator } = this.props.form;
         return (
             <div>
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
                 <Card className="innercardContent" bordered={false}>
                     {/* --new customer details-- */}
                     <div className="newCustomerform">
