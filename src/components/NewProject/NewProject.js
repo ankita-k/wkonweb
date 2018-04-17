@@ -41,7 +41,7 @@ class NewProject extends Component {
                 ['technology']: this.props.location.data.data.technology,
                 ['expecstart']: this.props.location.data.data.expectedStartDate?moment(this.props.location.data.data.expectedStartDate):'',
                  ['expecend']:this.props.location.data.data.expectedEndDate? moment(this.props.location.data.data.expectedEndDate):'',
-                 ['actualstart']:this.props.location.data.data.actualStartDate? moment(this.props.location.data.data.actualStartDate):'',
+                //  ['actualstart']:this.props.location.data.data.actualStartDate? moment(this.props.location.data.data.actualStartDate):'',
                  ['actualend']:this.props.location.data.data.actualEndDate? moment(this.props.location.data.data.actualEndDate):'',
                  ['status']: this.props.location.data.data.status,
                  ['client']:this.props.location.data.data.client?this.props.location.data.data.client._id:''
