@@ -114,7 +114,7 @@ class UserManagement extends Component {
                                             },
                                             { required: true, message: 'Please input your Email!' }],
                                         })(
-                                            <Input placeholder="Email" name="email" maxLength="20" />
+                                            <Input placeholder="Email" name="email" maxLength="100" />
                                         )}
                                     </FormItem>
                                 </Col>
