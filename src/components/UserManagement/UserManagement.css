@@ -1,0 +1,20 @@
+/* userManagement css */
+h1.userManagementa {
+    padding: 10px 0 10px 27px;
+    background: #428afe;
+    color: #fff;
+    margin-bottom: 0;
+}
+.userManagement .clientHere .ant-select-selection__placeholder {
+    margin-top: -4px;
+}
+.userManagement .inputForminfo {
+    padding: 1em 4em 0 4em;
+}
+.userManagement .ant-card.innercardContent.ant-card-wider-padding {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.userManagement .clientHere {
+    width: 100% !important;
+}
+/* userManagement css */

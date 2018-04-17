@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Roboto');
+ /* clientlist css*/
+ .clientListdiv .ant-table-pagination.ant-pagination {
+    margin: 16px 17px;
+}
+.projectListdiv .ant-table-pagination.ant-pagination {
+    margin: 16px 17px;
+}
+button.ant-btn.edit {
+    padding:0;
+    background:transparent;
+    color: #81d2ff;
+    border: none;
+}
+button.ant-btn.delete {
+    background:transparent;
+    color:#ff8181;
+    border: none;
+}
+.innercardContenta .ant-card-body {
+    padding: 0;
+}
+h1.clientList {
+    font-family: 'Lato', sans-serif;
+    margin-bottom: 1em;
+}
+.AllProjects input.ant-input {
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    border: none;
+}
+.projectListdiv .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    width: 20%;
+}
+.clientListdiv .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    width: 18%;
+}
+.AllProjects {
+    margin-bottom: 1em;
+}
+.scoping.ant-select.ant-select-enabled {
+    margin-left: 1em;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    color: rgba(158, 158, 158, 0.8);
+    border: none;
+    border-radius: 5px;
+}
+button.ant-btn.allprojectbtn {
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    color: rgba(158, 158, 158, 0.8);
+    border: none;
+    margin-left: 1em;
+}
+.innercardContenta {
+    margin: 0 auto !important;
+}
+button.ant-btn.edit i.anticon.anticon-edit {
+    font-size: 18px;
+}
+button.ant-btn.delete i.anticon.anticon-delete {
+    font-size: 18px;
+}
+.addButton.clientadd {
+    position: absolute;
+    top: -4em;
+    right: 0;
+    z-index: 9;
+}
+ /* clientlist css*/

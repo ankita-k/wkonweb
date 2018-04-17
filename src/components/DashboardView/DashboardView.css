@@ -40,9 +40,39 @@ h1.totalNumber {
 .dashboardView {
     margin-bottom: 3em;
 }
+.addButton button:hover {
+    box-shadow: 0 10px 45px -10px rgba(0,0,0,0.25), 0 -1px 22px -10px rgba(0,0,0,0.22);
+    color: rgb(158, 158, 158);
+}
+.addButton button:focus {
+    box-shadow: 0 10px 45px -10px rgba(0,0,0,0.25), 0 -1px 22px -10px rgba(0,0,0,0.22);
+    color: rgb(158, 158, 158);
+}
+.addButton button span {
+    font-size: 25px;
+    padding-right: 9px;
+}
+.addButton button {
+    float: right;
+    margin-right: 4em;
+    margin-bottom: 1em;
+    border-radius: 50%;
+    padding: 0px 0 8px 8px;
+    color: rgba(158, 158, 158, 0.8);
+    height: 42px;
+    width: 42px;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    border: none;
+    font-size: 14px;
+    font-weight: 900;
+}
 /* dashboardviewcustomer */
+
 /* Responsivedashboardviewcustomer */
 @media (min-width: 320px) and (max-width: 767px) {
+    .addButton button {
+        float: left;
+    }
     .cusTotal {
         width: 100%;
         text-align:center;
