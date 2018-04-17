@@ -25,13 +25,17 @@ const reducer = ((state = {}, action) => {
     case "PROJECT_LIST":                  // FOR PROJECT LIST
       return action.json
       break
-    case "CLIENT_LIST":                  // FOR COUNTRY LIST
+    case "CLIENT_LIST":                  // FOR CLIENT LIST
       return action.list
       break;
-      case "DELETE_PROJECT":                  // FOR COUNTRY LIST
+    case "DELETE_PROJECT":                  // FOR DELETE PROJECT LIST
       return action.list
       break;
-      
+
+    case "EDIT_PROJECT":                  // FOR EDIT PROJECT LIST
+      return action.list
+      break;
+
     case "USER_NAME":                  // HELLO USERNAME
       return action.list
       break;

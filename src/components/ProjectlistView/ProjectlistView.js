@@ -82,19 +82,19 @@ class ProjectlistView extends Component {
         dataIndex: 'expectedStartDate',
         key: 'expectedStartDate',
       },
-      // {
-      //   title: 'Actual Start Date',
-      //   dataIndex: 'astart',
-      //   key: 'astart',
-      // }, {
-      //   title: 'Expected End Date',
-      //   dataIndex: 'expectedtask',
-      //   key: 'expectedtask',
-      // }, {
-      //   title: 'Actual End Date',
-      //   dataIndex: 'taskend',
-      //   key: 'taskend',
-      //},
+      {
+        title: 'Actual Start Date',
+        dataIndex: 'actualStartDate',
+        key: 'astart',
+      }, {
+        title: 'Expected End Date',
+        dataIndex: 'expectedEndDate',
+        key: 'expectedtask',
+      }, {
+        title: 'Actual End Date',
+        dataIndex: 'actualEndDate',
+        key: 'taskend',
+      },
       {
         title: 'Action',
         key: 'action',
@@ -104,7 +104,7 @@ class ProjectlistView extends Component {
               {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
             </span> */}
 
-            <Button className="edit">
+            <Button className="edit" onClick={() => { this.editProject(record) }}>
               <a href="javascript:;"><Icon type="edit" /></a></Button>
             <Button className="delete" onClick={() => { this.deleteProject(record) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
           </span>
@@ -113,15 +113,33 @@ class ProjectlistView extends Component {
       ]
     }
   }
-
+  // delete 
   deleteProject = (data) => {
     console.log(data);
     this.props.deleteproject(data._id).then(response => {
-      console.log(response)
+      console.log(response);
+      if (!response.error) {
+        this.props.opentoast('success', 'Project Deleted Successfully!');
+        this.viewProject();
+      }
     }, err => {
       console.log(err)
     })
   }
+  // edit
+  editProject = (data) => {
+    console.log(data);
+    console.log("hellllloo");
+    this.props.history.push({
+      pathname: '/dashboard/newproject',
+      data: {
+        data
+      }
+    })
+
+  }
+
+
 
 
   handleChange = (value) => {
@@ -160,9 +178,13 @@ class ProjectlistView extends Component {
           requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
           status: item.status,
           technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
-          expectedStartDate: moment(item.expectedStartDate).format("MMM Do YY"),
+          expectedStartDate: moment(item.expectedStartDate).format("ll"),
+          expectedEndDate: moment(item.expectedStartDate).format("ll"),
+          actualStartDate: moment(item.actualStartDate).format("ll"),
+          actualEndDate: moment(item.actualEndDate).format("ll"),
           key: Math.random() * 1000000000000000000,
-          _id:item._id
+          _id: item._id,
+          client: item.client
         }
       })
 

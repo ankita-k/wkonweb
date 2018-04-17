@@ -300,7 +300,7 @@ function user(list) {
 
     }
 }
-//API CALL FOR DELETE
+//API CALL FOR DELETE Project
 export function deleteproject(id) {
     console.log(id)
     
@@ -341,3 +341,48 @@ export function deleteproject(id) {
         }
     }
 
+//API FOR EDIT PROJECT
+export function editproject(data,id) {
+    console.log('edit',data)
+    console.log(id)
+    
+        return (dispatch) => {
+            
+            console.log(config.apiUrl)
+            return new Promise((resolve, reject) => {
+                
+                
+    
+                fetch(config.apiUrl + 'project/'+id,
+                    {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                        },
+                        method: 'PUT',
+                        body: JSON.stringify(data)
+                    })
+                    .then((response) => response.json())
+                    .then((responseJSON) => {
+                        
+                
+
+                        dispatch(editrow(responseJSON))
+                        resolve(responseJSON);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        }
+    }
+    
+    
+    function editrow(list) {
+        return {
+            type: "EDIT_PROJECT",
+            list
+    
+        }
+    }

@@ -18,15 +18,42 @@ class NewProject extends Component {
 
 
     constructor(props) {
+        console.log(props);
         super(props);
         this.state = {
             clientlist: [],
             clientarray: [],
-            show: false  //loading-bar
+            show: false,//loading-bar,
+            disabledate: true
         }
     }
 
     componentDidMount() {
+        console.log("component Did Mount");
+        console.log(this.props.location);
+     console.log(this.props.form)
+        if (this.props.location.data) {
+            this.setState({ disabledate: false })
+          
+            this.props.form.setFieldsValue({
+                ['name']: this.props.location.data.data.name,
+                ['textRequirement']: this.props.location.data.data.requirement,
+                ['technology']: this.props.location.data.data.technology,
+                ['expecstart']: this.props.location.data.data.expectedStartDate?moment(this.props.location.data.data.expectedStartDate):'',
+                 ['expecend']:this.props.location.data.data.expectedEndDate? moment(this.props.location.data.data.expectedEndDate):'',
+                 ['actualstart']:this.props.location.data.data.actualStartDate? moment(this.props.location.data.data.actualStartDate):'',
+                 ['actualend']:this.props.location.data.data.actualEndDate? moment(this.props.location.data.data.actualEndDate):'',
+                 ['status']: this.props.location.data.data.status,
+                 ['client']:this.props.location.data.data.client._id
+                })
+             
+
+
+            }
+        
+
+
+
         // GET CLIENT LIST
         this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
             // this.setState({ show: false });
@@ -37,6 +64,7 @@ class NewProject extends Component {
 
         })
     }
+
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -45,30 +73,64 @@ class NewProject extends Component {
 
             if (!err) {
                 console.log('Received values of form: ', values);
-                let data = {
-                    requirement: values.textRequirement,
-                    status: values.status,
-                    technology: values.technology,
-                    expectedStartDate: values.expecstart._d,
-                    actualStartDate: values.actualstart._d,
-                    expectedEndDate: values.expecend._d,
-                    actualEndDate: values.actualend ? values.actualend._d : '',
-                    name: values.name,
-                    userId: sessionStorage.getItem('id'),
-                    client: values.client
+                
+                if (Object.keys(this.props.location.data.data).length != 0) {
+                    console.log('edit function')
 
-                }
-                console.log(data)
-                this.props.addProject(data).then(response => {
-                    this.setState({ show: false });
-                    console.log(response)
-                    if (!response.error) {
-                        this.props.opentoast('success', 'Project Added Successfully!');
-                        this.props.history.push('/dashboard/projectlist')
+
+                    let data = {
+                        requirement: values.textRequirement,
+                        status: values.status,
+                        technology: values.technology,
+                        expectedStartDate:values.actualstart? values.expecstart._d:'',
+                        actualStartDate: values.actualstart ? values.actualstart._d : '',
+                        expectedEndDate: values.expecend ?values.expecend._d:'',
+                        actualEndDate: values.actualend ? values.actualend._d : '',
+                        name: values.name,
+                        client: values.client
+    
                     }
-                }, err => {
+                    console.log(data)
 
-                })
+                    this.props.editproject(data, this.props.location.data.data._id).then(response => {
+                        this.setState({ show: false });
+                        console.log(response)
+                        if (!response.error) {
+                            this.props.opentoast('success', 'Project Updated Successfully!');
+                            this.props.history.push('/dashboard/projectlist')
+                        }
+                    }, err => {
+
+                    })
+                }
+                else {
+
+                    let data = {
+                        requirement: values.textRequirement,
+                        status: values.status,
+                        technology: values.technology,
+                        expectedStartDate:values.actualstart? values.expecstart._d:'',
+                        actualStartDate: values.actualstart ? values.actualstart._d : '',
+                        expectedEndDate: values.expecend ?values.expecend._d:'',
+                        actualEndDate: values.actualend ? values.actualend._d : '',
+                        name: values.name,
+                        userId: sessionStorage.getItem('id'),
+                        client: values.client
+    
+                    }
+                    console.log(data)
+                    this.props.addProject(data).then(response => {
+                        this.setState({ show: false });
+                        console.log(response)
+                        if (!response.error) {
+                            this.props.opentoast('success', 'Project Added Successfully!');
+                            this.props.history.push('/dashboard/projectlist')
+                        }
+                    }, err => {
+
+                    })
+                }
+
             }
         });
     }
@@ -224,7 +286,7 @@ class NewProject extends Component {
                                                 >
 
                                                 </AutoComplete>
-                                            )}
+                                                )}
                                         </FormItem>
                                     </Col>
                                     <Col xs={24} sm={24} md={24} lg={12}>
@@ -232,8 +294,9 @@ class NewProject extends Component {
                                             {getFieldDecorator('name', {
                                                 rules: [{ required: true, message: 'Please input your Name!' }],
                                             })(
+
                                                 <Input maxLength="50" placeholder="Name" />
-                                            )}
+                                                )}
                                         </FormItem>
                                         {/* <FormItem label="Brief Requirement">
                                         {getFieldDecorator('requirement', {
@@ -268,7 +331,7 @@ class NewProject extends Component {
                                         })(
                                             // <Input placeholder="Brief Requirement" />
                                             <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -279,8 +342,10 @@ class NewProject extends Component {
                                             rules: [{ required: true, message: 'Please select your status!' }],
                                         })(
                                             <Select className="statuspipeline"
+
                                                 placeholder="Status"
                                                 onChange={this.handleSelectChange}
+
                                             >
                                                 <Option value="New">New</Option>
                                                 <Option value="InDiscussion">InDiscussion</Option>
@@ -289,7 +354,7 @@ class NewProject extends Component {
                                                 <Option value="Stalled">Stalled</Option>
                                                 <Option value="Completed">Completed</Option>
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
@@ -297,8 +362,8 @@ class NewProject extends Component {
                                         {getFieldDecorator('technology', {
                                             rules: [{ required: true, message: 'Please input your Technology!' }],
                                         })(
-                                            <Input  maxLength="50" placeholder="Technology" />
-                                        )}
+                                            <Input maxLength="50" placeholder="Technology" />
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -317,7 +382,7 @@ class NewProject extends Component {
                                                     }]
                                                 })(
                                                     <DatePicker />
-                                                )}
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
@@ -333,7 +398,7 @@ class NewProject extends Component {
                                                     }]
                                                 })(
                                                     <DatePicker />
-                                                )}
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
@@ -348,12 +413,12 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('actualstart', {
-                                                    rules: [{ type: 'object', required: false, message: 'Please select actualdate!' }, {
+                                                    rules: [{ type: 'object', required:false, message: 'Please select actualdate!' }, {
                                                         validator: this.validatetoactualend
                                                     }]
                                                 })(
                                                     <DatePicker />
-                                                )}
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
@@ -368,8 +433,8 @@ class NewProject extends Component {
                                                         validator: this.validatetoactualstart
                                                     }]
                                                 })(
-                                                    <DatePicker disabled={true} />
-                                                )}
+                                                    <DatePicker disabled={this.state.disabledate} />
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
