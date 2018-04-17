@@ -44,7 +44,7 @@ class NewProject extends Component {
                  ['actualstart']:this.props.location.data.data.actualStartDate? moment(this.props.location.data.data.actualStartDate):'',
                  ['actualend']:this.props.location.data.data.actualEndDate? moment(this.props.location.data.data.actualEndDate):'',
                  ['status']: this.props.location.data.data.status,
-                 ['client']:this.props.location.data.data.client._id
+                 ['client']:this.props.location.data.data.client?this.props.location.data.data.client._id:''
                 })
              
 
@@ -74,7 +74,7 @@ class NewProject extends Component {
             if (!err) {
                 console.log('Received values of form: ', values);
                 
-                if (Object.keys(this.props.location.data.data).length != 0) {
+                if (this.props.location.data) {
                     console.log('edit function')
 
 
@@ -82,8 +82,8 @@ class NewProject extends Component {
                         requirement: values.textRequirement,
                         status: values.status,
                         technology: values.technology,
-                        expectedStartDate:values.actualstart? values.expecstart._d:'',
-                        actualStartDate: values.actualstart ? values.actualstart._d : '',
+                        expectedStartDate:values.expecstart? values.expecstart._d:'',
+                        // actualStartDate: values.actualstart ? values.actualstart._d : '',
                         expectedEndDate: values.expecend ?values.expecend._d:'',
                         actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
@@ -109,7 +109,7 @@ class NewProject extends Component {
                         requirement: values.textRequirement,
                         status: values.status,
                         technology: values.technology,
-                        expectedStartDate:values.actualstart? values.expecstart._d:'',
+                        expectedStartDate:values.expecstart? values.expecstart._d:'',
                         actualStartDate: values.actualstart ? values.actualstart._d : '',
                         expectedEndDate: values.expecend ?values.expecend._d:'',
                         actualEndDate: values.actualend ? values.actualend._d : '',
