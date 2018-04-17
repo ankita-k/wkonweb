@@ -126,11 +126,29 @@ class ClientList extends Component {
     this.setState({ show: true })
     console.log('component will mount')
     this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
-      this.setState({ show: false });
-      console.log(data);
-      this.setState({ clientlist: data.result });
-      this.setState({ searchedclient: data.result })
-      console.log(this.state.clientlist);
+      if (!data.error) {
+        this.setState({ show: false });
+        console.log(data);
+        this.setState({ clientlist: data.result });
+        this.setState({ searchedclient: data.result })
+        var data = data.result;
+        data.map(function (item, index) {
+          return data[index] = {
+            name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+            phoneNumber: item.phoneNumber,
+            email: item.email,
+            domain: item.domain,
+            country: item.country,
+            status: item.status,
+            key: Math.random() * 1000000000000000000,
+            _id: item._id
+          }
+
+        })
+        this.setState({ searchedclient: data });
+        console.log(this.state.clientlist);
+      }
+
     }, err => {
 
     })
