@@ -76,7 +76,7 @@ class ClientComponent extends Component {
                         this.props.history.push('/dashboard/clientlist')
                     }
                 }, err => {
-
+                    this.setState({ show: false });
                 })
 
             }

@@ -95,7 +95,7 @@ class ClientList extends Component {
       this.setState({ searchedclient: data.result })
       console.log(this.state.clientlist);
     }, err => {
-
+      this.setState({ show: false });
     })
   }
 

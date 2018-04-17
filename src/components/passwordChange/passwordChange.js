@@ -63,7 +63,7 @@ class ChangePasswordForm extends Component {
                             this.props.opentoast('error', 'Wrong Password !');
                         }
                     }, err => {
-
+                        this.setState({ show: false });
                     })
             }
         });

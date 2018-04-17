@@ -67,7 +67,7 @@ class NewProject extends Component {
                         this.props.history.push('/dashboard/projectlist')
                     }
                 }, err => {
-
+                    this.setState({ show: false });
                 })
             }
         });
