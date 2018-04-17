@@ -107,19 +107,20 @@ class ProjectlistView extends Component {
         dataIndex: 'expectedStartDate',
         key: 'expectedStartDate',
       },
-      {
-        title: 'Actual Start Date',
-        dataIndex: 'actualStartDate',
-        key: 'astart',
-      }, {
-        title: 'Expected End Date',
-        dataIndex: 'expectedEndDate',
-        key: 'expectedtask',
-      }, {
-        title: 'Actual End Date',
-        dataIndex: 'actualEndDate',
-        key: 'taskend',
-      },
+      // {
+      //   title: 'Actual Start Date',
+      //   dataIndex: 'actualStartDate',
+      //   key: 'astart',
+      // },
+      //  {
+      //   title: 'Expected End Date',
+      //   dataIndex: 'expectedEndDate',
+      //   key: 'expectedtask',
+      // }, {
+      //   title: 'Actual End Date',
+      //   dataIndex: 'actualEndDate',
+      //   key: 'taskend',
+      // },
       {
         title: 'Action',
         key: 'action',
