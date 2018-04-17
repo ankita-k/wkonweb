@@ -21,6 +21,20 @@ class ClientComponent extends Component {
 
 
     componentDidMount() {
+        console.log(this.props);
+        console.log(this.props.form)
+        if (this.props.location.data) {
+            this.props.form.setFieldsValue({
+                ['name']: this.props.location.data.data.name,
+                ['email']: this.props.location.data.data.email,
+                ['phone']: this.props.location.data.data.phoneNumber,
+                ['domain']: this.props.location.data.data.domain,
+                ['country']: this.props.location.data.data.country,
+                ['status']: this.props.location.data.data.status
+            });
+            console.log(this.props.form)
+        }
+
         // GET COUNTRY LIST
 
         console.log('component will didmount')
@@ -94,7 +108,7 @@ class ClientComponent extends Component {
                 <Card className="innercardContent" bordered={false}>
                     {/* --new customer details-- */}
                     <div className="newCustomerform">
-                        <h1 className="NewCustomer">New Customer</h1>
+                        <h1 className="NewCustomer">New Client</h1>
                         <Divider dashed className="underLine" />
                         {/* <div className="headingLine">
                             <Row className="formcustomer">
@@ -121,7 +135,7 @@ class ClientComponent extends Component {
                                             <Input
                                                 maxLength="15"
                                                 placeholder="Name" name="name" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -138,7 +152,7 @@ class ClientComponent extends Component {
                                             <Input
                                                 maxLength="20"
                                                 placeholder="Email" name="email" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -152,7 +166,7 @@ class ClientComponent extends Component {
                                                 type="test"
                                                 maxLength="15"
                                                 placeholder="Phone No." name="phoneNumber" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -164,7 +178,7 @@ class ClientComponent extends Component {
                                             rules: [{ required: true, message: 'Please input your Domain!' }],
                                         })(
                                             <Input placeholder="Domain" name="domain" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -183,7 +197,7 @@ class ClientComponent extends Component {
                                                 })}
 
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -201,7 +215,7 @@ class ClientComponent extends Component {
                                                 <Option value="Pipeline">Pipeline</Option>
                                                 <Option value="Committed">Committed</Option>
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>

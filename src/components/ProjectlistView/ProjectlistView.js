@@ -104,7 +104,7 @@ class ProjectlistView extends Component {
               {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
             </span> */}
 
-            <Button className="edit">
+            <Button className="edit" >
               <a href="javascript:;"><Icon type="edit" /></a></Button>
             <Button className="delete" onClick={() => { this.deleteProject(record) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
           </span>

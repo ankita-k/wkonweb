@@ -364,7 +364,7 @@ export function deleteproject(id) {
                         
                         console.log('response');
 
-                        dispatch(deleterow(responseJSON))
+                        dispatch(deleteclientrow(responseJSON))
                         resolve(responseJSON);
                     })
                     .catch((error) => {

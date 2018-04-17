@@ -78,7 +78,7 @@ class ClientList extends Component {
 
       searchedclient: [],
       searchinput: '',
-      columns: [{
+      column: [{
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
@@ -108,9 +108,9 @@ class ClientList extends Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Button className="edit">
+            <Button className="edit" onClick={() => { this.editClient(record) }}>
               <a href="javascript:;"><Icon type="edit" /></a></Button>
-            <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
+            <Button className="delete" onClick={() => { this.deleteClient(record) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
           </span>
         ),
       }]
@@ -118,6 +118,31 @@ class ClientList extends Component {
     }
   }
 
+  //edit client
+  editClient = (data) => {
+    this.props.history.push({
+      pathname: '/dashboard/clientcreate',
+      data: {
+        data
+      }
+    })
+
+  }
+
+  //delete client
+  deleteClient = (data) => {
+    console.log(data);
+    this.props.deleteclient(data._id).then(response => {
+      console.log(response)
+      if (!response.error) {
+        this.props.opentoast('success', 'Client Deleted Successfully!');
+        this.getclients();
+      }
+    }, err => {
+
+    })
+
+  }
 
   componentDidMount() {
 
@@ -125,6 +150,10 @@ class ClientList extends Component {
     // GET CLIENT LIST
     this.setState({ show: true })
     console.log('component will mount')
+    this.getclients();
+  }
+
+  getclients = () => {
     this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
       this.setState({ show: false });
       console.log(data);
@@ -134,8 +163,8 @@ class ClientList extends Component {
     }, err => {
 
     })
-  }
 
+  }
   // SEACRH CLIENT LIST ACCORDING TO INPUT 
   searchClient = (e) => {
     console.log('search data', e);
@@ -157,7 +186,7 @@ class ClientList extends Component {
   }
 
   render() {
-    const columns = this.state.columns;
+    const columns = this.state.column;
     return (
 
       <div className="clientListdiv">
