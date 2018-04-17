@@ -21,6 +21,20 @@ class ClientComponent extends Component {
 
 
     componentDidMount() {
+        console.log(this.props);
+        console.log(this.props.form)
+        if (this.props.location.data) {
+            this.props.form.setFieldsValue({
+                ['name']: this.props.location.data.data.name,
+                ['email']: this.props.location.data.data.email,
+                ['phone']: this.props.location.data.data.phoneNumber,
+                ['domain']: this.props.location.data.data.domain,
+                ['country']: this.props.location.data.data.country,
+                ['status']: this.props.location.data.data.status
+            });
+            console.log(this.props.form)
+        }
+
         // GET COUNTRY LIST
 
         console.log('component will didmount')
@@ -67,17 +81,31 @@ class ClientComponent extends Component {
                     userId: sessionStorage.getItem('id'),
                     domain: values.domain
                 }
+                if (this.props.location.data) {
+                    console.log('edshgj')
+                    this.props.updateclient(data,this.props.location.data.data._id).then(data => {
+                        console.log(data)
+                        if (!data.error) {
+                            this.props.opentoast('success', 'Client Updated Successfully!');
+                            this.props.history.push('/dashboard/clientlist')
+                        }
+                    }, err => {
 
-                this.props.createClient(data).then(result => {
-                    this.setState({ show: false });
-                    console.log(result);
-                    if (!result.error) {
-                        this.props.opentoast('success', 'Customer Added Successfully!');
-                        this.props.history.push('/dashboard/clientlist')
-                    }
-                }, err => {
+                    })
+                }
+                else {
+                    this.props.createClient(data).then(result => {
+                        this.setState({ show: false });
+                        console.log(result);
+                        if (!result.error) {
+                            this.props.opentoast('success', 'Client Added Successfully!');
+                            this.props.history.push('/dashboard/clientlist')
+                        }
+                    }, err => {
+                        this.setState({ show: false });
+                    })
+                }
 
-                })
 
             }
         });
@@ -94,7 +122,7 @@ class ClientComponent extends Component {
                 <Card className="innercardContent" bordered={false}>
                     {/* --new customer details-- */}
                     <div className="newCustomerform">
-                        <h1 className="NewCustomer">New Customer</h1>
+                        <h1 className="NewCustomer">New Client</h1>
                         <Divider dashed className="underLine" />
                         {/* <div className="headingLine">
                             <Row className="formcustomer">
@@ -121,7 +149,7 @@ class ClientComponent extends Component {
                                             <Input
                                                 maxLength="15"
                                                 placeholder="Name" name="name" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -138,7 +166,7 @@ class ClientComponent extends Component {
                                             <Input
                                                 maxLength="20"
                                                 placeholder="Email" name="email" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -152,7 +180,7 @@ class ClientComponent extends Component {
                                                 type="test"
                                                 maxLength="15"
                                                 placeholder="Phone No." name="phoneNumber" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -164,7 +192,7 @@ class ClientComponent extends Component {
                                             rules: [{ required: true, message: 'Please input your Domain!' }],
                                         })(
                                             <Input placeholder="Domain" name="domain" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -177,13 +205,15 @@ class ClientComponent extends Component {
                                             <Select className="statuspipeline"
                                                 placeholder="Country"
                                                 onChange={this.selectCountry}
+                                                showSearch
+
                                             >
                                                 {this.state.countrylist.map((item, index) => {
                                                     return <Option key={index} value={item.name}>{item.name}</Option>
                                                 })}
 
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -196,19 +226,21 @@ class ClientComponent extends Component {
                                             <Select className="statuspipeline"
                                                 placeholder="Status"
                                                 onChange={this.selectStatus}
+                                                showSearch
+
                                             >
                                                 <Option value="Interested">Interested</Option>
                                                 <Option value="Pipeline">Pipeline</Option>
                                                 <Option value="Committed">Committed</Option>
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button" >Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
                             </div>
                         </FormItem>

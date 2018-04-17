@@ -1,48 +1,51 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Row, Input } from 'antd';
+import { Card, Table, Button, Icon, Row, Input, Modal, Col } from 'antd';
 import '../NewProject/NewProject.css';
 import './ClientList.css';
 import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
-import Loading from 'react-loading-bar'
-import 'react-loading-bar/dist/index.css'
+import Loading from 'react-loading-bar';
+import 'react-loading-bar/dist/index.css';
+import warning from '../../Images/war.png';
 const Search = Input.Search;
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
 
-}, {
-  title: 'Phone',
-  dataIndex: 'phoneNumber',
-  key: 'phoneNumber',
-}, {
-  title: 'Email',
-  dataIndex: 'email',
-  key: 'email',
-}, {
-  title: 'Domain',
-  dataIndex: 'domain',
-  key: 'domain',
-}, {
-  title: 'Country',
-  dataIndex: 'country',
-  key: 'country',
-}, {
-  title: 'Status',
-  dataIndex: 'status',
-  key: 'status',
-}, {
-  // title: 'Action',
-  // key: 'action',
-  // render: (text, record) => (
-  //   <span>
-  //     <Button className="edit">
-  //       <a href="javascript:;"><Icon type="edit" /></a></Button>
-  //     <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
-  //   </span>
-  // ),
-}];
+
+// const columns = [{
+//   title: 'Name',
+//   dataIndex: 'name',
+//   key: 'name',
+
+// }, {
+//   title: 'Phone',
+//   dataIndex: 'phoneNumber',
+//   key: 'phoneNumber',
+// }, {
+//   title: 'Email',
+//   dataIndex: 'email',
+//   key: 'email',
+// }, {
+//   title: 'Domain',
+//   dataIndex: 'domain',
+//   key: 'domain',
+// }, {
+//   title: 'Country',
+//   dataIndex: 'country',
+//   key: 'country',
+// }, {
+//   title: 'Status',
+//   dataIndex: 'status',
+//   key: 'status',
+// }, {
+// title: 'Action',
+// key: 'action',
+// render: (text, record) => (
+//   <span>
+//     <Button className="edit">
+//       <a href="javascript:;"><Icon type="edit" /></a></Button>
+//     <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
+//   </span>
+// ),
+//}];
 
 const data = [{
   key: '1',
@@ -69,7 +72,58 @@ const data = [{
   country: 'Sydney',
   status: 'Pipeline',
 }];
+
 class ClientList extends Component {
+
+  // modal for delete start
+  // state = {
+  //   ModalText: 'Content of the modal',
+  //   visible: false,
+  //   confirmLoading: false,
+  // }
+  // showModal = () => {
+  //   this.setState({
+  //     visible: true,
+  //   });
+  // }
+  // handleok = () => {
+  //   this.setState({
+  //     ModalText: 'The modal will be closed after two seconds',
+  //     confirmLoading: true,
+  //   });
+  //   setTimeout(() => {
+  //     this.setState({
+  //       visible: false,
+  //       confirmLoading: false,
+  //     });
+  //   }, 2000);
+  // }
+  // handleCancel = () => {
+  //   console.log('Clicked cancel button');
+  //   this.setState({
+  //     visible: false,
+  //   });
+  // }
+  state = {
+    loading: false,
+    visible: false,
+  }
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  }
+  handleOk = () => {
+    this.setState({ loading: true });
+    setTimeout(() => {
+      this.setState({ loading: false, visible: false });
+    }, 3000);
+  }
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+
+  // modal for delete end
   constructor(props) {
     super(props);
     this.state = {
@@ -77,10 +131,83 @@ class ClientList extends Component {
       show: true, //loading-bar        
 
       searchedclient: [],
-      searchinput: ''
+      searchinput: '',
+      column: [{
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+
+      }, {
+        title: 'Phone',
+        dataIndex: 'phoneNumber',
+        key: 'phoneNumber',
+      }, {
+        title: 'Email',
+        dataIndex: 'email',
+        key: 'email',
+      }, {
+        title: 'Domain',
+        dataIndex: 'domain',
+        key: 'domain',
+      }, {
+        title: 'Country',
+        dataIndex: 'country',
+        key: 'country',
+      }, {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+      }, {
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => (
+          // <span>
+          //   <Button className="edit">
+          //     <a href="javascript:;"><Icon type="edit" /></a></Button>
+          //   <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
+
+          // </span>
+          <Row>
+            <Col lg={10}>
+              <Button className="edit">
+                <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+            <Col lg="8"></Col>
+            <Col lg={10}>
+              <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
+            </Col>
+
+          </Row>
+        ),
+      }]
+
     }
   }
 
+  //edit client
+  editClient = (data) => {
+    this.props.history.push({
+      pathname: '/dashboard/clientcreate',
+      data: {
+        data
+      }
+    })
+
+  }
+
+  //delete client
+  deleteClient = (data) => {
+    console.log(data);
+    this.props.deleteclient(data._id).then(response => {
+      console.log(response)
+      if (!response.error) {
+        this.props.opentoast('success', 'Client Deleted Successfully!');
+        this.getclients();
+      }
+    }, err => {
+
+    })
+
+  }
 
   componentDidMount() {
 
@@ -88,17 +215,39 @@ class ClientList extends Component {
     // GET CLIENT LIST
     this.setState({ show: true })
     console.log('component will mount')
-    this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
-      this.setState({ show: false });
-      console.log(data);
-      this.setState({ clientlist: data.result });
-      this.setState({ searchedclient: data.result })
-      console.log(this.state.clientlist);
-    }, err => {
-
-    })
+    this.getclients();
   }
 
+  getclients = () => {
+    this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
+      if (!data.error) {
+        this.setState({ show: false });
+        console.log(data);
+        this.setState({ clientlist: data.result });
+        this.setState({ searchedclient: data.result })
+        var data = data.result;
+        data.map(function (item, index) {
+          return data[index] = {
+            name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+            phoneNumber: item.phoneNumber,
+            email: item.email,
+            domain: item.domain,
+            country: item.country,
+            status: item.status,
+            key: Math.random() * 1000000000000000000,
+            _id: item._id
+          }
+
+        })
+        this.setState({ searchedclient: data });
+        console.log(this.state.clientlist);
+      }
+
+    }, err => {
+      this.setState({ show: false });
+    })
+
+  }
   // SEACRH CLIENT LIST ACCORDING TO INPUT 
   searchClient = (e) => {
     console.log('search data', e);
@@ -120,9 +269,15 @@ class ClientList extends Component {
   }
 
   render() {
-
+   
+    // modal
+    const { visible, loading } = this.state;
+    // modal
+    const columns = this.state.column;
     return (
+
       <div className="clientListdiv">
+
         <Loading
           show={this.state.show}
           color="red"
@@ -135,19 +290,19 @@ class ClientList extends Component {
           </div>
         </Row>
         <Row>
-        <div className="AllProjects">
-          <Search className="SearchValue"
-            placeholder="input search text"
-            onSearch={(value) => { this.searchClient(value) }}
-            style={{ width: 200 }}
-            onChange={(e) => { this.showallList(e.target.value) }}
-            enterButton
-            value={this.state.searchinput}
-          />
-          <Button className="allprojectbtn" onClick={() => {
-            this.setState({ searchedclient: this.state.clientlist });
-            this.setState({ searchinput: '' })
-          }}>Show All</Button>
+          <div className="AllProjects">
+            <Search className="SearchValue"
+              placeholder="input search text"
+              onSearch={(value) => { this.searchClient(value) }}
+              style={{ width: 200 }}
+              onChange={(e) => { this.showallList(e.target.value) }}
+              enterButton
+              value={this.state.searchinput}
+            />
+            <Button className="allprojectbtn" onClick={() => {
+              this.setState({ searchedclient: this.state.clientlist });
+              this.setState({ searchinput: '' })
+            }}>Show All</Button>
           </div>
         </Row>
 
@@ -156,6 +311,33 @@ class ClientList extends Component {
           <Table columns={columns} dataSource={this.state.searchedclient} />
         </Card>
         {/* clientlist */}
+        <div className="deletemodal">
+
+          <Modal
+            className="delmodal"
+            visible={visible}
+            wrapClassName="vertical-center-modal"
+            title="Confirm"
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button className="nobtn" key="back" onClick={this.handleCancel}>NO</Button>,
+              <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+                YES
+            </Button>,
+            ]}
+          >
+            <Row>
+              <Col lg={4}>
+                <img src={warning} />
+              </Col>
+              <Col lg={18}>
+                <p>Are you sure you Want to delete this file?</p>
+                <p>You can't undo this action.</p>
+              </Col>
+            </Row>
+          </Modal>
+        </div>
       </div>
     );
   }
