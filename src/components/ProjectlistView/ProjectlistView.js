@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Row, Input } from 'antd';
+import { Card, Table, Button, Icon, Row, Input,Col,Modal } from 'antd';
 import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import { Select } from 'antd';
@@ -7,6 +7,7 @@ import '../ClientList/ClientList.css';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import moment from 'moment';
+import warning from '../../Images/war.png';
 const Option = Select.Option;
 const Search = Input.Search;
 // import { Input } from 'antd';
@@ -50,6 +51,30 @@ const Search = Input.Search;
 // }];
 
 class ProjectlistView extends Component {
+  state = {
+    loading: false,
+    visible: false,
+  }
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  }
+  handleOk = () => {
+    this.setState({ loading: true });
+    setTimeout(() => {
+      this.setState({ loading: false, visible: false });
+    }, 3000);
+  }
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+
+
+
+
+
+
   constructor(props) {
     super(props);
     this.state = {
@@ -99,15 +124,25 @@ class ProjectlistView extends Component {
         title: 'Action',
         key: 'action',
         render: (text, record) => (
-          <span>
-            {/* <span style={{ marginLeft: 8 }}>
-              {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
-            </span> */}
+          // <span>
+          //   {/* <span style={{ marginLeft: 8 }}>
+          //     {hasSelected ? `Selected ${selectedRowKeys.length} items` : ''}
+          //   </span> */}
 
-            <Button className="edit">
-              <a href="javascript:;"><Icon type="edit" /></a></Button>
-            <Button className="delete" onClick={() => { this.deleteProject(record) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
-          </span>
+          //   <Button className="edit">
+          //     <a href="javascript:;"><Icon type="edit" /></a></Button>
+          //   <Button className="delete" onClick={() => { this.deleteProject(record) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
+          // </span>
+          <Row>
+          <Col lg={10}>
+          <Button className="edit">
+                        <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+                        <Col lg="8"></Col>
+                        <Col lg={10}>
+                      <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
+          </Col>
+          
+                     </Row>
         ),
       }
       ]
@@ -199,6 +234,7 @@ class ProjectlistView extends Component {
   render() {
     console.log('render')
     const columns = this.state.column;
+    const { visible, loading } = this.state;
     return (
       <div className="projectListdiv">
         <Loading
@@ -251,6 +287,33 @@ class ProjectlistView extends Component {
             columns={columns} dataSource={this.state.searchedList} />
         </Card>
         {/* clientlist */}
+        <div className="deletemodal">
+        
+        <Modal
+        className="delmodal"
+          visible={visible}
+          wrapClassName="vertical-center-modal"
+          title="Confirm"
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+          footer={[
+            <Button className="nobtn" key="back" onClick={this.handleCancel}>NO</Button>,
+            <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+              YES
+            </Button>,
+          ]}
+        >
+        <Row>
+          <Col lg={4}>
+        <img src={warning}/>
+        </Col>
+        <Col lg={18}>
+          <p>Are you sure you Want to delete this file?</p>
+          <p>You can't undo this action.</p>
+          </Col>
+          </Row>
+        </Modal>
+        </div>
       </div>
     );
   }
