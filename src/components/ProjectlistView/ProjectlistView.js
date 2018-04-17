@@ -139,10 +139,10 @@ class ProjectlistView extends Component {
                         <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
                         <Col lg="8"></Col>
                         <Col lg={10}>
-                      <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
+                      <Button className="delete" onClick={() =>{this.deleteProject(record)} }><a href="javascript:;"><Icon type="delete" /></a></Button>
           </Col>
           
-                     </Row>
+                     </Row> 
         ),
       }
       ]
@@ -151,6 +151,10 @@ class ProjectlistView extends Component {
   // delete 
   deleteProject = (data) => {
     console.log(data);
+    // this.setState({ loading: true });
+    // setTimeout(() => {
+    //   this.setState({ loading: false, visible: false });
+    // }, 3000);
     this.props.deleteproject(data._id).then(response => {
       console.log(response);
       if (!response.error) {
@@ -319,11 +323,11 @@ class ProjectlistView extends Component {
           visible={visible}
           wrapClassName="vertical-center-modal"
           title="Confirm"
-          onOk={this.handleOk}
+          onOk={()=>{this.deleteProject}}
           onCancel={this.handleCancel}
           footer={[
             <Button className="nobtn" key="back" onClick={this.handleCancel}>NO</Button>,
-            <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+            <Button key="submit" type="primary" loading={loading} onClick={()=>{this.deleteProject}}>
               YES
             </Button>,
           ]}
