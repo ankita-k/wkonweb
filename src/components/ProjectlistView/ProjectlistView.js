@@ -150,23 +150,26 @@ class ProjectlistView extends Component {
     console.log('project List');
     this.setState({ show: true })
     this.props.projectList(this.state.userId, this.state.page, this.state.limit).then((sucess) => {
-      this.setState({ show: false });
-      console.log(sucess);
-      this.setState({ projectList: sucess.result });
-      var data = sucess.result;
-      data.map(function (item, index) {
-        return data[index] = {
-          name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
-          requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
-          status: item.status,
-          technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
-          expectedStartDate: moment(item.expectedStartDate).format("MMM Do YY"),
-          key: Math.random() * 1000000000000000000,
-          _id:item._id
-        }
-      })
+      if (!sucess.error) {
+        this.setState({ show: false });
+        console.log(sucess);
+        this.setState({ projectList: sucess.result });
+        var data = sucess.result;
+        data.map(function (item, index) {
+          return data[index] = {
+            name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+            requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
+            status: item.status,
+            technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
+            expectedStartDate: moment(item.expectedStartDate).format("MMM Do YY"),
+            key: Math.random() * 1000000000000000000,
+            _id: item._id
+          }
+        })
 
-      this.setState({ searchedList: data });
+        this.setState({ searchedList: data });
+      }
+
 
     }, err => {
       this.setState({ show: false });
@@ -200,7 +203,6 @@ class ProjectlistView extends Component {
     console.log('render')
     const columns = this.state.column;
     return (
-
       <div className="projectListdiv">
         <Loading
           show={this.state.show}
@@ -235,7 +237,6 @@ class ProjectlistView extends Component {
             this.setState({ searchinput: '' })
           }}>All Projects</Button>
         </div>
-
         <Row>
           <div className="addButton clientadd">
             <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>

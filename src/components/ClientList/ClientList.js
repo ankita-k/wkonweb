@@ -7,42 +7,42 @@ import * as actioncreators from '../../redux/action';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 const Search = Input.Search;
-const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  key: 'name',
+// const columns = [{
+//   title: 'Name',
+//   dataIndex: 'name',
+//   key: 'name',
 
-}, {
-  title: 'Phone',
-  dataIndex: 'phoneNumber',
-  key: 'phoneNumber',
-}, {
-  title: 'Email',
-  dataIndex: 'email',
-  key: 'email',
-}, {
-  title: 'Domain',
-  dataIndex: 'domain',
-  key: 'domain',
-}, {
-  title: 'Country',
-  dataIndex: 'country',
-  key: 'country',
-}, {
-  title: 'Status',
-  dataIndex: 'status',
-  key: 'status',
-}, {
-  // title: 'Action',
-  // key: 'action',
-  // render: (text, record) => (
-  //   <span>
-  //     <Button className="edit">
-  //       <a href="javascript:;"><Icon type="edit" /></a></Button>
-  //     <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
-  //   </span>
-  // ),
-}];
+// }, {
+//   title: 'Phone',
+//   dataIndex: 'phoneNumber',
+//   key: 'phoneNumber',
+// }, {
+//   title: 'Email',
+//   dataIndex: 'email',
+//   key: 'email',
+// }, {
+//   title: 'Domain',
+//   dataIndex: 'domain',
+//   key: 'domain',
+// }, {
+//   title: 'Country',
+//   dataIndex: 'country',
+//   key: 'country',
+// }, {
+//   title: 'Status',
+//   dataIndex: 'status',
+//   key: 'status',
+// }, {
+// title: 'Action',
+// key: 'action',
+// render: (text, record) => (
+//   <span>
+//     <Button className="edit">
+//       <a href="javascript:;"><Icon type="edit" /></a></Button>
+//     <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
+//   </span>
+// ),
+//}];
 
 const data = [{
   key: '1',
@@ -77,7 +77,44 @@ class ClientList extends Component {
       show: true, //loading-bar        
 
       searchedclient: [],
-      searchinput: ''
+      searchinput: '',
+      columns: [{
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name',
+
+      }, {
+        title: 'Phone',
+        dataIndex: 'phoneNumber',
+        key: 'phoneNumber',
+      }, {
+        title: 'Email',
+        dataIndex: 'email',
+        key: 'email',
+      }, {
+        title: 'Domain',
+        dataIndex: 'domain',
+        key: 'domain',
+      }, {
+        title: 'Country',
+        dataIndex: 'country',
+        key: 'country',
+      }, {
+        title: 'Status',
+        dataIndex: 'status',
+        key: 'status',
+      }, {
+        title: 'Action',
+        key: 'action',
+        render: (text, record) => (
+          <span>
+            <Button className="edit">
+              <a href="javascript:;"><Icon type="edit" /></a></Button>
+            <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
+          </span>
+        ),
+      }]
+
     }
   }
 
@@ -89,11 +126,29 @@ class ClientList extends Component {
     this.setState({ show: true })
     console.log('component will mount')
     this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
-      this.setState({ show: false });
-      console.log(data);
-      this.setState({ clientlist: data.result });
-      this.setState({ searchedclient: data.result })
-      console.log(this.state.clientlist);
+      if (!data.error) {
+        this.setState({ show: false });
+        console.log(data);
+        this.setState({ clientlist: data.result });
+        this.setState({ searchedclient: data.result })
+        var data = data.result;
+        data.map(function (item, index) {
+          return data[index] = {
+            name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+            phoneNumber: item.phoneNumber,
+            email: item.email,
+            domain: item.domain,
+            country: item.country,
+            status: item.status,
+            key: Math.random() * 1000000000000000000,
+            _id: item._id
+          }
+
+        })
+        this.setState({ searchedclient: data });
+        console.log(this.state.clientlist);
+      }
+
     }, err => {
       this.setState({ show: false });
     })
@@ -120,9 +175,11 @@ class ClientList extends Component {
   }
 
   render() {
-
+    const columns = this.state.columns;
     return (
+
       <div className="clientListdiv">
+
         <Loading
           show={this.state.show}
           color="red"
@@ -135,19 +192,19 @@ class ClientList extends Component {
           </div>
         </Row>
         <Row>
-        <div className="AllProjects">
-          <Search className="SearchValue"
-            placeholder="input search text"
-            onSearch={(value) => { this.searchClient(value) }}
-            style={{ width: 200 }}
-            onChange={(e) => { this.showallList(e.target.value) }}
-            enterButton
-            value={this.state.searchinput}
-          />
-          <Button className="allprojectbtn" onClick={() => {
-            this.setState({ searchedclient: this.state.clientlist });
-            this.setState({ searchinput: '' })
-          }}>Show All</Button>
+          <div className="AllProjects">
+            <Search className="SearchValue"
+              placeholder="input search text"
+              onSearch={(value) => { this.searchClient(value) }}
+              style={{ width: 200 }}
+              onChange={(e) => { this.showallList(e.target.value) }}
+              enterButton
+              value={this.state.searchinput}
+            />
+            <Button className="allprojectbtn" onClick={() => {
+              this.setState({ searchedclient: this.state.clientlist });
+              this.setState({ searchinput: '' })
+            }}>Show All</Button>
           </div>
         </Row>
 

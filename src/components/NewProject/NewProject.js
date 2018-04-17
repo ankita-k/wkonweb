@@ -281,6 +281,7 @@ class NewProject extends Component {
                                             <Select className="statuspipeline"
                                                 placeholder="Status"
                                                 onChange={this.handleSelectChange}
+                                                showSearch
                                             >
                                                 <Option value="New">New</Option>
                                                 <Option value="InDiscussion">InDiscussion</Option>

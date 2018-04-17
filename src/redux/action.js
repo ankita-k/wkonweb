@@ -372,3 +372,44 @@ export function createUser(data) {
         });
     }
 }
+//API call for client delete
+export function deleteclient(id) {
+    console.log(id)
+
+    return (dispatch) => {
+
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+
+
+            fetch(config.apiUrl + 'client/' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'DELETE'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+                    console.log('response');
+
+                    dispatch(deleterow(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+
+function deleteclientrow(list) {
+    return {
+        type: "DELETE_CLIENT",
+        list
+
+    }
+}
+

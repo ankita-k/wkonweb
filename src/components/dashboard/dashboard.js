@@ -40,8 +40,11 @@ class Dashboard extends Component {
 
     this.props.username(sessionStorage.getItem('id')).then((data) => {
       console.log(data);
-      this.setState({ username: data.name });
-      console.log(this.state.username);
+      if(!data.error){
+        this.setState({ username: data.result.name });
+        console.log(this.state.username);
+      }
+      
     }, err => {
 
     })
