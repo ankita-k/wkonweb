@@ -28,6 +28,13 @@ const reducer = ((state = {}, action) => {
     case "CLIENT_LIST":                  // FOR COUNTRY LIST
       return action.list
       break;
+      case "DELETE_PROJECT":                  // FOR COUNTRY LIST
+      return action.list
+      break;
+      
+    case "USER_NAME":                  // HELLO USERNAME
+      return action.list
+      break;
     case "TOAST":                         // FOR SHOWING NOTIFICATION
       notification[action.toastype]({
         message: action.message,

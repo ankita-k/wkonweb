@@ -17,8 +17,8 @@ const Routes = () => (
             <Route path='/dashboard' component={Dashboard} />
             {/* <Route path='/usermanagement' component={UserManagement} />            */}
             <Route path='/passwordchange' component={ChangePassword} />
-     {/* <Route path='/NewInformation' component={NewInformation} /> */}
-            {/* <Route path='/dashboardView' component={DashboardView} />*/} 
+            {/* <Route path='/NewInformation' component={NewInformation} /> */}
+            {/* <Route path='/dashboardView' component={DashboardView} />*/}
             {/* <Route path='/dashboardView' component={DashboardView} /> */}
             {/* <Route path='/UserSubscription' component={UserSubscription} />
             <Route path='/BankDetails' component={BankDetails} /> */}

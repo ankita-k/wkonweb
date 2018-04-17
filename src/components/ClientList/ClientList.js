@@ -4,6 +4,8 @@ import '../NewProject/NewProject.css';
 import './ClientList.css';
 import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
+import Loading from 'react-loading-bar'
+import 'react-loading-bar/dist/index.css'
 const Search = Input.Search;
 const columns = [{
   title: 'Name',
@@ -31,15 +33,15 @@ const columns = [{
   dataIndex: 'status',
   key: 'status',
 }, {
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <span>
-      <Button className="edit">
-        <a href="javascript:;"><Icon type="edit" /></a></Button>
-      <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
-    </span>
-  ),
+  // title: 'Action',
+  // key: 'action',
+  // render: (text, record) => (
+  //   <span>
+  //     <Button className="edit">
+  //       <a href="javascript:;"><Icon type="edit" /></a></Button>
+  //     <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
+  //   </span>
+  // ),
 }];
 
 const data = [{
@@ -72,20 +74,22 @@ class ClientList extends Component {
     super(props);
     this.state = {
       clientlist: [],
+      show: true, //loading-bar        
+
       searchedclient: [],
       searchinput: ''
     }
   }
 
 
-  componentWillMount() {
+  componentDidMount() {
 
 
     // GET CLIENT LIST
-
+    this.setState({ show: true })
     console.log('component will mount')
     this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
-
+      this.setState({ show: false });
       console.log(data);
       this.setState({ clientlist: data.result });
       this.setState({ searchedclient: data.result })
@@ -99,7 +103,7 @@ class ClientList extends Component {
   searchClient = (e) => {
     console.log('search data', e);
     let newarray = this.state.clientlist.filter(d => {
-      return d.name.indexOf(e) > -1
+      return d.name.toLowerCase().indexOf(e.toLowerCase()) > -1
 
     });
     console.log(newarray)
@@ -119,6 +123,11 @@ class ClientList extends Component {
 
     return (
       <div className="clientListdiv">
+        <Loading
+          show={this.state.show}
+          color="red"
+          showSpinner={false}
+        />
         <h1 className="clientList">CLIENT LIST</h1>
         <Row>
           <div className="addButton clientadd">
@@ -126,19 +135,20 @@ class ClientList extends Component {
           </div>
         </Row>
         <Row>
-          <Search
+        <div className="AllProjects">
+          <Search className="SearchValue"
             placeholder="input search text"
             onSearch={(value) => { this.searchClient(value) }}
-            size="large"
             style={{ width: 200 }}
             onChange={(e) => { this.showallList(e.target.value) }}
             enterButton
             value={this.state.searchinput}
           />
-          <Button onClick={() => {
+          <Button className="allprojectbtn" onClick={() => {
             this.setState({ searchedclient: this.state.clientlist });
             this.setState({ searchinput: '' })
           }}>Show All</Button>
+          </div>
         </Row>
 
         {/* clientlist */}
