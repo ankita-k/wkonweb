@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Row, Input,Modal,Col } from 'antd';
+import { Card, Table, Button, Icon, Row, Input, Modal, Col } from 'antd';
 import '../NewProject/NewProject.css';
 import './ClientList.css';
 import { connect } from "react-redux";
@@ -75,55 +75,55 @@ const data = [{
 
 class ClientList extends Component {
 
-// modal for delete start
-// state = {
-//   ModalText: 'Content of the modal',
-//   visible: false,
-//   confirmLoading: false,
-// }
-// showModal = () => {
-//   this.setState({
-//     visible: true,
-//   });
-// }
-// handleok = () => {
-//   this.setState({
-//     ModalText: 'The modal will be closed after two seconds',
-//     confirmLoading: true,
-//   });
-//   setTimeout(() => {
-//     this.setState({
-//       visible: false,
-//       confirmLoading: false,
-//     });
-//   }, 2000);
-// }
-// handleCancel = () => {
-//   console.log('Clicked cancel button');
-//   this.setState({
-//     visible: false,
-//   });
-// }
-state = {
-  loading: false,
-  visible: false,
-}
-showModal = () => {
-  this.setState({
-    visible: true,
-  });
-}
-handleOk = () => {
-  this.setState({ loading: true });
-  setTimeout(() => {
-    this.setState({ loading: false, visible: false });
-  }, 3000);
-}
-handleCancel = () => {
-  this.setState({ visible: false });
-}
+  // modal for delete start
+  // state = {
+  //   ModalText: 'Content of the modal',
+  //   visible: false,
+  //   confirmLoading: false,
+  // }
+  // showModal = () => {
+  //   this.setState({
+  //     visible: true,
+  //   });
+  // }
+  // handleok = () => {
+  //   this.setState({
+  //     ModalText: 'The modal will be closed after two seconds',
+  //     confirmLoading: true,
+  //   });
+  //   setTimeout(() => {
+  //     this.setState({
+  //       visible: false,
+  //       confirmLoading: false,
+  //     });
+  //   }, 2000);
+  // }
+  // handleCancel = () => {
+  //   console.log('Clicked cancel button');
+  //   this.setState({
+  //     visible: false,
+  //   });
+  // }
+  state = {
+    loading: false,
+    visible: false,
+  }
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  }
+  handleOk = () => {
+    this.setState({ loading: true });
+    setTimeout(() => {
+      this.setState({ loading: false, visible: false });
+    }, 3000);
+  }
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
 
-// modal for delete end
+  // modal for delete end
   constructor(props) {
     super(props);
     this.state = {
@@ -132,7 +132,7 @@ handleCancel = () => {
 
       searchedclient: [],
       searchinput: '',
-      columns: [{
+      column: [{
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
@@ -165,24 +165,49 @@ handleCancel = () => {
           //   <Button className="edit">
           //     <a href="javascript:;"><Icon type="edit" /></a></Button>
           //   <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
-           
-          // </span>
-         <Row>
-<Col lg={10}>
-<Button className="edit">
-              <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-              <Col lg="8"></Col>
-              <Col lg={10}>
-            <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
-</Col>
 
-           </Row>
+          // </span>
+          <Row>
+            <Col lg={10}>
+              <Button className="edit">
+                <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+            <Col lg="8"></Col>
+            <Col lg={10}>
+              <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
+            </Col>
+
+          </Row>
         ),
       }]
 
     }
   }
 
+  //edit client
+  editClient = (data) => {
+    this.props.history.push({
+      pathname: '/dashboard/clientcreate',
+      data: {
+        data
+      }
+    })
+
+  }
+
+  //delete client
+  deleteClient = (data) => {
+    console.log(data);
+    this.props.deleteclient(data._id).then(response => {
+      console.log(response)
+      if (!response.error) {
+        this.props.opentoast('success', 'Client Deleted Successfully!');
+        this.getclients();
+      }
+    }, err => {
+
+    })
+
+  }
 
   componentDidMount() {
 
@@ -190,17 +215,39 @@ handleCancel = () => {
     // GET CLIENT LIST
     this.setState({ show: true })
     console.log('component will mount')
-    this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
-      this.setState({ show: false });
-      console.log(data);
-      this.setState({ clientlist: data.result });
-      this.setState({ searchedclient: data.result })
-      console.log(this.state.clientlist);
-    }, err => {
-
-    })
+    this.getclients();
   }
 
+  getclients = () => {
+    this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
+      if (!data.error) {
+        this.setState({ show: false });
+        console.log(data);
+        this.setState({ clientlist: data.result });
+        this.setState({ searchedclient: data.result })
+        var data = data.result;
+        data.map(function (item, index) {
+          return data[index] = {
+            name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+            phoneNumber: item.phoneNumber,
+            email: item.email,
+            domain: item.domain,
+            country: item.country,
+            status: item.status,
+            key: Math.random() * 1000000000000000000,
+            _id: item._id
+          }
+
+        })
+        this.setState({ searchedclient: data });
+        console.log(this.state.clientlist);
+      }
+
+    }, err => {
+      this.setState({ show: false });
+    })
+
+  }
   // SEACRH CLIENT LIST ACCORDING TO INPUT 
   searchClient = (e) => {
     console.log('search data', e);
@@ -222,10 +269,11 @@ handleCancel = () => {
   }
 
   render() {
-    const columns = this.state.columns;
+   
     // modal
     const { visible, loading } = this.state;
     // modal
+    const columns = this.state.column;
     return (
 
       <div className="clientListdiv">
@@ -264,31 +312,31 @@ handleCancel = () => {
         </Card>
         {/* clientlist */}
         <div className="deletemodal">
-        
-        <Modal
-        className="delmodal"
-          visible={visible}
-          wrapClassName="vertical-center-modal"
-          title="Confirm"
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button className="nobtn" key="back" onClick={this.handleCancel}>NO</Button>,
-            <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
-              YES
+
+          <Modal
+            className="delmodal"
+            visible={visible}
+            wrapClassName="vertical-center-modal"
+            title="Confirm"
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button className="nobtn" key="back" onClick={this.handleCancel}>NO</Button>,
+              <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+                YES
             </Button>,
-          ]}
-        >
-        <Row>
-          <Col lg={4}>
-        <img src={warning}/>
-        </Col>
-        <Col lg={18}>
-          <p>Are you sure you Want to delete this file?</p>
-          <p>You can't undo this action.</p>
-          </Col>
-          </Row>
-        </Modal>
+            ]}
+          >
+            <Row>
+              <Col lg={4}>
+                <img src={warning} />
+              </Col>
+              <Col lg={18}>
+                <p>Are you sure you Want to delete this file?</p>
+                <p>You can't undo this action.</p>
+              </Col>
+            </Row>
+          </Modal>
         </div>
       </div>
     );
