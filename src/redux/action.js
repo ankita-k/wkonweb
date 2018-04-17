@@ -386,7 +386,8 @@ export function deleteclient(id) {
             fetch(config.apiUrl + 'client/' + id,
                 {
                     headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
+                        
                     },
                     method: 'DELETE'
                 })
@@ -413,3 +414,46 @@ function deleteclientrow(list) {
     }
 }
 
+//API edit client
+export function updateclient(data,id) {
+    console.log(data,id)
+
+    return (dispatch) => {
+
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+
+
+            fetch(config.apiUrl + 'client/' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
+                         'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+                    console.log('response');
+
+                    dispatch(updateclientlist(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+
+function updateclientlist(list) {
+    return {
+        type: "UPDATE_CLIENT",
+        list
+
+    }
+}

@@ -40,13 +40,16 @@ const reducer = ((state = {}, action) => {
       break;
     case "DELETE_CLIENT":                  // FOR CLIENT DELETE
       return action.list
-       break;
+      break;
     case "TOAST":                         // FOR SHOWING NOTIFICATION
       notification[action.toastype]({
         message: action.message,
         duration: 2,
       });
- break;
+      break;
+    case "UPDATE_CLIENT":                  // FOR CLIENT DELETE
+      return action.list
+      break;
     default:
       return state
   }

@@ -81,17 +81,31 @@ class ClientComponent extends Component {
                     userId: sessionStorage.getItem('id'),
                     domain: values.domain
                 }
+                if (this.props.location.data) {
+                    console.log('edshgj')
+                    this.props.updateclient(data,this.props.location.data.data._id).then(data => {
+                        console.log(data)
+                        if (!data.error) {
+                            this.props.opentoast('success', 'Client Updated Successfully!');
+                            this.props.history.push('/dashboard/clientlist')
+                        }
+                    }, err => {
 
-                this.props.createClient(data).then(result => {
-                    this.setState({ show: false });
-                    console.log(result);
-                    if (!result.error) {
-                        this.props.opentoast('success', 'Customer Added Successfully!');
-                        this.props.history.push('/dashboard/clientlist')
-                    }
-                }, err => {
-                    this.setState({ show: false });
-                })
+                    })
+                }
+                else {
+                    this.props.createClient(data).then(result => {
+                        this.setState({ show: false });
+                        console.log(result);
+                        if (!result.error) {
+                            this.props.opentoast('success', 'Client Added Successfully!');
+                            this.props.history.push('/dashboard/clientlist')
+                        }
+                    }, err => {
+                        this.setState({ show: false });
+                    })
+                }
+
 
             }
         });
@@ -226,7 +240,7 @@ class ClientComponent extends Component {
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button" >Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
                             </div>
                         </FormItem>
