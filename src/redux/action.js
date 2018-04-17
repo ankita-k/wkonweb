@@ -261,38 +261,38 @@ function client(list) {
 }
 //Api call for fetching loggedin user on header
 export function username(id) {
-    
-        return (dispatch) => {
-            
-            console.log(config.apiUrl)
-            return new Promise((resolve, reject) => {
-                
-                
-    
-                fetch(config.apiUrl + 'user/'+id,
-                    {
-                        headers: {
-                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                        },
-                        method: 'GET'
-                    })
-                    .then((response) => response.json())
-                    .then((responseJSON) => {
-                        
-                        console.log('response');
 
-                        dispatch(user(responseJSON))
-                        resolve(responseJSON);
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
-            });
-        }
+    return (dispatch) => {
+
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+
+
+            fetch(config.apiUrl + 'user/' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+                    console.log('response');
+
+                    dispatch(user(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     }
+}
 
-    //function for loggedin username 
-    //clientlist func
+//function for loggedin username 
+//clientlist func
 function user(list) {
     return {
         type: "USER_NAME",
@@ -303,82 +303,113 @@ function user(list) {
 //API CALL FOR DELETE
 export function deleteproject(id) {
     console.log(id)
-    
-        return (dispatch) => {
-            
-            console.log(config.apiUrl)
-            return new Promise((resolve, reject) => {
-                
-                
-    
-                fetch(config.apiUrl + 'project/'+id,
-                    {
-                        headers: {
-                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                        },
-                        method: 'DELETE'
-                    })
-                    .then((response) => response.json())
-                    .then((responseJSON) => {
-                        
-                        console.log('response');
 
-                        dispatch(deleterow(responseJSON))
-                        resolve(responseJSON);
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
-            });
-        }
-    }
-    
-    function deleterow(list) {
-        return {
-            type: "DELETE_PROJECT",
-            list
-    
-        }
-    }
+    return (dispatch) => {
 
-    //API call for client delete
-    export function deleteclient(id) {
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+
+
+            fetch(config.apiUrl + 'project/' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'DELETE'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+                    console.log('response');
+
+                    dispatch(deleterow(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+
+function deleterow(list) {
+    return {
+        type: "DELETE_PROJECT",
+        list
+
+    }
+}
+// FOR USER MANAGEMENT
+function user(json) {
+    return {
+        type: "USER_CREATE",
+        json
+
+    }
+}
+// CREATE USER APICALL
+export function createUser(data) {
+    return (dispatch) => {
+        return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'user', {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(user(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+//API call for client delete
+export function deleteclient(id) {
     console.log(id)
-    
-        return (dispatch) => {
-            
-            console.log(config.apiUrl)
-            return new Promise((resolve, reject) => {
-                
-                
-    
-                fetch(config.apiUrl + 'client/'+id,
-                    {
-                        headers: {
-                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                        },
-                        method: 'DELETE'
-                    })
-                    .then((response) => response.json())
-                    .then((responseJSON) => {
-                        
-                        console.log('response');
 
-                        dispatch(deleteclientrow(responseJSON))
-                        resolve(responseJSON);
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
-            });
-        }
+    return (dispatch) => {
+
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+
+
+            fetch(config.apiUrl + 'client/' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'DELETE'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+                    console.log('response');
+
+                    dispatch(deleteclientrow(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     }
-    
-    function deleteclientrow(list) {
-        return {
-            type: "DELETE_CLIENT",
-            list
-    
-        }
+}
+
+function deleteclientrow(list) {
+    return {
+        type: "DELETE_CLIENT",
+        list
+
     }
+}
 

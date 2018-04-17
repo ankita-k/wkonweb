@@ -90,7 +90,7 @@ class ClientComponent extends Component {
                         this.props.history.push('/dashboard/clientlist')
                     }
                 }, err => {
-
+                    this.setState({ show: false });
                 })
 
             }
@@ -191,6 +191,8 @@ class ClientComponent extends Component {
                                             <Select className="statuspipeline"
                                                 placeholder="Country"
                                                 onChange={this.selectCountry}
+                                                showSearch
+
                                             >
                                                 {this.state.countrylist.map((item, index) => {
                                                     return <Option key={index} value={item.name}>{item.name}</Option>
@@ -210,6 +212,8 @@ class ClientComponent extends Component {
                                             <Select className="statuspipeline"
                                                 placeholder="Status"
                                                 onChange={this.selectStatus}
+                                                showSearch
+
                                             >
                                                 <Option value="Interested">Interested</Option>
                                                 <Option value="Pipeline">Pipeline</Option>
