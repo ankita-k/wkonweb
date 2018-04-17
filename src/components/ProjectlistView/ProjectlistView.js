@@ -162,8 +162,10 @@ this.setState({searchedList:newarray})
   render() {
     console.log('render')
     return (
+      
       <div className="projectListdiv">
         <h1 className="clientList">PROJECT LIST</h1>
+      
         <div>
           <Select defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
             <Option value="All">All</Option>
@@ -192,7 +194,7 @@ this.setState({searchedList:newarray})
               this.setState({searchinput: ''})
             }}>All Projects</Button>
           </div>
-
+           
         <Row>
           <div className="addButton clientadd">
             <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>
