@@ -112,7 +112,7 @@ class NewProject extends Component {
                         expectedStartDate:values.expecstart? values.expecstart._d:'',
                         actualStartDate: values.actualstart ? values.actualstart._d : '',
                         expectedEndDate: values.expecend ?values.expecend._d:'',
-                        actualEndDate: values.actualend ? values.actualend._d : '',
+                        // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
                         userId: sessionStorage.getItem('id'),
                         client: values.client
