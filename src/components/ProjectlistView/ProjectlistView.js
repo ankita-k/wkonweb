@@ -200,7 +200,6 @@ class ProjectlistView extends Component {
     console.log('render')
     const columns = this.state.column;
     return (
-
       <div className="projectListdiv">
         <Loading
           show={this.state.show}
@@ -235,7 +234,6 @@ class ProjectlistView extends Component {
             this.setState({ searchinput: '' })
           }}>All Projects</Button>
         </div>
-
         <Row>
           <div className="addButton clientadd">
             <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>
