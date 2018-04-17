@@ -169,11 +169,11 @@ class ClientList extends Component {
           // </span>
           <Row>
             <Col lg={10}>
-              <Button className="edit">
+              <Button className="edit" onClick={() => { this.editClient(record) }}>
                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
             <Col lg="8"></Col>
             <Col lg={10}>
-              <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
+              <Button className="delete" onClick={()=>{this.deleteClient(record)} }><a href="javascript:;"><Icon type="delete" /></a></Button>
             </Col>
 
           </Row>

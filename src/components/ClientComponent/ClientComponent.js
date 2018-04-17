@@ -72,16 +72,17 @@ class ClientComponent extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log(values)
-                let data = {
-                    status: values.status,
-                    country: values.country,
-                    phoneNumber: values.phone,
-                    email: values.email,
-                    name: values.name,
-                    userId: sessionStorage.getItem('id'),
-                    domain: values.domain
-                }
+               
                 if (this.props.location.data) {
+                    let data = {
+                        status: values.status,
+                        country: values.country,
+                        phoneNumber: values.phone,
+                        email: values.email,
+                        name: values.name,
+                      
+                        domain: values.domain
+                    }
                     console.log('edshgj')
                     this.props.updateclient(data,this.props.location.data.data._id).then(data => {
                         console.log(data)
@@ -94,6 +95,15 @@ class ClientComponent extends Component {
                     })
                 }
                 else {
+                    let data = {
+                        status: values.status,
+                        country: values.country,
+                        phoneNumber: values.phone,
+                        email: values.email,
+                        name: values.name,
+                        userId: sessionStorage.getItem('id'),
+                        domain: values.domain
+                    }
                     this.props.createClient(data).then(result => {
                         this.setState({ show: false });
                         console.log(result);

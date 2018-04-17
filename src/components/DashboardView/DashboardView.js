@@ -9,6 +9,8 @@ import progress from '../../Images/progress.png';
 import projectpipe from '../../Images/projectpipe.png';
 import man from '../../Images/wkon-2-21.png';
 import mantwo from '../../Images/wkon-2-22.png';
+import * as actioncreators from '../../redux/action';
+import { connect } from "react-redux";
 const Option = Select.Option;
 
 const FormItem = Form.Item;
@@ -16,6 +18,21 @@ function handleChange(value) {
     console.log(`selected ${value}`);
 }
 class DashboardView extends Component {
+    constructor(props) {
+        super(props)
+    }
+    componentDidMount() {
+        console.log('component did mount')
+        this.getdashboarddata();
+
+    }
+    //GET DASHBOARD DATA
+    getdashboarddata = () => {
+        this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
+            console.log('dashboardview',response)
+        })
+    }
+
     handleSelectChange = (value) => {
         console.log(value);
         this.props.form.setFieldsValue({
@@ -40,7 +57,7 @@ class DashboardView extends Component {
                     <h1 className="customer">CUSTOMERS</h1>
                     <Row>
                         <div className="addButton">
-                            <Button onClick={()=>{this.props.history.push('/dashboard/clientcreate')}}>+</Button>
+                            <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
                         </div>
                     </Row>
                     <Row>
@@ -77,7 +94,7 @@ class DashboardView extends Component {
                     <h1 className="customer">PROJECTS</h1>
                     <Row>
                         <div className="addButton">
-                            <Button onClick={()=>{this.props.history.push('/dashboard/newproject')}}>+</Button>
+                            <Button onClick={() => { this.props.history.push('/dashboard/newproject') }}>+</Button>
                         </div>
                     </Row>
                     <Row>
@@ -263,5 +280,9 @@ class DashboardView extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return state
+  }
 const WrappedDashboardView = Form.create()(DashboardView);
-export default WrappedDashboardView;
+export default  connect(mapStateToProps, actioncreators)(WrappedDashboardView);
