@@ -19,8 +19,14 @@ function handleChange(value) {
 }
 class DashboardView extends Component {
     constructor(props) {
-        super(props)
-    }
+        super(props);
+        this.state = {
+            count: '',
+           
+            
+          }
+        }
+    
     componentDidMount() {
         console.log('component did mount')
         this.getdashboarddata();
@@ -30,6 +36,12 @@ class DashboardView extends Component {
     getdashboarddata = () => {
         this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
             console.log('dashboardview',response)
+          if(!response.error){
+            this.setState( { count:response.result } );
+
+          }
+              
+         console.log(this.state.count) ;
         })
     }
 
@@ -66,7 +78,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                 </p>
-                                <h1 className="totalNumber">1833</h1>
+                                <h1 className="totalNumber">100</h1>
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
@@ -103,7 +115,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={projecttotal} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                 </p>
-                                <h1 className="totalNumber">300</h1>
+                                <h1 className="totalNumber">{this.state.count.Total}</h1>
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
@@ -111,7 +123,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent">In Progress</span>
                                 </p>
-                                <h1 className="totalNumber">250</h1>
+                                <h1 className="totalNumber">{this.state.count.InProgess}</h1>
                             </div>
 
                         </Col>
@@ -120,7 +132,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">Pipeline</span>
                                 </p>
-                                <h1 className="totalNumber">200</h1>
+                                <h1 className="totalNumber">{this.state.count.Pipeline}</h1>
                             </div>
                         </Col>
                     </Row>
