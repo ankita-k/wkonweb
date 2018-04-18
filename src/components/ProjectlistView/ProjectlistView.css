@@ -13,6 +13,12 @@ button.ant-btn.delete {
     margin-left: 0;
     
 }
+.scoping .ant-select-selection__rendered {
+    color: rgb(58, 56, 56);
+}
+button.ant-btn.allprojectbtn {
+    color: rgba(62, 61, 61, 0.8);
+}
 .deletemodal{
     vertical-align: middle;
 }
@@ -20,7 +26,9 @@ button.ant-btn.delete {
    text-align: center;
    white-space: nowrap;
  }
- 
+ .addButton.clientadd .ant-btn {
+    margin-right: 0 !important;
+}
  .vertical-center-modal:before {
    content: '';
    display: inline-block;
@@ -28,6 +36,7 @@ button.ant-btn.delete {
    vertical-align: middle;
    width: 0;
  }
+
  
  .vertical-center-modal .ant-modal {
    display: inline-block;
