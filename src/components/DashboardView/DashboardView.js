@@ -54,7 +54,7 @@ class DashboardView extends Component {
             <div className="dashboardMain">
                 {/* dashboardviewcustomer */}
                 <div className="dashboardView">
-                    <h1 className="customer">CUSTOMERS</h1>
+                    <h1 className="customer">CLIENTS</h1>
                     <Row>
                         <div className="addButton">
                             <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
