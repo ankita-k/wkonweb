@@ -310,7 +310,7 @@ class ProjectlistView extends Component {
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
           <Table
-            onRow={(record, x) => {
+            onRow={(record) => {
               return {
                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
               };
