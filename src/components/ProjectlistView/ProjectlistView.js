@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Row, Input,Col,Modal } from 'antd';
+import { Card, Table, Button, Icon, Row, Input, Col, Modal } from 'antd';
 import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import { Select } from 'antd';
@@ -54,6 +54,7 @@ class ProjectlistView extends Component {
   state = {
     loading: false,
     visible: false,
+    selectedId: '' //  SELECT ROW ID for 
   }
   showModal = () => {
     this.setState({
@@ -112,7 +113,7 @@ class ProjectlistView extends Component {
         dataIndex: 'actualStartDate',
         key: 'astart',
       },
-       {
+      {
         title: 'Expected End Date',
         dataIndex: 'expectedEndDate',
         key: 'expectedtask',
@@ -135,29 +136,30 @@ class ProjectlistView extends Component {
           //   <Button className="delete" onClick={() => { this.deleteProject(record) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
           // </span>
           <Row>
-          <Col lg={10}>
-          <Button className="edit"onClick={() => { this.editProject(record) }}>
-                        <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-                        <Col lg="8"></Col>
-                        <Col lg={10}>
-                      <Button className="delete" onClick={() =>{this.deleteProject(record)} }><a href="javascript:;"><Icon type="delete" /></a></Button>
-          </Col>
-          
-                     </Row> 
+            <Col lg={10}>
+              <Button className="edit" onClick={() => { this.editProject(record) }}>
+                <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+            <Col lg="8"></Col>
+            <Col lg={10}>
+              <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
+            </Col>
+
+          </Row>
         ),
       }
       ]
     }
   }
   // delete 
-  deleteProject = (data) => {
-    console.log(data);
+  deleteProject = () => {
+    // console.log(data);
     // this.setState({ loading: true });
     // setTimeout(() => {
     //   this.setState({ loading: false, visible: false });
     // }, 3000);
-    this.props.deleteproject(data._id).then(response => {
+    this.props.deleteproject(this.state.selectedId._id).then(response => {
       console.log(response);
+      this.setState({ visible: false })
       if (!response.error) {
         this.props.opentoast('success', 'Project Deleted Successfully!');
         this.viewProject();
@@ -211,27 +213,27 @@ class ProjectlistView extends Component {
       this.setState({ show: false });
 
       if (!sucess.error) {
-      console.log(sucess);
-      this.setState({ projectList: sucess.result });
-      var data = sucess.result;
-      data.map(function (item, index) {
-        return data[index] = {
-          name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
-          requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
-          status: item.status,
-          technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
-          expectedStartDate: moment(item.expectedStartDate).format("ll"),
-          expectedEndDate: moment(item.expectedStartDate).format("ll"),
-          actualStartDate: moment(item.actualStartDate).format("ll"),
-          actualEndDate: moment(item.actualEndDate).format("ll"),
-          key: Math.random() * 1000000000000000000,
-          _id: item._id,
-          client: item.client
-        }
-      })
+        console.log(sucess);
+        this.setState({ projectList: sucess.result });
+        var data = sucess.result;
+        data.map(function (item, index) {
+          return data[index] = {
+            name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+            requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
+            status: item.status,
+            technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
+            expectedStartDate: moment(item.expectedStartDate).format("ll"),
+            expectedEndDate: moment(item.expectedStartDate).format("ll"),
+            actualStartDate: moment(item.actualStartDate).format("ll"),
+            actualEndDate: moment(item.actualEndDate).format("ll"),
+            key: Math.random() * 1000000000000000000,
+            _id: item._id,
+            client: item.client
+          }
+        })
 
-      this.setState({ searchedList: data });
-    }
+        this.setState({ searchedList: data });
+      }
 
     }, err => {
       this.setState({ show: false });
@@ -309,40 +311,40 @@ class ProjectlistView extends Component {
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
           <Table
-            onRow={(record) => {
+            onRow={(record, x) => {
               return {
-                onClick: () => { console.log(record) },       // click row
+                onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
               };
             }}
             columns={columns} dataSource={this.state.searchedList} />
         </Card>
         {/* clientlist */}
         <div className="deletemodal">
-        
-        <Modal
-        className="delmodal"
-          visible={visible}
-          wrapClassName="vertical-center-modal"
-          title="Confirm"
-          onOk={()=>{this.deleteProject}}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button className="nobtn" key="back" onClick={this.handleCancel}>NO</Button>,
-            <Button key="submit" type="primary" loading={loading} onClick={()=>{this.deleteProject}}>
-              YES
+
+          <Modal
+            className="delmodal"
+            visible={visible}
+            wrapClassName="vertical-center-modal"
+            title="Confirm"
+            onOk={() => { this.deleteProject(this.state.selectedId) }}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button className="nobtn" key="back" onClick={this.handleCancel}>NO</Button>,
+              <Button key="submit" type="primary" loading={loading} onClick={() => { this.deleteProject(this.state.selectedId) }}>
+                YES
             </Button>,
-          ]}
-        >
-        <Row>
-          <Col lg={4}>
-        <img src={warning}/>
-        </Col>
-        <Col lg={18}>
-          <p>Are you sure you Want to delete this file?</p>
-          <p>You can't undo this action.</p>
-          </Col>
-          </Row>
-        </Modal>
+            ]}
+          >
+            <Row>
+              <Col lg={4}>
+                <img src={warning} />
+              </Col>
+              <Col lg={18}>
+                <p>Are you sure you Want to delete this file?</p>
+                <p>You can't undo this action.</p>
+              </Col>
+            </Row>
+          </Modal>
         </div>
       </div>
     );
