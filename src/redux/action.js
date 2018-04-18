@@ -555,3 +555,27 @@ return (dispatch) => {
     });
 }
 }
+//User ROLE API
+export function findByRole(role) {
+    return (dispatch) => {
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+    
+            fetch(config.apiUrl + 'user/findByRole?role='+role ,      
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(receivePosts(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+    }
