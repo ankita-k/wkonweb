@@ -141,9 +141,8 @@ class ProjectlistView extends Component {
                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
             <Col lg="8"></Col>
             <Col lg={10}>
-              <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
+              <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
             </Col>
-
           </Row>
         ),
       }
@@ -340,8 +339,8 @@ class ProjectlistView extends Component {
                 <img src={warning} />
               </Col>
               <Col lg={18}>
-                <p>Are you sure you Want to delete this file?</p>
-                <p>You can't undo this action.</p>
+                <p className="modaltxt">Are you sure you want to delete this project?</p>
+                <p className="modaltxt">You can't undo this action.</p>
               </Col>
             </Row>
           </Modal>
