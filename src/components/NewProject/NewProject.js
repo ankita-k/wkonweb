@@ -31,8 +31,9 @@ class NewProject extends Component {
 
     componentDidMount() {
         console.log("component Did Mount");
-        console.log(this.props.location);
-     console.log(this.props.form)
+        // console.log(this.props.location);
+    //  console.log(this.props.form)
+     console.log(this.props.location.data);
         if (this.props.location.data) {
             this.setState({ disabledate: false })
           this.setState({disableclient:true})
@@ -228,7 +229,7 @@ class NewProject extends Component {
 
     // RENDER DROPDOWN OF SEARCHED ITEM
     renderOption = (item) => {
-        console.log(item);
+        // console.log(item);
         return (
             <Option key={item._id} value={item._id} text={item.name}>
                 {item.name}
@@ -427,7 +428,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('actualstart', {
-                                                        rules: [{ type: 'object', required: false , message:  'Please select actualdate!' }, {
+                                                        rules: [{ required: false , message:  'Please select actualdate!' }, {
                                                         validator: this.validatetoactualend
                                                     }]
                                                 })(
@@ -443,7 +444,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('actualend', {
-                                                    rules: [{ type: 'object',  required:false, message: 'Please select actualdate!' }, {
+                                                    rules: [{  required:false, message: 'Please select actualdate!' }, {
                                                         validator: this.validatetoactualstart
                                                     }]
                                                 })(
