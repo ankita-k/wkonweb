@@ -236,10 +236,7 @@ class NewProject extends Component {
             </Option>
         );
     }
-    // ON SELECTING VALUE OF DROPDOWN
-    onSelect = (e) => {
-        console.log(e)
-    }
+    
     render() {
         // const { clientarray } = this.state;
         // console.log(this.state.clientarray)
@@ -296,7 +293,7 @@ class NewProject extends Component {
                                                     onSearch={this.handleSearch}
                                                     placeholder="Choose Client"
                                                     dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
-                                                    onSelect={this.onSelect}
+                                                   // onSelect={this.onSelect}
                                                     disabled={this.state.disableclient}
                                                 >
 
