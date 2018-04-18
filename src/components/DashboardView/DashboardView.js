@@ -137,7 +137,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent">In Progress</span>
                                 </p>
-                                <h1 className="totalNumber">{this.state.count.InProgess ? this.state.count.InProgess : 0}</h1>
+                                <h1 className="totalNumber">{this.state.count.InProgess?this.state.count.InProgess:0}</h1>
                             </div>
 
                         </Col>
@@ -308,6 +308,7 @@ class DashboardView extends Component {
 }
 
 const mapStateToProps = (state) => {
+    
     return state
 }
 const WrappedDashboardView = Form.create()(DashboardView);
