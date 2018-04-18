@@ -146,11 +146,11 @@ class ClientList extends Component {
         key: 'action',
         render: (text, record) => (
           <Row>
-            <Col lg={10}>
+            <Col  lg={{span:10}}>
               <Button className="edit" onClick={() => { this.editClient(record) }}>
                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-            <Col lg="8"></Col>
-            <Col lg={10}>
+            <Col lg={{span:8}}></Col>
+            <Col  lg={{span:10}}>
               <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
             </Col>
 
@@ -201,7 +201,6 @@ class ClientList extends Component {
         this.setState({ show: false });
         console.log(data);
         this.setState({ clientlist: data.result });
-        this.setState({ searchedclient: data.result })
         var data = data.result;
         data.map(function (item, index) {
           return data[index] = {
@@ -217,7 +216,7 @@ class ClientList extends Component {
 
         })
         this.setState({ searchedclient: data });
-        console.log(this.state.clientlist);
+       
       }
 
     }, err => {

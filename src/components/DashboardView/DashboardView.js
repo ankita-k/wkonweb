@@ -19,19 +19,44 @@ function handleChange(value) {
 }
 class DashboardView extends Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.state = {
+            count: '',
+            clientcount: ''
+
+
+        }
     }
+
     componentDidMount() {
         console.log('component did mount')
         this.getdashboarddata();
+        this.dashboardCustomer();
 
     }
-    //GET DASHBOARD DATA
+    //GET DASHBOARD PROJECT COUNT  DATA
     getdashboarddata = () => {
         this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
-            console.log('dashboardview',response)
+            console.log('dashboardview', response)
+            if (!response.error) {
+                this.setState({ count: response.result });
+
+            }
+
+            console.log(this.state.count);
         })
     }
+    //GET DASHBOARD CUSTOERS COUNT DATA
+    dashboardCustomer = () => {
+        this.props.dashboardCustomer(sessionStorage.getItem('id')).then(response => {
+            console.log('customerview', response)
+            if (!response.error) {
+                this.setState({ clientcount: response.result });
+            }
+        })
+    }
+
+
 
     handleSelectChange = (value) => {
         console.log(value);
@@ -66,16 +91,17 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                 </p>
-                                <h1 className="totalNumber">1833</h1>
+                                <h1 className="totalNumber">{this.state.clientcount.Total}</h1>
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
                             <div className="cusTotal">
                                 <p>
-                                    <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Converted</span>
+                                    <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Committed</span>
                                 </p>
-                                <h1 className="totalNumber">1000</h1>
+                                <h1 className="totalNumber">{this.state.clientcount.Committed ? this.state.clientcount.Committed : 0}</h1>
                             </div>
+
 
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
@@ -83,7 +109,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={pipeline} className="totalImg" alt="Pipeline" /><span className="totalContent">Pipeline</span>
                                 </p>
-                                <h1 className="totalNumber">500</h1>
+                                <h1 className="totalNumber">{this.state.clientcount.Pipeline ? this.state.clientcount.Pipeline : 0}</h1>
                             </div>
                         </Col>
                     </Row>
@@ -103,24 +129,24 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={projecttotal} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                 </p>
-                                <h1 className="totalNumber">300</h1>
+                                <h1 className="totalNumber">{this.state.count.Total}</h1>
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
                             <div className="cusTotal">
                                 <p>
-                                    <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent">In Progress</span>
+                                    <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent"> Completed</span>
                                 </p>
-                                <h1 className="totalNumber">250</h1>
+                                <h1 className="totalNumber">{this.state.count.Completed?this.state.count.Completed:0}</h1>
                             </div>
 
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
                             <div className="cusTotal">
                                 <p>
-                                    <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">Pipeline</span>
+                                    <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">InProgess</span>
                                 </p>
-                                <h1 className="totalNumber">200</h1>
+                                <h1 className="totalNumber">{this.state.count.InProgess ? this.state.count.InProgess : 0}</h1>
                             </div>
                         </Col>
                     </Row>
@@ -282,7 +308,8 @@ class DashboardView extends Component {
 }
 
 const mapStateToProps = (state) => {
+    
     return state
-  }
+}
 const WrappedDashboardView = Form.create()(DashboardView);
-export default  connect(mapStateToProps, actioncreators)(WrappedDashboardView);
+export default connect(mapStateToProps, actioncreators)(WrappedDashboardView);

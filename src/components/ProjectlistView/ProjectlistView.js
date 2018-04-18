@@ -136,11 +136,11 @@ class ProjectlistView extends Component {
           //   <Button className="delete" onClick={() => { this.deleteProject(record) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
           // </span>
           <Row>
-            <Col lg={10}>
+            <Col lg={{span:10}}>
               <Button className="edit" onClick={() => { this.editProject(record) }}>
                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-            <Col lg="8"></Col>
-            <Col lg={10}>
+            <Col lg={{span:8}}></Col>
+            <Col lg={{span:10}}>
               <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
             </Col>
           </Row>
@@ -212,27 +212,27 @@ class ProjectlistView extends Component {
       this.setState({ show: false });
 
       if (!sucess.error) {
-        console.log(sucess);
-        this.setState({ projectList: sucess.result });
-        var data = sucess.result;
-        data.map(function (item, index) {
-          return data[index] = {
-            name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
-            requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
-            status: item.status,
-            technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
-            expectedStartDate: moment(item.expectedStartDate).format("ll"),
-            expectedEndDate: moment(item.expectedStartDate).format("ll"),
-            actualStartDate: moment(item.actualStartDate).format("ll"),
-            actualEndDate: moment(item.actualEndDate).format("ll"),
-            key: Math.random() * 1000000000000000000,
-            _id: item._id,
-            client: item.client
-          }
-        })
+      console.log(sucess);
+      this.setState({ projectList: sucess.result });
+      var data = sucess.result;
+      data.map(function (item, index) {
+        return data[index] = {
+          name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+          requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
+          status: item.status,
+          technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
+          expectedStartDate: moment(item.expectedStartDate).format("ll"),
+          expectedEndDate: moment(item.expectedStartDate).format("ll"),
+          actualStartDate: item.actualStartDate?moment(item.actualStartDate).format("ll"):'',
+          actualEndDate:item.actualEndDate? moment(item.actualEndDate).format("ll"):'',
+          key: Math.random() * 1000000000000000000,
+          _id: item._id,
+          client: item.client
+        }
+      })
 
-        this.setState({ searchedList: data });
-      }
+      this.setState({ searchedList: data });
+    }
 
     }, err => {
       this.setState({ show: false });

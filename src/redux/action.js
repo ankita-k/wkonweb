@@ -204,10 +204,10 @@ function allProjectlist(json) {
     }
 }
 // FUNCTION FOR APICALL OF PROJECT LIST
-export function projectList(userId, page, limit) {
+export function projectList(userId) {
     return (dispatch) => {
         return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'project/projectlist?userId=' + userId + '&page=' + page + '&limit=' + limit, {
+            fetch(config.apiUrl + 'project/projectlist?userId=' + userId , {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
@@ -529,4 +529,29 @@ export function dashboardData(userId) {
                 });
         });
     }
+}
+//GET CUSTOMERS DATA ON DASHBOARD
+
+export function dashboardCustomer(userId) {
+return (dispatch) => {
+    console.log(config.apiUrl)
+    return new Promise((resolve, reject) => {
+
+        fetch(config.apiUrl + 'user/clientDashboardDetails?id=' + userId ,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                dispatch(receivePosts(responseJSON))
+                resolve(responseJSON);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+    });
+}
 }

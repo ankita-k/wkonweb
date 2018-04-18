@@ -24,7 +24,8 @@ class NewProject extends Component {
             clientlist: [],
             clientarray: [],
             show: false,//loading-bar,
-            disabledate: true
+            disabledate: true,
+            disableclient:false
         }
     }
 
@@ -34,21 +35,19 @@ class NewProject extends Component {
      console.log(this.props.form)
         if (this.props.location.data) {
             this.setState({ disabledate: false })
-          
+          this.setState({disableclient:true})
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name,
                 ['textRequirement']: this.props.location.data.data.requirement,
                 ['technology']: this.props.location.data.data.technology,
                 ['expecstart']: this.props.location.data.data.expectedStartDate?moment(this.props.location.data.data.expectedStartDate):'',
                  ['expecend']:this.props.location.data.data.expectedEndDate? moment(this.props.location.data.data.expectedEndDate):'',
-                //  ['actualstart']:this.props.location.data.data.actualStartDate? moment(this.props.location.data.data.actualStartDate):'',
+                 ['actualstart']:this.props.location.data.data.actualStartDate? moment(this.props.location.data.data.actualStartDate):'',
                  ['actualend']:this.props.location.data.data.actualEndDate? moment(this.props.location.data.data.actualEndDate):'',
                  ['status']: this.props.location.data.data.status,
-                 ['client']:this.props.location.data.data.client?this.props.location.data.data.client._id:''
+                 ['client']:this.props.location.data.data.client?this.props.location.data.data.client.name:''
                 })
              
-
-
             }
         
 
@@ -85,10 +84,16 @@ class NewProject extends Component {
                         expectedStartDate:values.expecstart? values.expecstart._d:'',
                         // actualStartDate: values.actualstart ? values.actualstart._d : '',
                         expectedEndDate: values.expecend ?values.expecend._d:'',
-                        actualEndDate: values.actualend ? values.actualend._d : '',
+                        // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
-                        client: values.client
+                        client: this.props.location.data.data.client._id
     
+                    }
+                    if(values.actualstart){
+                        data.actualStartDate=values.actualstart._d
+                    }
+                    if(values.actualend){
+                        data.actualEndDate=values.actualend._d  
                     }
                     console.log(data)
 
@@ -110,7 +115,7 @@ class NewProject extends Component {
                         status: values.status,
                         technology: values.technology,
                         expectedStartDate:values.expecstart? values.expecstart._d:'',
-                        actualStartDate: values.actualstart ? values.actualstart._d : '',
+                        // actualStartDate: values.actualstart ? values.actualstart._d : '',
                         expectedEndDate: values.expecend ?values.expecend._d:'',
                         // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
@@ -118,6 +123,10 @@ class NewProject extends Component {
                         client: values.client
     
                     }
+                    if(values.actualstart){
+                        data.actualStartDate= values.actualstart._d
+                    }
+                    
                     console.log(data)
                     this.props.addProject(data).then(response => {
                         this.setState({ show: false });
@@ -247,6 +256,7 @@ class NewProject extends Component {
                 lg: { span: 24 },
                 // sm: { span: 16 },
             },
+            // required:false
         };
         const config = {
             rules: [{ type: 'object', required: true, message: 'Please select time!' }, {
@@ -275,14 +285,18 @@ class NewProject extends Component {
                                         <p className="expecteDateclient">Choose Client :</p>
                                         <FormItem>
                                             {getFieldDecorator('client', {
-                                                rules: [{ required: true, message: 'Please select a client!' },]
-                                            })(
+                                                rules: [{ required: true, message: 'Please select a client!' },],
+                                                // initialValue:{props.location.data}
+                                            },
+
+                                            )(
                                                 <AutoComplete
                                                     className="clientHere clieHere"
                                                     onSearch={this.handleSearch}
                                                     placeholder="Choose Client"
                                                     dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
                                                     onSelect={this.onSelect}
+                                                    disabled={this.state.disableclient}
                                                 >
 
                                                 </AutoComplete>
@@ -413,7 +427,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('actualstart', {
-                                                    rules: [{ type: 'object', required:false, message: 'Please select actualdate!' }, {
+                                                        rules: [{ type: 'object', required: false , message:  'Please select actualdate!' }, {
                                                         validator: this.validatetoactualend
                                                     }]
                                                 })(
@@ -429,7 +443,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('actualend', {
-                                                    rules: [{ type: 'object', required: false, message: 'Please select actualdate!' }, {
+                                                    rules: [{ type: 'object',  required:false, message: 'Please select actualdate!' }, {
                                                         validator: this.validatetoactualstart
                                                     }]
                                                 })(
