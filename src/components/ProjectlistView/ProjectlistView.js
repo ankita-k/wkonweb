@@ -136,11 +136,11 @@ class ProjectlistView extends Component {
           //   <Button className="delete" onClick={() => { this.deleteProject(record) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
           // </span>
           <Row>
-            <Col lg={10}>
+            <Col lg={{span:10}}>
               <Button className="edit" onClick={() => { this.editProject(record) }}>
                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-            <Col lg="8"></Col>
-            <Col lg={10}>
+            <Col lg={{span:8}}></Col>
+            <Col lg={{span:10}}>
               <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
             </Col>
           </Row>
@@ -310,7 +310,7 @@ class ProjectlistView extends Component {
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
           <Table
-            onRow={(record, x) => {
+            onRow={(record) => {
               return {
                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
               };
