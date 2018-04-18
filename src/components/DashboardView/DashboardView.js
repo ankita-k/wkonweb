@@ -135,18 +135,18 @@ class DashboardView extends Component {
                         <Col xs={24} sm={24} md={8} lg={8}>
                             <div className="cusTotal">
                                 <p>
-                                    <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent">In Progress</span>
+                                    <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent"> Completed</span>
                                 </p>
-                                <h1 className="totalNumber">{this.state.count.InProgess?this.state.count.InProgess:0}</h1>
+                                <h1 className="totalNumber">{this.state.count.Completed?this.state.count.Completed:0}</h1>
                             </div>
 
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
                             <div className="cusTotal">
                                 <p>
-                                    <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">Pipeline</span>
+                                    <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">InProgess</span>
                                 </p>
-                                <h1 className="totalNumber">{this.state.count.Pipeline ? this.state.count.Pipeline : 0}</h1>
+                                <h1 className="totalNumber">{this.state.count.InProgess ? this.state.count.InProgess : 0}</h1>
                             </div>
                         </Col>
                     </Row>
