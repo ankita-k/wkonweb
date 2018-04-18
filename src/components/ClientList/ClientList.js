@@ -224,7 +224,6 @@ class ClientList extends Component {
         this.setState({ show: false });
         console.log(data);
         this.setState({ clientlist: data.result });
-        this.setState({ searchedclient: data.result })
         var data = data.result;
         data.map(function (item, index) {
           return data[index] = {
@@ -240,7 +239,7 @@ class ClientList extends Component {
 
         })
         this.setState({ searchedclient: data });
-        console.log(this.state.clientlist);
+       
       }
 
     }, err => {

@@ -294,6 +294,7 @@ class DashboardView extends Component {
 }
 
 const mapStateToProps = (state) => {
+    
     return state
   }
 const WrappedDashboardView = Form.create()(DashboardView);
