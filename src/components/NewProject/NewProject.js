@@ -243,17 +243,14 @@ class NewProject extends Component {
 
     // RENDER DROPDOWN OF SEARCHED ITEM
     renderOption = (item) => {
-        console.log(item);
+        // console.log(item);
         return (
             <Option key={item._id} value={item._id} text={item.name}>
                 {item.name}
             </Option>
         );
     }
-    // ON SELECTING VALUE OF DROPDOWN
-    onSelect = (e) => {
-        console.log(e)
-    }
+    
     render() {
         // const { clientarray } = this.state;
         // console.log(this.state.clientarray)
@@ -310,7 +307,7 @@ class NewProject extends Component {
                                                     onSearch={this.handleSearch}
                                                     placeholder="Choose Client"
                                                     dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
-                                                    onSelect={this.onSelect}
+                                                   // onSelect={this.onSelect}
                                                     disabled={this.state.disableclient}
 
                                                 >

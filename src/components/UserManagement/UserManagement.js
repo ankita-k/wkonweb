@@ -6,6 +6,7 @@ import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
+
 const FormItem = Form.Item;
 const Option = Select.Option;
 const Option1 = AutoComplete.Option1;
@@ -15,34 +16,72 @@ class UserManagement extends Component {
         super(props);
         this.state = {
             result: [],
+            developerarray:[],
+            developers:[],
             show: false //loading-bar
 
         }
     }
 
+    componentDidMount() {
+        console.log('component did mount')
+        this.getDevelopersList();
+        
+    }
+    //USER ROLE
+    getDevelopersList = (role) => {
+        this.props.findByRole('Developer').then(response => {
+                console.log('Role', response)
+              if (!response.error) {
+                    this.setState({ developerarray: response.result });
+    
+                }
+    
+              console.log(this.state.developerarray);
+            })
+       
+    }
+     // RENDER DROPDOWN OF SEARCHED ITEM
+     renderOption = (item) => {
+        console.log(item);
+        return (
+            <Option key={item._id} value={item._id} text={item.name}>
+                {item.name}
+            </Option>
+        );
+    }
+
     handleSearch = (value) => {
-        let result;
-        if (!value || value.indexOf('@') >= 0) {
-            result = [];
-        } else {
-            result = ['gmail.com', '163.com', 'qq.com'].map(domain => `${value}@${domain}`);
+        let developers;
+        if (value) {
+            console.log("Developers value");
+            developers = this.state.developerarray.filter(d => {
+                return d.name.toLowerCase().indexOf(value.toLowerCase()) > -1
+            });
+            this.setState({ developers })
+            console.log(this.state.developers)
+            console.log(this.state.developers)
+
         }
-        this.setState({ result });
+        else {
+            this.setState({ developers: [] })
+        }
+        // if (!value || value.indexOf('@') >= 0) {
+        //     result = [];
+        // } else {
+        //     result = ['gmail.com', '163.com', 'qq.com'].map(domain => `${value}@${domain}`);
+        // }
+        // this.setState({ result });
     }
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
-    }
-    handleSelectChange = (value) => {
-        console.log(value);
-        this.props.form.setFieldsValue({
-            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
-        });
-    }
+  
+    // handleSelectChange = (value) => {
+    //     console.log(value);
+    //     this.props.form.setFieldsValue({
+    //         note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
+    //     });
+    // }
+
+//
     handleSubmit = (e) => {
         this.setState({ show: true });
         e.preventDefault();
@@ -54,7 +93,8 @@ class UserManagement extends Component {
                     email: values.email,
                     phoneNumber: values.phone,
                     role: values.role,
-                    password: values.password
+                    password: values.password,
+                    manager:values.managers
                 }
                 this.props.createUser(data).then(result => {
                     this.setState({ show: false });
@@ -73,9 +113,7 @@ class UserManagement extends Component {
 
     render() {
         const { result } = this.state;
-        const children = result.map((email) => {
-            return <Option key={email}>{email}</Option>;
-        });
+      
         const { getFieldDecorator } = this.props.form;
         return (
             <div className="userManagement">
@@ -164,14 +202,23 @@ class UserManagement extends Component {
                             </Row>
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={24}>
-                                    <p className="expecteDateclient">Reporting Manager :</p>
+                                <FormItem label="Reporting Manager :">
+                                        {getFieldDecorator('managers', {
+                                            rules: [{ required: true, message: 'Please select project manager!' }],
+                                        })(
+                                    // <p className="expecteDateclient">Reporting Manager :</p>
+                                 
                                     <AutoComplete
                                         className="clientHere"
                                         onSearch={this.handleSearch}
                                         placeholder="Choose Reporting Manager"
+                                        dataSource={this.state.developers.map((item) => { return this.renderOption(item) })}
+                                      
                                     >
-                                        {children}
+                                      
                                     </AutoComplete>
+                                      )}
+                                      </FormItem>
                                 </Col>
                             </Row>
                         </div>

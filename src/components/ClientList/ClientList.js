@@ -81,28 +81,12 @@ class ClientList extends Component {
   //   visible: false,
   //   confirmLoading: false,
   // }
-  // showModal = () => {
-  //   this.setState({
-  //     visible: true,
-  //   });
-  // }
-  // handleok = () => {
-  //   this.setState({
-  //     ModalText: 'The modal will be closed after two seconds',
-  //     confirmLoading: true,
-  //   });
   //   setTimeout(() => {
   //     this.setState({
   //       visible: false,
   //       confirmLoading: false,
   //     });
   //   }, 2000);
-  // }
-  // handleCancel = () => {
-  //   console.log('Clicked cancel button');
-  //   this.setState({
-  //     visible: false,
-  //   });
   // }
   state = {
     loading: false,
@@ -129,7 +113,7 @@ class ClientList extends Component {
     this.state = {
       clientlist: [],
       show: true, //loading-bar        
-
+      selectedId: '',  //FOR SELECT CLIENT ROW ID
       searchedclient: [],
       searchinput: '',
       column: [{
@@ -161,12 +145,6 @@ class ClientList extends Component {
         title: 'Action',
         key: 'action',
         render: (text, record) => (
-          // <span>
-          //   <Button className="edit">
-          //     <a href="javascript:;"><Icon type="edit" /></a></Button>
-          //   <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
-
-          // </span>
           <Row>
             <Col  lg={{span:10}}>
               <Button className="edit" onClick={() => { this.editClient(record) }}>
@@ -195,10 +173,10 @@ class ClientList extends Component {
   }
 
   //delete client
-  deleteClient = (data) => {
-    console.log(data);
-    this.props.deleteclient(data._id).then(response => {
+  deleteClient = () => {
+    this.props.deleteclient(this.state.selectedId._id).then(response => {
       console.log(response)
+      this.setState({ visible: false })
       if (!response.error) {
         this.props.opentoast('success', 'Client Deleted Successfully!');
         this.getclients();
@@ -210,7 +188,6 @@ class ClientList extends Component {
   }
 
   componentDidMount() {
-
 
     // GET CLIENT LIST
     this.setState({ show: true })
@@ -268,7 +245,7 @@ class ClientList extends Component {
   }
 
   render() {
-   
+
     // modal
     const { visible, loading } = this.state;
     // modal
@@ -307,7 +284,13 @@ class ClientList extends Component {
 
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
-          <Table columns={columns} dataSource={this.state.searchedclient} />
+          <Table
+            onRow={(record) => {
+              return {
+                onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
+              };
+            }}
+            columns={columns} dataSource={this.state.searchedclient} />
         </Card>
         {/* clientlist */}
         <div className="deletemodal">
@@ -317,11 +300,11 @@ class ClientList extends Component {
             visible={visible}
             wrapClassName="vertical-center-modal"
             title="Confirm"
-            onOk={this.handleOk}
+            onOk={() => { this.deleteClient(this.state.selectedId) }}
             onCancel={this.handleCancel}
             footer={[
               <Button className="nobtn" key="back" onClick={this.handleCancel}>NO</Button>,
-              <Button key="submit" type="primary" loading={loading} onClick={this.handleOk}>
+              <Button key="submit" type="primary" loading={loading} onClick={() => { this.deleteClient(this.state.selectedId) }}>
                 YES
             </Button>,
             ]}
@@ -342,7 +325,7 @@ class ClientList extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(state);
+  // console.log(state);
   return state
 }
 //export default ClientList;
