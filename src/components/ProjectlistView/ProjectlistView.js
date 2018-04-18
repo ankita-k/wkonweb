@@ -222,8 +222,8 @@ class ProjectlistView extends Component {
           technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
           expectedStartDate: moment(item.expectedStartDate).format("ll"),
           expectedEndDate: moment(item.expectedStartDate).format("ll"),
-          actualStartDate: moment(item.actualStartDate).format("ll"),
-          actualEndDate: moment(item.actualEndDate).format("ll"),
+          actualStartDate: item.actualStartDate?moment(item.actualStartDate).format("ll"):'',
+          actualEndDate:item.actualEndDate? moment(item.actualEndDate).format("ll"):'',
           key: Math.random() * 1000000000000000000,
           _id: item._id,
           client: item.client

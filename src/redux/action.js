@@ -204,10 +204,10 @@ function allProjectlist(json) {
     }
 }
 // FUNCTION FOR APICALL OF PROJECT LIST
-export function projectList(userId, page, limit) {
+export function projectList(userId) {
     return (dispatch) => {
         return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'project/projectlist?userId=' + userId + '&page=' + page + '&limit=' + limit, {
+            fetch(config.apiUrl + 'project/projectlist?userId=' + userId , {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
@@ -233,7 +233,7 @@ export function clientlist(userId, page, limit) {
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
 
-            fetch(config.apiUrl + 'client/clientlist?userId=' + userId + '&page=' + page + '&limit=' + limit,
+            fetch(config.apiUrl + 'client/clientlist?userId=' + userId ,
                 {
                     headers: {
                         'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
