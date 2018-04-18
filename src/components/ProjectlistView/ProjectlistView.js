@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import { Select } from 'antd';
 import '../ClientList/ClientList.css';
+import '../ProjectlistView/ProjectlistView.css';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import moment from 'moment';
@@ -274,10 +275,10 @@ class ProjectlistView extends Component {
           showSpinner={false}
         />
         <h1 className="clientList">PROJECT LIST</h1>
-
+        <Row>
         <div className="AllProjects">
           <Search className="SearchValue"
-            placeholder="input search text"
+            placeholder="Search Here.."
             onSearch={value => { this.searchproject(value) }}
             style={{ width: 200 }}
             onChange={(e) => { this.showallList(e.target.value) }}
@@ -300,13 +301,16 @@ class ProjectlistView extends Component {
             this.setState({ searchedList: this.state.projectList });
             this.setState({ searchinput: '' })
           }}>All Projects</Button>
-        </div>
-        <Row>
-          <div className="addButton clientadd">
+
+           
+          <div className="addButton project">
             <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>
           </div>
 
+      
+        </div>
         </Row>
+      
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
           <Table

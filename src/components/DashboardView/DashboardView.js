@@ -81,7 +81,7 @@ class DashboardView extends Component {
                 <div className="dashboardView">
                     <h1 className="customer">CLIENTS</h1>
                     <Row>
-                        <div className="addButton">
+                        <div className="addButton btnplace">
                             <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
                         </div>
                     </Row>
@@ -119,7 +119,7 @@ class DashboardView extends Component {
                 <div className="dashboardView">
                     <h1 className="customer">PROJECTS</h1>
                     <Row>
-                        <div className="addButton">
+                        <div className="addButton btnplace">
                             <Button onClick={() => { this.props.history.push('/dashboard/newproject') }}>+</Button>
                         </div>
                     </Row>

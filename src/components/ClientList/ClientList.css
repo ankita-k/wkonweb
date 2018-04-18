@@ -31,7 +31,8 @@ h1.clientList {
     border: none;
 }
 .projectListdiv .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
-    width: 13% !important;
+    width: auto !important;
+    font-size: 13px;
 }
 .clientListdiv .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
     width: 18%;
@@ -53,7 +54,7 @@ button.ant-btn.allprojectbtn {
     margin-left: 1em;
 }
 .innercardContenta {
-    margin: 0 auto !important;
+    margin: 15px auto !important;
 }
 button.ant-btn.edit i.anticon.anticon-edit {
     font-size: 16px;
@@ -63,7 +64,7 @@ button.ant-btn.delete i.anticon.anticon-delete {
 }
 .addButton.clientadd {
     position: absolute;
-    top: -4em;
+    top: 0em;
     right: 0;
     z-index: 9;
 }
