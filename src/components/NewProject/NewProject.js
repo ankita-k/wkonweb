@@ -38,7 +38,7 @@ class NewProject extends Component {
             this.setState({ disableclient: true })
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name,
-                ['textRequirement']: this.props.location.data.data.requirement,
+                ['textRequirement']: this.props.location.data.data.requirement1,
                 ['technology']: this.props.location.data.data.technology,
                 ['expecstart']: this.props.location.data.data.expectedStartDate ? moment(this.props.location.data.data.expectedStartDate) : '',
                 ['expecend']: this.props.location.data.data.expectedEndDate ? moment(this.props.location.data.data.expectedEndDate) : '',
