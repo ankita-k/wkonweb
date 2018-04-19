@@ -217,17 +217,17 @@ class NewProject extends Component {
           
             console.log(clientarray)
 
-            // if (clientarray.length != 0) {
+             if (clientarray.length != 0) {
                 this.setState({ clientarray })
-            // }
-            // else {
-            //     let data={
-            //         name: "No Result Found",
-            //         _id : "1111"
-            //     }
-            //   clientarray.push(data)
-            //   this.setState({clientarray})
-            // }
+            }
+            else {
+                let data={
+                    name: "No Result Found",
+                    _id : "1111"
+                }
+              clientarray.push(data)
+              this.setState({clientarray})
+            }
 
 
 

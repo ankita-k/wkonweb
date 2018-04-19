@@ -227,13 +227,13 @@ export function projectList(userId) {
     }
 }
 //Client list api 
-export function clientlist(userId, page, limit) {
+export function clientlist(userId) {
 
     return (dispatch) => {
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
 
-            fetch(config.apiUrl + 'client/clientlist?userId=' + userId + '&page=' + page + '&limit=' + limit,
+            fetch(config.apiUrl + 'client/clientlist?userId=' + userId ,
                 {
                     headers: {
                         'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
