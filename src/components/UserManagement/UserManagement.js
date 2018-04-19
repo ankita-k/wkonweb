@@ -81,7 +81,7 @@ class UserManagement extends Component {
     //     });
     // }
 
-//
+//sending user values
     handleSubmit = (e) => {
         this.setState({ show: true });
         e.preventDefault();
