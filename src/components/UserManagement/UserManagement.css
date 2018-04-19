@@ -1,8 +1,8 @@
 /* userManagement css */
 h1.userManagementa {
     padding: 10px 0 10px 27px;
-    background: #428afe;
-    color: #fff;
+    /* background: #428afe; */
+    /* color: #fff; */
     margin-bottom: 0;
 }
 .userManagement .clientHere .ant-select-selection__placeholder {
@@ -16,5 +16,8 @@ h1.userManagementa {
 }
 .userManagement .clientHere {
     width: 100% !important;
+}
+.newCustomerform {
+    border-bottom: 1px dashed #e8e8e8;
 }
 /* userManagement css */

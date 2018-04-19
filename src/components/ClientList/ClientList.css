@@ -33,6 +33,7 @@ h1.clientList {
 .projectListdiv .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
     width: auto !important;
     font-size: 13px;
+    padding: 16px 10px;
 }
 .clientListdiv .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
     width: 18%;
