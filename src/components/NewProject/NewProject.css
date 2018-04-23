@@ -98,6 +98,9 @@ textarea#textRequirement {
         margin-top: 1em;
     }
 }
+.tech .ant-select.ant-select-enabled {
+    width: 85% !important;
+}
 @media (min-width: 600px) and (max-width: 1024px) {
     .innercardContent {
         width: 90% !important;
