@@ -11,7 +11,7 @@ import UserManagement from '../UserManagement/UserManagement';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import brandlogo from '../../Images/wkonlogo.png';
-
+import Userlist from '../Userlist/Userlist';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 
 // const { SubMenu } = Menu;
@@ -102,6 +102,8 @@ class Dashboard extends Component {
                   </Menu.Item>
                 </SubMenu>
                 <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
+                <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item>
+                
 
                 {/* <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}> */}
                 {/* <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
@@ -121,6 +123,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />
                 <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />
                 <Route exact path={`${this.props.match.url}/usermanagement`} component={UserManagement} />
+                <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />   
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>

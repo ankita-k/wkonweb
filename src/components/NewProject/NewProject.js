@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Row, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
+import { Form, Icon, Input, Button, Row,Spin, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
 import '../ClientComponent/ClientComponent.css';
 import './NewProject.css';
 import { Divider } from 'antd';
@@ -26,7 +26,9 @@ class NewProject extends Component {
             show: false,//loading-bar,
             disabledate: true,
             disableclient: false,
-            editClient: false
+            data: [],
+            value: [],
+            fetching: false,
         }
     }
 
@@ -133,7 +135,7 @@ class NewProject extends Component {
                             this.props.opentoast('success', 'Project Added Successfully!');
                             this.props.history.push('/dashboard/projectlist')
                         }
-                        if(response.error==true){
+                        if (response.error == true) {
                             this.props.opentoast('warning', 'Insufficient Data!');
                         }
                     }, err => {
@@ -252,6 +254,31 @@ class NewProject extends Component {
         );
     }
 
+  fetchUser = (value) => {
+    console.log('fetching user', value);
+    this.lastFetchId += 1;
+    const fetchId = this.lastFetchId;
+    this.setState({ data: [], fetching: true });
+    fetch('https://randomuser.me/api/?results=5')
+      .then(response => response.json())
+      .then((body) => {
+        if (fetchId !== this.lastFetchId) { // for fetch callback order
+          return;
+        }
+        const data = body.results.map(user => ({
+          text: `${user.name.first} ${user.name.last}`,
+          value: user.login.username,
+        }));
+        this.setState({ data, fetching: false });
+      });
+  }
+  handleChange = (value) => {
+    this.setState({
+      value,
+      data: [],
+      fetching: false,
+    });
+  }
     render() {
         // const { clientarray } = this.state;
         // console.log(this.state.clientarray)
@@ -276,6 +303,7 @@ class NewProject extends Component {
                 validator: this.datevalidate
             }]
         };
+        const { fetching, data, value } = this.state;
         return (
             <div>
                 <Loading
@@ -310,12 +338,9 @@ class NewProject extends Component {
                                                 <Select className="statuspipeline"
                                                     placeholder="Choose Role"
                                                     onChange={this.selectStatus}
-                                                    showSearch
                                                 >
-                                                    {this.state.clientlist.map((item, index) => {
-                                                        return <Option key={index} value={item._id}>{item.name}</Option>
-                                                    })}
-                                                  
+                                                    <Option value="Sales">Client1</Option>
+                                                    <Option value="Developer">Client2</Option>
                                                 </Select>
                                             )}
                                         </FormItem>
@@ -389,11 +414,23 @@ class NewProject extends Component {
                                     </FormItem>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Technology">
+                                    <FormItem className="tech" label="Technology">
                                         {getFieldDecorator('technology', {
                                             rules: [{ required: true, message: 'Please input your Technology!' }],
                                         })(
-                                            <Input maxLength="50" placeholder="Technology" />
+                                            <Select
+                                                mode="multiple"
+                                                labelInValue
+                                                value={value}
+                                                placeholder="Select users"
+                                                notFoundContent={fetching ? <Spin size="small" /> : null}
+                                                filterOption={false}
+                                                onSearch={this.fetchUser}
+                                                onChange={this.handleChange}
+                                                style={{ width: '100%' }}
+                                            >
+                                                {data.map(d => <Option key={d.value}>{d.text}</Option>)}
+                                            </Select>
                                         )}
                                     </FormItem>
                                 </Col>
