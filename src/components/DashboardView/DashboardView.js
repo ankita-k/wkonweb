@@ -11,6 +11,7 @@ import man from '../../Images/wkon-2-21.png';
 import mantwo from '../../Images/wkon-2-22.png';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
+import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 const Option = Select.Option;
 
 const FormItem = Form.Item;
@@ -207,9 +208,12 @@ class DashboardView extends Component {
                     </Row>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
-                                <p>
+                            <div className="cusTotal" >
+                 
+                                <p>  <NavLink to="../dashboard/clientlist" >
                                     <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
+                                               
+                                   </NavLink>
                                 </p>
                                 <h1 className="totalNumber">{this.state.clienttotal.Total ? this.state.clienttotal.Total : 0}</h1>
                             </div>
