@@ -26,23 +26,23 @@ class UserManagement extends Component {
     componentDidMount() {
         console.log('component did mount')
         this.getDevelopersList();
-        
+
     }
     //USER ROLE
     getDevelopersList = (role) => {
         this.props.findByRole('Developer').then(response => {
-                console.log('Role', response)
-              if (!response.error) {
-                    this.setState({ developerarray: response.result });
-    
-                }
-    
-              console.log(this.state.developerarray);
-            })
-       
+            console.log('Role', response)
+            if (!response.error) {
+                this.setState({ developerarray: response.result });
+
+            }
+
+            console.log(this.state.developerarray);
+        })
+
     }
-     // RENDER DROPDOWN OF SEARCHED ITEM
-     renderOption = (item) => {
+    // RENDER DROPDOWN OF SEARCHED ITEM
+    renderOption = (item) => {
         console.log(item);
         return (
             <Option key={item._id} value={item._id} text={item.name}>
@@ -73,7 +73,7 @@ class UserManagement extends Component {
         // }
         // this.setState({ result });
     }
-  
+
     // handleSelectChange = (value) => {
     //     console.log(value);
     //     this.props.form.setFieldsValue({
@@ -81,7 +81,7 @@ class UserManagement extends Component {
     //     });
     // }
 
-//sending user values
+    //sending user values
     handleSubmit = (e) => {
         this.setState({ show: true });
         e.preventDefault();
@@ -94,7 +94,7 @@ class UserManagement extends Component {
                     phoneNumber: values.phone,
                     role: values.role,
                     password: values.password,
-                    manager:values.managers
+                    manager: values.managers
                 }
                 this.props.createUser(data).then(result => {
                     this.setState({ show: false });
@@ -113,19 +113,19 @@ class UserManagement extends Component {
 
     render() {
         const { result } = this.state;
-      
+
         const { getFieldDecorator } = this.props.form;
         return (
             <div className="userManagement">
-                
+
                 <Card className="innercardContent" bordered={false}>
                     {/* --UserManagement-- */}
                     <div className="newCustomerform">
-                    <Loading
-                    show={this.state.show}
-                    color="red"
-                    showSpinner={false}
-                />
+                        <Loading
+                            show={this.state.show}
+                            color="red"
+                            showSpinner={false}
+                        />
                         <h1 className="userManagementa">User Management</h1>
                         {/* <Divider dashed className="underLine" /> */}
 
@@ -202,30 +202,32 @@ class UserManagement extends Component {
                             </Row>
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={24}>
-                                <FormItem >
+                                    <FormItem >
                                         {getFieldDecorator('managers', {
                                             rules: [{ required: true, message: 'Please select project manager!' }],
                                         })(
-                                    <p className="expecteDateclient">Reporting Manager :</p>
-                                 
-                                    // <AutoComplete
-                                    //     className="clientHere"
-                                    //     onSearch={this.handleSearch}
-                                    //     placeholder="Choose Reporting Manager"
-                                    //     dataSource={this.state.developers.map((item) => { return this.renderOption(item) })}
-                                      
-                                    // >
-                                      
-                                    // </AutoComplete>
-                                      )}
-                                       <Select className="statuspipeline"
-                                                placeholder="Choose Role"
-                                                onChange={this.selectStatus}
-                                            >
-                                                <Option value="Sales">Manager1</Option>
-                                                <Option value="Developer">Manager2</Option>
-                                            </Select>
-                                      </FormItem>
+                                            <p className="expecteDateclient">Reporting Manager :</p>
+
+                                            // <AutoComplete
+                                            //     className="clientHere"
+                                            //     onSearch={this.handleSearch}
+                                            //     placeholder="Choose Reporting Manager"
+                                            //     dataSource={this.state.developers.map((item) => { return this.renderOption(item) })}
+
+                                            // >
+
+                                            // </AutoComplete>
+                                        )}
+                                        <Select className="statuspipeline"
+                                            placeholder="Choose Role"
+                                            onChange={this.selectStatus}
+                                            showSearch
+                                        >
+                                            {this.state.developerarray.map((item, index) => {
+                                                return <Option key={index} value={item.name}>{item.name}</Option>
+                                            })}
+                                        </Select>
+                                    </FormItem>
                                 </Col>
                             </Row>
                         </div>

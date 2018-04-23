@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Row, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
+import { Form, Icon, Input, Button, Row,Spin, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
 import '../ClientComponent/ClientComponent.css';
 import './NewProject.css';
 import { Divider } from 'antd';
@@ -25,7 +25,10 @@ class NewProject extends Component {
             clientarray: [],
             show: false,//loading-bar,
             disabledate: true,
-            disableclient: false
+            disableclient: false,
+            data: [],
+            value: [],
+            fetching: false,
         }
     }
 
@@ -37,6 +40,7 @@ class NewProject extends Component {
         if (this.props.location.data) {
             this.setState({ disabledate: false })
             this.setState({ disableclient: true })
+            this.setState({ editClient: true })
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name,
                 ['textRequirement']: this.props.location.data.data.requirement1,
@@ -48,7 +52,7 @@ class NewProject extends Component {
                 ['status']: this.props.location.data.data.status,
                 ['client']: this.props.location.data.data.client ? this.props.location.data.data.client.name : ''
             })
-            
+
         }
         // GET CLIENT LIST
         this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
@@ -122,7 +126,7 @@ class NewProject extends Component {
                     if (values.actualstart) {
                         data.actualStartDate = values.actualstart._d
                     }
-                
+
                     console.log(data)
                     this.props.addProject(data).then(response => {
                         this.setState({ show: false });
@@ -131,7 +135,7 @@ class NewProject extends Component {
                             this.props.opentoast('success', 'Project Added Successfully!');
                             this.props.history.push('/dashboard/projectlist')
                         }
-                        if(response.error==true){
+                        if (response.error == true) {
                             this.props.opentoast('warning', 'Insufficient Data!');
                         }
                     }, err => {
@@ -213,19 +217,19 @@ class NewProject extends Component {
 
                 return d.name.toLowerCase().indexOf(value.toLowerCase()) > -1
             });
-          
+
             console.log(clientarray)
 
-             if (clientarray.length != 0) {
+            if (clientarray.length != 0) {
                 this.setState({ clientarray })
             }
             else {
-                let data={
+                let data = {
                     name: "No Result Found",
-                    _id : "1111"
+                    _id: "1111"
                 }
-              clientarray.push(data)
-              this.setState({clientarray})
+                clientarray.push(data)
+                this.setState({ clientarray })
             }
 
 
@@ -249,7 +253,32 @@ class NewProject extends Component {
             </Option>
         );
     }
-    
+
+  fetchUser = (value) => {
+    console.log('fetching user', value);
+    this.lastFetchId += 1;
+    const fetchId = this.lastFetchId;
+    this.setState({ data: [], fetching: true });
+    fetch('https://randomuser.me/api/?results=5')
+      .then(response => response.json())
+      .then((body) => {
+        if (fetchId !== this.lastFetchId) { // for fetch callback order
+          return;
+        }
+        const data = body.results.map(user => ({
+          text: `${user.name.first} ${user.name.last}`,
+          value: user.login.username,
+        }));
+        this.setState({ data, fetching: false });
+      });
+  }
+  handleChange = (value) => {
+    this.setState({
+      value,
+      data: [],
+      fetching: false,
+    });
+  }
     render() {
         // const { clientarray } = this.state;
         // console.log(this.state.clientarray)
@@ -274,6 +303,7 @@ class NewProject extends Component {
                 validator: this.datevalidate
             }]
         };
+        const { fetching, data, value } = this.state;
         return (
             <div>
                 <Loading
@@ -285,7 +315,11 @@ class NewProject extends Component {
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
                     <div className="newCustomerform">
-                        <h1 className="NewCustomer">New Project</h1>
+                        
+                        {(this.state.editClient == true)?
+                           <h1 className="NewCustomer">Edit Project</h1>:<h1 className="NewCustomer">New Project</h1>
+                        }
+                        
                         <Divider dashed className="underLine" />
                     </div>
                     <Form onSubmit={this.handleSubmit} className="login-form">
@@ -302,12 +336,12 @@ class NewProject extends Component {
 
                                             )(
                                                 <Select className="statuspipeline"
-                                                placeholder="Choose Role"
-                                                onChange={this.selectStatus}
-                                            >
-                                                <Option value="Sales">Client1</Option>
-                                                <Option value="Developer">Client2</Option>
-                                            </Select>
+                                                    placeholder="Choose Role"
+                                                    onChange={this.selectStatus}
+                                                >
+                                                    <Option value="Sales">Client1</Option>
+                                                    <Option value="Developer">Client2</Option>
+                                                </Select>
                                             )}
                                         </FormItem>
                                     </Col>
@@ -380,11 +414,23 @@ class NewProject extends Component {
                                     </FormItem>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Technology">
+                                    <FormItem className="tech" label="Technology">
                                         {getFieldDecorator('technology', {
                                             rules: [{ required: true, message: 'Please input your Technology!' }],
                                         })(
-                                            <Input maxLength="50" placeholder="Technology" />
+                                            <Select
+                                                mode="multiple"
+                                                labelInValue
+                                                value={value}
+                                                placeholder="Select users"
+                                                notFoundContent={fetching ? <Spin size="small" /> : null}
+                                                filterOption={false}
+                                                onSearch={this.fetchUser}
+                                                onChange={this.handleChange}
+                                                style={{ width: '100%' }}
+                                            >
+                                                {data.map(d => <Option key={d.value}>{d.text}</Option>)}
+                                            </Select>
                                         )}
                                     </FormItem>
                                 </Col>
@@ -399,7 +445,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('expecstart', {
-                                                    rules: [{ type: 'object', required: true, message: 'Please select expecteddate!' }, {
+                                                    rules: [{ type: 'object', required: false, message: 'Please select expecteddate!' }, {
                                                         validator: this.validatetoexpecend
                                                     }]
                                                 })(
@@ -415,7 +461,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('expecend', {
-                                                    rules: [{ type: 'object', required: true, message: 'Please select expecteddate!' }, {
+                                                    rules: [{ type: 'object', required: false, message: 'Please select expecteddate!' }, {
                                                         validator: this.validatetoexpecstart
                                                     }]
                                                 })(
@@ -435,7 +481,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('actualstart', {
-                                                    rules: [{  required: false, message: 'Please select actualdate!' }, {
+                                                    rules: [{ required: false, message: 'Please select actualdate!' }, {
                                                         validator: this.validatetoactualend
                                                     }]
                                                 })(
@@ -451,7 +497,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('actualend', {
-                                                    rules: [{  required: false, message: 'Please select actualdate!' }, {
+                                                    rules: [{ required: false, message: 'Please select actualdate!' }, {
                                                         validator: this.validatetoactualstart
                                                     }]
                                                 })(
