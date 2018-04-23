@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Button, Icon } from 'antd';
+import { Layout, Menu, Button, Icon,Row,Col } from 'antd';
 import ClientComponent from '../ClientComponent/ClientComponent';
 import NewProject from '../NewProject/NewProject';
 import './dashboard.css';
@@ -10,6 +10,7 @@ import ChangePassword from '../passwordChange/passwordChange';
 import UserManagement from '../UserManagement/UserManagement';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
+import brandlogo from '../../Images/wkonlogo.png';
 
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 
@@ -58,11 +59,14 @@ class Dashboard extends Component {
 
         <Layout>
           <Header className="header">
-            {/* <div className="logo" /> */}
-            <p style={{ color: '#fff' }}> Hello {this.state.username} <Button className="wkonlogout" onClick={() => {
+          <Row>
+            <Col lg={3}>
+          <img src={brandlogo}/> </Col>
+            <p className="username" style={{ color: '#fff' }}> {this.state.username} <Button className="wkonlogout" onClick={() => {
               sessionStorage.clear();
               this.props.history.push('/login')
             }}>Log Out</Button></p>
+            </Row>
           </Header>
           <Layout>
             <Sider width={200} style={{ background: '#fff' }}>

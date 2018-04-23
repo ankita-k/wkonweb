@@ -202,22 +202,29 @@ class UserManagement extends Component {
                             </Row>
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={24}>
-                                <FormItem label="Reporting Manager :">
+                                <FormItem >
                                         {getFieldDecorator('managers', {
                                             rules: [{ required: true, message: 'Please select project manager!' }],
                                         })(
-                                    // <p className="expecteDateclient">Reporting Manager :</p>
+                                    <p className="expecteDateclient">Reporting Manager :</p>
                                  
-                                    <AutoComplete
-                                        className="clientHere"
-                                        onSearch={this.handleSearch}
-                                        placeholder="Choose Reporting Manager"
-                                        dataSource={this.state.developers.map((item) => { return this.renderOption(item) })}
+                                    // <AutoComplete
+                                    //     className="clientHere"
+                                    //     onSearch={this.handleSearch}
+                                    //     placeholder="Choose Reporting Manager"
+                                    //     dataSource={this.state.developers.map((item) => { return this.renderOption(item) })}
                                       
-                                    >
+                                    // >
                                       
-                                    </AutoComplete>
+                                    // </AutoComplete>
                                       )}
+                                       <Select className="statuspipeline"
+                                                placeholder="Choose Role"
+                                                onChange={this.selectStatus}
+                                            >
+                                                <Option value="Sales">Manager1</Option>
+                                                <Option value="Developer">Manager2</Option>
+                                            </Select>
                                       </FormItem>
                                 </Col>
                             </Row>

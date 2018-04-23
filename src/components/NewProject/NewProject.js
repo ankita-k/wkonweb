@@ -302,17 +302,13 @@ class NewProject extends Component {
                                             },
 
                                             )(
-                                                <AutoComplete
-                                                    className="clientHere clieHere"
-                                                    onSearch={this.handleSearch}
-                                                    placeholder="Choose Client"
-                                                    dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
-                                                   // onSelect={this.onSelect}
-                                                    disabled={this.state.disableclient}
-
-                                                >
-
-                                                </AutoComplete>
+                                                <Select className="statuspipeline"
+                                                placeholder="Choose Role"
+                                                onChange={this.selectStatus}
+                                            >
+                                                <Option value="Sales">Client1</Option>
+                                                <Option value="Developer">Client2</Option>
+                                            </Select>
                                             )}
                                         </FormItem>
                                     </Col>
