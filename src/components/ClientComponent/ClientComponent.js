@@ -101,7 +101,7 @@ class ClientComponent extends Component {
                         phoneNumber: values.phone,
                         email: values.email,
                         name: values.name,
-                        userId: sessionStorage.getItem('id'),
+                        userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
                         domain: values.domain
                     }
                     this.props.createClient(data).then(result => {

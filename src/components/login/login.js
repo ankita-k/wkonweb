@@ -18,12 +18,15 @@ class NormalLoginForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: false  //loading-bar
+            show: false, //loading-bar
+            x: '' //For ChECKBOX VALUE
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit = (e) => {
+        console.log(`checked = ${e.target.checked}`);
+        console.log(this.state.x)
         e.preventDefault()
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
@@ -38,12 +41,26 @@ class NormalLoginForm extends React.Component {
                         return;
                     }
                     if (response.result && response.result.lastLogin) {
-                        sessionStorage.setItem('id', response.result._id);
-                        this.props.history.push('/dashboard');
+                        if (this.state.x == true) {
+                            console.log('local Storage')
+                            localStorage.setItem('id', response.result._id);
+                            this.props.history.push('/dashboard');
+                        }
+                        else {
+                            console.log('session Storage')                            
+                            sessionStorage.setItem('id', response.result._id);
+                            this.props.history.push('/dashboard');
+                        }
                     }
                     else if (response.result && !response.result.lastLogin) {
-                        sessionStorage.setItem('id', response.result._id)
-                        this.props.history.push('/passwordchange');
+                        if (this.state.x == true) {
+                            localStorage.setItem('id', response.result._id);
+                            this.props.history.push('/dashboard');
+                        }
+                        else {
+                            sessionStorage.setItem('id', response.result._id)
+                            this.props.history.push('/passwordchange');
+                        }
                     }
 
                 }, err => {
@@ -52,16 +69,22 @@ class NormalLoginForm extends React.Component {
             }
         });
     }
+    // FOR CHECKBOX 
+    onChange = (e) => {
+        console.log(`checked = ${e.target.checked}`);
+        this.setState({ x: e.target.checked })
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
             <div className="login">
                 <div className="loginmainForm">
-                <Loading
-                    show={this.state.show}
-                    color="red"
-                    showSpinner={false}
-                />
+                    <Loading
+                        show={this.state.show}
+                        color="red"
+                        showSpinner={false}
+                    />
                     <div className="loginCard">
                         <Row type="flex">
                             <Col md={{ span: 12, order: 1 }} xs={{ span: 24, order: 1 }}>
@@ -86,9 +109,9 @@ class NormalLoginForm extends React.Component {
                                         <FormItem className="text-left">
                                             {getFieldDecorator('remember', {
                                                 valuePropName: 'checked',
-                                                initialValue: true,
+                                                initialValue: false,
                                             })(
-                                                <Checkbox>Remember me</Checkbox>
+                                                <Checkbox onChange={this.onChange}  >Remember me</Checkbox>
                                             )}
                                             <a className="loginFormforgot" href="">Forgot password?</a>
 

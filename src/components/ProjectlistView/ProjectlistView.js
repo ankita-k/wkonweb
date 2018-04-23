@@ -82,9 +82,7 @@ class ProjectlistView extends Component {
     this.state = {
       projectList: [],
       searchedList: [],
-      page: 0,
-      limit: 20,
-      userId: sessionStorage.getItem('id'),
+      userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
       selectedRowKeys: [],
       show: true,  //loading-bar
       column: [{
@@ -209,7 +207,7 @@ class ProjectlistView extends Component {
   viewProject = () => {
     console.log('project List');
     this.setState({ show: true })
-    this.props.projectList(this.state.userId, this.state.page, this.state.limit).then((sucess) => {
+    this.props.projectList(this.state.userId).then((sucess) => {
       this.setState({ show: false });
 
       if (!sucess.error) {

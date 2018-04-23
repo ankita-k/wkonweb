@@ -25,7 +25,8 @@ class NewProject extends Component {
             clientarray: [],
             show: false,//loading-bar,
             disabledate: true,
-            disableclient: false
+            disableclient: false,
+            userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
         }
     }
 
@@ -51,7 +52,7 @@ class NewProject extends Component {
             
         }
         // GET CLIENT LIST
-        this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
+        this.props.clientlist(this.state.userId).then((data) => {
             // this.setState({ show: false });
             console.log(data);
             this.setState({ clientlist: data.result });
@@ -115,7 +116,7 @@ class NewProject extends Component {
                         expectedEndDate: values.expecend ? values.expecend._d : '',
                         // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
-                        userId: sessionStorage.getItem('id'),
+                        userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
                         client: values.client
 
                     }

@@ -6,6 +6,8 @@ import './App.css';
 // import axios from 'axios';
 // import { Table } from 'antd';
 import Routes from './routes';
+// import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
+
 
 class App extends Component {
   constructor(props){  
@@ -13,8 +15,11 @@ class App extends Component {
     super(props);
     // Set initial state
     this.state = {
-      data: []
+      data: [],
+      userId:''
     }
+    console.log(props)
+    
     // this.apiUrl = 'http://localhost:5020/transaction/list'
   }
 
@@ -27,7 +32,18 @@ class App extends Component {
     //     if(res)
     //     this.setState({data:res.data.result});
     //   });
+    // const id=sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id');
+    // console.log('userId')
+    // if(id) {
+    //   console.log(this.props)
+    //   console.log('userId')
+    //   // this.props.history.push('/dashboard');
+    // }
+    // else{
+    //   return;
+    // }
   }
+  
   
   render() {
     return (

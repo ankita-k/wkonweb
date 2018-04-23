@@ -23,7 +23,7 @@ class Dashboard extends Component {
     this.state = {
       username: '',
       selectedKey: ['home']
-      
+
     }
   }
 
@@ -38,17 +38,34 @@ class Dashboard extends Component {
   componentDidMount() {
 
     console.log(this.props.location.pathname);
-
-    this.props.username(sessionStorage.getItem('id')).then((data) => {
-      console.log(data);
-      if(!data.error){
-        this.setState({ username: data.result.name });
-        console.log(this.state.username);
-      }
+    if (sessionStorage.getItem("id") === null) { 
+      console.log('data')
       
-    }, err => {
+      this.props.username(localStorage.getItem('id')).then((data) => {
+        console.log(data);
+        if (!data.error) {
+          this.setState({ username: data.result.name });
+          console.log(this.state.username);
+        }
 
-    })
+      }, err => {
+
+      })
+    }
+    else {
+      
+      this.props.username(sessionStorage.getItem('id')).then((data) => {
+      console.log('data')        
+        console.log(data);
+        if (!data.error) {
+          this.setState({ username: data.result.name });
+          console.log(this.state.username);
+        }
+
+      }, err => {
+
+      })
+    }
     this.renderSidemenuSelection();
   }
 
@@ -60,7 +77,11 @@ class Dashboard extends Component {
           <Header className="header">
             {/* <div className="logo" /> */}
             <p style={{ color: '#fff' }}> Hello {this.state.username} <Button className="wkonlogout" onClick={() => {
-              sessionStorage.clear();
+              if (sessionStorage.getItem("id") === null) {
+                localStorage.clear();
+              } else {
+                sessionStorage.clear();
+              }
               this.props.history.push('/login')
             }}>Log Out</Button></p>
           </Header>
@@ -111,7 +132,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/clientcreate`} component={ClientComponent} />
-                <Route exact path={`${this.props.match.url}/editclient`} component={ClientComponent} />                
+                <Route exact path={`${this.props.match.url}/editclient`} component={ClientComponent} />
                 <Route exact path={`${this.props.match.url}/newproject`} component={NewProject} />
                 <Route exact path={`${this.props.match.url}/editProject`} component={NewProject} />
                 <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />

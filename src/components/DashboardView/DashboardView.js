@@ -36,24 +36,53 @@ class DashboardView extends Component {
     }
     //GET DASHBOARD PROJECT COUNT  DATA
     getdashboarddata = () => {
-        this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
-            console.log('dashboardview', response)
-            if (!response.error) {
-                this.setState({ count: response.result });
+        
+        if (sessionStorage.getItem("id") === null) {
+  
+            
+            this.props.dashboardData(localStorage.getItem('id')).then((response) => {
+                console.log('dashboardview', response);
+                if (!response.error) {
+                    this.setState({ count: response.result });
+                }
+                console.log(this.state.count);
+            }, err => {
 
-            }
-
-            console.log(this.state.count);
-        })
+            })
+        }
+        else { 
+            this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
+                
+                console.log('dashboardview', response)
+                if (!response.error) {
+                    this.setState({ count: response.result });
+                }
+                console.log(this.state.count);
+            })
+        }
     }
     //GET DASHBOARD CUSTOERS COUNT DATA
     dashboardCustomer = () => {
-        this.props.dashboardCustomer(sessionStorage.getItem('id')).then(response => {
-            console.log('customerview', response)
-            if (!response.error) {
-                this.setState({ clientcount: response.result });
-            }
-        })
+        if (sessionStorage.getItem("id") === null) {
+        console.log('data')            
+            this.props.dashboardCustomer(localStorage.getItem('id')).then((response) => {
+                console.log('customerview', response);
+                if (!response.error) {
+                    this.setState({ clientcount: response.result });
+                }
+            }, err => {
+
+            })
+        }
+        else {
+            this.props.dashboardCustomer(sessionStorage.getItem('id')).then(response => {
+        console.log('data...')                            
+                console.log('customerview', response)
+                if (!response.error) {
+                    this.setState({ clientcount: response.result });
+                }
+            })
+        }
     }
 
 
@@ -137,7 +166,7 @@ class DashboardView extends Component {
                                 <p>
                                     <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent"> Completed</span>
                                 </p>
-                                <h1 className="totalNumber">{this.state.count.Completed?this.state.count.Completed:0}</h1>
+                                <h1 className="totalNumber">{this.state.count.Completed ? this.state.count.Completed : 0}</h1>
                             </div>
 
                         </Col>
@@ -308,7 +337,7 @@ class DashboardView extends Component {
 }
 
 const mapStateToProps = (state) => {
-    
+
     return state
 }
 const WrappedDashboardView = Form.create()(DashboardView);
