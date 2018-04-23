@@ -40,6 +40,7 @@ class NewProject extends Component {
         if (this.props.location.data) {
             this.setState({ disabledate: false })
             this.setState({ disableclient: true })
+            this.setState({ editClient: true })
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name,
                 ['textRequirement']: this.props.location.data.data.requirement1,
@@ -314,7 +315,11 @@ class NewProject extends Component {
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
                     <div className="newCustomerform">
-                        <h1 className="NewCustomer">New Project</h1>
+                        
+                        {(this.state.editClient == true)?
+                           <h1 className="NewCustomer">Edit Project</h1>:<h1 className="NewCustomer">New Project</h1>
+                        }
+                        
                         <Divider dashed className="underLine" />
                     </div>
                     <Form onSubmit={this.handleSubmit} className="login-form">
@@ -440,7 +445,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('expecstart', {
-                                                    rules: [{ type: 'object', required: true, message: 'Please select expecteddate!' }, {
+                                                    rules: [{ type: 'object', required: false, message: 'Please select expecteddate!' }, {
                                                         validator: this.validatetoexpecend
                                                     }]
                                                 })(
@@ -456,7 +461,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('expecend', {
-                                                    rules: [{ type: 'object', required: true, message: 'Please select expecteddate!' }, {
+                                                    rules: [{ type: 'object', required: false, message: 'Please select expecteddate!' }, {
                                                         validator: this.validatetoexpecstart
                                                     }]
                                                 })(
