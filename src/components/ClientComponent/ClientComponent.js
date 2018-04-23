@@ -15,7 +15,8 @@ class ClientComponent extends Component {
         super(props);
         this.state = {
             countrylist: [],
-            show: false  //loading-bar
+            show: false,  //loading-bar
+            clientEdit: false
         }
     }
 
@@ -24,6 +25,7 @@ class ClientComponent extends Component {
         console.log(this.props);
         console.log(this.props.form)
         if (this.props.location.data) {
+            this.setState({ clientEdit: true })
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name,
                 ['email']: this.props.location.data.data.email,
@@ -132,7 +134,10 @@ class ClientComponent extends Component {
                 <Card className="innercardContent" bordered={false}>
                     {/* --new customer details-- */}
                     <div className="newCustomerform">
-                        <h1 className="NewCustomer">New Client</h1>
+                        {/* <h1 className="NewCustomer">New Client</h1> */}
+                        {(this.state.clientEdit == true)?
+                           <h1 className="NewCustomer">Edit Client</h1>:<h1 className="NewCustomer">New Client</h1>
+                        }
                         <Divider dashed className="underLine" />
                         {/* <div className="headingLine">
                             <Row className="formcustomer">
