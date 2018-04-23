@@ -173,7 +173,7 @@ class ProjectlistView extends Component {
     console.log(data);
     console.log("hellllloo");
     this.props.history.push({
-      pathname: '/dashboard/newproject',
+      pathname: '/dashboard/editProject',
       data: {
         data
       }
@@ -220,6 +220,7 @@ class ProjectlistView extends Component {
         return data[index] = {
           name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
           requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
+          requirement1: item.requirement,
           status: item.status,
           technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
           expectedStartDate: moment(item.expectedStartDate).format("ll"),

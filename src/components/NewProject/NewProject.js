@@ -33,12 +33,13 @@ class NewProject extends Component {
         console.log("component Did Mount");
         console.log(this.props.location);
         console.log(this.props.form)
+        console.log(this.props.location.data)
         if (this.props.location.data) {
             this.setState({ disabledate: false })
             this.setState({ disableclient: true })
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name,
-                ['textRequirement']: this.props.location.data.data.requirement,
+                ['textRequirement']: this.props.location.data.data.requirement1,
                 ['technology']: this.props.location.data.data.technology,
                 ['expecstart']: this.props.location.data.data.expectedStartDate ? moment(this.props.location.data.data.expectedStartDate) : '',
                 ['expecend']: this.props.location.data.data.expectedEndDate ? moment(this.props.location.data.data.expectedEndDate) : '',
@@ -47,12 +48,8 @@ class NewProject extends Component {
                 ['status']: this.props.location.data.data.status,
                 ['client']: this.props.location.data.data.client ? this.props.location.data.data.client.name : ''
             })
-
+            
         }
-
-
-
-
         // GET CLIENT LIST
         this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
             // this.setState({ show: false });
@@ -63,7 +60,6 @@ class NewProject extends Component {
 
         })
     }
-
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -126,7 +122,7 @@ class NewProject extends Component {
                     if (values.actualstart) {
                         data.actualStartDate = values.actualstart._d
                     }
-
+                
                     console.log(data)
                     this.props.addProject(data).then(response => {
                         this.setState({ show: false });
@@ -134,6 +130,9 @@ class NewProject extends Component {
                         if (!response.error) {
                             this.props.opentoast('success', 'Project Added Successfully!');
                             this.props.history.push('/dashboard/projectlist')
+                        }
+                        if(response.error==true){
+                            this.props.opentoast('warning', 'Insufficient Data!');
                         }
                     }, err => {
 
