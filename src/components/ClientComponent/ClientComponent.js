@@ -174,7 +174,7 @@ class ClientComponent extends Component {
 
                                         })(
                                             <Input
-                                                maxLength="20"
+                                                maxLength="200"
                                                 placeholder="Email" name="email" />
                                             )}
                                     </FormItem>
