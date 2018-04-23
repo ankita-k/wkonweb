@@ -173,7 +173,7 @@ class ProjectlistView extends Component {
     console.log(data);
     console.log("hellllloo");
     this.props.history.push({
-      pathname: '/dashboard/newproject',
+      pathname: '/dashboard/editProject',
       data: {
         data
       }

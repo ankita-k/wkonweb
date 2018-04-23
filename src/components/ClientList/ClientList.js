@@ -164,7 +164,7 @@ class ClientList extends Component {
   //edit client
   editClient = (data) => {
     this.props.history.push({
-      pathname: '/dashboard/clientcreate',
+      pathname: '/dashboard/editclient',
       data: {
         data
       }
