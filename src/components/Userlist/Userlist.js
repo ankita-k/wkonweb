@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 
 import './Userlist.css';
 import { Card, Table, Button, Icon, Row, Input, Col, Modal, span } from 'antd';
-import user from '../../Images/wkon-2-21.png';
+import user from '../../Images/wkon-2-22.png';
+import usertwo from '../../Images/wkon-2-21.png';
 
 class Userlist extends Component {
 
@@ -18,17 +19,25 @@ class Userlist extends Component {
 
                     <Row>
                         <Col lg={11} className="firstuser">
+                        
                             <Row className="btnedit">
-                            <Col lg={20}></Col>
-                                <Col lg={2}>
-                                    <Button className="edit" >
-                                        <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-                                {/* <Col lg={{ span: 8 }}></Col> */}
-                                <Col lg={2}>
-                                    <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
-                                </Col>
-
+                           
+                                <Col lg={20}></Col>
+                                <Col lg={4}>
+                                <div className="btndltedt">
+                                <Row>
+                                    <Col lg={12}>
+                                        <Button className="edit" >
+                                            <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+                                    {/* <Col lg={{ span: 8 }}></Col> */}
+                                    <Col lg={12}>
+                                        <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
+                                    </Col>
+                                    </Row>
+                                    </div>
+                                    </Col>
                             </Row>
+                          
                             <Row className="padng20">
                                 <Col lg={4} className="resalign">
                                     <img src={user} />
@@ -54,9 +63,28 @@ class Userlist extends Component {
                         </Col>
                         <Col lg={1}></Col>
                         <Col lg={11} className="firstuser">
+                        
+                            <Row className="btnedit">
+                           
+                                <Col lg={20}></Col>
+                                <Col lg={4}>
+                                <div className="btndltedt">
+                                <Row>
+                                    <Col lg={12}>
+                                        <Button className="edit" >
+                                            <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+                                    {/* <Col lg={{ span: 8 }}></Col> */}
+                                    <Col lg={12}>
+                                        <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
+                                    </Col>
+                                    </Row>
+                                    </div>
+                                    </Col>
+                            </Row>
+                          
                             <Row className="padng20">
                                 <Col lg={4} className="resalign">
-                                    <img src={user} />
+                                    <img src={usertwo} />
                                 </Col>
                                 <Col lg={1}></Col>
                                 <Col lg={19}>
@@ -81,8 +109,28 @@ class Userlist extends Component {
 
                 </div>
                 <div className="user1">
+
                     <Row>
                         <Col lg={11} className="firstuser">
+                        
+                            <Row className="btnedit">
+                           
+                                <Col lg={20}></Col>
+                                <Col lg={4}>
+                                <div className="btndltedt">
+                                <Row>
+                                    <Col lg={12}>
+                                        <Button className="edit" >
+                                            <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+                                    {/* <Col lg={{ span: 8 }}></Col> */}
+                                    <Col lg={12}>
+                                        <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
+                                    </Col>
+                                    </Row>
+                                    </div>
+                                    </Col>
+                            </Row>
+                          
                             <Row className="padng20">
                                 <Col lg={4} className="resalign">
                                     <img src={user} />
@@ -108,9 +156,28 @@ class Userlist extends Component {
                         </Col>
                         <Col lg={1}></Col>
                         <Col lg={11} className="firstuser">
+                        
+                            <Row className="btnedit">
+                           
+                                <Col lg={20}></Col>
+                                <Col lg={4}>
+                                <div className="btndltedt">
+                                <Row>
+                                    <Col lg={12}>
+                                        <Button className="edit" >
+                                            <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+                                    {/* <Col lg={{ span: 8 }}></Col> */}
+                                    <Col lg={12}>
+                                        <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
+                                    </Col>
+                                    </Row>
+                                    </div>
+                                    </Col>
+                            </Row>
+                          
                             <Row className="padng20">
                                 <Col lg={4} className="resalign">
-                                    <img src={user} />
+                                    <img src={usertwo} />
                                 </Col>
                                 <Col lg={1}></Col>
                                 <Col lg={19}>
@@ -134,7 +201,6 @@ class Userlist extends Component {
                     </Row>
 
                 </div>
-
                 {/* <Col lg={12}>
 <Row>
 <Col lg={8}>

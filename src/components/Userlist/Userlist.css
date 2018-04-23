@@ -44,3 +44,22 @@ button.ant-btn.wkonlogout {
 .padng20 img {
     border-radius: 50%;
 }
+.firstuser button.ant-btn.edit {
+    background: transparent;
+    color: rgb(161, 218, 232);
+    border: none;
+    padding: 0 0 0 26px;
+    margin-bottom: 17px;
+}
+
+.btndltedt {
+    border-radius: 0 0 0 85%;
+    margin-right: -11px;
+    margin-top: -5px;
+    margin-left: 3px;
+}.firstuser button.ant-btn.delete {
+    background: transparent;
+    color: rgb(161, 218, 232);
+    border: none;
+    margin-left: 0;
+}
