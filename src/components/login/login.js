@@ -22,6 +22,13 @@ class NormalLoginForm extends React.Component {
             x: '' //For ChECKBOX VALUE
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+        var id = sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id');
+        console.log('userId')
+        if (id) {
+            console.log(this.props)
+            console.log('userId')
+            this.props.history.push('/dashboard');
+        }
     }
 
     handleSubmit = (e) => {
@@ -47,7 +54,7 @@ class NormalLoginForm extends React.Component {
                             this.props.history.push('/dashboard');
                         }
                         else {
-                            console.log('session Storage')                            
+                            console.log('session Storage')
                             sessionStorage.setItem('id', response.result._id);
                             this.props.history.push('/dashboard');
                         }

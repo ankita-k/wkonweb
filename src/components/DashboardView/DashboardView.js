@@ -28,7 +28,6 @@ class DashboardView extends Component {
             projecttotal: {},
             projectinprogress: {},
             projectcompleted: {}
-
         }
     }
 
@@ -41,37 +40,35 @@ class DashboardView extends Component {
 
     //GET DASHBOARD PROJECT COUNT  DATA
     getdashboarddata = () => {
-        
-        if (sessionStorage.getItem("id") === null) {
-  
-            
+
+        if (sessionStorage.getItem("id")) {
+            this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
+
+                console.log('dashboardview', response)
+                if (!response.error) {
+                    this.startCounter(response.result.Total, 'projectTotal')
+                    if (response.result.Completed)
+                        this.startCounter(response.result.Completed, 'projectcompleted')
+
+                    if (response.result.InProgess)
+                        this.startCounter(response.result.InProgess, 'projectinprogress')
+                }
+                console.log(this.state.count);
+            })
+        }
+        else {
             this.props.dashboardData(localStorage.getItem('id')).then((response) => {
                 console.log('dashboardview', response);
                 if (!response.error) {
                     this.startCounter(response.result.Total, 'projectTotal')
                     if (response.result.Completed)
                         this.startCounter(response.result.Completed, 'projectcompleted')
-    
+
                     if (response.result.InProgess)
                         this.startCounter(response.result.InProgess, 'projectinprogress')
                 }
                 console.log(this.state.count);
             }, err => {
-
-            })
-        }
-        else { 
-            this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
-                
-                console.log('dashboardview', response)
-                if (!response.error) {
-                    this.startCounter(response.result.Total, 'projectTotal')
-                    if (response.result.Completed)
-                        this.startCounter(response.result.Completed, 'projectcompleted')
-    
-                    if (response.result.InProgess)
-                        this.startCounter(response.result.InProgess, 'projectinprogress')
-                }
                 console.log(this.state.count);
             })
         }
@@ -79,7 +76,7 @@ class DashboardView extends Component {
     //GET DASHBOARD CUSTOERS COUNT DATA
     dashboardCustomer = () => {
         if (sessionStorage.getItem("id") === null) {
-        console.log('data')            
+            console.log('data')
             this.props.dashboardCustomer(localStorage.getItem('id')).then((response) => {
                 console.log('customerview', response);
                 if (!response.error) {
@@ -95,7 +92,7 @@ class DashboardView extends Component {
         }
         else {
             this.props.dashboardCustomer(sessionStorage.getItem('id')).then(response => {
-        console.log('data...')                            
+                console.log('data...')
                 console.log('customerview', response)
                 if (!response.error) {
                     this.startCounter(response.result.Total, 'clientTotal')
@@ -242,11 +239,11 @@ class DashboardView extends Component {
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
                             <div className="cusTotal" >
-                 
+
                                 <p>  <NavLink to="../dashboard/clientlist" >
                                     <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
-                                               
-                                   </NavLink>
+
+                                </NavLink>
                                 </p>
                                 <h1 className="totalNumber">{this.state.clienttotal.Total ? this.state.clienttotal.Total : 0}</h1>
                             </div>

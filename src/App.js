@@ -10,45 +10,42 @@ import Routes from './routes';
 
 
 class App extends Component {
-  constructor(props){  
+  constructor(props) {
     // Pass props to parent class
     super(props);
     // Set initial state
     this.state = {
       data: [],
-      userId:''
+      userId: ''
     }
     console.log(props)
-    
+
     // this.apiUrl = 'http://localhost:5020/transaction/list'
   }
 
-  componentDidMount(){
+  componentDidMount() {
     // Make HTTP reques with Axios
     // axios.get(this.apiUrl)
     //   .then((res) => {
     //     // Set state with result
     //     console.log(res);
-    //     if(res)
-    //     this.setState({data:res.data.result});
+    //     if (res)
+    //       this.setState({ data: res.data.result });
     //   });
-    // const id=sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id');
-    // console.log('userId')
-    // if(id) {
-    //   console.log(this.props)
-    //   console.log('userId')
-    //   // this.props.history.push('/dashboard');
-    // }
-    // else{
+    // else {
     //   return;
     // }
+    var id = localStorage.getItem('id');
+    if (id) {
+      sessionStorage.setItem('id', id);
+    }
   }
-  
-  
+
+
   render() {
     return (
       <div className="App">
-          <Routes></Routes>
+        <Routes></Routes>
       </div>
     );
   }

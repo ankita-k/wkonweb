@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Button, Icon,Row,Col } from 'antd';
+import { Layout, Menu, Button, Icon, Row, Col } from 'antd';
 import ClientComponent from '../ClientComponent/ClientComponent';
 import NewProject from '../NewProject/NewProject';
 import './dashboard.css';
@@ -39,9 +39,9 @@ class Dashboard extends Component {
   componentDidMount() {
 
     console.log(this.props.location.pathname);
-    if (sessionStorage.getItem("id") === null) { 
+    if (sessionStorage.getItem("id") === null) {
       console.log('data')
-      
+
       this.props.username(localStorage.getItem('id')).then((data) => {
         console.log(data);
         if (!data.error) {
@@ -54,9 +54,9 @@ class Dashboard extends Component {
       })
     }
     else {
-      
+
       this.props.username(sessionStorage.getItem('id')).then((data) => {
-      console.log('data')        
+        console.log('data')
         console.log(data);
         if (!data.error) {
           this.setState({ username: data.result.name });
@@ -76,14 +76,14 @@ class Dashboard extends Component {
 
         <Layout>
           <Header className="header">
-          <Row>
-            <Col lg={3}>
-          <img src={brandlogo}/> </Col>
-            <p className="username" style={{ color: '#fff' }}> {this.state.username} <Button className="wkonlogout" onClick={() => {
-              sessionStorage.clear();
-              localStorage.clear();
-              this.props.history.push('/login')
-            }}>Log Out</Button></p>
+            <Row>
+              <Col lg={3}>
+                <img src={brandlogo} /> </Col>
+              <p className="username" style={{ color: '#fff' }}> {this.state.username} <Button className="wkonlogout" onClick={() => {
+                sessionStorage.clear();
+                localStorage.clear();
+                this.props.history.push('/login')
+              }}>Log Out</Button></p>
             </Row>
           </Header>
           <Layout>
@@ -121,7 +121,7 @@ class Dashboard extends Component {
                 </SubMenu>
                 <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
                 <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item>
-                
+
 
                 {/* <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}> */}
                 {/* <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
@@ -141,7 +141,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />
                 <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />
                 <Route exact path={`${this.props.match.url}/usermanagement`} component={UserManagement} />
-                <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />   
+                <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>
