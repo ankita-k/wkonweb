@@ -90,7 +90,7 @@ class DashboardView extends Component {
             }
         });
     }
-
+   
     // START COUNTER FOR DASHBOARD NUMBER SHOWN
     startCounter(maxcount, type) {
         let _base = this;
@@ -193,6 +193,17 @@ class DashboardView extends Component {
 
     }
 
+    filterClient=(data)=>{
+
+        this.props.history.push({
+            pathname: '/dashboard/clientlist',
+            filterValue:data
+             
+             
+          })
+        console.log("commited");
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
@@ -208,18 +219,20 @@ class DashboardView extends Component {
                     </Row>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal" >
+                            <div className="cusTotal" onClick={()=>{this.filterClient('All')}}>
                  
-                                <p>  <NavLink to="../dashboard/clientlist" >
+                                <p> 
                                     <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                                
-                                   </NavLink>
+                                   
                                 </p>
                                 <h1 className="totalNumber">{this.state.clienttotal.Total ? this.state.clienttotal.Total : 0}</h1>
+                
                             </div>
+                        
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal"onClick={()=>{this.filterClient('Committed')}}>
                                 <p>
                                     <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Committed</span>
                                 </p>
@@ -229,7 +242,7 @@ class DashboardView extends Component {
 
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal" onClick={()=>{this.filterClient('Pipeline')}}>
                                 <p>
                                     <img src={pipeline} className="totalImg" alt="Pipeline" /><span className="totalContent">Pipeline</span>
                                 </p>
@@ -249,11 +262,12 @@ class DashboardView extends Component {
                     </Row>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal"><NavLink to="../dashboard/projectlist" >
                                 <p>
                                     <img src={projecttotal} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                 </p>
                                 <h1 className="totalNumber">{this.state.projecttotal.Total ? this.state.projecttotal.Total : 0}</h1>
+                                </NavLink>
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>

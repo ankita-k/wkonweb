@@ -118,6 +118,7 @@ class ClientList extends Component {
       selectedId: '',  //FOR SELECT CLIENT ROW ID
       searchedclient: [],
       searchinput: '',
+      c:'All',
       column: [{
         title: 'Name',
         dataIndex: 'name',
@@ -148,11 +149,11 @@ class ClientList extends Component {
         key: 'action',
         render: (text, record) => (
           <Row>
-            <Col  lg={{span:10}}>
+            <Col lg={{ span: 10 }}>
               <Button className="edit" onClick={() => { this.editClient(record) }}>
                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-            <Col lg={{span:8}}></Col>
-            <Col  lg={{span:10}}>
+            <Col lg={{ span: 8 }}></Col>
+            <Col lg={{ span: 10 }}>
               <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
             </Col>
 
@@ -190,41 +191,59 @@ class ClientList extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props)
+    this.getclients().then(success => {
+      if (this.props.location.filterValue) {
+        
+        // this.setState({statussearch:this.props.location.filterValue})
+        this.handleChange(this.props.location.filterValue)
+        console.log(this.state.statussearch)
+      }
+    })
+
 
     // GET CLIENT LIST
     this.setState({ show: true })
     console.log('component will mount')
-    this.getclients();
+
   }
 
+
   getclients = () => {
-    this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
-      if (!data.error) {
-        this.setState({ show: false });
-        console.log(data);
-        this.setState({ clientlist: data.result });
-        var data = data.result;
-        data.map(function (item, index) {
-          return data[index] = {
-            name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
-            phoneNumber: item.phoneNumber,
-            email: item.email,
-            domain: item.domain,
-            country: item.country,
-            status: item.status,
-            key: Math.random() * 1000000000000000000,
-            _id: item._id
+    return new Promise((resolve, reject) => {
+
+      this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
+        if (!data.error) {
+          this.setState({ show: false });
+          console.log(data);
+          this.setState({ clientlist: data.result });
+          var data = data.result;
+          data.map(function (item, index) {
+            return data[index] = {
+              name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+              phoneNumber: item.phoneNumber,
+              email: item.email,
+              domain: item.domain,
+              country: item.country,
+              status: item.status,
+              key: Math.random() * 1000000000000000000,
+              _id: item._id
+            }
+
+          })
+
+          if (!this.props.location.filterValue) {
+            this.setState({ searchedclient: data });
+
           }
+          resolve(true)
+        }
 
-        })
-        this.setState({ searchedclient: data });
-       
-      }
+      }, err => {
+        this.setState({ show: false });
+      })
 
-    }, err => {
-      this.setState({ show: false });
     })
-
   }
   // SEACRH CLIENT LIST ACCORDING TO INPUT 
   searchClient = (e) => {
@@ -247,10 +266,11 @@ class ClientList extends Component {
   }
   //handlechange function
   handleChange = (value) => {
-    
+ 
     console.log(`selected ${value}`);
     let searchedclient;
     if (value) {
+      this.setState({statussearch:value})
       if (value == 'All') {
         this.setState({ searchedclient: this.state.clientlist });
       }
@@ -296,19 +316,20 @@ class ClientList extends Component {
               enterButton
               value={this.state.searchinput}
             />
-              <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+            <Select className="scoping" value={this.state.statussearch}style={{ width: 120 }} onChange={this.handleChange}>
               <Option value="All">All</Option>
               <Option value="Interested">Interested</Option>
               <Option value="Pipeline">Pipeline</Option>
               <Option value="Commited">Commited</Option>
-              
-          
-          </Select>
+
+
+            </Select>
             <Button className="allprojectbtn" onClick={() => {
               this.setState({ searchedclient: this.state.clientlist });
+              this.setState({statussearch:this.state.c});
               this.setState({ searchinput: '' })
             }}>Show All</Button>
-            
+
           </div>
         </Row>
 
