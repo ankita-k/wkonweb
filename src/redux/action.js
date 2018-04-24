@@ -579,3 +579,36 @@ export function findByRole(role) {
         });
     }
     }
+
+    export function userlist() {
+
+        return (dispatch) => {
+            console.log(config.apiUrl)
+            return new Promise((resolve, reject) => {
+    
+                fetch(config.apiUrl + 'user/getAllUser',
+                    {
+                        headers: {
+                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                        },
+                        method: 'GET'
+                    })
+                    .then((response) => response.json())
+                    .then((responseJSON) => {
+                        dispatch(user(responseJSON))
+                        resolve(responseJSON);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        }
+    }
+    //clientlist func
+    function user(list) {
+        return {
+            type: "USER_LIST",
+            list
+    
+        }
+    }

@@ -82,15 +82,14 @@ class ProjectlistView extends Component {
     this.state = {
       projectList: [],
       searchedList: [],
-      page: 0,
-      limit: 20,
-      userId: sessionStorage.getItem('id'),
+      userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
       selectedRowKeys: [],
       show: true,  //loading-bar
       column: [{
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
+
 
       }, {
         title: 'Brief Requirement',
@@ -137,11 +136,11 @@ class ProjectlistView extends Component {
           //   <Button className="delete" onClick={() => { this.deleteProject(record) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
           // </span>
           <Row>
-            <Col lg={{span:10}}>
+            <Col lg={{ span: 10 }}>
               <Button className="edit" onClick={() => { this.editProject(record) }}>
                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-            <Col lg={{span:8}}></Col>
-            <Col lg={{span:10}}>
+            <Col lg={{ span: 8 }}></Col>
+            <Col lg={{ span: 10 }}>
               <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
             </Col>
           </Row>
@@ -173,7 +172,7 @@ class ProjectlistView extends Component {
     console.log(data);
     console.log("hellllloo");
     this.props.history.push({
-      pathname: '/dashboard/newproject',
+      pathname: '/dashboard/editProject',
       data: {
         data
       }
@@ -209,32 +208,35 @@ class ProjectlistView extends Component {
   viewProject = () => {
     console.log('project List');
     this.setState({ show: true })
-    this.props.projectList(this.state.userId, this.state.page, this.state.limit).then((sucess) => {
+    this.props.projectList(this.state.userId).then((sucess) => {
       this.setState({ show: false });
 
-      if (!sucess.error) {
-      console.log(sucess);
-      this.setState({ projectList: sucess.result });
-      var data = sucess.result;
-      data.map(function (item, index) {
-        return data[index] = {
-          name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
-          requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
-          requirement1: item.requirement,
-          status: item.status,
-          technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
-          expectedStartDate: moment(item.expectedStartDate).format("ll"),
-          expectedEndDate: moment(item.expectedStartDate).format("ll"),
-          actualStartDate: item.actualStartDate?moment(item.actualStartDate).format("ll"):'',
-          actualEndDate:item.actualEndDate? moment(item.actualEndDate).format("ll"):'',
-          key: Math.random() * 1000000000000000000,
-          _id: item._id,
-          client: item.client
-        }
-      })
-
-      this.setState({ searchedList: data });
-    }
+      if (!sucess.error) { 
+        console.log(sucess);
+        this.setState({ projectList: sucess.result });
+        var data = sucess.result;
+        data.map(function (item, index) {
+          return data[index] = {
+            name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+            name1: item.name,
+            requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
+            requirement1: item.requirement,
+            status: item.status,
+            technology: (item.technology.replace(/"/g, '')).split(',').length>1?((item.technology.replace(/"/g, '')).split(',')[0]+'..'):(item.technology.replace(/"/g, '')).split(','),
+            technology1: (item.technology.replace(/"/g, '')).split(','),
+            expectedStartDate: item.expectedStartDate ? moment(item.expectedStartDate).format("ll") : '',
+            expectedEndDate: item.expectedEndDate ? moment(item.expectedEndDate).format("ll") : '',
+            actualStartDate: item.actualStartDate ? moment(item.actualStartDate).format("ll") : '',
+            actualEndDate: item.actualEndDate ? moment(item.actualEndDate).format("ll") : '',
+            key: Math.random() * 1000000000000000000,
+            _id: item._id,
+            client: item.client
+          }
+        })
+        console.log(data)
+        // .length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
+        this.setState({ searchedList: data });
+      }
 
     }, err => {
       this.setState({ show: false });
@@ -277,47 +279,48 @@ class ProjectlistView extends Component {
         />
         <h1 className="clientList">PROJECT LIST</h1>
         <Row>
-        <div className="AllProjects">
-          <Search className="SearchValue"
-            placeholder="Search Here.."
-            onSearch={value => { this.searchproject(value) }}
-            style={{ width: 200 }}
-            onChange={(e) => { this.showallList(e.target.value) }}
-            enterButton
-            value={this.state.searchinput}
+          <div className="AllProjects">
+            <Search className="SearchValue"
+              placeholder="Search Here.."
+              onSearch={value => { this.searchproject(value) }}
+              style={{ width: 200 }}
+              onChange={(e) => { this.showallList(e.target.value) }}
+              enterButton
+              value={this.state.searchinput}
 
 
-          />
-          <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
-            <Option value="All">All</Option>
-            <Option value="New">New</Option>
-            <Option value="InDiscussion">InDiscussion</Option>
-            <Option value="Scoping">Scoping</Option>
-            <Option value="InProgess">InProgess</Option>
-            <Option value="Stalled">Stalled</Option>
-            <Option value="Completed">Completed</Option>
+            />
+            <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+              <Option value="All">All</Option>
+              <Option value="New">New</Option>
+              <Option value="InDiscussion">InDiscussion</Option>
+              <Option value="Scoping">Scoping</Option>
+              <Option value="InProgess">InProgess</Option>
+              <Option value="Stalled">Stalled</Option>
+              <Option value="Completed">Completed</Option>
 
-          </Select>
-          <Button className="allprojectbtn" onClick={() => {
-            this.setState({ searchedList: this.state.projectList });
-            this.setState({ searchinput: '' })
-          }}>All Projects</Button>
+            </Select>
+            <Button className="allprojectbtn" onClick={() => {
+              this.setState({ searchedList: this.state.projectList });
+              this.setState({ searchinput: '' })
+            }}>All Projects</Button>
 
-           
-          <div className="addButton project">
-            <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>
+
+            <div className="addButton project">
+              <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>
+            </div>
+
+
           </div>
-
-      
-        </div>
         </Row>
-      
+
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
           <Table
             onRow={(record, x) => {
               return {
-                onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
+                onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },  
+               // click row
               };
             }}
             columns={columns} dataSource={this.state.searchedList} />

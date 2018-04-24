@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Button, Icon } from 'antd';
+import { Layout, Menu, Button, Icon, Row, Col } from 'antd';
 import ClientComponent from '../ClientComponent/ClientComponent';
 import NewProject from '../NewProject/NewProject';
 import './dashboard.css';
@@ -10,7 +10,8 @@ import ChangePassword from '../passwordChange/passwordChange';
 import UserManagement from '../UserManagement/UserManagement';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
-
+import brandlogo from '../../Images/wkonlogo.png';
+import Userlist from '../Userlist/Userlist';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 
 // const { SubMenu } = Menu;
@@ -23,8 +24,13 @@ class Dashboard extends Component {
     this.state = {
       username: '',
       selectedKey: ['home']
-      
+
     }
+    if(!sessionStorage.getItem('id') && !localStorage.getItem('id')){
+      this.props.history.push('/login');
+      return;
+    }
+    
   }
 
   renderSidemenuSelection = () => {
@@ -38,17 +44,34 @@ class Dashboard extends Component {
   componentDidMount() {
 
     console.log(this.props.location.pathname);
+    if (sessionStorage.getItem("id")) {
+      console.log('data')
 
-    this.props.username(sessionStorage.getItem('id')).then((data) => {
-      console.log(data);
-      if(!data.error){
-        this.setState({ username: data.result.name });
-        console.log(this.state.username);
-      }
-      
-    }, err => {
+      this.props.username(sessionStorage.getItem('id')).then((data) => {
+        console.log(data);
+        if (!data.error) {
+          this.setState({ username: data.result.name });
+          console.log(this.state.username);
+        }
 
-    })
+      }, err => {
+
+      })
+    }
+    else if(localStorage.getItem('id')){
+
+      this.props.username(localStorage.getItem('id')).then((data) => {
+        console.log('data')
+        console.log(data);
+        if (!data.error) {
+          this.setState({ username: data.result.name });
+          console.log(this.state.username);
+        }
+
+      }, err => {
+
+      })
+    }
     this.renderSidemenuSelection();
   }
 
@@ -58,11 +81,15 @@ class Dashboard extends Component {
 
         <Layout>
           <Header className="header">
-            {/* <div className="logo" /> */}
-            <p style={{ color: '#fff' }}> Hello {this.state.username} <Button className="wkonlogout" onClick={() => {
-              sessionStorage.clear();
-              this.props.history.push('/login')
-            }}>Log Out</Button></p>
+            <Row>
+              <Col lg={3}>
+                <img src={brandlogo} /> </Col>
+              <p className="username" style={{ color: '#fff' }}> {this.state.username} <Button className="wkonlogout" onClick={() => {
+                sessionStorage.clear();
+                localStorage.clear();
+                this.props.history.push('/login')
+              }}>Log Out</Button></p>
+            </Row>
           </Header>
           <Layout>
             <Sider width={200} style={{ background: '#fff' }}>
@@ -98,6 +125,8 @@ class Dashboard extends Component {
                   </Menu.Item>
                 </SubMenu>
                 <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
+                <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item>
+
 
                 {/* <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}> */}
                 {/* <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
@@ -111,10 +140,13 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/clientcreate`} component={ClientComponent} />
+                <Route exact path={`${this.props.match.url}/editclient`} component={ClientComponent} />
                 <Route exact path={`${this.props.match.url}/newproject`} component={NewProject} />
+                <Route exact path={`${this.props.match.url}/editProject`} component={NewProject} />
                 <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />
                 <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />
                 <Route exact path={`${this.props.match.url}/usermanagement`} component={UserManagement} />
+                <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>
