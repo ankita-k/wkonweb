@@ -103,7 +103,7 @@ class ClientComponent extends Component {
                         phoneNumber: values.phone,
                         email: values.email,
                         name: values.name,
-                        userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
+                        userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
                         domain: values.domain
                     }
                     this.props.createClient(data).then(result => {
@@ -135,8 +135,8 @@ class ClientComponent extends Component {
                     {/* --new customer details-- */}
                     <div className="newCustomerform">
                         {/* <h1 className="NewCustomer">New Client</h1> */}
-                        {(this.state.clientEdit == true)?
-                           <h1 className="NewCustomer">Edit Client</h1>:<h1 className="NewCustomer">New Client</h1>
+                        {(this.state.clientEdit == true) ?
+                            <h1 className="NewCustomer">Edit Client</h1> : <h1 className="NewCustomer">New Client</h1>
                         }
                         <Divider dashed className="underLine" />
                         {/* <div className="headingLine">
@@ -197,11 +197,6 @@ class ClientComponent extends Component {
                                                 name="country"
                                                 showSearch
                                             >
-
-                                                <Option value="Interested">Interested</Option>
-                                                <Option value="Pipeline">Pipeline</Option>
-                                                <Option value="Committed">Committed</Option>
-
                                                 {this.state.countrylist.map((item, index) => {
                                                     return (<Option key={index} value={item.name}>{item.name}</Option>)
                                                 })}
