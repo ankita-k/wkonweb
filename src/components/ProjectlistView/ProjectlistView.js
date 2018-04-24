@@ -222,7 +222,7 @@ class ProjectlistView extends Component {
           requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
           requirement1: item.requirement,
           status: item.status,
-          technology: item.technology.length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
+          technology: (item.technology),
           expectedStartDate: item.expectedStartDate?moment(item.expectedStartDate).format("ll"):'',
           expectedEndDate: item.expectedEndDate?moment(item.expectedEndDate).format("ll"):'',
           actualStartDate: item.actualStartDate?moment(item.actualStartDate).format("ll"):'',
@@ -232,7 +232,7 @@ class ProjectlistView extends Component {
           client: item.client
         }
       })
-
+      // .length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
       this.setState({ searchedList: data });
     }
 

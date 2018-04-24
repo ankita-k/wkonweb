@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Row,Spin, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
+import { Form, Icon, Input, Button, Row, Spin, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
 import '../ClientComponent/ClientComponent.css';
 import './NewProject.css';
 import { Divider } from 'antd';
@@ -7,15 +7,14 @@ import moment from 'moment'
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import Loading from 'react-loading-bar'
-import 'react-loading-bar/dist/index.css'
+import 'react-loading-bar/dist/index.css';
+import debounce from 'lodash/debounce';
+
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const Option = Select.Option;
 const Option1 = AutoComplete.Option1;
 class NewProject extends Component {
-
-
-
 
     constructor(props) {
         console.log(props);
@@ -26,10 +25,14 @@ class NewProject extends Component {
             show: false,//loading-bar,
             disabledate: true,
             disableclient: false,
-            data: [],
+            techArray: ['ReactJS', 'Php', 'ReactNative'],
+            techs: ['ReactJS', 'Php', 'ReactNative'],
+            techsValue: [],
             value: [],
             fetching: false,
+           
         }
+    
     }
 
     componentDidMount() {
@@ -80,14 +83,20 @@ class NewProject extends Component {
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
-                        technology: values.technology,
-                        expectedStartDate: values.expecstart ? values.expecstart._d : '',
+                        technology: JSON.stringify(values.technology),
+                        // expectedStartDate: values.expecstart ? values.expecstart._d : '',
                         // actualStartDate: values.actualstart ? values.actualstart._d : '',
-                        expectedEndDate: values.expecend ? values.expecend._d : '',
+                        // expectedEndDate: values.expecend ? values.expecend._d : '',
                         // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
                         client: this.props.location.data.data.client._id
 
+                    }
+                    if (values.expecstart) {
+                        data.expectedStartDate = values.expecstart._d
+                    }
+                    if (values.expecend) {
+                        data.expectedEndDate = values.expecend._d
                     }
                     if (values.actualstart) {
                         data.actualStartDate = values.actualstart._d
@@ -113,10 +122,10 @@ class NewProject extends Component {
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
-                        technology: values.technology,
-                        expectedStartDate: values.expecstart ? values.expecstart._d : '',
+                        technology:JSON.stringify( values.technology),
+                        // expectedStartDate: values.expecstart ? values.expecstart._d : '',
                         // actualStartDate: values.actualstart ? values.actualstart._d : '',
-                        expectedEndDate: values.expecend ? values.expecend._d : '',
+                        // expectedEndDate: values.expecend ? values.expecend._d : '',
                         // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
                         userId: sessionStorage.getItem('id'),
@@ -125,6 +134,12 @@ class NewProject extends Component {
                     }
                     if (values.actualstart) {
                         data.actualStartDate = values.actualstart._d
+                    }
+                    if (values.expecstart) {
+                        data.expectedStartDate = values.expecstart._d
+                    }
+                    if (values.expecend) {
+                        data.expectedEndDate = values.expecend._d
                     }
 
                     console.log(data)
@@ -254,31 +269,37 @@ class NewProject extends Component {
         );
     }
 
-  fetchUser = (value) => {
-    console.log('fetching user', value);
-    this.lastFetchId += 1;
-    const fetchId = this.lastFetchId;
-    this.setState({ data: [], fetching: true });
-    fetch('https://randomuser.me/api/?results=5')
-      .then(response => response.json())
-      .then((body) => {
-        if (fetchId !== this.lastFetchId) { // for fetch callback order
-          return;
+    // SEARCH TECHNOLOGY FROM DROPDOWN
+    searchTechnology = (value) => {
+
+        console.log('fetching user', value);
+        this.setState({ techArray:[],fetching: true });
+
+        let techArray ;
+        
+            this.setState({ data: [], fetching: true });
+            techArray = this.state.techs.filter(d => {
+
+                return d.toLowerCase().indexOf(value.toLowerCase()) > -1
+            });
+            this.setState({ techArray, fetching: false });
+      
+    }
+
+    // SELECTED TECHNOLOGY VALUE
+    handleChange = (value) => {
+     
+        if (value.length > 0) {
+            this.setState({ techsValue: value })
+            this.setState({
+                // techsValue: [],
+                fetching: false,
+            });
+            console.log(this.state.techsValue)
+            this.setState({techArray:this.state.techs})
         }
-        const data = body.results.map(user => ({
-          text: `${user.name.first} ${user.name.last}`,
-          value: user.login.username,
-        }));
-        this.setState({ data, fetching: false });
-      });
-  }
-  handleChange = (value) => {
-    this.setState({
-      value,
-      data: [],
-      fetching: false,
-    });
-  }
+
+    }
     render() {
         // const { clientarray } = this.state;
         // console.log(this.state.clientarray)
@@ -303,7 +324,7 @@ class NewProject extends Component {
                 validator: this.datevalidate
             }]
         };
-        const { fetching, data, value } = this.state;
+        const { fetching, techArray, value } = this.state;
         return (
             <div>
                 <Loading
@@ -315,11 +336,11 @@ class NewProject extends Component {
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
                     <div className="newCustomerform">
-                        
-                        {(this.state.editClient == true)?
-                           <h1 className="NewCustomer">Edit Project</h1>:<h1 className="NewCustomer">New Project</h1>
+
+                        {(this.state.editClient == true) ?
+                            <h1 className="NewCustomer">Edit Project</h1> : <h1 className="NewCustomer">New Project</h1>
                         }
-                        
+
                         <Divider dashed className="underLine" />
                     </div>
                     <Form onSubmit={this.handleSubmit} className="login-form">
@@ -339,8 +360,11 @@ class NewProject extends Component {
                                                     placeholder="Choose Role"
                                                     onChange={this.selectStatus}
                                                 >
-                                                    <Option value="Sales">Client1</Option>
-                                                    <Option value="Developer">Client2</Option>
+                                                  {this.state.clientlist.map((item, index) => {
+                                                return <Option key={index} value={item._id}>{item.name}</Option>
+                                            })}
+                                                    {/* <Option value="Sales">Client1</Option>
+                                                    <Option value="Developer">Client2</Option> */}
                                                 </Select>
                                             )}
                                         </FormItem>
@@ -420,16 +444,20 @@ class NewProject extends Component {
                                         })(
                                             <Select
                                                 mode="multiple"
-                                                labelInValue
-                                                value={value}
+                                                // labelInValue
+                                                // value={value}
                                                 placeholder="Select users"
                                                 notFoundContent={fetching ? <Spin size="small" /> : null}
                                                 filterOption={false}
-                                                onSearch={this.fetchUser}
+                                                onSearch={this.searchTechnology}
                                                 onChange={this.handleChange}
                                                 style={{ width: '100%' }}
+
                                             >
-                                                {data.map(d => <Option key={d.value}>{d.text}</Option>)}
+                                                {techArray.map(d =>
+                                                    <Option value={d}>{d}</Option>
+                                                )}
+
                                             </Select>
                                         )}
                                     </FormItem>
@@ -445,7 +473,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('expecstart', {
-                                                    rules: [{ type: 'object', required: false, message: 'Please select expecteddate!' }, {
+                                                    rules: [{ required: false, message: 'Please select expecteddate!' }, {
                                                         validator: this.validatetoexpecend
                                                     }]
                                                 })(
@@ -461,7 +489,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('expecend', {
-                                                    rules: [{ type: 'object', required: false, message: 'Please select expecteddate!' }, {
+                                                    rules: [{ required: false, message: 'Please select expecteddate!' }, {
                                                         validator: this.validatetoexpecstart
                                                     }]
                                                 })(

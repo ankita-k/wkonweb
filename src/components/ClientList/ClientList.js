@@ -6,8 +6,10 @@ import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
+import { Select } from 'antd';
 import warning from '../../Images/war.png';
 const Search = Input.Search;
+const Option = Select.Option;
 
 
 // const columns = [{
@@ -243,6 +245,25 @@ class ClientList extends Component {
       this.setState({ searchedclient: this.state.clientlist })
     }
   }
+  //handlechange function
+  handleChange = (value) => {
+    
+    console.log(`selected ${value}`);
+    let searchedclient;
+    if (value) {
+      if (value == 'All') {
+        this.setState({ searchedclient: this.state.clientlist });
+      }
+      else {
+        searchedclient = this.state.clientlist.filter(a => {
+          return a.status.indexOf(value) > -1
+        });
+        this.setState({ searchedclient })
+        console.log("filtered data", this.state.searchedclient);
+      }
+    }
+
+  }
 
   render() {
 
@@ -275,10 +296,19 @@ class ClientList extends Component {
               enterButton
               value={this.state.searchinput}
             />
+              <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+              <Option value="All">All</Option>
+              <Option value="Interested">Interested</Option>
+              <Option value="Pipeline">Pipeline</Option>
+              <Option value="Commited">Commited</Option>
+              
+          
+          </Select>
             <Button className="allprojectbtn" onClick={() => {
               this.setState({ searchedclient: this.state.clientlist });
               this.setState({ searchinput: '' })
             }}>Show All</Button>
+            
           </div>
         </Row>
 
