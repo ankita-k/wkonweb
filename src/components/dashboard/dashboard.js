@@ -101,8 +101,18 @@ class Dashboard extends Component {
                     <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                   </Menu.Item>
                 </SubMenu>
-                <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
-                <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item>
+                <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
+                  <Menu.Item key="create_user">
+                    <span>Create User</span>
+                    <NavLink to="../dashboard/createuser" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                  <Menu.Item key="user_list">
+                    <span>User List</span>
+                    <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                </SubMenu>
+                {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
+                <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item> */}
                 
 
                 {/* <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}> */}
@@ -122,7 +132,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/editProject`} component={NewProject} />
                 <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />
                 <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />
-                <Route exact path={`${this.props.match.url}/usermanagement`} component={UserManagement} />
+                <Route exact path={`${this.props.match.url}/createuser`} component={UserManagement} />
                 <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />   
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
