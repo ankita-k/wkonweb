@@ -90,7 +90,7 @@ class NormalLoginForm extends React.Component {
                             <Col md={{ span: 12, order: 1 }} xs={{ span: 24, order: 1 }}>
                                 <div className="loginFormsec">
                                     <p className="loginHead"><b>Login</b></p>
-                                    <p className="loginSubhead">Don't have an account? <span><a>Create your account</a></span></p>
+                                    {/* <p className="loginSubhead">Don't have an account? <span><a>Create your account</a></span></p> */}
                                     <Form onSubmit={this.handleSubmit} className="login-form" >
                                         <FormItem>
                                             {getFieldDecorator('email', {
@@ -113,7 +113,7 @@ class NormalLoginForm extends React.Component {
                                             })(
                                                 <Checkbox onChange={this.onChange}  >Remember me</Checkbox>
                                             )}
-                                            <a className="loginFormforgot" href="">Forgot password?</a>
+                                            {/* <a className="loginFormforgot" href="">Forgot password?</a> */}
 
 
                                         </FormItem>
