@@ -35,9 +35,10 @@ class UserManagement extends Component {
                 ['phone']: this.props.location.userData.phoneNumber,
                 ['password']: this.props.location.userData.password,
                 ['role']: this.props.location.userData.role,
-                ['managers']: this.props.location.userData.manager ? this.props.location.userData.manager.name : ''
+                ['managers']: this.props.location.userData.manager ? this.props.location.userData.manager._id : ''
             });
             console.log(this.props.form)
+
         }
     }
     //USER ROLE
@@ -100,24 +101,50 @@ class UserManagement extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log(values)
-                let data = {
-                    name: values.name,
-                    email: values.email,
-                    phoneNumber: values.phone,
-                    role: values.role,
-                    password: values.password,
-                    manager: values.managers
-                }
-                this.props.createUser(data).then(result => {
-                    this.setState({ show: false });
-                    console.log(result);
-                    if (!result.error) {
-                        this.props.opentoast('success', 'User Created  Successfully!');
-                        this.props.history.push('/dashboard')
+                if (this.props.location.userData) {
+                    let user = {
+                        password: values.password,
+                        role: values.role,
+                        phone: values.phone,
+                        email: values.email,
+                        name: values.name,
+                        manager: values.managers
                     }
-                }, err => {
-                    this.setState({ show: false });
-                })
+                    console.log(user)
+                    this.props.editUser(user, this.props.location.userData._id).then(response => {
+                        this.setState({ show: false });
+                        console.log(response);
+                        if (!response.error) {
+                            this.props.opentoast('success', 'User Updated Successfully!');
+                        }
+                        else {
+                            this.props.opentoast('success', 'User Not Updated Successfully!');
+                        }
+                    },
+                        err => {
+                            this.props.opentoast('warning', 'User Not Updated Successfully!');
+                        })
+                }
+                else {
+                    let data = {
+                        name: values.name,
+                        email: values.email,
+                        phoneNumber: values.phone,
+                        role: values.role,
+                        password: values.password,
+                        manager: values.managers
+                    }
+                    this.props.createUser(data).then(result => {
+                        this.setState({ show: false });
+                        console.log(result);
+                        if (!result.error) {
+                            this.props.opentoast('success', 'User Created  Successfully!');
+                            this.props.history.push('/dashboard')
+                        }
+                    }, err => {
+                        this.setState({ show: false });
+                    })
+                }
 
             }
         });
@@ -224,7 +251,7 @@ class UserManagement extends Component {
                                                 showSearch
                                             >
                                                 {this.state.developerarray.map((item, index) => {
-                                                    return <Option key={index} value={item.name}>{item.name}</Option>
+                                                    return <Option key={index} value={item._id}>{item.name}</Option>
                                                 })}
                                             </Select>
                                             // <p className="expecteDateclient">Reporting Manager :</p>
