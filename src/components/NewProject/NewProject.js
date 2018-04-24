@@ -25,6 +25,7 @@ class NewProject extends Component {
             show: false,//loading-bar,
             disabledate: true,
             disableclient: false,
+            userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
             techArray: ['ReactJS', 'Php', 'ReactNative'],
             techs: ['ReactJS', 'Php', 'ReactNative'],
             techsValue: [],
@@ -45,9 +46,9 @@ class NewProject extends Component {
             this.setState({ disableclient: true })
             this.setState({ editClient: true })
             this.props.form.setFieldsValue({
-                ['name']: this.props.location.data.data.name,
+                ['name']: this.props.location.data.data.name1,
                 ['textRequirement']: this.props.location.data.data.requirement1,
-                ['technology']: this.props.location.data.data.technology,
+                ['technology']: this.props.location.data.data.technology1,
                 ['expecstart']: this.props.location.data.data.expectedStartDate ? moment(this.props.location.data.data.expectedStartDate) : '',
                 ['expecend']: this.props.location.data.data.expectedEndDate ? moment(this.props.location.data.data.expectedEndDate) : '',
                 ['actualstart']: this.props.location.data.data.actualStartDate ? moment(this.props.location.data.data.actualStartDate) : '',
@@ -58,7 +59,7 @@ class NewProject extends Component {
 
         }
         // GET CLIENT LIST
-        this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
+        this.props.clientlist(this.state.userId).then((data) => {
             // this.setState({ show: false });
             console.log(data);
             this.setState({ clientlist: data.result });
@@ -83,7 +84,7 @@ class NewProject extends Component {
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
-                        technology: JSON.stringify(values.technology),
+                        technology: (values.technology).toString(),
                         // expectedStartDate: values.expecstart ? values.expecstart._d : '',
                         // actualStartDate: values.actualstart ? values.actualstart._d : '',
                         // expectedEndDate: values.expecend ? values.expecend._d : '',
@@ -122,13 +123,13 @@ class NewProject extends Component {
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
-                        technology:JSON.stringify( values.technology),
+                        technology:(values.technology).toString(),
                         // expectedStartDate: values.expecstart ? values.expecstart._d : '',
                         // actualStartDate: values.actualstart ? values.actualstart._d : '',
                         // expectedEndDate: values.expecend ? values.expecend._d : '',
                         // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
-                        userId: sessionStorage.getItem('id'),
+                        userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
                         client: values.client
 
                     }

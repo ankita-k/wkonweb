@@ -119,6 +119,7 @@ class ClientList extends Component {
       searchedclient: [],
       searchinput: '',
       c:'All',
+      userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
       column: [{
         title: 'Name',
         dataIndex: 'name',
@@ -212,7 +213,7 @@ class ClientList extends Component {
   getclients = () => {
     return new Promise((resolve, reject) => {
 
-      this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
+      this.props.clientlist(this.state.userId, 0, 30).then((data) => {
         if (!data.error) {
           this.setState({ show: false });
           console.log(data);
