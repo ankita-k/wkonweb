@@ -10,7 +10,7 @@ export default function requireAuth(Component) {
     }
 
     checkAuth() {
-        debugger;
+     
       if ( ! sessionStorage.getItem('id') && !localStorage.getItem('id')) {
         const location = this.props.location;
 
