@@ -12,6 +12,7 @@ import mantwo from '../../Images/wkon-2-22.png';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
+import Loading from 'react-loading-bar'
 const Option = Select.Option;
 
 const FormItem = Form.Item;
@@ -19,6 +20,10 @@ function handleChange(value) {
     console.log(`selected ${value}`);
 }
 class DashboardView extends Component {
+    state = {
+        loading: false,
+        visible: false,
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -27,7 +32,8 @@ class DashboardView extends Component {
             clientcommitted: {},
             projecttotal: {},
             projectinprogress: {},
-            projectcompleted: {}
+            projectcompleted: {},
+            show: true,  //loading-bar
         }
     }
 
@@ -40,12 +46,13 @@ class DashboardView extends Component {
 
     //GET DASHBOARD PROJECT COUNT  DATA
     getdashboarddata = () => {
-
+        this.setState({ show: true })
         if (sessionStorage.getItem("id")) {
             this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
 
                 console.log('dashboardview', response)
                 if (!response.error) {
+                    this.setState({ show: false });
                     this.startCounter(response.result.Total, 'projectTotal')
                     if (response.result.Completed)
                         this.startCounter(response.result.Completed, 'projectcompleted')
@@ -54,12 +61,15 @@ class DashboardView extends Component {
                         this.startCounter(response.result.InProgess, 'projectinprogress')
                 }
                 console.log(this.state.count);
+            },err=>{
+                this.setState({ show: false });
             })
         }
         else {
             if (localStorage.getItem('id')) {
                 this.props.dashboardData(localStorage.getItem('id')).then((response) => {
                     console.log('dashboardview', response);
+                    this.setState({ show: false });
                     if (!response.error) {
                         this.startCounter(response.result.Total, 'projectTotal')
                         if (response.result.Completed)
@@ -71,6 +81,7 @@ class DashboardView extends Component {
                     console.log(this.state.count);
                 }, err => {
                     console.log(this.state.count);
+                    this.setState({ show: false });
                 })
             }
 
@@ -78,11 +89,13 @@ class DashboardView extends Component {
     }
     //GET DASHBOARD CUSTOERS COUNT DATA
     dashboardCustomer = () => {
+        this.setState({ show: true });
         if (sessionStorage.getItem("id")) {
             console.log('data')
             this.props.dashboardCustomer(sessionStorage.getItem('id')).then((response) => {
                 console.log('customerview', response);
                 if (!response.error) {
+                    this.setState({ show: false });
                     this.startCounter(response.result.Total, 'clientTotal')
                     if (response.result.Pipeline)
                         this.startCounter(response.result.Pipeline, 'clientpipeline')
@@ -90,7 +103,7 @@ class DashboardView extends Component {
                         this.startCounter(response.result.Committed, 'clientcommitted')
                 }
             }, err => {
-
+                this.setState({ show: false });
             })
         }
         else if(localStorage.getItem('id')){
@@ -98,12 +111,15 @@ class DashboardView extends Component {
                 console.log('data...')
                 console.log('customerview', response)
                 if (!response.error) {
+                    this.setState({ show: false });
                     this.startCounter(response.result.Total, 'clientTotal')
                     if (response.result.Pipeline)
                         this.startCounter(response.result.Pipeline, 'clientpipeline')
                     if (response.result.Committed)
                         this.startCounter(response.result.Committed, 'clientcommitted')
                 }
+            },err=>{
+                this.setState({ show: false });
             })
         }
     }
@@ -251,9 +267,15 @@ class DashboardView extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { visible, loading } = this.state;
         return (
 
             <div className="dashboardMain">
+             <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
                 {/* dashboardviewcustomer */}
                 <div className="dashboardView">
                     <h1 className="customer">CLIENTS</h1>
