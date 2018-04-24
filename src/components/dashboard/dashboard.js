@@ -26,6 +26,11 @@ class Dashboard extends Component {
       selectedKey: ['home']
 
     }
+    if(!sessionStorage.getItem('id') && !localStorage.getItem('id')){
+      this.props.history.push('/login');
+      return;
+    }
+    
   }
 
   renderSidemenuSelection = () => {

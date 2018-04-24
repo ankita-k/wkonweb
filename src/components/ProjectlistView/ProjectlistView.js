@@ -211,7 +211,7 @@ class ProjectlistView extends Component {
     this.props.projectList(this.state.userId).then((sucess) => {
       this.setState({ show: false });
 
-      if (!sucess.error) {
+      if (!sucess.error) { 
         console.log(sucess);
         this.setState({ projectList: sucess.result });
         var data = sucess.result;
