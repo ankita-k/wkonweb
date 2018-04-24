@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
+import loginlogo from '../../Images/wkonlogo.png';
 const { Header, Content, Footer } = Layout;
 
 const FormItem = Form.Item;
@@ -138,7 +139,7 @@ class NormalLoginForm extends React.Component {
                             <Col md={{ span: 12, order: 2 }} xs={{ span: 24, order: 2 }} sm={0}>
                                 <div className="imgsec" sm={0}>
                                     {/* <img src={triangleimg} alt="triangle" /> */}
-                                    <span>Welcome</span>
+                                    <span><img src={loginlogo}/></span>
                                     <Row>
                                         <Col span={24}>
                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>

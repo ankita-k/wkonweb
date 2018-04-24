@@ -612,3 +612,49 @@ export function findByRole(role) {
     
         }
     }
+
+    //API FOR EDIT PROJECT
+export function editUser(data,id) {
+    console.log('edit',data)
+    console.log(id)
+    
+        return (dispatch) => {
+            
+            console.log(config.apiUrl)
+            return new Promise((resolve, reject) => {
+                
+                
+    
+                fetch(config.apiUrl + 'user/'+id,
+                    {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                        },
+                        method: 'PUT',
+                        body: JSON.stringify(data)
+                    })
+                    .then((response) => response.json())
+                    .then((responseJSON) => {
+                        
+                
+
+                        dispatch(edituser(responseJSON))
+                        resolve(responseJSON);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        }
+    }
+    
+    
+    function edituser(list) {
+        return {
+            type: "EDIT_USER",
+            list
+    
+        }
+    }
