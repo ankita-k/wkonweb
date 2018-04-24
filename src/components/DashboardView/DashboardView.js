@@ -57,27 +57,30 @@ class DashboardView extends Component {
             })
         }
         else {
-            this.props.dashboardData(localStorage.getItem('id')).then((response) => {
-                console.log('dashboardview', response);
-                if (!response.error) {
-                    this.startCounter(response.result.Total, 'projectTotal')
-                    if (response.result.Completed)
-                        this.startCounter(response.result.Completed, 'projectcompleted')
+            if (localStorage.getItem('id')) {
+                this.props.dashboardData(localStorage.getItem('id')).then((response) => {
+                    console.log('dashboardview', response);
+                    if (!response.error) {
+                        this.startCounter(response.result.Total, 'projectTotal')
+                        if (response.result.Completed)
+                            this.startCounter(response.result.Completed, 'projectcompleted')
 
-                    if (response.result.InProgess)
-                        this.startCounter(response.result.InProgess, 'projectinprogress')
-                }
-                console.log(this.state.count);
-            }, err => {
-                console.log(this.state.count);
-            })
+                        if (response.result.InProgess)
+                            this.startCounter(response.result.InProgess, 'projectinprogress')
+                    }
+                    console.log(this.state.count);
+                }, err => {
+                    console.log(this.state.count);
+                })
+            }
+
         }
     }
     //GET DASHBOARD CUSTOERS COUNT DATA
     dashboardCustomer = () => {
-        if (sessionStorage.getItem("id") === null) {
+        if (sessionStorage.getItem("id")) {
             console.log('data')
-            this.props.dashboardCustomer(localStorage.getItem('id')).then((response) => {
+            this.props.dashboardCustomer(sessionStorage.getItem('id')).then((response) => {
                 console.log('customerview', response);
                 if (!response.error) {
                     this.startCounter(response.result.Total, 'clientTotal')
@@ -90,8 +93,8 @@ class DashboardView extends Component {
 
             })
         }
-        else {
-            this.props.dashboardCustomer(sessionStorage.getItem('id')).then(response => {
+        else if(localStorage.getItem('id')){
+            this.props.dashboardCustomer(localStorage.getItem('id')).then(response => {
                 console.log('data...')
                 console.log('customerview', response)
                 if (!response.error) {
