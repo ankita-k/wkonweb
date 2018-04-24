@@ -14,6 +14,7 @@ import brandlogo from '../../Images/wkonlogo.png';
 import Userlist from '../Userlist/Userlist';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 
+
 // const { SubMenu } = Menu;
 const SubMenu = Menu.SubMenu;
 const { Header, Content, Sider } = Layout;
@@ -23,8 +24,8 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       username: '',
-      selectedKey: ['home']
-
+      selectedKey: ['home'],
+      userrole:''
     }
     if(!sessionStorage.getItem('id') && !localStorage.getItem('id')){
       this.props.history.push('/login');
@@ -51,6 +52,7 @@ class Dashboard extends Component {
         console.log(data);
         if (!data.error) {
           this.setState({ username: data.result.name });
+          this.setState({userrole:data.result.role})
           console.log(this.state.username);
         }
 
@@ -65,6 +67,7 @@ class Dashboard extends Component {
         console.log(data);
         if (!data.error) {
           this.setState({ username: data.result.name });
+          this.setState({userrole:data.result.role})
           console.log(this.state.username);
         }
 
@@ -104,7 +107,8 @@ class Dashboard extends Component {
                   <span>Home</span>
                   <NavLink to="../dashboard" activeClassName="active"></NavLink>
                 </Menu.Item>
-                <SubMenu key="client" title={<span>Clients</span>} subMenuCloseDelay={0.1}>
+              {this.state.userrole=="admin"||"Sales"?
+                <SubMenu  key="client" title={<span>Clients</span>} subMenuCloseDelay={0.1}>
                   <Menu.Item key="create_client">
                     <span>Client Create</span>
                     <NavLink to="../dashboard/clientcreate" activeClassName="active"></NavLink>
@@ -113,7 +117,8 @@ class Dashboard extends Component {
                     <span>Client List</span>
                     <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
                   </Menu.Item>
-                </SubMenu>
+                </SubMenu>:''}
+                {this.state.userrole=="Developer"||"admin"?
                 <SubMenu key="projects" title={<span>Projects</span>} subMenuCloseDelay={0.1}>
                   <Menu.Item key="create_project">
                     <span>Project Create</span>
@@ -123,7 +128,8 @@ class Dashboard extends Component {
                     <span>Project List</span>
                     <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                   </Menu.Item>
-                </SubMenu>
+                </SubMenu>:''}
+                {this.state.userrole=="admin"?
                 <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
                   <Menu.Item key="create_user">
                     <span>Create User</span>
@@ -133,7 +139,7 @@ class Dashboard extends Component {
                     <span>User List</span>
                     <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
                   </Menu.Item>
-                </SubMenu>
+                </SubMenu>:''}
                 {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
                 <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item> */}
                 
