@@ -44,10 +44,10 @@ class Dashboard extends Component {
   componentDidMount() {
 
     console.log(this.props.location.pathname);
-    if (sessionStorage.getItem("id") === null) {
+    if (sessionStorage.getItem("id")) {
       console.log('data')
 
-      this.props.username(localStorage.getItem('id')).then((data) => {
+      this.props.username(sessionStorage.getItem('id')).then((data) => {
         console.log(data);
         if (!data.error) {
           this.setState({ username: data.result.name });
@@ -58,9 +58,9 @@ class Dashboard extends Component {
 
       })
     }
-    else {
+    else if(localStorage.getItem('id')){
 
-      this.props.username(sessionStorage.getItem('id')).then((data) => {
+      this.props.username(localStorage.getItem('id')).then((data) => {
         console.log('data')
         console.log(data);
         if (!data.error) {
