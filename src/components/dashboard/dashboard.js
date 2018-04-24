@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Button, Icon,Row,Col } from 'antd';
+import { Layout, Menu, Button, Icon, Row, Col } from 'antd';
 import ClientComponent from '../ClientComponent/ClientComponent';
 import NewProject from '../NewProject/NewProject';
 import './dashboard.css';
@@ -24,8 +24,13 @@ class Dashboard extends Component {
     this.state = {
       username: '',
       selectedKey: ['home']
-      
+
     }
+    if(!sessionStorage.getItem('id') && !localStorage.getItem('id')){
+      this.props.history.push('/login');
+      return;
+    }
+    
   }
 
   renderSidemenuSelection = () => {
@@ -39,17 +44,34 @@ class Dashboard extends Component {
   componentDidMount() {
 
     console.log(this.props.location.pathname);
+    if (sessionStorage.getItem("id")) {
+      console.log('data')
 
-    this.props.username(sessionStorage.getItem('id')).then((data) => {
-      console.log(data);
-      if(!data.error){
-        this.setState({ username: data.result.name });
-        console.log(this.state.username);
-      }
-      
-    }, err => {
+      this.props.username(sessionStorage.getItem('id')).then((data) => {
+        console.log(data);
+        if (!data.error) {
+          this.setState({ username: data.result.name });
+          console.log(this.state.username);
+        }
 
-    })
+      }, err => {
+
+      })
+    }
+    else if(localStorage.getItem('id')){
+
+      this.props.username(localStorage.getItem('id')).then((data) => {
+        console.log('data')
+        console.log(data);
+        if (!data.error) {
+          this.setState({ username: data.result.name });
+          console.log(this.state.username);
+        }
+
+      }, err => {
+
+      })
+    }
     this.renderSidemenuSelection();
   }
 
@@ -59,13 +81,14 @@ class Dashboard extends Component {
 
         <Layout>
           <Header className="header">
-          <Row>
-            <Col lg={3}>
-          <img src={brandlogo}/> </Col>
-            <p className="username" style={{ color: '#fff' }}> {this.state.username} <Button className="wkonlogout" onClick={() => {
-              sessionStorage.clear();
-              this.props.history.push('/login')
-            }}>Log Out</Button></p>
+            <Row>
+              <Col lg={3}>
+                <img src={brandlogo} /> </Col>
+              <p className="username" style={{ color: '#fff' }}> {this.state.username} <Button className="wkonlogout" onClick={() => {
+                sessionStorage.clear();
+                localStorage.clear();
+                this.props.history.push('/login')
+              }}>Log Out</Button></p>
             </Row>
           </Header>
           <Layout>
@@ -101,8 +124,18 @@ class Dashboard extends Component {
                     <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                   </Menu.Item>
                 </SubMenu>
-                <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
-                <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item>
+                <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
+                  <Menu.Item key="create_user">
+                    <span>Create User</span>
+                    <NavLink to="../dashboard/createuser" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                  <Menu.Item key="user_list">
+                    <span>User List</span>
+                    <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                </SubMenu>
+                {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
+                <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item> */}
                 
 
                 {/* <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}> */}
@@ -117,12 +150,12 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/clientcreate`} component={ClientComponent} />
-                <Route exact path={`${this.props.match.url}/editclient`} component={ClientComponent} />                
+                <Route exact path={`${this.props.match.url}/editclient`} component={ClientComponent} />
                 <Route exact path={`${this.props.match.url}/newproject`} component={NewProject} />
                 <Route exact path={`${this.props.match.url}/editProject`} component={NewProject} />
                 <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />
                 <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />
-                <Route exact path={`${this.props.match.url}/usermanagement`} component={UserManagement} />
+                <Route exact path={`${this.props.match.url}/createuser`} component={UserManagement} />
                 <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />   
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}

@@ -3,77 +3,107 @@ import ReactDOM from 'react-dom';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import './Userlist.css';
+import Loading from 'react-loading-bar'
+
 import { Card, Table, Button, Icon, Row, Input, Col, Modal, span } from 'antd';
 import user from '../../Images/wkon-2-21.png';
 
 class Userlist extends Component {
+    state = {
+        loading: false,
+        visible: false,
+    }
     constructor(props) {
         console.log(props);
         super(props);
         this.getUser();
         this.state = {
-            userList:[]
+            userList: [],
+            show: true,  //loading-bar
         }
     }
 
+
     // get user list
     getUser = () => {
+        this.setState({ show: true })
         this.props.userlist().then(result => {
             console.log(result);
-            this.setState({userList: result.result});
+            this.setState({ show: false });
+
+            this.setState({ userList: result.result });
             console.log(this.state.userList)
+        },err=>{
+            this.setState({ show: false });
         })
     }
+
+    //edit client
+    editUser = (data) => {
+        // debugger;
+        console.log(data);
+        this.props.history.push({
+            pathname: '/dashboard/createuser',
+            userData: data
+        })
+
+    }
+
     render() {
+        const { visible, loading } = this.state;
         return (
             <div className="userlist">
-
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
                 <h1>USER LIST</h1>
                 <div className="user1">
 
                     <Row>
-                    {this.state.userList.map((item,index) => {
-          return <div key={item._id}>
-                        <Col lg={11} className="firstuser">
-                        
-                            <Row className="btnedit">
-                                <Col lg={20}></Col>
-                                <Col lg={2}>
-                                    <Button className="edit" >
-                                        <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-                                {/* <Col lg={{ span: 8 }}></Col> */}
-                                <Col lg={2}>
-                                    <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
+                        {this.state.userList.map((item, index) => {
+                            return <div key={item._id}>
+                                <Col lg={11} className="firstuser">
+
+                                    <Row className="btnedit">
+                                        <Col lg={20}></Col>
+                                        <Col lg={2}>
+                                            <Button className="edit" onClick={() => { this.editUser(item) }}>
+                                                <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+                                        {/* <Col lg={{ span: 8 }}></Col> */}
+                                        <Col lg={2}>
+                                            <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
+                                        </Col>
+
+                                    </Row>
+                                    <Row className="padng20">
+                                        <Col lg={4} className="resalign">
+                                            <img src={user} />
+                                        </Col>
+                                        <Col lg={1}></Col>
+                                        <Col lg={19}>
+                                            <Col lg={12}>
+                                                <p><span className="span1">Name </span>:{item.name} </p>
+
+                                                <p><span className="span1">Phone </span>: {item.phoneNumber}</p>
+
+                                            </Col>
+                                            <Col lg={12}>
+
+                                                <p><span className="span1">Email</span>: {item.email}</p>
+
+                                                <p><span className="span1">Roles </span>: {item.role}</p>
+                                            </Col>
+                                            <Row><p><span className="span1">Reporting Manager </span>: {item.manager ? item.manager.name : ""}</p></Row></Col>
+                                    </Row>
+
+
                                 </Col>
-
-                            </Row>
-                            <Row className="padng20">
-                                <Col lg={4} className="resalign">
-                                    <img src={user} />
-                                </Col>
-                                <Col lg={1}></Col>
-                                <Col lg={19}>
-                                    <Col lg={12}>
-                                        <p><span className="span1">Name </span>:{item.name} </p>
-
-                                        <p><span className="span1">Phone </span>: {item.phoneNumber}</p>
-
-                                    </Col>
-                                    <Col lg={12}>
-
-                                        <p><span className="span1">Email</span>: {item.email}</p>
-
-                                        <p><span className="span1">Roles </span>: {item.role}</p>
-                                    </Col>
-                                    <Row><p><span className="span1">Reporting Manager </span>: {item.manager}</p></Row></Col>
-                            </Row>
-
-
-                        </Col>
-                        </div>
-                          })
+                            </div>
+                        })
                         }
-                        
+
                         <Col lg={1}></Col>
                         {/* <Col lg={11} className="firstuser">
                             <Row className="padng20">
@@ -99,10 +129,10 @@ class Userlist extends Component {
 
 
                         </Col> */}
-                        
+
                     </Row>
 
-                </div>         
+                </div>
                 {/* <div className="user1">
                     <Row>
                         <Col lg={11} className="firstuser">

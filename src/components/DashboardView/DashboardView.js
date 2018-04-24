@@ -12,6 +12,7 @@ import mantwo from '../../Images/wkon-2-22.png';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
+import Loading from 'react-loading-bar'
 const Option = Select.Option;
 
 const FormItem = Form.Item;
@@ -19,6 +20,10 @@ function handleChange(value) {
     console.log(`selected ${value}`);
 }
 class DashboardView extends Component {
+    state = {
+        loading: false,
+        visible: false,
+    }
     constructor(props) {
         super(props);
         this.state = {
@@ -27,8 +32,8 @@ class DashboardView extends Component {
             clientcommitted: {},
             projecttotal: {},
             projectinprogress: {},
-            projectcompleted: {}
-
+            projectcompleted: {},
+            show: true,  //loading-bar
         }
     }
 
@@ -41,38 +46,82 @@ class DashboardView extends Component {
 
     //GET DASHBOARD PROJECT COUNT  DATA
     getdashboarddata = () => {
-        this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
-            console.log('dashboardview', response)
-            if (!response.error) {
-                this.startCounter(response.result.Total, 'projectTotal')
-                if (response.result.Completed)
-                    this.startCounter(response.result.Completed, 'projectcompleted')
+        this.setState({ show: true })
+        if (sessionStorage.getItem("id")) {
+            this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
 
-                if (response.result.InProgess)
-                    this.startCounter(response.result.InProgess, 'projectinprogress')
+                console.log('dashboardview', response)
+                if (!response.error) {
+                    this.setState({ show: false });
+                    this.startCounter(response.result.Total, 'projectTotal')
+                    if (response.result.Completed)
+                        this.startCounter(response.result.Completed, 'projectcompleted')
 
+                    if (response.result.InProgess)
+                        this.startCounter(response.result.InProgess, 'projectinprogress')
+                }
+                console.log(this.state.count);
+            },err=>{
+                this.setState({ show: false });
+            })
+        }
+        else {
+            if (localStorage.getItem('id')) {
+                this.props.dashboardData(localStorage.getItem('id')).then((response) => {
+                    console.log('dashboardview', response);
+                    this.setState({ show: false });
+                    if (!response.error) {
+                        this.startCounter(response.result.Total, 'projectTotal')
+                        if (response.result.Completed)
+                            this.startCounter(response.result.Completed, 'projectcompleted')
+
+                        if (response.result.InProgess)
+                            this.startCounter(response.result.InProgess, 'projectinprogress')
+                    }
+                    console.log(this.state.count);
+                }, err => {
+                    console.log(this.state.count);
+                    this.setState({ show: false });
+                })
             }
 
-            console.log(this.state.count);
-        })
+        }
     }
     //GET DASHBOARD CUSTOERS COUNT DATA
     dashboardCustomer = () => {
-        //  this.state.clientcount.Total=
-        this.props.dashboardCustomer(sessionStorage.getItem('id')).then(response => {
-            console.log('customerview', response)
-            if (!response.error) {
-                let _base = this;
-
-                this.startCounter(response.result.Total, 'clientTotal')
-                if (response.result.Pipeline)
-                    this.startCounter(response.result.Pipeline, 'clientpipeline')
-                if (response.result.Committed)
-                    this.startCounter(response.result.Committed, 'clientcommitted')
-
-
-            }
-        })
+        this.setState({ show: true });
+        if (sessionStorage.getItem("id")) {
+            console.log('data')
+            this.props.dashboardCustomer(sessionStorage.getItem('id')).then((response) => {
+                console.log('customerview', response);
+                if (!response.error) {
+                    this.setState({ show: false });
+                    this.startCounter(response.result.Total, 'clientTotal')
+                    if (response.result.Pipeline)
+                        this.startCounter(response.result.Pipeline, 'clientpipeline')
+                    if (response.result.Committed)
+                        this.startCounter(response.result.Committed, 'clientcommitted')
+                }
+            }, err => {
+                this.setState({ show: false });
+            })
+        }
+        else if(localStorage.getItem('id')){
+            this.props.dashboardCustomer(localStorage.getItem('id')).then(response => {
+                console.log('data...')
+                console.log('customerview', response)
+                if (!response.error) {
+                    this.setState({ show: false });
+                    this.startCounter(response.result.Total, 'clientTotal')
+                    if (response.result.Pipeline)
+                        this.startCounter(response.result.Pipeline, 'clientpipeline')
+                    if (response.result.Committed)
+                        this.startCounter(response.result.Committed, 'clientcommitted')
+                }
+            },err=>{
+                this.setState({ show: false });
+            })
+        }
     }
 
 
@@ -90,7 +139,7 @@ class DashboardView extends Component {
             }
         });
     }
-
+   
     // START COUNTER FOR DASHBOARD NUMBER SHOWN
     startCounter(maxcount, type) {
         let _base = this;
@@ -193,11 +242,40 @@ class DashboardView extends Component {
 
     }
 
+    filterClient=(data)=>{
+
+        this.props.history.push({
+            pathname: '/dashboard/clientlist',
+            filterValue:data
+             
+             
+          })
+        console.log("commited");
+    }
+    //function for project dashboard (passing data)
+    
+    filterProject=(data)=>{
+        
+                this.props.history.push({
+                    pathname: '/dashboard/projectlist',
+                    filterValue:data
+                     
+                     
+                  })
+                console.log("navigated");
+            }
+
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { visible, loading } = this.state;
         return (
 
             <div className="dashboardMain">
+             <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
                 {/* dashboardviewcustomer */}
                 <div className="dashboardView">
                     <h1 className="customer">CLIENTS</h1>
@@ -208,18 +286,20 @@ class DashboardView extends Component {
                     </Row>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal" >
+                            <div className="cusTotal" onClick={()=>{this.filterClient('All')}}>
                  
-                                <p>  <NavLink to="../dashboard/clientlist" >
+                                <p> 
                                     <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                                
-                                   </NavLink>
+                                   
                                 </p>
                                 <h1 className="totalNumber">{this.state.clienttotal.Total ? this.state.clienttotal.Total : 0}</h1>
+                
                             </div>
+                        
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal"onClick={()=>{this.filterClient('Committed')}}>
                                 <p>
                                     <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Committed</span>
                                 </p>
@@ -229,7 +309,7 @@ class DashboardView extends Component {
 
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal" onClick={()=>{this.filterClient('Pipeline')}}>
                                 <p>
                                     <img src={pipeline} className="totalImg" alt="Pipeline" /><span className="totalContent">Pipeline</span>
                                 </p>
@@ -249,15 +329,16 @@ class DashboardView extends Component {
                     </Row>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal"onClick={()=>{this.filterProject('All')}}>
                                 <p>
                                     <img src={projecttotal} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                 </p>
                                 <h1 className="totalNumber">{this.state.projecttotal.Total ? this.state.projecttotal.Total : 0}</h1>
+                               
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal"onClick={()=>{this.filterProject('Completed')}}>
                                 <p>
                                     <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent"> Completed</span>
                                 </p>
@@ -266,7 +347,7 @@ class DashboardView extends Component {
 
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal"onClick={()=>{this.filterProject('InProgess')}}>
                                 <p>
                                     <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">InProgess</span>
                                 </p>
