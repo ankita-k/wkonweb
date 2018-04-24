@@ -54,6 +54,9 @@ const reducer = ((state = {}, action) => {
     case "UPDATE_CLIENT":                  // FOR CLIENT DELETE
       return action.list
       break;
+    case "USER_LIST":                  // FOR USER LIST
+      return action.list
+      break;
     default:
       return state
   }
