@@ -236,6 +236,18 @@ class DashboardView extends Component {
           })
         console.log("commited");
     }
+    //function for project dashboard (passing data)
+    
+    filterProject=(data)=>{
+        
+                this.props.history.push({
+                    pathname: '/dashboard/projectlist',
+                    filterValue:data
+                     
+                     
+                  })
+                console.log("navigated");
+            }
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -295,16 +307,16 @@ class DashboardView extends Component {
                     </Row>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal"><NavLink to="../dashboard/projectlist" >
+                            <div className="cusTotal"onClick={()=>{this.filterProject('All')}}>
                                 <p>
                                     <img src={projecttotal} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                 </p>
                                 <h1 className="totalNumber">{this.state.projecttotal.Total ? this.state.projecttotal.Total : 0}</h1>
-                                </NavLink>
+                               
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal"onClick={()=>{this.filterProject('Completed')}}>
                                 <p>
                                     <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent"> Completed</span>
                                 </p>
@@ -313,7 +325,7 @@ class DashboardView extends Component {
 
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal"onClick={()=>{this.filterProject('InProgess')}}>
                                 <p>
                                     <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">InProgess</span>
                                 </p>
