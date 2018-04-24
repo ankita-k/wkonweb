@@ -39,6 +39,7 @@ h1.totalNumber {
 }
 .dashboardView {
     margin-bottom: 3em;
+    position: relative;
 }
 .addButton button:hover {
     box-shadow: 0 10px 45px -10px rgba(0,0,0,0.25), 0 -1px 22px -10px rgba(0,0,0,0.22);
@@ -53,7 +54,11 @@ h1.totalNumber {
     padding-right: 9px;
 }
 .addButton.btnplace {
+    position: absolute;
+    top: -70px;
+    right: 0;
     margin-right: 2em;
+    z-index: 9;
 }
 .addButton.project {
     position: absolute;

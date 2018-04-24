@@ -49,8 +49,9 @@ button.ant-btn.wkonlogout {
     background: transparent;
     color: rgb(161, 218, 232);
     border: none;
-    padding: 0 0 0 26px;
+  
     margin-bottom: 17px;
+    margin-left: 17px;
 }
 
 .btndltedt {
@@ -58,9 +59,12 @@ button.ant-btn.wkonlogout {
     margin-right: -11px;
     margin-top: -5px;
     margin-left: 3px;
-}.firstuser button.ant-btn.delete {
+}
+.firstuser button.ant-btn.delete {
     background: transparent;
     color: rgb(161, 218, 232);
     border: none;
-    margin-left: 0;
+   
+    margin: 0 0 0 13px;
+    padding: 0;
 }
