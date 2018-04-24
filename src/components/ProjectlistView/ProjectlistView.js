@@ -85,6 +85,7 @@ class ProjectlistView extends Component {
       userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
       selectedRowKeys: [],
       show: true,  //loading-bar
+      p:'All',
       column: [{
         title: 'Name',
         dataIndex: 'name',
@@ -187,6 +188,7 @@ class ProjectlistView extends Component {
     console.log(`selected ${value}`);
     let searchedList;
     if (value) {
+      this.setState({statussearch:value})
       if (value == 'All') {
         this.setState({ searchedList: this.state.projectList });
       }
@@ -201,11 +203,20 @@ class ProjectlistView extends Component {
 
   }
   componentDidMount() {
-    this.viewProject();
+    //  this.viewProject();
+    this.viewProject().then(success => {
+      if (this.props.location.filterValue) {
+        
+        // this.setState({statussearch:this.props.location.filterValue})
+        this.handleChange(this.props.location.filterValue)
+        console.log(this.state.statussearch)
+      }
+    })
   }
 
   // GET ALL PROJECT LIST
   viewProject = () => {
+    return new Promise((resolve, reject) => {
     console.log('project List');
     this.setState({ show: true })
     this.props.projectList(this.state.userId).then((sucess) => {
@@ -235,13 +246,18 @@ class ProjectlistView extends Component {
         })
         console.log(data)
         // .length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
+        if (!this.props.location.filterValue) {
         this.setState({ searchedList: data });
       }
+      resolve(true)
+    }
 
     }, err => {
       this.setState({ show: false });
-    });
+    })
+    })
   }
+
 
 
 
@@ -290,7 +306,7 @@ class ProjectlistView extends Component {
 
 
             />
-            <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+            <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
               <Option value="All">All</Option>
               <Option value="New">New</Option>
               <Option value="InDiscussion">InDiscussion</Option>
@@ -302,6 +318,7 @@ class ProjectlistView extends Component {
             </Select>
             <Button className="allprojectbtn" onClick={() => {
               this.setState({ searchedList: this.state.projectList });
+              this.setState({statussearch:this.state.p});
               this.setState({ searchinput: '' })
             }}>All Projects</Button>
 
