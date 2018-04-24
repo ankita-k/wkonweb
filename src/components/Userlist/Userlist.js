@@ -3,26 +3,38 @@ import ReactDOM from 'react-dom';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import './Userlist.css';
+import Loading from 'react-loading-bar'
+
 import { Card, Table, Button, Icon, Row, Input, Col, Modal, span } from 'antd';
 import user from '../../Images/wkon-2-21.png';
 
 class Userlist extends Component {
+    state = {
+        loading: false,
+        visible: false,
+    }
     constructor(props) {
         console.log(props);
         super(props);
         this.getUser();
         this.state = {
-            userList: []
+            userList: [],
+            show: true,  //loading-bar
         }
     }
 
 
     // get user list
     getUser = () => {
+        this.setState({ show: true })
         this.props.userlist().then(result => {
             console.log(result);
+            this.setState({ show: false });
+
             this.setState({ userList: result.result });
             console.log(this.state.userList)
+        },err=>{
+            this.setState({ show: false });
         })
     }
 
@@ -38,9 +50,14 @@ class Userlist extends Component {
     }
 
     render() {
+        const { visible, loading } = this.state;
         return (
             <div className="userlist">
-
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
                 <h1>USER LIST</h1>
                 <div className="user1">
 
@@ -52,8 +69,8 @@ class Userlist extends Component {
                                     <Row className="btnedit">
                                         <Col lg={20}></Col>
                                         <Col lg={2}>
-                                            <Button className="edit"  onClick={() => { this.editUser(item) }}>
-                                                <a href="javascript:;"><Icon type="edit"  /></a></Button></Col>
+                                            <Button className="edit" onClick={() => { this.editUser(item) }}>
+                                                <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
                                         {/* <Col lg={{ span: 8 }}></Col> */}
                                         <Col lg={2}>
                                             <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
