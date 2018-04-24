@@ -124,7 +124,6 @@ class Dashboard extends Component {
                     <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                   </Menu.Item>
                 </SubMenu>
-<<<<<<< HEAD
                 <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
                   <Menu.Item key="create_user">
                     <span>Create User</span>
@@ -138,11 +137,6 @@ class Dashboard extends Component {
                 {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
                 <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item> */}
                 
-=======
-                <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
-                <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item>
-
->>>>>>> d58abc47050e912ffc0734988cf2267d4dcd21b6
 
                 {/* <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}> */}
                 {/* <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
@@ -161,13 +155,8 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/editProject`} component={NewProject} />
                 <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />
                 <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />
-<<<<<<< HEAD
                 <Route exact path={`${this.props.match.url}/createuser`} component={UserManagement} />
                 <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />   
-=======
-                <Route exact path={`${this.props.match.url}/usermanagement`} component={UserManagement} />
-                <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />
->>>>>>> d58abc47050e912ffc0734988cf2267d4dcd21b6
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>
