@@ -612,6 +612,49 @@ export function findByRole(role) {
     
         }
     }
+    //
+    //API call for User delete
+export function deleteUser(id) {
+    console.log(id)
+
+    return (dispatch) => {
+
+        
+        return new Promise((resolve, reject) => {
+
+
+
+            fetch(config.apiUrl + 'user/delete?id=' + id,
+           
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
+                        
+                    },
+                    method: 'DELETE'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+                    console.log('response');
+
+                    dispatch(deleteusers(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+
+function deleteusers(list) {
+    return {
+        type: "DELETE_USER",
+        list
+
+    }
+}
 
     //API FOR EDIT PROJECT
 export function editUser(data,id) {

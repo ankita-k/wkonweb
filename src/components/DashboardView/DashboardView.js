@@ -53,14 +53,15 @@ class DashboardView extends Component {
                 console.log('dashboardview', response)
                 if (!response.error) {
                     this.setState({ show: false });
+                    if(response.result && response.result.Total)
                     this.startCounter(response.result.Total, 'projectTotal')
-                    if (response.result.Completed)
+                    if (response.result &&response.result.Completed)
                         this.startCounter(response.result.Completed, 'projectcompleted')
 
-                    if (response.result.InProgess)
+                    if (response.result && response.result.InProgess)
                         this.startCounter(response.result.InProgess, 'projectinprogress')
                 }
-                console.log(this.state.count);
+                // console.log(this.state.count);
             },err=>{
                 this.setState({ show: false });
             })
@@ -71,16 +72,17 @@ class DashboardView extends Component {
                     console.log('dashboardview', response);
                     this.setState({ show: false });
                     if (!response.error) {
+                        if(response.result&& response.result.Total)
                         this.startCounter(response.result.Total, 'projectTotal')
-                        if (response.result.Completed)
+                        if (response.result && response.result.Completed)
                             this.startCounter(response.result.Completed, 'projectcompleted')
 
-                        if (response.result.InProgess)
+                        if ( response.result &&response.result.InProgess)
                             this.startCounter(response.result.InProgess, 'projectinprogress')
                     }
-                    console.log(this.state.count);
+                    // console.log(this.state.count);
                 }, err => {
-                    console.log(this.state.count);
+                    // console.log(this.state.count);
                     this.setState({ show: false });
                 })
             }
@@ -96,10 +98,11 @@ class DashboardView extends Component {
                 console.log('customerview', response);
                 if (!response.error) {
                     this.setState({ show: false });
+                    if(response.result&& response.result.Total)
                     this.startCounter(response.result.Total, 'clientTotal')
-                    if (response.result.Pipeline)
+                    if (response.result &&response.result.Pipeline)
                         this.startCounter(response.result.Pipeline, 'clientpipeline')
-                    if (response.result.Committed)
+                    if (response.result &&response.result.Committed)
                         this.startCounter(response.result.Committed, 'clientcommitted')
                 }
             }, err => {
@@ -112,10 +115,11 @@ class DashboardView extends Component {
                 console.log('customerview', response)
                 if (!response.error) {
                     this.setState({ show: false });
+                    if(response.result&& response.result.Total)
                     this.startCounter(response.result.Total, 'clientTotal')
-                    if (response.result.Pipeline)
+                    if (response.result &&response.result.Pipeline)
                         this.startCounter(response.result.Pipeline, 'clientpipeline')
-                    if (response.result.Committed)
+                    if (response.result &&response.result.Committed)
                         this.startCounter(response.result.Committed, 'clientcommitted')
                 }
             },err=>{

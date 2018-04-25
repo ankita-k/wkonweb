@@ -12,6 +12,7 @@ class Userlist extends Component {
     state = {
         loading: false,
         visible: false,
+        selectedId: ''
     }
     constructor(props) {
         console.log(props);
@@ -20,10 +21,12 @@ class Userlist extends Component {
         this.state = {
             userList: [],
             show: true,  //loading-bar
+            selectedRowKeys: [],
+
+
         }
+
     }
-
-
     // get user list
     getUser = () => {
         this.setState({ show: true })
@@ -33,7 +36,7 @@ class Userlist extends Component {
 
             this.setState({ userList: result.result });
             console.log(this.state.userList)
-        },err=>{
+        }, err => {
             this.setState({ show: false });
         })
     }
@@ -47,6 +50,24 @@ class Userlist extends Component {
             userData: data
         })
 
+    }
+    //delete user
+    deleteUser = (id) => {
+        console.log(id);
+        // this.setState({ loading: true });
+        // setTimeout(() => {
+        //   this.setState({ loading: false, visible: false });
+        //  }, 3000);
+        this.props.deleteUser(id).then(response => {
+            console.log(response);
+            this.setState({ visible: false })
+            if (!response.error) {
+                this.props.opentoast('success', 'User Deleted Successfully!');
+                this.getUser();
+            }
+        }, err => {
+            console.log(err)
+        })
     }
 
     render() {
@@ -73,7 +94,7 @@ class Userlist extends Component {
                                                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
                                         {/* <Col lg={{ span: 8 }}></Col> */}
                                         <Col lg={2}>
-                                            <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
+                                            <Button className="delete" onClick={() => { this.deleteUser(item._id) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
                                         </Col>
 
                                     </Row>
@@ -103,6 +124,7 @@ class Userlist extends Component {
                             </div>
                         })
                         }
+
 
                         <Col lg={1}></Col>
                         {/* <Col lg={11} className="firstuser">
@@ -206,10 +228,11 @@ class Userlist extends Component {
             </div>
         );
     }
+
 }
 const mapStateToProps = (state) => {
     return state
 }
 
 // const  Userlist= Form.create()(NewProject);
-export default connect(mapStateToProps, actioncreators)(Userlist);
+export default connect(mapStateToProps, actioncreators)(Userlist)
