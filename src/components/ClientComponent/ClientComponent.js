@@ -92,6 +92,9 @@ class ClientComponent extends Component {
                             this.props.opentoast('success', 'Client Updated Successfully!');
                             this.props.history.push('/dashboard/clientlist')
                         }
+                        else{
+                            this.props.opentoast('warning', data.message);
+                        }
                     }, err => {
 
                     })
@@ -112,6 +115,9 @@ class ClientComponent extends Component {
                         if (!result.error) {
                             this.props.opentoast('success', 'Client Added Successfully!');
                             this.props.history.push('/dashboard/clientlist')
+                        }
+                        else{
+                            this.props.opentoast('warning', result.message);
                         }
                     }, err => {
                         this.setState({ show: false });

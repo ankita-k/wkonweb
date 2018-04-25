@@ -18,7 +18,8 @@ class UserManagement extends Component {
             result: [],
             developerarray: [],
             developers: [],
-            show: false //loading-bar
+            show: false, //loading-bar
+            userEdit: false
 
         }
     }
@@ -28,7 +29,7 @@ class UserManagement extends Component {
         this.getDevelopersList();
         console.log(this.props.location.userData)
         if (this.props.location.userData) {
-            // this.setState({ clientEdit: true })
+            this.setState({ userEdit: true })
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.userData.name,
                 ['email']: this.props.location.userData.email,
@@ -116,6 +117,7 @@ class UserManagement extends Component {
                         console.log(response);
                         if (!response.error) {
                             this.props.opentoast('success', 'User Updated Successfully!');
+                            this.props.history.push('/dashboard/Userlist')
                         }
                         else {
                             this.props.opentoast('success', 'User Not Updated Successfully!');
@@ -139,7 +141,7 @@ class UserManagement extends Component {
                         console.log(result);
                         if (!result.error) {
                             this.props.opentoast('success', 'User Created  Successfully!');
-                            this.props.history.push('/dashboard')
+                            this.props.history.push('/dashboard/Userlist')
                         }
                     }, err => {
                         this.setState({ show: false });
@@ -165,7 +167,9 @@ class UserManagement extends Component {
                             color="red"
                             showSpinner={false}
                         />
-                        <h1 className="userManagementa">Create User</h1>
+                        {(this.state.userEdit == true) ?
+                            <h1 className="userManagementa">Edit User</h1> : <h1 className="userManagementa">Create User</h1>
+                        }
                         {/* <Divider dashed className="underLine" /> */}
 
                     </div>
@@ -274,7 +278,7 @@ class UserManagement extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard') }}>Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/Userlist') }}>Cancel</Button>
                             </div>
                         </FormItem>
 

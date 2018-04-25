@@ -85,8 +85,8 @@ class Dashboard extends Component {
         <Layout>
           <Header className="header">
             <Row>
-              <Col lg={3}>
-                <img src={brandlogo} /> </Col>
+              <Col lg={3}><NavLink to="../dashboard" activeClassName="active">
+                <img src={brandlogo} /></NavLink> </Col>
               <p className="username" style={{ color: '#fff' }}> {this.state.username} <Button className="wkonlogout" onClick={() => {
                 sessionStorage.clear();
                 localStorage.clear();
@@ -162,6 +162,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />
                 <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />
                 <Route exact path={`${this.props.match.url}/createuser`} component={UserManagement} />
+                <Route exact path={`${this.props.match.url}/edituser`} component={UserManagement} />
                 <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />   
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
