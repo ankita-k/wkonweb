@@ -46,7 +46,7 @@ class Userlist extends Component {
         // debugger;
         console.log(data);
         this.props.history.push({
-            pathname: '/dashboard/createuser',
+            pathname: '/dashboard/edituser',
             userData: data
         })
 

@@ -162,6 +162,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />
                 <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />
                 <Route exact path={`${this.props.match.url}/createuser`} component={UserManagement} />
+                <Route exact path={`${this.props.match.url}/edituser`} component={UserManagement} />
                 <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />   
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}

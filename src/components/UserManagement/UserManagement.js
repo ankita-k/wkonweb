@@ -18,7 +18,8 @@ class UserManagement extends Component {
             result: [],
             developerarray: [],
             developers: [],
-            show: false //loading-bar
+            show: false, //loading-bar
+            userEdit: false
 
         }
     }
@@ -28,7 +29,7 @@ class UserManagement extends Component {
         this.getDevelopersList();
         console.log(this.props.location.userData)
         if (this.props.location.userData) {
-            // this.setState({ clientEdit: true })
+            this.setState({ userEdit: true })
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.userData.name,
                 ['email']: this.props.location.userData.email,
@@ -166,7 +167,9 @@ class UserManagement extends Component {
                             color="red"
                             showSpinner={false}
                         />
-                        <h1 className="userManagementa">Create User</h1>
+                        {(this.state.userEdit == true) ?
+                            <h1 className="userManagementa">Edit User</h1> : <h1 className="userManagementa">Create User</h1>
+                        }
                         {/* <Divider dashed className="underLine" /> */}
 
                     </div>
