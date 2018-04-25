@@ -118,7 +118,8 @@ class NewProject extends Component {
                             this.props.opentoast('warning', response.message);
                         }
                     }, err => {
-
+                        this.setState({ show: false });
+                        this.props.opentoast('warning', 'Project Not Updated Successfully!');
                     })
                 }
                 else {
@@ -158,7 +159,8 @@ class NewProject extends Component {
                             this.props.opentoast('warning', response.message);
                         }
                     }, err => {
-
+                        this.setState({ show: false });
+                        this.props.opentoast('warning', 'Project Not Added Successfully!');
                     })
                 }
 

@@ -82,10 +82,10 @@ class ProjectlistView extends Component {
     this.state = {
       projectList: [],
       searchedList: [],
-      userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
+      userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
       selectedRowKeys: [],
       show: true,  //loading-bar
-      p:'All',
+      p: 'All',
       column: [{
         title: 'Name',
         dataIndex: 'name',
@@ -150,6 +150,7 @@ class ProjectlistView extends Component {
       ]
     }
   }
+
   // delete 
   deleteProject = () => {
     // console.log(data);
@@ -157,18 +158,25 @@ class ProjectlistView extends Component {
     // setTimeout(() => {
     //   this.setState({ loading: false, visible: false });
     // }, 3000);
+    this.setState({ show: true });
     this.props.deleteproject(this.state.selectedId._id).then(response => {
       console.log(response);
+      this.setState({ show: false });
       this.setState({ visible: false })
       if (!response.error) {
         this.props.opentoast('success', 'Project Deleted Successfully!');
         this.viewProject();
       }
+      else {
+        this.props.opentoast('warning', response.message);
+      }
     }, err => {
-      console.log(err)
+      this.setState({ show: false });
+      this.props.opentoast('warning', 'Project Not Deleted Successfully!');
     })
   }
-  // edit
+
+  // NAVIAGET TO EDIT PROJECT PAGE WITH DATA
   editProject = (data) => {
     console.log(data);
     console.log("hellllloo");
@@ -188,7 +196,7 @@ class ProjectlistView extends Component {
     console.log(`selected ${value}`);
     let searchedList;
     if (value) {
-      this.setState({statussearch:value})
+      this.setState({ statussearch: value })
       if (value == 'All') {
         this.setState({ searchedList: this.state.projectList });
       }
@@ -206,7 +214,7 @@ class ProjectlistView extends Component {
     //  this.viewProject();
     this.viewProject().then(success => {
       if (this.props.location.filterValue) {
-        
+
         // this.setState({statussearch:this.props.location.filterValue})
         this.handleChange(this.props.location.filterValue)
         console.log(this.state.statussearch)
@@ -217,44 +225,44 @@ class ProjectlistView extends Component {
   // GET ALL PROJECT LIST
   viewProject = () => {
     return new Promise((resolve, reject) => {
-    console.log('project List');
-    this.setState({ show: true })
-    this.props.projectList(this.state.userId).then((sucess) => {
-      this.setState({ show: false });
+      console.log('project List');
+      this.setState({ show: true })
+      this.props.projectList(this.state.userId).then((sucess) => {
+        this.setState({ show: false });
 
-      if (!sucess.error) { 
-        console.log(sucess);
-        this.setState({ projectList: sucess.result });
-        var data = sucess.result;
-        data.map(function (item, index) {
-          return data[index] = {
-            name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
-            name1: item.name,
-            requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
-            requirement1: item.requirement,
-            status: item.status,
-            technology: (item.technology.replace(/"/g, '')).split(',').length>1?((item.technology.replace(/"/g, '')).split(',')[0]+'..'):(item.technology.replace(/"/g, '')).split(','),
-            technology1: (item.technology.replace(/"/g, '')).split(','),
-            expectedStartDate: item.expectedStartDate ? moment(item.expectedStartDate).format("ll") : '',
-            expectedEndDate: item.expectedEndDate ? moment(item.expectedEndDate).format("ll") : '',
-            actualStartDate: item.actualStartDate ? moment(item.actualStartDate).format("ll") : '',
-            actualEndDate: item.actualEndDate ? moment(item.actualEndDate).format("ll") : '',
-            key: Math.random() * 1000000000000000000,
-            _id: item._id,
-            client: item.client
+        if (!sucess.error) {
+          console.log(sucess);
+          this.setState({ projectList: sucess.result });
+          var data = sucess.result;
+          data.map(function (item, index) {
+            return data[index] = {
+              name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
+              name1: item.name,
+              requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
+              requirement1: item.requirement,
+              status: item.status,
+              technology: (item.technology.replace(/"/g, '')).split(',').length > 1 ? ((item.technology.replace(/"/g, '')).split(',')[0] + '..') : (item.technology.replace(/"/g, '')).split(','),
+              technology1: (item.technology.replace(/"/g, '')).split(','),
+              expectedStartDate: item.expectedStartDate ? moment(item.expectedStartDate).format("ll") : '',
+              expectedEndDate: item.expectedEndDate ? moment(item.expectedEndDate).format("ll") : '',
+              actualStartDate: item.actualStartDate ? moment(item.actualStartDate).format("ll") : '',
+              actualEndDate: item.actualEndDate ? moment(item.actualEndDate).format("ll") : '',
+              key: Math.random() * 1000000000000000000,
+              _id: item._id,
+              client: item.client
+            }
+          })
+          console.log(data)
+          // .length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
+          if (!this.props.location.filterValue) {
+            this.setState({ searchedList: data });
           }
-        })
-        console.log(data)
-        // .length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
-        if (!this.props.location.filterValue) {
-        this.setState({ searchedList: data });
-      }
-      resolve(true)
-    }
+          resolve(true)
+        }
 
-    }, err => {
-      this.setState({ show: false });
-    })
+      }, err => {
+        this.setState({ show: false });
+      })
     })
   }
 
@@ -318,7 +326,7 @@ class ProjectlistView extends Component {
             </Select>
             <Button className="allprojectbtn" onClick={() => {
               this.setState({ searchedList: this.state.projectList });
-              this.setState({statussearch:this.state.p});
+              this.setState({ statussearch: this.state.p });
               this.setState({ searchinput: '' })
             }}>All Projects</Button>
 
@@ -336,8 +344,8 @@ class ProjectlistView extends Component {
           <Table
             onRow={(record, x) => {
               return {
-                onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },  
-               // click row
+                onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },
+                // click row
               };
             }}
             columns={columns} dataSource={this.state.searchedList} />

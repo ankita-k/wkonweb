@@ -96,7 +96,8 @@ class ClientComponent extends Component {
                             this.props.opentoast('warning', data.message);
                         }
                     }, err => {
-
+                        this.setState({ show: false });
+                        this.props.opentoast('warning', 'Client Not Updated Successfully!');
                     })
                 }
                 else {
@@ -121,6 +122,7 @@ class ClientComponent extends Component {
                         }
                     }, err => {
                         this.setState({ show: false });
+                        this.props.opentoast('warning', 'Client Not Added Successfully!');
                     })
                 }
 

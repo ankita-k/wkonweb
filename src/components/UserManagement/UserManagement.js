@@ -120,10 +120,11 @@ class UserManagement extends Component {
                             this.props.history.push('/dashboard/Userlist')
                         }
                         else {
-                            this.props.opentoast('success', 'User Not Updated Successfully!');
+                            this.props.opentoast('success', response.message);
                         }
                     },
                         err => {
+                            this.setState({ show: false });
                             this.props.opentoast('warning', 'User Not Updated Successfully!');
                         })
                 }
@@ -143,8 +144,12 @@ class UserManagement extends Component {
                             this.props.opentoast('success', 'User Created  Successfully!');
                             this.props.history.push('/dashboard/Userlist')
                         }
+                        else{
+                            this.props.opentoast('warning', response.message);
+                        }
                     }, err => {
                         this.setState({ show: false });
+                        this.props.opentoast('warning', 'UserNot  Created  Successfully!');
                     })
                 }
 

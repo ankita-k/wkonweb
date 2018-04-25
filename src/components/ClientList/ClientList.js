@@ -178,15 +178,21 @@ class ClientList extends Component {
 
   //delete client
   deleteClient = () => {
+    this.setState({show:true})
     this.props.deleteclient(this.state.selectedId._id).then(response => {
       console.log(response)
+      this.setState({show:false})
       this.setState({ visible: false })
       if (!response.error) {
         this.props.opentoast('success', 'Client Deleted Successfully!');
         this.getclients();
       }
+      else{
+        this.props.opentoast('warning',response.message);
+      }
     }, err => {
-
+      this.setState({show:false})
+      this.props.opentoast('warning', 'Client  Not Deleted Successfully!');
     })
 
   }
