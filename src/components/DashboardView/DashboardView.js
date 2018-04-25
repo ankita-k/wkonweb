@@ -9,8 +9,10 @@ import progress from '../../Images/progress.png';
 import projectpipe from '../../Images/projectpipe.png';
 import man from '../../Images/wkon-2-21.png';
 import mantwo from '../../Images/wkon-2-22.png';
+import ProjectlistView from '../ProjectlistView/ProjectlistView';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
+import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 const Option = Select.Option;
 
 const FormItem = Form.Item;
@@ -87,17 +89,23 @@ class DashboardView extends Component {
                     </Row>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal" >
                                 <p>
-                                    <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
+                                    <img src={total} className="totalImg" alt="Customer"  /><span className="totalContent">Total</span> 
+                                    
+                                   
                                 </p>
+                                
                                 <h1 className="totalNumber">{this.state.clientcount.Total}</h1>
+                                {/*<NavLink to="../dashboard/projectlist"></NavLink>*/}
+                                { this.props.history.push('/dashboard/clientcreate') }
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
                             <div className="cusTotal">
                                 <p>
                                     <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Committed</span>
+                                     {/*<NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>*/}
                                 </p>
                                 <h1 className="totalNumber">{this.state.clientcount.Committed ? this.state.clientcount.Committed : 0}</h1>
                             </div>
