@@ -114,6 +114,9 @@ class NewProject extends Component {
                             this.props.opentoast('success', 'Project Updated Successfully!');
                             this.props.history.push('/dashboard/projectlist')
                         }
+                        else{
+                            this.props.opentoast('warning', response.message);
+                        }
                     }, err => {
 
                     })
@@ -151,8 +154,8 @@ class NewProject extends Component {
                             this.props.opentoast('success', 'Project Added Successfully!');
                             this.props.history.push('/dashboard/projectlist')
                         }
-                        if (response.error == true) {
-                            this.props.opentoast('warning', 'Insufficient Data!');
+                        else{
+                            this.props.opentoast('warning', response.message);
                         }
                     }, err => {
 
