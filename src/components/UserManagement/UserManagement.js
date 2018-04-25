@@ -145,7 +145,7 @@ class UserManagement extends Component {
                             this.props.history.push('/dashboard/Userlist')
                         }
                         else{
-                            this.props.opentoast('warning', response.message);
+                            this.props.opentoast('warning', result.message);
                         }
                     }, err => {
                         this.setState({ show: false });
