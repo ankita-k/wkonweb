@@ -9,6 +9,7 @@ import progress from '../../Images/progress.png';
 import projectpipe from '../../Images/projectpipe.png';
 import man from '../../Images/wkon-2-21.png';
 import mantwo from '../../Images/wkon-2-22.png';
+import ProjectlistView from '../ProjectlistView/ProjectlistView';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
@@ -306,6 +307,7 @@ class DashboardView extends Component {
                             <div className="cusTotal"onClick={()=>{this.filterClient('Committed')}}>
                                 <p>
                                     <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Committed</span>
+                                     {/*<NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>*/}
                                 </p>
                                 <h1 className="totalNumber">{this.state.clientcommitted.Committed ? this.state.clientcommitted.Committed : 0}</h1>
                             </div>

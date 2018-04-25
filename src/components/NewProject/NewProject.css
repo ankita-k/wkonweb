@@ -13,10 +13,11 @@
     width: 85% !important;
 }
 .inputForminfo.informationProject {
-    padding: 0 0 0 4em;
+    padding: 1em 0 0 4em;
 }
 .inputForminfo.informationProject .statuspipeline.ant-select.ant-select-enabled {
     width: 85%;
+    /* margin-top: 7px; */
 }
 .innercardContent.cardProject h1.NewCustomer{
     margin: 10px 0 10px 27px;
@@ -40,10 +41,11 @@ p.expecteDateclient {
     color: rgba(7, 7, 7, 0.65);
     font-family: 'Lato', sans-serif;
     font-weight: 600;
-    margin-bottom: 3px;
+    margin-bottom: 9px;
     margin-top: 9px;
     margin-left: 5px;
 }
+
 .ant-row.briefRequire {
     margin-bottom: 3em;
 }

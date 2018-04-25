@@ -146,7 +146,7 @@ class ClientComponent extends Component {
                         {(this.state.clientEdit == true) ?
                             <h1 className="NewCustomer">Edit Client</h1> : <h1 className="NewCustomer">New Client</h1>
                         }
-                        <Divider dashed className="underLine" />
+                        {/* <Divider dashed className="underLine" /> */}
                         {/* <div className="headingLine">
                             <Row className="formcustomer">
                                 <Col xs={24} sm={24} md={12} lg={24}>
