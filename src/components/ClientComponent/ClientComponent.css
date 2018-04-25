@@ -35,8 +35,8 @@
 .innercardContent h1.NewCustomer{
     margin: 10px 0 10px 27px;
 }
-.inputForminfo{
-    padding: 0 4em 0 4em;
+.inputForminfo {
+    padding: 1em 4em 0 4em;
 }
 .inputForminfo .ant-form-item-label label {
     color: rgba(7, 7, 7, 0.65);

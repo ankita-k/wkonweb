@@ -345,7 +345,7 @@ class NewProject extends Component {
                             <h1 className="NewCustomer">Edit Project</h1> : <h1 className="NewCustomer">New Project</h1>
                         }
 
-                        <Divider dashed className="underLine" />
+                        {/* <Divider dashed className="underLine" /> */}
                     </div>
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="inputForminfo informationProject">
