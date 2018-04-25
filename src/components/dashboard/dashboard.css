@@ -6,7 +6,7 @@
     float: left;
   }
   .ant-layout-content {
-    height: 100vh;
+    height: auto;
 }
 button.ant-btn.wkonlogout {
   float: right;
@@ -22,7 +22,11 @@ button.ant-btn.wkonlogout {
   .header img{
     width: 85px !important;
 }
-
+.ant-layout.ant-layout-has-sider {
+  -ms-flex-direction: row;
+  flex-direction: row;
+  height: 43em;
+}
 .username{
   color: rgb(255, 255, 255);
   font-family: 'Lato', sans-serif;
