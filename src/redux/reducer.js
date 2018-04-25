@@ -45,6 +45,9 @@ const reducer = ((state = {}, action) => {
     case "DELETE_CLIENT":                  // FOR CLIENT DELETE
       return action.list
       break;
+      case "DELETE_USER":                  // FOR CLIENT DELETE
+      return action.list
+      break;
     case "TOAST":                         // FOR SHOWING NOTIFICATION
       notification[action.toastype]({
         message: action.message,
@@ -52,6 +55,12 @@ const reducer = ((state = {}, action) => {
       });
       break;
     case "UPDATE_CLIENT":                  // FOR CLIENT DELETE
+      return action.list
+      break;
+    case "USER_LIST":                  // FOR USER LIST
+      return action.list
+      break;
+      case "EDIT_USER":                  // FOR USER EDIT
       return action.list
       break;
     default:

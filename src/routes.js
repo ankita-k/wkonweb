@@ -7,6 +7,7 @@ import UserManagement from './components/UserManagement/UserManagement';
 import ChangePassword from './components/passwordChange/passwordChange';
 // import UserSubscription from './Components/UserSubscription/UserSubscription';
 // import BankDetails from './Components/BankDetails/BankDetails';
+import requireAuth from './authguard';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 const Routes = () => (

@@ -15,7 +15,8 @@ class ClientComponent extends Component {
         super(props);
         this.state = {
             countrylist: [],
-            show: false  //loading-bar
+            show: false,  //loading-bar
+            clientEdit: false
         }
     }
 
@@ -24,6 +25,7 @@ class ClientComponent extends Component {
         console.log(this.props);
         console.log(this.props.form)
         if (this.props.location.data) {
+            this.setState({ clientEdit: true })
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name,
                 ['email']: this.props.location.data.data.email,
@@ -72,7 +74,7 @@ class ClientComponent extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log(values)
-               
+
                 if (this.props.location.data) {
                     let data = {
                         status: values.status,
@@ -80,11 +82,11 @@ class ClientComponent extends Component {
                         phoneNumber: values.phone,
                         email: values.email,
                         name: values.name,
-                      
+
                         domain: values.domain
                     }
                     console.log('edshgj')
-                    this.props.updateclient(data,this.props.location.data.data._id).then(data => {
+                    this.props.updateclient(data, this.props.location.data.data._id).then(data => {
                         console.log(data)
                         if (!data.error) {
                             this.props.opentoast('success', 'Client Updated Successfully!');
@@ -101,7 +103,7 @@ class ClientComponent extends Component {
                         phoneNumber: values.phone,
                         email: values.email,
                         name: values.name,
-                        userId: sessionStorage.getItem('id'),
+                        userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
                         domain: values.domain
                     }
                     this.props.createClient(data).then(result => {
@@ -132,7 +134,10 @@ class ClientComponent extends Component {
                 <Card className="innercardContent" bordered={false}>
                     {/* --new customer details-- */}
                     <div className="newCustomerform">
-                        <h1 className="NewCustomer">New Client</h1>
+                        {/* <h1 className="NewCustomer">New Client</h1> */}
+                        {(this.state.clientEdit == true) ?
+                            <h1 className="NewCustomer">Edit Client</h1> : <h1 className="NewCustomer">New Client</h1>
+                        }
                         <Divider dashed className="underLine" />
                         {/* <div className="headingLine">
                             <Row className="formcustomer">
@@ -159,7 +164,7 @@ class ClientComponent extends Component {
                                             <Input
                                                 maxLength="15"
                                                 placeholder="Name" name="name" />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -174,9 +179,30 @@ class ClientComponent extends Component {
 
                                         })(
                                             <Input
-                                                maxLength="20"
+                                                maxLength="200"
                                                 placeholder="Email" name="email" />
-                                            )}
+                                        )}
+                                    </FormItem>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} sm={24} md={24} lg={24}>
+                                    <FormItem label="Country">
+                                        {getFieldDecorator('country', {
+                                            rules: [{ required: true, message: 'Please select your Country!' }],
+                                        })(
+                                            <Select className="statuspipeline"
+                                                placeholder="Country"
+                                                onChange={this.selectCountry}
+                                                name="country"
+                                                showSearch
+                                            >
+                                                {this.state.countrylist.map((item, index) => {
+                                                    return (<Option key={index} value={item.name}>{item.name}</Option>)
+                                                })}
+
+                                            </Select>
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -190,7 +216,7 @@ class ClientComponent extends Component {
                                                 type="test"
                                                 maxLength="15"
                                                 placeholder="Phone No." name="phoneNumber" />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -202,28 +228,7 @@ class ClientComponent extends Component {
                                             rules: [{ required: true, message: 'Please input your Domain!' }],
                                         })(
                                             <Input placeholder="Domain" name="domain" />
-                                            )}
-                                    </FormItem>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                    <FormItem label="Country">
-                                        {getFieldDecorator('country', {
-                                            rules: [{ required: true, message: 'Please select your Country!' }],
-                                        })(
-                                            <Select className="statuspipeline"
-                                                placeholder="Country"
-                                                onChange={this.selectCountry}
-                                                showSearch
-
-                                            >
-                                                {this.state.countrylist.map((item, index) => {
-                                                    return <Option key={index} value={item.name}>{item.name}</Option>
-                                                })}
-
-                                            </Select>
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -243,7 +248,7 @@ class ClientComponent extends Component {
                                                 <Option value="Pipeline">Pipeline</Option>
                                                 <Option value="Committed">Committed</Option>
                                             </Select>
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>

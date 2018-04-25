@@ -46,7 +46,7 @@ class ChangePasswordForm extends Component {
                 console.log('Received values of form: ', values);
                 let conf = config.headers;
                 let data = {
-                    id: sessionStorage.getItem('id'),
+                    id: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
                     password: values.oldPassword,
                     newPassword: values.password
 

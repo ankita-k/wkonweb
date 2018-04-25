@@ -579,3 +579,125 @@ export function findByRole(role) {
         });
     }
     }
+
+    export function userlist() {
+
+        return (dispatch) => {
+            console.log(config.apiUrl)
+            return new Promise((resolve, reject) => {
+    
+                fetch(config.apiUrl + 'user/getAllUser',
+                    {
+                        headers: {
+                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                        },
+                        method: 'GET'
+                    })
+                    .then((response) => response.json())
+                    .then((responseJSON) => {
+                        dispatch(user(responseJSON))
+                        resolve(responseJSON);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        }
+    }
+    //clientlist func
+    function user(list) {
+        return {
+            type: "USER_LIST",
+            list
+    
+        }
+    }
+    //
+    //API call for User delete
+export function deleteUser(id) {
+    console.log(id)
+
+    return (dispatch) => {
+
+        
+        return new Promise((resolve, reject) => {
+
+
+
+            fetch(config.apiUrl + 'user/delete?id=' + id,
+           
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
+                        
+                    },
+                    method: 'DELETE'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+                    console.log('response');
+
+                    dispatch(deleteusers(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+
+function deleteusers(list) {
+    return {
+        type: "DELETE_USER",
+        list
+
+    }
+}
+
+    //API FOR EDIT PROJECT
+export function editUser(data,id) {
+    console.log('edit',data)
+    console.log(id)
+    
+        return (dispatch) => {
+            
+            console.log(config.apiUrl)
+            return new Promise((resolve, reject) => {
+                
+                
+    
+                fetch(config.apiUrl + 'user/'+id,
+                    {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                        },
+                        method: 'PUT',
+                        body: JSON.stringify(data)
+                    })
+                    .then((response) => response.json())
+                    .then((responseJSON) => {
+                        
+                
+
+                        dispatch(edituser(responseJSON))
+                        resolve(responseJSON);
+                    })
+                    .catch((error) => {
+                        reject(error);
+                    });
+            });
+        }
+    }
+    
+    
+    function edituser(list) {
+        return {
+            type: "EDIT_USER",
+            list
+    
+        }
+    }

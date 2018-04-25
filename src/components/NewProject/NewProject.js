@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Row, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
+import { Form, Icon, Input, Button, Row, Spin, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
 import '../ClientComponent/ClientComponent.css';
 import './NewProject.css';
 import { Divider } from 'antd';
@@ -7,15 +7,14 @@ import moment from 'moment'
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import Loading from 'react-loading-bar'
-import 'react-loading-bar/dist/index.css'
+import 'react-loading-bar/dist/index.css';
+import debounce from 'lodash/debounce';
+
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const Option = Select.Option;
 const Option1 = AutoComplete.Option1;
 class NewProject extends Component {
-
-
-
 
     constructor(props) {
         console.log(props);
@@ -25,8 +24,16 @@ class NewProject extends Component {
             clientarray: [],
             show: false,//loading-bar,
             disabledate: true,
-            disableclient: false
+            disableclient: false,
+            userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
+            techArray: ['ReactJS', 'Php', 'ReactNative'],
+            techs: ['ReactJS', 'Php', 'ReactNative'],
+            techsValue: [],
+            value: [],
+            fetching: false,
+           
         }
+    
     }
 
     componentDidMount() {
@@ -37,10 +44,11 @@ class NewProject extends Component {
         if (this.props.location.data) {
             this.setState({ disabledate: false })
             this.setState({ disableclient: true })
+            this.setState({ editClient: true })
             this.props.form.setFieldsValue({
-                ['name']: this.props.location.data.data.name,
+                ['name']: this.props.location.data.data.name1,
                 ['textRequirement']: this.props.location.data.data.requirement1,
-                ['technology']: this.props.location.data.data.technology,
+                ['technology']: this.props.location.data.data.technology1,
                 ['expecstart']: this.props.location.data.data.expectedStartDate ? moment(this.props.location.data.data.expectedStartDate) : '',
                 ['expecend']: this.props.location.data.data.expectedEndDate ? moment(this.props.location.data.data.expectedEndDate) : '',
                 ['actualstart']: this.props.location.data.data.actualStartDate ? moment(this.props.location.data.data.actualStartDate) : '',
@@ -48,10 +56,10 @@ class NewProject extends Component {
                 ['status']: this.props.location.data.data.status,
                 ['client']: this.props.location.data.data.client ? this.props.location.data.data.client.name : ''
             })
-            
+
         }
         // GET CLIENT LIST
-        this.props.clientlist(sessionStorage.getItem('id'), 0, 30).then((data) => {
+        this.props.clientlist(this.state.userId).then((data) => {
             // this.setState({ show: false });
             console.log(data);
             this.setState({ clientlist: data.result });
@@ -76,14 +84,20 @@ class NewProject extends Component {
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
-                        technology: values.technology,
-                        expectedStartDate: values.expecstart ? values.expecstart._d : '',
+                        technology: (values.technology).toString(),
+                        // expectedStartDate: values.expecstart ? values.expecstart._d : '',
                         // actualStartDate: values.actualstart ? values.actualstart._d : '',
-                        expectedEndDate: values.expecend ? values.expecend._d : '',
+                        // expectedEndDate: values.expecend ? values.expecend._d : '',
                         // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
                         client: this.props.location.data.data.client._id
 
+                    }
+                    if (values.expecstart) {
+                        data.expectedStartDate = values.expecstart._d
+                    }
+                    if (values.expecend) {
+                        data.expectedEndDate = values.expecend._d
                     }
                     if (values.actualstart) {
                         data.actualStartDate = values.actualstart._d
@@ -109,20 +123,26 @@ class NewProject extends Component {
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
-                        technology: values.technology,
-                        expectedStartDate: values.expecstart ? values.expecstart._d : '',
+                        technology:(values.technology).toString(),
+                        // expectedStartDate: values.expecstart ? values.expecstart._d : '',
                         // actualStartDate: values.actualstart ? values.actualstart._d : '',
-                        expectedEndDate: values.expecend ? values.expecend._d : '',
+                        // expectedEndDate: values.expecend ? values.expecend._d : '',
                         // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
-                        userId: sessionStorage.getItem('id'),
+                        userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
                         client: values.client
 
                     }
                     if (values.actualstart) {
                         data.actualStartDate = values.actualstart._d
                     }
-                
+                    if (values.expecstart) {
+                        data.expectedStartDate = values.expecstart._d
+                    }
+                    if (values.expecend) {
+                        data.expectedEndDate = values.expecend._d
+                    }
+
                     console.log(data)
                     this.props.addProject(data).then(response => {
                         this.setState({ show: false });
@@ -131,7 +151,7 @@ class NewProject extends Component {
                             this.props.opentoast('success', 'Project Added Successfully!');
                             this.props.history.push('/dashboard/projectlist')
                         }
-                        if(response.error==true){
+                        if (response.error == true) {
                             this.props.opentoast('warning', 'Insufficient Data!');
                         }
                     }, err => {
@@ -213,19 +233,19 @@ class NewProject extends Component {
 
                 return d.name.toLowerCase().indexOf(value.toLowerCase()) > -1
             });
-          
+
             console.log(clientarray)
 
-             if (clientarray.length != 0) {
+            if (clientarray.length != 0) {
                 this.setState({ clientarray })
             }
             else {
-                let data={
+                let data = {
                     name: "No Result Found",
-                    _id : "1111"
+                    _id: "1111"
                 }
-              clientarray.push(data)
-              this.setState({clientarray})
+                clientarray.push(data)
+                this.setState({ clientarray })
             }
 
 
@@ -249,7 +269,38 @@ class NewProject extends Component {
             </Option>
         );
     }
-    
+
+    // SEARCH TECHNOLOGY FROM DROPDOWN
+    searchTechnology = (value) => {
+
+        console.log('fetching user', value);
+        this.setState({ techArray:[],fetching: true });
+
+        let techArray ;
+        
+            this.setState({ data: [], fetching: true });
+            techArray = this.state.techs.filter(d => {
+
+                return d.toLowerCase().indexOf(value.toLowerCase()) > -1
+            });
+            this.setState({ techArray, fetching: false });
+      
+    }
+
+    // SELECTED TECHNOLOGY VALUE
+    handleChange = (value) => {
+     
+        if (value.length > 0) {
+            this.setState({ techsValue: value })
+            this.setState({
+                // techsValue: [],
+                fetching: false,
+            });
+            console.log(this.state.techsValue)
+            this.setState({techArray:this.state.techs})
+        }
+
+    }
     render() {
         // const { clientarray } = this.state;
         // console.log(this.state.clientarray)
@@ -274,6 +325,7 @@ class NewProject extends Component {
                 validator: this.datevalidate
             }]
         };
+        const { fetching, techArray, value } = this.state;
         return (
             <div>
                 <Loading
@@ -285,7 +337,11 @@ class NewProject extends Component {
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
                     <div className="newCustomerform">
-                        <h1 className="NewCustomer">New Project</h1>
+
+                        {(this.state.editClient == true) ?
+                            <h1 className="NewCustomer">Edit Project</h1> : <h1 className="NewCustomer">New Project</h1>
+                        }
+
                         <Divider dashed className="underLine" />
                     </div>
                     <Form onSubmit={this.handleSubmit} className="login-form">
@@ -301,17 +357,16 @@ class NewProject extends Component {
                                             },
 
                                             )(
-                                                <AutoComplete
-                                                    className="clientHere clieHere"
-                                                    onSearch={this.handleSearch}
-                                                    placeholder="Choose Client"
-                                                    dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
-                                                   // onSelect={this.onSelect}
-                                                    disabled={this.state.disableclient}
-
+                                                <Select className="statuspipeline"
+                                                    placeholder="Choose Role"
+                                                    onChange={this.selectStatus}
                                                 >
-
-                                                </AutoComplete>
+                                                  {this.state.clientlist.map((item, index) => {
+                                                return <Option key={index} value={item._id}>{item.name}</Option>
+                                            })}
+                                                    {/* <Option value="Sales">Client1</Option>
+                                                    <Option value="Developer">Client2</Option> */}
+                                                </Select>
                                             )}
                                         </FormItem>
                                     </Col>
@@ -384,11 +439,27 @@ class NewProject extends Component {
                                     </FormItem>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Technology">
+                                    <FormItem className="tech" label="Technology">
                                         {getFieldDecorator('technology', {
                                             rules: [{ required: true, message: 'Please input your Technology!' }],
                                         })(
-                                            <Input maxLength="50" placeholder="Technology" />
+                                            <Select
+                                                mode="multiple"
+                                                // labelInValue
+                                                // value={value}
+                                                placeholder="Select users"
+                                                notFoundContent={fetching ? <Spin size="small" /> : null}
+                                                filterOption={false}
+                                                onSearch={this.searchTechnology}
+                                                onChange={this.handleChange}
+                                                style={{ width: '100%' }}
+
+                                            >
+                                                {techArray.map(d =>
+                                                    <Option value={d}>{d}</Option>
+                                                )}
+
+                                            </Select>
                                         )}
                                     </FormItem>
                                 </Col>
@@ -403,7 +474,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('expecstart', {
-                                                    rules: [{ type: 'object', required: true, message: 'Please select expecteddate!' }, {
+                                                    rules: [{ required: false, message: 'Please select expecteddate!' }, {
                                                         validator: this.validatetoexpecend
                                                     }]
                                                 })(
@@ -419,7 +490,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('expecend', {
-                                                    rules: [{ type: 'object', required: true, message: 'Please select expecteddate!' }, {
+                                                    rules: [{ required: false, message: 'Please select expecteddate!' }, {
                                                         validator: this.validatetoexpecstart
                                                     }]
                                                 })(
@@ -439,7 +510,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('actualstart', {
-                                                    rules: [{  required: false, message: 'Please select actualdate!' }, {
+                                                    rules: [{ required: false, message: 'Please select actualdate!' }, {
                                                         validator: this.validatetoactualend
                                                     }]
                                                 })(
@@ -455,7 +526,7 @@ class NewProject extends Component {
                                                 {...formItemLayout}
                                             >
                                                 {getFieldDecorator('actualend', {
-                                                    rules: [{  required: false, message: 'Please select actualdate!' }, {
+                                                    rules: [{ required: false, message: 'Please select actualdate!' }, {
                                                         validator: this.validatetoactualstart
                                                     }]
                                                 })(
