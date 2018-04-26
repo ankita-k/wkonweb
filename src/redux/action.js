@@ -16,6 +16,18 @@ function receivePosts(json) {
     }
 }
 
+//function for login 
+function loginApi(json) {
+
+    return {
+        type: "USER_LOGIN",
+        json
+
+    }
+}
+
+
+
 //function for change pwd
 function changepwd(json) {
 
@@ -43,7 +55,7 @@ export function login(username, password) {
                 })
                 .then((response) => response.json())
                 .then((responseJSON) => {
-                    dispatch(receivePosts(responseJSON))
+                    dispatch(loginApi(responseJSON))
                     resolve(responseJSON);
                 })
                 .catch((error) => {

@@ -6,7 +6,8 @@ import axios from 'axios';
 import { Form, Icon, Input, Button, Checkbox, Row, Col } from 'antd';
 import { config } from '../../config';
 import { connect } from "react-redux";
-import * as actioncreators from '../../redux/action';
+import * as loginAction from '../../redux/action';
+import { bindActionCreators } from 'redux';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import loginlogo from '../../Images/wkonlogo.png';
@@ -41,33 +42,35 @@ class NormalLoginForm extends React.Component {
             if (!err) {
 
                 // axios.get(config.apiUrl + 'user/login?username=' + values.email + '&password=' + values.password, conf)
-                this.props.login(values.email, values.password).then((response) => {
+                this.props.actions.login(values.email, values.password).then((response) => {
                     console.log(response);
                     this.setState({ show: false });
                     if (response.error) {
                         this.props.opentoast('error', 'No Such User Exists!');
                         return;
                     }
-                    if (response.result && response.result.lastLogin) {
-                        if (this.state.x == true) {
-                            console.log('local Storage')
-                            localStorage.setItem('id', response.result._id);
-                            this.props.history.push('/dashboard');
+                    else {
+                        if (response.result && response.result.lastLogin) {
+                            if (this.state.x == true) {
+                                console.log('local Storage')
+                                localStorage.setItem('id', response.result._id);
+                                this.props.history.push('/dashboard');
+                            }
+                            else {
+                                console.log('session Storage')
+                                sessionStorage.setItem('id', response.result._id);
+                                this.props.history.push('/dashboard');
+                            }
                         }
-                        else {
-                            console.log('session Storage')
-                            sessionStorage.setItem('id', response.result._id);
-                            this.props.history.push('/dashboard');
-                        }
-                    }
-                    else if (response.result && !response.result.lastLogin) {
-                        if (this.state.x == true) {
-                            localStorage.setItem('id', response.result._id);
-                            this.props.history.push('/dashboard');
-                        }
-                        else {
-                            sessionStorage.setItem('id', response.result._id)
-                            this.props.history.push('/passwordchange');
+                        else if (response.result && !response.result.lastLogin) {
+                            if (this.state.x == true) {
+                                localStorage.setItem('id', response.result._id);
+                                this.props.history.push('/dashboard');
+                            }
+                            else {
+                                sessionStorage.setItem('id', response.result._id)
+                                this.props.history.push('/passwordchange');
+                            }
                         }
                     }
 
@@ -139,7 +142,7 @@ class NormalLoginForm extends React.Component {
                             <Col md={{ span: 12, order: 2 }} xs={{ span: 24, order: 2 }} sm={0}>
                                 <div className="imgsec" sm={0}>
                                     {/* <img src={triangleimg} alt="triangle" /> */}
-                                    <span><img src={loginlogo}/></span>
+                                    <span><img src={loginlogo} /></span>
                                     <Row>
                                         <Col span={24}>
                                             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
@@ -197,11 +200,17 @@ class NormalLoginForm extends React.Component {
 const mapStateToProps = (state) => {
     return state
 }
+
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions:  bindActionCreators(loginAction, dispatch)
+    })
+}
 const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
 //export default WrappedNormalLoginForm;
 
 
-export default connect(mapStateToProps, actioncreators)(WrappedNormalLoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedNormalLoginForm);
 
 
 // class Login extends Component {
