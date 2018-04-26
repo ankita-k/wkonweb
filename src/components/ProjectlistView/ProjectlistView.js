@@ -306,7 +306,22 @@ class ProjectlistView extends Component {
 
 
             />
+            {(this.state.statussearch)?
             <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
+             
+              <Option value="All">All</Option>
+              <Option value="New">New</Option>
+              <Option value="InDiscussion">InDiscussion</Option>
+              <Option value="Scoping">Scoping</Option>
+              <Option value="InProgess">InProgess</Option>
+              <Option value="Stalled">Stalled</Option>
+              <Option value="Completed">Completed</Option>
+
+            </Select>:
+            
+            
+                <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+             
               <Option value="All">All</Option>
               <Option value="New">New</Option>
               <Option value="InDiscussion">InDiscussion</Option>
@@ -316,12 +331,14 @@ class ProjectlistView extends Component {
               <Option value="Completed">Completed</Option>
 
             </Select>
+            }
+          
             <Button className="allprojectbtn" onClick={() => {
               this.setState({ searchedList: this.state.projectList });
               this.setState({statussearch:this.state.p});
               this.setState({ searchinput: '' })
             }}>All Projects</Button>
-
+            
 
             <div className="addButton project">
               <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>

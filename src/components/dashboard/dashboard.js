@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Button, Icon, Row, Col } from 'antd';
+import { Layout, Menu, Button, Icon, Row, Col, Modal } from 'antd';
 import ClientComponent from '../ClientComponent/ClientComponent';
 import NewProject from '../NewProject/NewProject';
 import './dashboard.css';
@@ -15,9 +15,11 @@ import Userlist from '../Userlist/Userlist';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 
 
+
 // const { SubMenu } = Menu;
 const SubMenu = Menu.SubMenu;
 const { Header, Content, Sider } = Layout;
+const confirm = Modal.confirm;
 
 class Dashboard extends Component {
   constructor(props) {
@@ -25,13 +27,31 @@ class Dashboard extends Component {
     this.state = {
       username: '',
       selectedKey: ['home'],
-      userrole:''
+      userrole: ''
     }
-    if(!sessionStorage.getItem('id') && !localStorage.getItem('id')){
+    if (!sessionStorage.getItem('id') && !localStorage.getItem('id')) {
       this.props.history.push('/login');
       return;
     }
-    
+    this.showConfirm = this.showConfirm.bind(this);
+
+  }
+  showConfirm() {
+    let _base = this;
+    confirm({
+      title: 'Do you want to Logout?',
+
+      onOk() {
+        console.log('OK');
+        sessionStorage.clear();
+        localStorage.clear();
+
+        _base.props.history.push('/login')
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   }
 
   renderSidemenuSelection = () => {
@@ -52,7 +72,7 @@ class Dashboard extends Component {
         console.log(data);
         if (!data.error) {
           this.setState({ username: data.result.name });
-          this.setState({userrole:data.result.role})
+          this.setState({ userrole: data.result.role })
           console.log(this.state.username);
         }
 
@@ -60,14 +80,14 @@ class Dashboard extends Component {
 
       })
     }
-    else if(localStorage.getItem('id')){
+    else if (localStorage.getItem('id')) {
 
       this.props.username(localStorage.getItem('id')).then((data) => {
         console.log('data')
         console.log(data);
         if (!data.error) {
           this.setState({ username: data.result.name });
-          this.setState({userrole:data.result.role})
+          this.setState({ userrole: data.result.role })
           console.log(this.state.username);
         }
 
@@ -77,6 +97,8 @@ class Dashboard extends Component {
     }
     this.renderSidemenuSelection();
   }
+
+
 
   render() {
     return (
@@ -88,9 +110,8 @@ class Dashboard extends Component {
               <Col lg={3}><NavLink to="../dashboard" activeClassName="active">
                 <img src={brandlogo} /></NavLink> </Col>
               <p className="username" style={{ color: '#fff' }}> {this.state.username} <Button className="wkonlogout" onClick={() => {
-                sessionStorage.clear();
-                localStorage.clear();
-                this.props.history.push('/login')
+                this.showConfirm();
+
               }}>Log Out</Button></p>
             </Row>
           </Header>
@@ -107,42 +128,42 @@ class Dashboard extends Component {
                   <span>Home</span>
                   <NavLink to="../dashboard" activeClassName="active"></NavLink>
                 </Menu.Item>
-              {this.state.userrole=="admin"||"Sales"?
-                <SubMenu  key="client" title={<span>Clients</span>} subMenuCloseDelay={0.1}>
-                  <Menu.Item key="create_client">
-                    <span>Client Create</span>
-                    <NavLink to="../dashboard/clientcreate" activeClassName="active"></NavLink>
-                  </Menu.Item>
-                  <Menu.Item key="client_list">
-                    <span>Client List</span>
-                    <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
-                  </Menu.Item>
-                </SubMenu>:''}
-                {this.state.userrole=="Developer"||"admin"?
-                <SubMenu key="projects" title={<span>Projects</span>} subMenuCloseDelay={0.1}>
-                  <Menu.Item key="create_project">
-                    <span>Project Create</span>
-                    <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
-                  </Menu.Item>
-                  <Menu.Item key="project_list">
-                    <span>Project List</span>
-                    <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
-                  </Menu.Item>
-                </SubMenu>:''}
-                {this.state.userrole=="admin"?
-                <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
-                  <Menu.Item key="create_user">
-                    <span>Create User</span>
-                    <NavLink to="../dashboard/createuser" activeClassName="active"></NavLink>
-                  </Menu.Item>
-                  <Menu.Item key="user_list">
-                    <span>User List</span>
-                    <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
-                  </Menu.Item>
-                </SubMenu>:''}
+                {this.state.userrole == "admin" || "Sales" ?
+                  <SubMenu key="client" title={<span>Clients</span>} subMenuCloseDelay={0.1}>
+                    <Menu.Item key="create_client">
+                      <span>Client Create</span>
+                      <NavLink to="../dashboard/clientcreate" activeClassName="active"></NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="client_list">
+                      <span>Client List</span>
+                      <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
+                    </Menu.Item>
+                  </SubMenu> : ''}
+                {this.state.userrole == "Developer" || "admin" ?
+                  <SubMenu key="projects" title={<span>Projects</span>} subMenuCloseDelay={0.1}>
+                    <Menu.Item key="create_project">
+                      <span>Project Create</span>
+                      <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="project_list">
+                      <span>Project List</span>
+                      <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
+                    </Menu.Item>
+                  </SubMenu> : ''}
+                {this.state.userrole == "admin" ?
+                  <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
+                    <Menu.Item key="create_user">
+                      <span>Create User</span>
+                      <NavLink to="../dashboard/createuser" activeClassName="active"></NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="user_list">
+                      <span>User List</span>
+                      <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
+                    </Menu.Item>
+                  </SubMenu> : ''}
                 {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
                 <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item> */}
-                
+
 
                 {/* <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}> */}
                 {/* <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
@@ -163,7 +184,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />
                 <Route exact path={`${this.props.match.url}/createuser`} component={UserManagement} />
                 <Route exact path={`${this.props.match.url}/edituser`} component={UserManagement} />
-                <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />   
+                <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>

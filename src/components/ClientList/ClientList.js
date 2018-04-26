@@ -317,6 +317,7 @@ class ClientList extends Component {
               enterButton
               value={this.state.searchinput}
             />
+             {(this.state.statussearch)?
             <Select className="scoping" value={this.state.statussearch}style={{ width: 120 }} onChange={this.handleChange}>
               <Option value="All">All</Option>
               <Option value="Interested">Interested</Option>
@@ -324,7 +325,16 @@ class ClientList extends Component {
               <Option value="Commited">Commited</Option>
 
 
+            </Select>:
+            <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+              <Option value="All">All</Option>
+              <Option value="Interested">Interested</Option>
+              <Option value="Pipeline">Pipeline</Option>
+              <Option value="Commited">Commited</Option>
+
+
             </Select>
+             }
             <Button className="allprojectbtn" onClick={() => {
               this.setState({ searchedclient: this.state.clientlist });
               this.setState({statussearch:this.state.c});
