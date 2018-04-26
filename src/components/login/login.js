@@ -21,35 +21,33 @@ class NormalLoginForm extends React.Component {
         super(props);
         this.state = {
             show: false, //loading-bar
-            x: '' //For ChECKBOX VALUE
+            x: '', //For ChECKBOX VALUE
+            userInfo:{}
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         var id = sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id');
-        console.log('userId')
+       
         if (id) {
-            console.log(this.props)
-            console.log('userId')
             this.props.history.push('/dashboard');
         }
     }
 
+    // LOGIN FUNCTION
     handleSubmit = (e) => {
-        console.log(`checked = ${e.target.checked}`);
-        console.log(this.state.x)
         e.preventDefault()
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
             if (!err) {
-
-                // axios.get(config.apiUrl + 'user/login?username=' + values.email + '&password=' + values.password, conf)
                 this.props.actions.login(values.email, values.password).then((response) => {
                     console.log(response);
                     this.setState({ show: false });
+                  
                     if (response.error) {
                         this.props.opentoast('error', 'No Such User Exists!');
                         return;
                     }
                     else {
+                        this.setState({userInfo:response.result});
                         if (response.result && response.result.lastLogin) {
                             if (this.state.x == true) {
                                 console.log('local Storage')
@@ -80,6 +78,7 @@ class NormalLoginForm extends React.Component {
             }
         });
     }
+
     // FOR CHECKBOX 
     onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
