@@ -22,7 +22,6 @@ class NormalLoginForm extends React.Component {
         this.state = {
             show: false, //loading-bar
             x: '', //For ChECKBOX VALUE
-            userInfo:{}
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         var id = sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id');
@@ -37,8 +36,10 @@ class NormalLoginForm extends React.Component {
         e.preventDefault()
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
+         
             if (!err) {
                 this.props.actions.login(values.email, values.password).then((response) => {
+                
                     console.log(response);
                     this.setState({ show: false });
                   
@@ -47,7 +48,6 @@ class NormalLoginForm extends React.Component {
                         return;
                     }
                     else {
-                        this.setState({userInfo:response.result});
                         if (response.result && response.result.lastLogin) {
                             if (this.state.x == true) {
                                 console.log('local Storage')
@@ -63,7 +63,7 @@ class NormalLoginForm extends React.Component {
                         else if (response.result && !response.result.lastLogin) {
                             if (this.state.x == true) {
                                 localStorage.setItem('id', response.result._id);
-                                this.props.history.push('/dashboard');
+                                this.props.history.push('/passwordchange');
                             }
                             else {
                                 sessionStorage.setItem('id', response.result._id)
@@ -197,7 +197,9 @@ class NormalLoginForm extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    return state
+    console.log('login screen info',state)
+ return  state
+    
 }
 
 function mapDispatchToProps(dispatch, state) {
