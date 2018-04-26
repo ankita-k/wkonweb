@@ -8,6 +8,7 @@ import DashboardView from '../DashboardView/DashboardView';
 import ClientList from '../ClientList/ClientList';
 import ChangePassword from '../passwordChange/passwordChange';
 import UserManagement from '../UserManagement/UserManagement';
+import Loaders from '../Loaders/Loaders';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import brandlogo from '../../Images/wkonlogo.png';
@@ -54,7 +55,7 @@ class Dashboard extends Component {
         console.log('Cancel');
       },
 
-  })
+    })
   }
 
   gotoDashboard = () => {
@@ -123,7 +124,6 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
-
         <Layout>
           <Header className="header">
             <Row>
@@ -196,6 +196,7 @@ class Dashboard extends Component {
               <Content style={{ background: '#f0f4f5', padding: 24, margin: 0 }}>
                 <Route exact path={`${this.props.match.url}`} component={DashboardView} />
                 <Route exact path={`${this.props.match.url}/dashboardview`} component={DashboardView} />
+                <Route exact path={`${this.props.match.url}/processingscreen`} component={Loaders} />
                 <Route exact path={`${this.props.match.url}/clientcreate`} component={ClientComponent} />
                 <Route exact path={`${this.props.match.url}/editclient`} component={ClientComponent} />
                 <Route exact path={`${this.props.match.url}/newproject`} component={NewProject} />

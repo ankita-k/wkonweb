@@ -8,6 +8,8 @@ import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import { Select } from 'antd';
 import warning from '../../Images/war.png';
+import { Loader } from 'react-overlay-loader';
+import 'react-overlay-loader/styles.css';
 const Search = Input.Search;
 const Option = Select.Option;
 
@@ -201,7 +203,7 @@ class ClientList extends Component {
     console.log(this.props)
     this.getclients().then(success => {
       if (this.props.location.filterValue) {
-        
+
         // this.setState({statussearch:this.props.location.filterValue})
         this.handleChange(this.props.location.filterValue)
         console.log(this.state.statussearch)
@@ -273,7 +275,7 @@ class ClientList extends Component {
   }
   //handlechange function
   handleChange = (value) => {
- 
+
     console.log(`selected ${value}`);
     let searchedclient;
     if (value) {
@@ -301,6 +303,9 @@ class ClientList extends Component {
     return (
 
       <div className="clientListdiv">
+        {this.state.show == true ? <div className="loader">
+          <Loader className="ldr" fullPage loading />
+        </div> : ""}
 
         <Loading
           show={this.state.show}
@@ -323,24 +328,24 @@ class ClientList extends Component {
               enterButton
               value={this.state.searchinput}
             />
-             {(this.state.statussearch)?
-            <Select className="scoping" value={this.state.statussearch}style={{ width: 120 }} onChange={this.handleChange}>
-              <Option value="All">All</Option>
-              <Option value="Interested">Interested</Option>
-              <Option value="Pipeline">Pipeline</Option>
-              <Option value="Commited">Commited</Option>
+            {(this.state.statussearch)?
+              <Select className="scoping" value={this.state.statussearch}style={{ width: 120 }} onChange={this.handleChange}>
+                <Option value="All">All</Option>
+                <Option value="Interested">Interested</Option>
+                <Option value="Pipeline">Pipeline</Option>
+                <Option value="Commited">Commited</Option>
 
 
-            </Select>:
-            <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
-              <Option value="All">All</Option>
-              <Option value="Interested">Interested</Option>
-              <Option value="Pipeline">Pipeline</Option>
-              <Option value="Commited">Commited</Option>
+              </Select>:
+              <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+                <Option value="All">All</Option>
+                <Option value="Interested">Interested</Option>
+                <Option value="Pipeline">Pipeline</Option>
+                <Option value="Commited">Commited</Option>
 
 
-            </Select>
-             }
+              </Select>
+            }
             <Button className="allprojectbtn" onClick={() => {
               this.setState({ searchedclient: this.state.clientlist });
               this.setState({statussearch:this.state.c});

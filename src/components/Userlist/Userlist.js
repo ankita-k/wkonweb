@@ -7,6 +7,8 @@ import Loading from 'react-loading-bar'
 
 import { Card, Table, Button, Icon, Row, Input, Col, Modal, span } from 'antd';
 import user from '../../Images/wkon-2-21.png';
+import { Loader } from 'react-overlay-loader';
+import 'react-overlay-loader/styles.css';
 
 class Userlist extends Component {
     state = {
@@ -27,6 +29,7 @@ class Userlist extends Component {
         }
 
     }
+
     // get user list
     getUser = () => {
         this.setState({ show: true })
@@ -43,7 +46,6 @@ class Userlist extends Component {
 
     //edit client
     editUser = (data) => {
-        // debugger;
         console.log(data);
         this.props.history.push({
             pathname: '/dashboard/edituser',
@@ -51,27 +53,24 @@ class Userlist extends Component {
         })
 
     }
+
     //delete user
     deleteUser = (id) => {
         console.log(id);
-        // this.setState({ loading: true });
-        // setTimeout(() => {
-        //   this.setState({ loading: false, visible: false });
-        //  }, 3000);
-        this.setState({show:true});
+        this.setState({ show: true });
         this.props.deleteUser(id).then(response => {
             console.log(response);
-            this.setState({show:false});
+            this.setState({ show: false });
             this.setState({ visible: false })
             if (!response.error) {
                 this.props.opentoast('success', 'User Deleted Successfully!');
                 this.getUser();
             }
-            else{
-                this.props.opentoast('warning', response.messsage); 
+            else {
+                this.props.opentoast('warning', response.messsage);
             }
         }, err => {
-            this.setState({show:false});
+            this.setState({ show: false });
             this.props.opentoast('success', 'User Not  Deleted Successfully!');
         })
     }
@@ -80,6 +79,9 @@ class Userlist extends Component {
         const { visible, loading } = this.state;
         return (
             <div className="userlist">
+                {this.state.show == true ? <div className="loader">
+                    <Loader className="ldr" fullPage loading />
+                </div> : ""}
                 <Loading
                     show={this.state.show}
                     color="red"
