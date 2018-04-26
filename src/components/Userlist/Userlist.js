@@ -58,15 +58,21 @@ class Userlist extends Component {
         // setTimeout(() => {
         //   this.setState({ loading: false, visible: false });
         //  }, 3000);
+        this.setState({show:true});
         this.props.deleteUser(id).then(response => {
             console.log(response);
+            this.setState({show:false});
             this.setState({ visible: false })
             if (!response.error) {
                 this.props.opentoast('success', 'User Deleted Successfully!');
                 this.getUser();
             }
+            else{
+                this.props.opentoast('warning', response.messsage); 
+            }
         }, err => {
-            console.log(err)
+            this.setState({show:false});
+            this.props.opentoast('success', 'User Not  Deleted Successfully!');
         })
     }
 

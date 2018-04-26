@@ -178,15 +178,21 @@ class ClientList extends Component {
 
   //delete client
   deleteClient = () => {
+    this.setState({show:true})
     this.props.deleteclient(this.state.selectedId._id).then(response => {
       console.log(response)
+      this.setState({show:false})
       this.setState({ visible: false })
       if (!response.error) {
         this.props.opentoast('success', 'Client Deleted Successfully!');
         this.getclients();
       }
+      else{
+        this.props.opentoast('warning',response.message);
+      }
     }, err => {
-
+      this.setState({show:false})
+      this.props.opentoast('warning', 'Client  Not Deleted Successfully!');
     })
 
   }
@@ -317,6 +323,7 @@ class ClientList extends Component {
               enterButton
               value={this.state.searchinput}
             />
+             {(this.state.statussearch)?
             <Select className="scoping" value={this.state.statussearch}style={{ width: 120 }} onChange={this.handleChange}>
               <Option value="All">All</Option>
               <Option value="Interested">Interested</Option>
@@ -324,7 +331,16 @@ class ClientList extends Component {
               <Option value="Commited">Commited</Option>
 
 
+            </Select>:
+            <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+              <Option value="All">All</Option>
+              <Option value="Interested">Interested</Option>
+              <Option value="Pipeline">Pipeline</Option>
+              <Option value="Commited">Commited</Option>
+
+
             </Select>
+             }
             <Button className="allprojectbtn" onClick={() => {
               this.setState({ searchedclient: this.state.clientlist });
               this.setState({statussearch:this.state.c});
