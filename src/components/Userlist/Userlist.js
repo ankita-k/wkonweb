@@ -29,6 +29,7 @@ class Userlist extends Component {
         }
 
     }
+
     // get user list
     getUser = () => {
         this.setState({ show: true })
@@ -52,27 +53,24 @@ class Userlist extends Component {
         })
 
     }
+
     //delete user
     deleteUser = (id) => {
         console.log(id);
-        // this.setState({ loading: true });
-        // setTimeout(() => {
-        //   this.setState({ loading: false, visible: false });
-        //  }, 3000);
-        this.setState({show:true});
+        this.setState({ show: true });
         this.props.deleteUser(id).then(response => {
             console.log(response);
-            this.setState({show:false});
+            this.setState({ show: false });
             this.setState({ visible: false })
             if (!response.error) {
                 this.props.opentoast('success', 'User Deleted Successfully!');
                 this.getUser();
             }
-            else{
+            else {
                 this.props.opentoast('warning', response.messsage);
             }
         }, err => {
-            this.setState({show:false});
+            this.setState({ show: false });
             this.props.opentoast('success', 'User Not  Deleted Successfully!');
         })
     }
