@@ -14,7 +14,9 @@ import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 import Loading from 'react-loading-bar';
-import OverlayLoader from 'react-overlay-loading/lib/OverlayLoader';
+import { Loader } from 'react-overlay-loader';
+import 'react-overlay-loader/styles.css';
+
 
 const Option = Select.Option;
 
@@ -282,27 +284,9 @@ class DashboardView extends Component {
 
 
             <div className="dashboardMain">
-                <OverlayLoader
-                    color={'rgb(66, 138, 254)'} // default is white
-                    loader="ScaleLoader" // check below for more loaders
-                    text="Loading... Please wait!"
-                    
-                    active={this.state.show}
-                    backgroundColor={'black'} // default is black
-                    opacity=".4" // default is .9  
-                    height='100%'
-                    width='100%'
-                    size="25px"
-                    position='absolute'
-
-                >
-                </OverlayLoader>
-                
-
-                {/*<RingLoader
-          color={'#123abc'} 
-          loading={this.state.loading} 
-        />*/}
+                {this.state.show == true ? <div className="loader">
+                    <Loader className="ldr" fullPage loading />
+                </div> : ""}
 
                 <Loading
                     show={this.state.show}

@@ -9,6 +9,8 @@ import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 import moment from 'moment';
 import warning from '../../Images/war.png';
+import { Loader } from 'react-overlay-loader';
+import 'react-overlay-loader/styles.css';
 const Option = Select.Option;
 const Search = Input.Search;
 // import { Input } from 'antd';
@@ -296,6 +298,9 @@ class ProjectlistView extends Component {
     const { visible, loading } = this.state;
     return (
       <div className="projectListdiv">
+        {this.state.show == true ? <div className="loader">
+          <Loader className="ldr" fullPage loading />
+        </div> : ""}
         <Loading
           show={this.state.show}
           color="red"
@@ -315,38 +320,38 @@ class ProjectlistView extends Component {
 
             />
             {(this.state.statussearch)?
-            <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
-             
-              <Option value="All">All</Option>
-              <Option value="New">New</Option>
-              <Option value="InDiscussion">InDiscussion</Option>
-              <Option value="Scoping">Scoping</Option>
-              <Option value="InProgess">InProgess</Option>
-              <Option value="Stalled">Stalled</Option>
-              <Option value="Completed">Completed</Option>
+              <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
 
-            </Select>:
-            
-            
-                <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
-             
-              <Option value="All">All</Option>
-              <Option value="New">New</Option>
-              <Option value="InDiscussion">InDiscussion</Option>
-              <Option value="Scoping">Scoping</Option>
-              <Option value="InProgess">InProgess</Option>
-              <Option value="Stalled">Stalled</Option>
-              <Option value="Completed">Completed</Option>
+                <Option value="All">All</Option>
+                <Option value="New">New</Option>
+                <Option value="InDiscussion">InDiscussion</Option>
+                <Option value="Scoping">Scoping</Option>
+                <Option value="InProgess">InProgess</Option>
+                <Option value="Stalled">Stalled</Option>
+                <Option value="Completed">Completed</Option>
 
-            </Select>
+              </Select>:
+
+
+              <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+
+                <Option value="All">All</Option>
+                <Option value="New">New</Option>
+                <Option value="InDiscussion">InDiscussion</Option>
+                <Option value="Scoping">Scoping</Option>
+                <Option value="InProgess">InProgess</Option>
+                <Option value="Stalled">Stalled</Option>
+                <Option value="Completed">Completed</Option>
+
+              </Select>
             }
-          
+
             <Button className="allprojectbtn" onClick={() => {
               this.setState({ searchedList: this.state.projectList });
               this.setState({ statussearch: this.state.p });
               this.setState({ searchinput: '' })
             }}>All Projects</Button>
-            
+
 
             <div className="addButton project">
               <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>

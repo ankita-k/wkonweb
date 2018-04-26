@@ -176,3 +176,15 @@ button.ant-btn.delete i.anticon.anticon-delete {
       font-size: 16px;    
       line-height: 7px;
     }
+    .loader {
+        background-color: #5b6b5b99;
+        height: 100vh;
+        
+    }
+    .loader .react-overlay-loader-spinner:before{
+        border-top-color: #2e373e;
+        
+    }
+    .loader span {
+        color: #fff !important;
+    }
