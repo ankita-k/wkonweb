@@ -7,6 +7,8 @@ import Loading from 'react-loading-bar'
 
 import { Card, Table, Button, Icon, Row, Input, Col, Modal, span } from 'antd';
 import user from '../../Images/wkon-2-21.png';
+import { Loader } from 'react-overlay-loader';
+import 'react-overlay-loader/styles.css';
 
 class Userlist extends Component {
     state = {
@@ -77,6 +79,9 @@ class Userlist extends Component {
         const { visible, loading } = this.state;
         return (
             <div className="userlist">
+                {this.state.show == true ? <div className="loader">
+                    <Loader className="ldr" fullPage loading />
+                </div> : ""}
                 <Loading
                     show={this.state.show}
                     color="red"
