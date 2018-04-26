@@ -4,6 +4,7 @@ import Dashboard from './components/dashboard/dashboard';
 import DashboardView from './components/DashboardView/DashboardView';
 // import NewInformation from './components/NewInformation/NewInformation';
 import UserManagement from './components/UserManagement/UserManagement';
+import Loaders from './components/Loaders/Loaders';
 import ChangePassword from './components/passwordChange/passwordChange';
 // import UserSubscription from './Components/UserSubscription/UserSubscription';
 // import BankDetails from './Components/BankDetails/BankDetails';
@@ -15,6 +16,7 @@ const Routes = () => (
         <Switch>
             <Route exact path='/' component={Login} />
             <Route exact path='/login' component={Login} />
+            <Route path='/loaders' component={Loaders} />
             <Route path='/dashboard' component={Dashboard} />
             {/* <Route path='/usermanagement' component={UserManagement} />            */}
             <Route path='/passwordchange' component={ChangePassword} />

@@ -11,6 +11,8 @@ import UserManagement from '../UserManagement/UserManagement';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import brandlogo from '../../Images/wkonlogo.png';
+
+
 import Userlist from '../Userlist/Userlist';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 
@@ -108,7 +110,7 @@ class Dashboard extends Component {
                   <NavLink to="../dashboard" activeClassName="active"></NavLink>
                 </Menu.Item>
               {this.state.userrole=="admin"||"Sales"?
-                <SubMenu  key="client" title={<span>Clients</span>} subMenuCloseDelay={0.1}>
+                <SubMenu  key="client" title={<span><Icon type="usergroup-add" />       Clients</span>} subMenuCloseDelay={0.1}>
                   <Menu.Item key="create_client">
                     <span>Client Create</span>
                     <NavLink to="../dashboard/clientcreate" activeClassName="active"></NavLink>
@@ -119,7 +121,7 @@ class Dashboard extends Component {
                   </Menu.Item>
                 </SubMenu>:''}
                 {this.state.userrole=="Developer"||"admin"?
-                <SubMenu key="projects" title={<span>Projects</span>} subMenuCloseDelay={0.1}>
+                <SubMenu key="projects" title={<span><Icon type="file-text" />   Projects</span>} subMenuCloseDelay={0.1}>
                   <Menu.Item key="create_project">
                     <span>Project Create</span>
                     <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
