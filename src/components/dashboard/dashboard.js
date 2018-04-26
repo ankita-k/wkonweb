@@ -51,10 +51,28 @@ class Dashboard extends Component {
       onCancel() {
         console.log('Cancel');
       },
+
+  })
+  }
+
+  gotoDashboard = () => {
+    this.setState({
+      selectedKey: ['home']
+    });
+  }
+
+  handleClick = (nav) => {
+    let navArr = [];
+    navArr.push(nav.key);
+    this.setState({
+      selectedKey: navArr
     });
   }
 
   renderSidemenuSelection = () => {
+    this.setState({
+      selectedKey: ['client_list']
+    });
     console.log(this.props.location.pathname);
     if (this.props.location.pathname != '/dashboard') {
       this.props.history.push('/dashboard');
@@ -108,7 +126,7 @@ class Dashboard extends Component {
           <Header className="header">
             <Row>
               <Col lg={3}><NavLink to="../dashboard" activeClassName="active">
-                <img src={brandlogo} /></NavLink> </Col>
+                <img src={brandlogo} onClick={() => { this.gotoDashboard() }} /></NavLink> </Col>
               <p className="username" style={{ color: '#fff' }}> {this.state.username} <Button className="wkonlogout" onClick={() => {
                 this.showConfirm();
 
@@ -118,9 +136,9 @@ class Dashboard extends Component {
           <Layout>
             <Sider width={200} style={{ background: '#fff' }}>
               <Menu
+                onClick={this.handleClick}
                 mode="inline"
-                defaultSelectedKeys={this.state.selectedKey}
-                defaultOpenKeys={this.state.selectedKey}
+                selectedKeys={this.state.selectedKey}
                 style={{ height: '100%', borderRight: 0 }}
               >
                 <Menu.Item key="home">
@@ -182,8 +200,8 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/editProject`} component={NewProject} />
                 <Route exact path={`${this.props.match.url}/projectlist`} component={ProjectlistView} />
                 <Route exact path={`${this.props.match.url}/clientlist`} component={ClientList} />
-                <Route exact path={`${this.props.match.url}/createuser`} component={UserManagement} />
                 <Route exact path={`${this.props.match.url}/edituser`} component={UserManagement} />
+                <Route exact path={`${this.props.match.url}/createuser`} component={UserManagement} />
                 <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}

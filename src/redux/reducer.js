@@ -16,7 +16,7 @@ const reducer = ((state = {}, action) => {
     case "RECEIVE_ERROR":
       return action.json
       break;
-    case "RECEIVE_PWD":                   // FOR CHANGE PASSWORD
+    case "RECEIVE_PWD":                   // FOR CHANGE PASSWORiD
       return action.json
       break;
     case "COUNTRY_LIST":                  // FOR COUNTRY LIST
