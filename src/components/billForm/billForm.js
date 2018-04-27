@@ -5,7 +5,6 @@ import { Divider } from 'antd';
 import * as billACtion from '../../redux/action';
 import { connect } from "react-redux";
 import { bindActionCreators } from 'redux';
-
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
@@ -20,8 +19,98 @@ class BillForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            show: false,   //FOR PROGRESS LOADING BAR
+            userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
+            projectlist: [],
+            disableclient: false,
+            filteredclient: []
         }
+
+    }
+
+
+    componentDidMount() {
+        console.log('billform component did mount');
+        this.projectList();
+
+    }
+
+
+    // GET PROJECT LIST ARRAY FROM API CALL USING REDUX 
+    projectList = () => {
+
+        this.props.actions.projectList(this.state.userId).then(response => {
+            console.log(response);
+            if (!response.error) {
+                this.setState({ projectlist: response.result })
+            }
+        },
+            err => {
+
+            })
+    }
+
+
+    // FUNCTION CALLED ON SAVE BUTTON
+    save = (e) => {
+        e.preventDefault();
+        this.setState({ show: true });
+        this.props.form.validateFields((err, values) => {
+
+            if (!err) {
+                console.log('Received values of form: ', values);
+                let billdata = {
+                    userId: this.state.userId,
+                    billingDate: values.billingdate._d,
+                    paypalBillNumber: values.Paybillno,
+                    billNumber: values.billno,
+                    BDE: values.bdename,
+                    type: values.type,
+                    client: this.state.filteredclient[0]._id,
+                    company: values.CompanyName,
+                    paypalAccountName: values.paypalaccount,
+                    email: values.email,
+                    projectName: values.ProjectName,
+                    projectCost: parseInt(values.projectcost),
+                    receivedAmount: parseInt(values.amountrecord),
+                    balance: parseInt(values.balance),
+                    currency: values.Currency,
+                    receivedDate: values.receiveddate._d,
+                    status: values.status
+                }
+                console.log(billdata)
+                this.props.actions.billCreate(billdata).then(response => {
+                    this.setState({ show: false });
+                    if (!response.error) {
+                        this.props.history.push('/dashboard');
+                        this.props.actions.opentoast('success', 'Bill Created Successfully!')
+                    }
+                    else {
+                        this.props.actions.opentoast('warning', 'Bill Creation Failed!')
+                    }
+                }, err => {
+                    this.setState({ show: false });
+                    this.props.actions.opentoast('warning', 'Bill Creation Failed!')
+                })
+
+            }
+        })
+    }
+
+    //  SELECT PROJECT AND GET CLIENT DETAILS FOR SHOWING IN FEILD
+    selectProject = (id) => {
+        let filteredValue = {}
+        filteredValue = this.state.projectlist.filter(d => {
+
+            return d._id.toLowerCase().indexOf(id.toLowerCase()) > -1
+        });
+
+        this.setState({ filteredclient: filteredValue })
+        this.props.form.setFieldsValue({
+            ['clientName']: filteredValue[0].client.name,
+            ['email']: filteredValue[0].client.email,
+        })
+        this.setState({ disableclient: true })
 
     }
 
@@ -36,23 +125,19 @@ class BillForm extends Component {
             wrapperCol: {
                 xs: { span: 24 },
                 lg: { span: 24 },
-                // sm: { span: 16 },
+
             },
-            // required:false
+
         };
-        const config = {
-            rules: [{ type: 'object', required: true, message: 'Please select time!' }, {
-                validator: this.datevalidate
-            }]
-        };
+
         const { fetching, techArray, value } = this.state;
         return (
             <div>
-                {/* <Loading
+                <Loading
                     show={this.state.show}
                     color="red"
                     showSpinner={false}
-                /> */}
+                />
 
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
@@ -64,7 +149,7 @@ class BillForm extends Component {
                         <h1 className="NewCustomer">New Bill</h1>
                         {/* <Divider dashed className="underLine" /> */}
                     </div>
-                    <Form onSubmit={this.handleSubmit} className="login-form">
+                    <Form onSubmit={this.save} className="login-form">
                         <div className="inputForminfo informationProject">
                             <div className="spaceLess">
                                 <Row>
@@ -72,53 +157,33 @@ class BillForm extends Component {
                                         <p className="expecteDateclient">Choose Project :</p>
                                         <FormItem>
                                             {getFieldDecorator('ProjectName', {
-                                                rules: [{ required: true, message: 'Please select a client!' },],
+                                                rules: [{ required: true, message: 'Please select a project!' },],
                                                 // initialValue:{props.location.data}
                                             },
 
                                             )(
                                                 <Select className="statuspipeline"
+                                                    placeholder="Project"
+                                                    onChange={this.selectProject}
+                                                    showSearch
+                                                >
+                                                    {this.state.projectlist.map((project, index) => {
+                                                        return <Option key={index} value={project._id}>{project.name}</Option>
+                                                    })}
 
-                                                placeholder="Project"
-                                                // onChange={this.handleSelectChange}
-                                                showSearch
-                                            >
-                                                <Option value="New">project 1</Option>
-                                                
-                                            </Select>
+                                                </Select>
                                             )}
                                         </FormItem>
                                     </Col>
                                     <Col xs={24} sm={24} md={24} lg={12}>
-                                        <FormItem label="Customer Name">
-                                            {getFieldDecorator('Customername', {
-                                                rules: [{ required: true, message: 'Please input your Name!' }],
+                                        <FormItem label="Client Name">
+                                            {getFieldDecorator('clientName', {
+                                                rules: [{ required: true, message: 'Please input client name!' }],
                                             })(
 
-                                                <Input maxLength="50" placeholder="Name" />
+                                                <Input disabled={this.state.disableclient} placeholder="Client Name" />
                                             )}
                                         </FormItem>
-                                        {/* <FormItem label="Brief Requirement">
-                                    {getFieldDecorator('requirement', {
-                                        rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
-                                    })(
-                                        <Input placeholder="Brief Requirement" />
-                                    )}
-                                </FormItem> */}
-                                        {/* <FormItem label="Client List">
-                                    {getFieldDecorator('client', {
-                                        rules: [{ required: true, message: 'Please select your client!' }],
-                                    })(
-                                        <Select className="statuspipeline"
-                                            placeholder="Choose Client"
-                                            onChange={this.handleSelectChange}
-                                        >
-                                            <Option value="Client1">Client1</Option>
-                                            <Option value="Client2">Client2</Option>
-                                            <Option value="Client3">Client3</Option>
-                                        </Select>
-                                    )}
-                                </FormItem> */}
 
                                     </Col>
                                 </Row>
@@ -126,20 +191,20 @@ class BillForm extends Component {
                             <Row className="briefRequire">
                                 <Col xs={24} sm={24} md={24} lg={24}>
                                     <FormItem label="Company Name">
-                                        {getFieldDecorator('Companyname', {
-                                            rules: [{ required: true, message: 'Please input !' }],
+                                        {getFieldDecorator('CompanyName', {
+                                            rules: [{ required: true, message: 'Please provide Company Name !' }],
                                         })(
                                             // <Input placeholder="Brief Requirement" />
-                                            <Input maxLength="50" placeholder="Name" />
+                                            <Input maxLength="50" placeholder="Company Name" />
                                         )}
                                     </FormItem>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Project Status">
+                                    <FormItem label="Bill Status">
                                         {getFieldDecorator('status', {
-                                            rules: [{ required: true, message: 'Please select your status!' }],
+                                            rules: [{ required: true, message: 'Please select Biiling status!' }],
                                         })(
                                             <Select className="statuspipeline"
 
@@ -147,37 +212,35 @@ class BillForm extends Component {
                                                 // onChange={this.handleSelectChange}
                                                 showSearch
                                             >
-                                                <Option value="New">New</Option>
-                                                <Option value="InDiscussion">InDiscussion</Option>
-                                                <Option value="Scoping">Scoping</Option>
-                                                <Option value="InProgess">InProgess</Option>
-                                                <Option value="Stalled">Stalled</Option>
-                                                <Option value="Completed">Completed</Option>
+                                                <Option value="pending">PENDING</Option>
+                                                <Option value="complete">COMPLETE</Option>
+
+
                                             </Select>
                                         )}
                                     </FormItem>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem className="tech" label="Type">
-                                        {getFieldDecorator('Type', {
-                                            rules: [{ required: true, message: 'Please input your Type!' }],
+                                        {getFieldDecorator('type', {
+                                            rules: [{ required: true, message: 'Please input  Type!' }],
                                         })(
                                             <Select
                                                 // mode="multiple"
                                                 // labelInValue
                                                 // value={value}
-                                                placeholder="Select users"
-                                                // notFoundContent={fetching ? <Spin size="small" /> : null}
-                                                // filterOption={false}
-                                                // onSearch={this.searchTechnology}
-                                                // onChange={this.handleChange}
-                                                // style={{ width: '100%' }}
+                                                placeholder="Select type"
+                                            // notFoundContent={fetching ? <Spin size="small" /> : null}
+                                            // filterOption={false}
+                                            // onSearch={this.searchTechnology}
+                                            // onChange={this.handleChange}
+                                            // style={{ width: '100%' }}
 
                                             >
                                                 {/* {techArray.map(d =>
                                                     <Option value={d}>{d}</Option>
                                                 )} */}
-                                                <Option value="Completed">type1</Option>
+                                                <Option value="type1">type1</Option>
                                             </Select>
                                         )}
                                     </FormItem>
@@ -192,10 +255,12 @@ class BillForm extends Component {
                                             <FormItem
                                                 {...formItemLayout}
                                             >
-                                                {getFieldDecorator('Billing Date', {
-                                                    rules: [{ required: false, message: 'Please select expecteddate!' }, {
-                                                        validator: this.validatetoexpecend
-                                                    }]
+                                                {getFieldDecorator('billingdate', {
+                                                    rules: [{ required: false, message: 'Please select billing date!' },
+                                                        // {
+                                                        //     validator: this.validatetoexpecend
+                                                        // }
+                                                    ]
                                                 })(
                                                     <DatePicker />
                                                 )}
@@ -203,150 +268,156 @@ class BillForm extends Component {
                                         </div>
                                     </Col>
                                     <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Pay Bill No">
-                                        {getFieldDecorator('PayBillNo  ', {
-                                            rules: [{ required: true, message: 'Please input !' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <Input maxLength="50" placeholder="Name" />
-                                        )}
-                                    </FormItem>
+                                        <FormItem label="Pay Bill No">
+                                            {getFieldDecorator('Paybillno', {
+                                                rules: [{ required: true, message: 'Please input pay bill no!' }],
+                                            })(
+
+                                                <Input maxLength="50" placeholder="Bill Number" />
+                                            )}
+                                        </FormItem>
                                     </Col>
                                 </Row>
                             </div>
                             <div className="spaceLess">
                                 <Row>
                                     <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Meme Bill No ">
-                                        {getFieldDecorator('Memebillno  ', {
-                                            rules: [{ required: true, message: 'Please input !' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <Input maxLength="50" placeholder="Name" />
-                                        )}
-                                    </FormItem>
+                                        <FormItem label="Meme Bill No ">
+                                            {getFieldDecorator('billno', {
+                                                rules: [{ required: true, message: 'Please input bill number !' }],
+                                            })(
+
+                                                <Input placeholder="Bill" />
+                                            )}
+                                        </FormItem>
                                     </Col>
                                     <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="BDE Name">
-                                        {getFieldDecorator('BDEName  ', {
-                                            rules: [{ required: true, message: 'Please input !' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <Input maxLength="50" placeholder="Name" />
-                                        )}
-                                    </FormItem>
+                                        <FormItem label="BDE Name">
+                                            {getFieldDecorator('bdename', {
+                                                rules: [{ required: true, message: 'Please input  bde name!' }],
+                                            })(
+
+                                                <Input maxLength="50" placeholder="Name" />
+                                            )}
+                                        </FormItem>
                                     </Col>
                                 </Row>
-                              
+
 
                             </div>
 
-                            {/* **************email & project cost ************** */}
+                            {/* **************ROW FOR EMAIL AND PROJECTCOST  STARTS*************** */}
                             <div className="spaceLess">
                                 <Row>
                                     <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Email ">
-                                        {getFieldDecorator('Email  ', {
-                                            rules: [{ required: true, message: 'Please input !' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <Input maxLength="50" placeholder="Email" />
-                                        )}
-                                    </FormItem>
+                                        <FormItem label="Email ">
+                                            {getFieldDecorator('email', {
+                                                rules: [{ required: true, message: 'Please input client email !' }],
+                                            })(
+
+                                                <Input disabled={this.state.disableclient} placeholder="Email" />
+                                            )}
+                                        </FormItem>
                                     </Col>
                                     <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Project Cost">
-                                        {getFieldDecorator('projectcost  ', {
-                                            rules: [{ required: true, message: 'Please input !' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <Input maxLength="50" placeholder="Cost" />
-                                        )}
-                                    </FormItem>
+                                        <FormItem label="Project Cost">
+                                            {getFieldDecorator('projectcost', {
+                                                rules: [{ required: true, message: 'Please input cost!' }],
+                                            })(
+
+                                                <Input placeholder="Amount" />
+                                            )}
+                                        </FormItem>
                                     </Col>
                                 </Row>
-                                </div>
-                                {/* *************************** */}
-                                {/* ********** new div section***************** */}
-                                <div>
-                                <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                <FormItem label="Pay Pal Account Name">
-                                        {getFieldDecorator('paypalaccount  ', {
-                                            rules: [{ required: true, message: 'Please input !' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <Input maxLength="50" placeholder="Name" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                    
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                <FormItem label="Amount Record">
-                                        {getFieldDecorator('amountrecord  ', {
-                                            rules: [{ required: true, message: 'Please input !' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <Input maxLength="50" placeholder="Name" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                           
-                            </Row>
-                            
                             </div>
-                            {/* *************************** */}
-                            {/* ************************new div section 2************* */}
+                            {/* ***************OW FOR EMAIL AND PROJECTCOST  ENDS************ */}
+                            {/* ********** ROW FOR PAYPALACCOUNT AND AMOUNT RECORD STARTS***************** */}
                             <div>
                                 <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                <FormItem label="Balance">
-                                        {getFieldDecorator('balance  ', {
-                                            rules: [{ required: true, message: 'Please input !' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <Input placeholder="balance" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                    
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                <FormItem label="Credit Record">
-                                        {getFieldDecorator('creditrecord  ', {
-                                            rules: [{ required: true, message: 'Please input !' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <Input  placeholder="Credit" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                           
-                            </Row>
-                            
-                            </div>
-                            {/* *************************************** */}
+                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                        <FormItem label="Pay Pal Account Name">
+                                            {getFieldDecorator('paypalaccount', {
+                                                rules: [{ required: true, message: 'Please input account!' }],
+                                            })(
+                                                <Input placeholder="Account" />
+                                            )}
+                                        </FormItem>
+                                    </Col>
 
-                            {/* ************************ */}
+                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                        <FormItem label="Amount Record">
+                                            {getFieldDecorator('amountrecord', {
+                                                rules: [{ required: true, message: 'Please input record!' }],
+                                            })(
+
+                                                <Input placeholder="Amount" />
+                                            )}
+                                        </FormItem>
+                                    </Col>
+
+                                </Row>
+
+                            </div>
+                            {/* **************ROW FOR PAYPALACCOUNT AND AMOUNT RECORD ENDS************** */}
+                            {/* ************************ROW FOR BALANCE AND CREDIT RECORD STARTS************* */}
                             <div>
                                 <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                <FormItem label="Currency">
-                                        {getFieldDecorator('Currency  ', {
-                                            rules: [{ required: true, message: 'Please input !' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <Input placeholder="Currency" />
-                                        )}
-                                    </FormItem>
-                                </Col>
+                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                        <FormItem label="Balance">
+                                            {getFieldDecorator('balance', {
+                                                rules: [{ required: true, message: 'Please input !' }],
+                                            })(
+                                                <Input placeholder="Amount" />
+                                            )}
+                                        </FormItem>
+                                    </Col>
+
+                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                        <div className="startDate">
+                                            <p className="expecteDate">Received Date :</p>
+                                            <FormItem
+                                                {...formItemLayout}
+                                            >
+                                                {getFieldDecorator('receiveddate', {
+                                                    rules: [{ required: false, message: 'Please select billing received date!' },
+                                                        // {
+                                                        //     validator: this.validatetoexpecend
+                                                        // }
+                                                    ]
+                                                })(
+                                                    <DatePicker />
+                                                )}
+                                            </FormItem>
+                                        </div>
+                                    </Col>
+
                                 </Row>
-                                </div>  
-                            {/* ********************* */}
+
+                            </div>
+                            {/* *******************ROW FOR BALANCE AND CREDIT RECORD ENDS******************** */}
+
+                            {/* *************ROW FOR CURRENCY STARTS*********** */}
+                            <div>
+                                <Row>
+                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                        <FormItem label="Currency">
+                                            {getFieldDecorator('Currency', {
+                                                rules: [{ required: true, message: 'Please input !' }],
+                                            })(
+                                                // <Input placeholder="Brief Requirement" />
+                                                <Input placeholder="Currency" />
+                                            )}
+                                        </FormItem>
+                                    </Col>
+                                </Row>
+                            </div>
+                            {/* **********ROW FOR CURRENCY ENDS*********** */}
                         </div>
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard') }} >Cancel</Button>
                             </div>
                         </FormItem>
 
