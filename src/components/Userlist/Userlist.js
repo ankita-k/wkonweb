@@ -19,7 +19,7 @@ class Userlist extends Component {
     constructor(props) {
         console.log(props);
         super(props);
-        this.getUser();
+        
         this.state = {
             userList: [],
             show: true,  //loading-bar
@@ -30,6 +30,9 @@ class Userlist extends Component {
 
     }
 
+    componentDidMount(){
+        this.getUser();
+    }
     // get user list
     getUser = () => {
         this.setState({ show: true })

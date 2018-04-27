@@ -98,7 +98,6 @@ class Dashboard extends Component {
     this.setState({
       selectedKey: ['client_list']
     });
-    console.log(this.props.location.pathname);
     if (this.props.location.pathname != '/dashboard') {
       this.props.history.push('/dashboard');
     }
@@ -108,42 +107,43 @@ class Dashboard extends Component {
   componentDidMount() {
 
     console.log(this.props.location.pathname);
-    if (sessionStorage.getItem("id")) {
-      console.log('data')
+    // if (sessionStorage.getItem("id")) {
+    //   console.log('data')
 
-      this.props.username(sessionStorage.getItem('id')).then((data) => {
-        console.log(data);
-        if (!data.error) {
-          this.setState({ username: data.result.name });
-          this.setState({ userrole: data.result.role })
-          console.log(this.state.username);
-        }
+    //   this.props.username(sessionStorage.getItem('id')).then((data) => {
+    //     console.log(data);
+    //     if (!data.error) {
+    //       this.setState({ username: data.result.name });
+    //       this.setState({ userrole: data.result.role })
+    //       console.log(this.state.username);
+    //     }
 
-      }, err => {
+    //   }, err => {
 
-      })
-    }
-    else if (localStorage.getItem('id')) {
+    //   })
+    // }
+    // else if (localStorage.getItem('id')) {
 
-      this.props.username(localStorage.getItem('id')).then((data) => {
-        console.log('data')
-        console.log(data);
-        if (!data.error) {
-          this.setState({ username: data.result.name });
-          this.setState({ userrole: data.result.role })
-          console.log(this.state.username);
-        }
+    //   this.props.username(localStorage.getItem('id')).then((data) => {
+    //     console.log('data')
+    //     console.log(data);
+    //     if (!data.error) {
+    //       this.setState({ username: data.result.name });
+    //       this.setState({ userrole: data.result.role })
+    //       console.log(this.state.username);
+    //     }
 
-      }, err => {
+    //   }, err => {
 
-      })
-    }
+    //   })
+    // }
     this.renderSidemenuSelection();
   }
 
 
 
   render() {
+
     return (
       <div>
         <Layout>
@@ -151,7 +151,7 @@ class Dashboard extends Component {
             <Row>
               <Col lg={3}><NavLink to="../dashboard" activeClassName="active">
                 <img src={brandlogo} onClick={() => { this.gotoDashboard() }} /></NavLink> </Col>
-              <p className="username" style={{ color: '#fff' }}> {this.state.username} <Button className="wkonlogout" onClick={() => {
+              <p className="username" style={{ color: '#fff' }}> {this.props.loginReducer.userInfo?this.props.loginReducer.userInfo.name:''} <Button className="wkonlogout" onClick={() => {
                 this.showConfirm();
 
               }}>Log Out</Button></p>
@@ -172,7 +172,7 @@ class Dashboard extends Component {
                   <span>Home</span>
                   <NavLink to="../dashboard" activeClassName="active"></NavLink>
                 </Menu.Item>
-                {this.state.userrole == "admin" || "Sales" ?
+                {this.props.loginReducer.userInfo?this.props.loginReducer.userInfo.role== "admin" || "Sales" ?
                   <SubMenu key="client" title={<span><Icon type="usergroup-add" />Clients</span>} subMenuCloseDelay={0.1}>
                     <Menu.Item key="create_client">
                       <span>Client Create</span>
@@ -182,8 +182,8 @@ class Dashboard extends Component {
                       <span>Client List</span>
                       <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
                     </Menu.Item>
-                  </SubMenu> : ''}
-                {this.state.userrole == "Developer" || "admin" ?
+                  </SubMenu> : '':''}
+                  {this.props.loginReducer.userInfo?this.props.loginReducer.userInfo.role=="Developer" || "admin" ?
                   <SubMenu key="projects" title={<span><Icon type="file-text" /> Projects</span>} subMenuCloseDelay={0.1}>
                     <Menu.Item key="create_project">
                       <span>Project Create</span>
@@ -193,8 +193,8 @@ class Dashboard extends Component {
                       <span>Project List</span>
                       <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                     </Menu.Item>
-                  </SubMenu> : ''}
-                {this.state.userrole == "admin" ?
+                  </SubMenu> : '':''}
+                  {this.props.loginReducer.userInfo?this.props.loginReducer.userInfo.role== "admin" ?
                   <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
                     <Menu.Item key="create_user">
                       <span>Create User</span>
@@ -204,7 +204,7 @@ class Dashboard extends Component {
                       <span>User List</span>
                       <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
                     </Menu.Item>
-                  </SubMenu> : ''}
+                  </SubMenu> : '':''}
                 {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
                 <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item> */}
 
