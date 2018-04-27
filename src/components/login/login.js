@@ -40,11 +40,11 @@ class NormalLoginForm extends React.Component {
             if (!err) {
                 this.props.actions.login(values.email, values.password).then((response) => {
                 
-                    console.log(response);
+                    console.log(response,this.props);
                     this.setState({ show: false });
-                  
+             
                     if (response.error) {
-                        this.props.opentoast('error', 'No Such User Exists!');
+                        this.props.actions.opentoast('error', 'No Such User Exists!');
                         return;
                     }
                     else {
@@ -74,6 +74,7 @@ class NormalLoginForm extends React.Component {
 
                 }, err => {
                     this.setState({ show: false });
+                    this.props.actions.opentoast('error', 'No Such User Exists!');
                 });
             }
         });
@@ -214,36 +215,3 @@ const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedNormalLoginForm);
 
 
-// class Login extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             data: []
-//         }
-//     }
-
-//     render() {
-//         return (
-//             <div className="App">
-//                 <Layout className="layout">
-//                     <Header>
-
-//                     </Header>
-//                     <Content style={{ padding: '0 50px' }}>
-//                         <div style={{ background: '#ffffff', padding: '30px' }}>
-
-//                             <Row type="flex" align="middle">
-//                                 <Col span={16} offset={4}> <WrappedNormalLoginForm {...this.props}></WrappedNormalLoginForm></Col>
-//                             </Row>
-//                         </div>
-//                     </Content>
-//                     <Footer style={{ textAlign: 'center' }}>
-//                         WKON ©2016 Created by MeMe Information Technology
-//                     </Footer>
-//                 </Layout>
-//             </div>
-//         );
-//     }
-// }
-
-// export default Login;

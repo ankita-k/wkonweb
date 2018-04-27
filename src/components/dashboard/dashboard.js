@@ -11,7 +11,7 @@ import UserManagement from '../UserManagement/UserManagement';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import brandlogo from '../../Images/wkonlogo.png';
-
+import  BillForm from '../billForm/billForm';
 
 import Userlist from '../Userlist/Userlist';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
@@ -84,36 +84,36 @@ class Dashboard extends Component {
   componentDidMount() {
 
     console.log(this.props.location.pathname);
-    // if (sessionStorage.getItem("id")) {
-    //   console.log('data')
+    if (sessionStorage.getItem("id")) {
+      console.log('data')
 
-    //   this.props.username(sessionStorage.getItem('id')).then((data) => {
-    //     console.log(data);
-    //     if (!data.error) {
-    //       this.setState({ username: data.result.name });
-    //       this.setState({ userrole: data.result.role })
-    //       console.log(this.state.username);
-    //     }
+      this.props.username(sessionStorage.getItem('id')).then((data) => {
+        console.log(data);
+        if (!data.error) {
+          this.setState({ username: data.result.name });
+          this.setState({ userrole: data.result.role })
+          console.log(this.state.username);
+        }
 
-    //   }, err => {
+      }, err => {
 
-    //   })
-    // }
-    // else if (localStorage.getItem('id')) {
+      })
+    }
+    else if (localStorage.getItem('id')) {
 
-    //   this.props.username(localStorage.getItem('id')).then((data) => {
-    //     console.log('data')
-    //     console.log(data);
-    //     if (!data.error) {
-    //       this.setState({ username: data.result.name });
-    //       this.setState({ userrole: data.result.role })
-    //       console.log(this.state.username);
-    //     }
+      this.props.username(localStorage.getItem('id')).then((data) => {
+        console.log('data')
+        console.log(data);
+        if (!data.error) {
+          this.setState({ username: data.result.name });
+          this.setState({ userrole: data.result.role })
+          console.log(this.state.username);
+        }
 
-    //   }, err => {
+      }, err => {
 
-    //   })
-    // }
+      })
+    }
     this.renderSidemenuSelection();
   }
 
@@ -128,7 +128,7 @@ class Dashboard extends Component {
             <Row>
               <Col lg={3}><NavLink to="../dashboard" activeClassName="active">
                 <img src={brandlogo} onClick={() => { this.gotoDashboard() }} /></NavLink> </Col>
-              <p className="username" style={{ color: '#fff' }}> {this.props.loginReducer.userInfo?this.props.loginReducer.userInfo.name:''} <Button className="wkonlogout" onClick={() => {
+              <p className="username" style={{ color: '#fff' }}> {this.state.username?this.state.username:''} <Button className="wkonlogout" onClick={() => {
                 this.showConfirm();
 
               }}>Log Out</Button></p>
@@ -147,7 +147,7 @@ class Dashboard extends Component {
                   <span>Home</span>
                   <NavLink to="../dashboard" activeClassName="active"></NavLink>
                 </Menu.Item>
-                {this.props.loginReducer.userInfo?this.props.loginReducer.userInfo.role== "admin" || "Sales" ?
+                {this.state.userrole?this.state.userrole== "admin" || "Sales" ?
                   <SubMenu key="client" title={<span><Icon type="usergroup-add" />Clients</span>} subMenuCloseDelay={0.1}>
                     <Menu.Item key="create_client">
                       <span>Client Create</span>
@@ -158,7 +158,7 @@ class Dashboard extends Component {
                       <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
                     </Menu.Item>
                   </SubMenu> : '':''}
-                  {this.props.loginReducer.userInfo?this.props.loginReducer.userInfo.role=="Developer" || "admin" ?
+                  {this.state.userrole?this.state.userrole=="Developer" || "admin" ?
                   <SubMenu key="projects" title={<span><Icon type="file-text" /> Projects</span>} subMenuCloseDelay={0.1}>
                     <Menu.Item key="create_project">
                       <span>Project Create</span>
@@ -169,7 +169,7 @@ class Dashboard extends Component {
                       <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                     </Menu.Item>
                   </SubMenu> : '':''}
-                  {this.props.loginReducer.userInfo?this.props.loginReducer.userInfo.role== "admin" ?
+                  {this.state.userrole?this.state.userrole== "admin" ?
                   <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
                     <Menu.Item key="create_user">
                       <span>Create User</span>
@@ -180,6 +180,19 @@ class Dashboard extends Component {
                       <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
                     </Menu.Item>
                   </SubMenu> : '':''}
+
+                    {/* {this.state.userrole?this.state.userrole== "admin" ?  to be uncommented */}
+                  <SubMenu key="bill" title={<span>Bill Management</span>} subMenuCloseDelay={0.1}>
+                    <Menu.Item key="create_bill">
+                      <span>Create Bill</span>
+                      <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="bill_list">
+                      <span>Bill List</span>
+                      {/* <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink> */}
+                    </Menu.Item>
+                  </SubMenu> 
+                  {/* : '':''}  to be uncommented */}
                 {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
                 <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item> */}
 
@@ -204,6 +217,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/edituser`} component={UserManagement} />
                 <Route exact path={`${this.props.match.url}/createuser`} component={UserManagement} />
                 <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />
+                <Route exact path={`${this.props.match.url}/bill`} component={BillForm} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>
