@@ -20,7 +20,7 @@ function receivePosts(json) {
 function loginApi(json) {
 
     return {
-        type: "USER_LOGIN",
+        type: "USER_LOGIN_SUCCESS",
         json
 
     }

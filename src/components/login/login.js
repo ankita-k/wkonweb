@@ -21,30 +21,28 @@ class NormalLoginForm extends React.Component {
         super(props);
         this.state = {
             show: false, //loading-bar
-            x: '' //For ChECKBOX VALUE
+            x: '', //For ChECKBOX VALUE
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         var id = sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id');
-        console.log('userId')
+       
         if (id) {
-            console.log(this.props)
-            console.log('userId')
             this.props.history.push('/dashboard');
         }
     }
 
+    // LOGIN FUNCTION
     handleSubmit = (e) => {
-        console.log(`checked = ${e.target.checked}`);
-        console.log(this.state.x)
         e.preventDefault()
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
+         
             if (!err) {
-
-                // axios.get(config.apiUrl + 'user/login?username=' + values.email + '&password=' + values.password, conf)
                 this.props.actions.login(values.email, values.password).then((response) => {
+                
                     console.log(response);
                     this.setState({ show: false });
+                  
                     if (response.error) {
                         this.props.opentoast('error', 'No Such User Exists!');
                         return;
@@ -65,7 +63,7 @@ class NormalLoginForm extends React.Component {
                         else if (response.result && !response.result.lastLogin) {
                             if (this.state.x == true) {
                                 localStorage.setItem('id', response.result._id);
-                                this.props.history.push('/dashboard');
+                                this.props.history.push('/passwordchange');
                             }
                             else {
                                 sessionStorage.setItem('id', response.result._id)
@@ -80,6 +78,7 @@ class NormalLoginForm extends React.Component {
             }
         });
     }
+
     // FOR CHECKBOX 
     onChange = (e) => {
         console.log(`checked = ${e.target.checked}`);
@@ -198,7 +197,9 @@ class NormalLoginForm extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    return state
+    console.log('login screen info',state)
+ return  state
+    
 }
 
 function mapDispatchToProps(dispatch, state) {
