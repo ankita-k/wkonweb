@@ -23,13 +23,29 @@ class BillForm extends Component {
             userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
             projectlist: [],
             disableclient: false,
-            filteredclient: []
+            filteredclient: [],
+            editBill: false
         }
 
     }
 
 
     componentDidMount() {
+        console.log(this.props.location.data);
+        // this.props.form.setFieldsValue({
+        //     ['ProjectName']: this.props.location.data.projectName,
+        //     ['clientName']: this.props.location.data.client,
+        //     ['CompanyName']: this.props.location.data.company,
+        //     ['status']: this.props.location.data.status,
+        //     ['type']: this.props.location.data.type,
+        //     ['billingdate']: this.props.location.data.billingDate,
+        //     ['ProjectName']: this.props.location.data.billNumber,
+        //     ['clientName']: this.props.location.data.client,
+        //     ['phone']: this.props.location.data.BDE,
+        //     ['domain']: this.props.location.data.email,
+        //     ['country']: this.props.location.data.paypalAccountName,
+        //     ['status']: this.props.location.data.receivedDate,
+        // });
         console.log('billform component did mount');
         this.projectList();
 
@@ -143,8 +159,8 @@ class BillForm extends Component {
                     {/* --NewProject details-- */}
                     <div className="newCustomerform">
 
-                        {/* {(this.state.editClient == true) ?
-                        <h1 className="NewCustomer">Edit Project</h1> : <h1 className="NewCustomer">New Project</h1>
+                        {/* {(this.state.editBill == true) ?
+                        <h1 className="NewCustomer">Edit Bill</h1> : <h1 className="NewCustomer">New Bill</h1>
                     } */}
                         <h1 className="NewCustomer">New Bill</h1>
                         {/* <Divider dashed className="underLine" /> */}

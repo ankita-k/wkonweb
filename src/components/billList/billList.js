@@ -46,7 +46,7 @@ class BillList extends Component {
         loading: false,
         visible: false,
         bills: [],
-        selectedId:''
+        selectedId: ''
     }
     showModal = () => {
         this.setState({
@@ -123,19 +123,19 @@ class BillList extends Component {
                 title: 'projectName',
                 dataIndex: 'projectName',
                 key: 'projectName',
-            },{
+            }, {
                 title: 'receivedAmount',
                 dataIndex: 'receivedAmount',
                 key: 'receivedAmount',
-            },{
+            }, {
                 title: 'receivedDate',
                 dataIndex: 'receivedDate',
                 key: 'receivedDate',
-            },{
+            }, {
                 title: 'status',
                 dataIndex: 'status',
                 key: 'status',
-            },{
+            }, {
                 title: 'type',
                 dataIndex: 'type',
                 key: 'type',
@@ -145,12 +145,12 @@ class BillList extends Component {
                 render: (text, record) => (
                     <Row>
                         <Col lg={{ span: 10 }}>
-                            <Button className="edit" onClick={() => { this.editClient(record) }}>
+                            <Button className="edit" onClick={() => { this.editBill(record) }}>
                                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
                         <Col lg={{ span: 8 }}></Col>
-                        <Col lg={{ span: 10 }}>
+                        {/* <Col lg={{ span: 10 }}>
                             <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
-                        </Col>
+                        </Col> */}
 
                     </Row>
                 ),
@@ -162,6 +162,7 @@ class BillList extends Component {
         this.getBills();
 
     }
+
 
     // get billlist
     getBills = () => {
@@ -202,16 +203,34 @@ class BillList extends Component {
 
         })
     }
+    //edit bill
+    editBill = (data) => {
+        this.props.history.push({
+            pathname: '/dashboard/editbill',
+            data: {
+                data
+            }
+        })
 
-// SEACRH BILL LIST ACCORDING TO INPUT 
-// searchClient = (e) => {
-//     let newarray = this.state.bills.filter(item => {
-//         return item.name.toLowerCase().indexOf(e.toLowerCase()) > -1
-  
-//       });
-//       console.log(newarray);
-//       this.setState({ searchedBillName: newarray })
-// }
+    }
+    // // SHOW ALL BILL LIST
+    // showallList = (e) => {
+    //     console.log('target value', e)
+    //     this.setState({ searchinput: e })
+    //     if (e == '') {
+    //         this.setState({ searchedBill: this.state.clientlist })
+    //     }
+    // }
+
+    // // SEACRH BILL LIST ACCORDING TO INPUT 
+    // searchClient = (e) => {
+    //     let newarray = this.state.bills.filter(item => {
+    //         return item.name.toLowerCase().indexOf(e.toLowerCase()) > -1
+
+    //     });
+    //     console.log(newarray);
+    //     this.setState({ searchedBillName: newarray })
+    // }
 
     render() {
 
@@ -241,21 +260,25 @@ class BillList extends Component {
                     <div className="AllProjects">
                         <Search className="SearchValue"
                             placeholder="input search text"
+                            // onSearch={(value) => { this.searchClient(value) }}
                             style={{ width: 200 }}
-                            
+                            // onChange={(e) => { this.showallList(e.target.value) }}
+                            enterButton
+                            // value={this.state.searchinput}
+
                         />
 
-                        <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+                        {/* <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
                             <Option value="All">All</Option>
                             <Option value="Interested">Pending</Option>
                             <Option value="Pipeline">Completed</Option>
-                        </Select>
+                        </Select> */}
 
-                        <Button className="allprojectbtn" onClick={() => {
+                        {/* <Button className="allprojectbtn" onClick={() => {
                             this.setState({ searchedclient: this.state.clientlist });
                             this.setState({ statussearch: this.state.c });
                             this.setState({ searchinput: '' })
-                        }}>Show All</Button>
+                        }}>Show All</Button> */}
 
                     </div>
                 </Row>

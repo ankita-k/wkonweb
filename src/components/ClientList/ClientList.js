@@ -95,6 +95,7 @@ class ClientList extends Component {
   state = {
     loading: false,
     visible: false,
+    searchinput: '',
   }
   showModal = () => {
     this.setState({
