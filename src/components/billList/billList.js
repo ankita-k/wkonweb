@@ -14,31 +14,6 @@ const Search = Input.Search;
 const Option = Select.Option;
 
 
-const data = [{
-    key: '1',
-    name: 'Sukanta Sinha',
-    phone: 876778906,
-    email: 'sukantasinha@memeinfotech.com',
-    domain: 'Lorem',
-    country: 'New York',
-    status: 'Pipeline',
-}, {
-    key: '2',
-    name: 'Payel Dutta',
-    phone: 826778906,
-    email: 'payeldutta@memeinfotech.com',
-    domain: 'Lorem',
-    country: 'London',
-    status: 'Pipeline',
-}, {
-    key: '3',
-    name: 'Priyanka Saha',
-    phone: 846778906,
-    email: 'priyankasaha@memeinfotech.com',
-    domain: 'Lorem',
-    country: 'Sydney',
-    status: 'Pipeline',
-}];
 
 class BillList extends Component {
 
@@ -63,7 +38,7 @@ class BillList extends Component {
         this.setState({ visible: false });
     }
 
-    // modal for delete end
+   
     constructor(props) {
         super(props);
         this.state = {

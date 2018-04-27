@@ -48,6 +48,7 @@ class BillForm extends Component {
         // });
         console.log('billform component did mount');
         this.projectList();
+    this.currencies();
 
     }
 
@@ -66,7 +67,15 @@ class BillForm extends Component {
             })
     }
 
-
+// GET LIST OF CURRENCIES
+currencies=()=>{
+    this.props.actions.currencyList().then(response=>{
+        console.log(response)
+        let currencylist=[];
+    currencylist=  response.map((item)=>{return (item.currencies[0].code)}).filter((item)=>{return item});
+console.log(currencylist)   
+})
+}
     // FUNCTION CALLED ON SAVE BUTTON
     save = (e) => {
         e.preventDefault();
@@ -98,7 +107,7 @@ class BillForm extends Component {
                 this.props.actions.billCreate(billdata).then(response => {
                     this.setState({ show: false });
                     if (!response.error) {
-                        this.props.history.push('/dashboard');
+                        this.props.history.push('/dashboard/billlist');
                         this.props.actions.opentoast('success', 'Bill Created Successfully!')
                     }
                     else {
@@ -433,7 +442,7 @@ class BillForm extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard') }} >Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/billlist') }} >Cancel</Button>
                             </div>
                         </FormItem>
 
