@@ -195,6 +195,45 @@ class ClientComponent extends Component {
                             </Row>
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={24}>
+                            <FormItem label="Address">
+                                        {getFieldDecorator('address', {
+                                            rules: [{ required: true, message: 'Please input your Address!' }],
+                                        })(
+                                            <Input
+                                                maxLength="15"
+                                                placeholder="Address" name="address" />
+                                        )}
+                                    </FormItem>
+                                    </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} sm={24} md={24} lg={24}>
+                                    <FormItem label="Company">
+                                        {getFieldDecorator('company', {
+                                            rules: [{ required: true, message: 'Please input your Company!' }],
+                                        })(
+                                            <Input
+                                                maxLength="20"
+                                                placeholder="Company" name="company" />
+                                        )}
+                                    </FormItem>
+                                    </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} sm={24} md={24} lg={24}>
+                                    <FormItem label="paypal_id">
+                                        {getFieldDecorator('paypal_id', {
+                                            rules: [{ required: true, message: 'Please input your paypal_id!' }],
+                                        })(
+                                            <Input
+                                                maxLength="15"
+                                                placeholder="paypal_id" name="paypal_id" />
+                                        )}
+                                    </FormItem>
+                                    </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} sm={24} md={24} lg={24}>
                                     <FormItem label="Country">
                                         {getFieldDecorator('country', {
                                             rules: [{ required: true, message: 'Please select your Country!' }],
@@ -259,6 +298,25 @@ class ClientComponent extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={24} sm={24} md={24} lg={24}>
+                            <FormItem label="Currency">
+                                        {getFieldDecorator('currency', {
+                                            rules: [{ required: true, message: 'Please select your Currency!' }],
+                                        })(
+                                            <Select className="statuspipeline"
+                                                placeholder="Currency"
+                                                onChange={this.selectStatus}
+                                                showSearch
+
+                                            >
+                                                <Option value="India">INR</Option>
+                                                <Option value="Us">UNR</Option>
+                                            </Select>
+                                        )}
+                                    </FormItem>
+                                    </Col>
                             </Row>
                         </div>
                         <FormItem>
