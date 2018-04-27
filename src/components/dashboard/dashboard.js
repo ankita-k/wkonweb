@@ -12,7 +12,7 @@ import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import brandlogo from '../../Images/wkonlogo.png';
 import  BillForm from '../billForm/billForm';
-
+import BillList  from '../billList/billList';
 import Userlist from '../Userlist/Userlist';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 
@@ -189,7 +189,7 @@ class Dashboard extends Component {
                     </Menu.Item>
                     <Menu.Item key="bill_list">
                       <span>Bill List</span>
-                      {/* <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink> */}
+                      <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink>
                     </Menu.Item>
                   </SubMenu> 
                   {/* : '':''}  to be uncommented */}
@@ -218,6 +218,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/createuser`} component={UserManagement} />
                 <Route exact path={`${this.props.match.url}/userlist`} component={Userlist} />
                 <Route exact path={`${this.props.match.url}/bill`} component={BillForm} />
+                <Route exact path={`${this.props.match.url}/billlist`} component={BillList} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>

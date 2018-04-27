@@ -713,3 +713,37 @@ export function editUser(data,id) {
     
         }
     }
+
+    //Client list api 
+export function billlist(userId) {
+
+    return (dispatch) => {
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+            fetch(config.apiUrl + 'bill?userId=' + userId ,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(bill(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+//billlist func
+function bill(list) {
+    return {
+        type: "BILL_LIST",
+        list
+
+    }
+}
