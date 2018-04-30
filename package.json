@@ -8,6 +8,7 @@
     "moment": "^2.22.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-dropzone": "^4.2.9",
     "react-loading-bar": "0.0.7",
     "react-overlay-loader": "0.0.3",
     "react-overlay-loading": "^1.0.3",

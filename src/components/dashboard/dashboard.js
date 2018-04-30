@@ -221,7 +221,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/bill`} component={BillForm} />
                 <Route exact path={`${this.props.match.url}/editbill`} component={BillForm} />
                 <Route exact path={`${this.props.match.url}/billlist`} component={BillList} />
-                <Route exact path={`${this.props.match.url}/:projectname`} component={Files} />
+                <Route exact path={`${this.props.match.url}/project/:projectname`} component={Files} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
               </Content>
