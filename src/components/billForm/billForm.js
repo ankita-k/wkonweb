@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
+import moment from 'moment'
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -32,21 +33,28 @@ class BillForm extends Component {
 
 
     componentDidMount() {
-        console.log(this.props.location.data);
-        // this.props.form.setFieldsValue({
-        //     ['ProjectName']: this.props.location.data.projectName,
-        //     ['clientName']: this.props.location.data.client,
-        //     ['CompanyName']: this.props.location.data.company,
-        //     ['status']: this.props.location.data.status,
-        //     ['type']: this.props.location.data.type,
-        //     ['billingdate']: this.props.location.data.billingDate,
-        //     ['ProjectName']: this.props.location.data.billNumber,
-        //     ['clientName']: this.props.location.data.client,
-        //     ['phone']: this.props.location.data.BDE,
-        //     ['domain']: this.props.location.data.email,
-        //     ['country']: this.props.location.data.paypalAccountName,
-        //     ['status']: this.props.location.data.receivedDate,
-        // });
+        
+        if (this.props.location.data) {
+            console.log(this.props.location.data.data);
+        this.props.form.setFieldsValue({
+            ['ProjectName']: this.props.location.data.data.projectName,
+            ['clientName']: this.props.location.data.data.client,
+            ['CompanyName']: this.props.location.data.data.company,
+            ['status']: this.props.location.data.data.status,
+            ['type']: this.props.location.data.data.type,
+            ['billingdate']: this.props.location.data.data.billingDate? moment(this.props.location.data.data.billingDate) : '',
+            ['Paybillno']: this.props.location.data.data.paypalBillNumber,
+            ['billno']: this.props.location.data.data.billNumber,
+            ['bdename']: this.props.location.data.data.BDE,
+            ['email']: this.props.location.data.data.email,
+            ['projectcost']: this.props.location.data.data.projectCost,
+            ['paypalaccount']: this.props.location.data.data.paypalAccountName,
+            ['amountrecord']: this.props.location.data.data.receivedAmount,
+            ['balance']: this.props.location.data.data.balance,
+             ['receiveddate']: this.props.location.data.data.receivedDate? moment(this.props.location.data.data.receivedDate) : '',
+            ['Currency']: this.props.location.data.data.currency,
+        });
+    }
         console.log('billform component did mount');
         this.projectList();
         this.currencies();
