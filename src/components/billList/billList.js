@@ -189,23 +189,23 @@ class BillList extends Component {
 
     }
     // // SHOW ALL BILL LIST
-    // showallList = (e) => {
-    //     console.log('target value', e)
-    //     this.setState({ searchinput: e })
-    //     if (e == '') {
-    //         this.setState({ searchedBill: this.state.clientlist })
-    //     }
-    // }
+    showallList = (e) => {
+        console.log('target value', e)
+        this.setState({ searchinput: e })
+        if (e == '') {
+            this.setState({ searchedBill: this.state.bills })
+        }
+    }
 
-    // // SEACRH BILL LIST ACCORDING TO INPUT 
-    // searchClient = (e) => {
-    //     let newarray = this.state.bills.filter(item => {
-    //         return item.name.toLowerCase().indexOf(e.toLowerCase()) > -1
+    // // SEACRH BILL LIST ACCORDING TO INPUT(EMAIL) 
+    searchEmail = (e) => {
+        let newarray = this.state.bills.filter(item => {
+            return item.email.toLowerCase().indexOf(e.toLowerCase()) > -1
 
-    //     });
-    //     console.log(newarray);
-    //     this.setState({ searchedBillName: newarray })
-    // }
+        });
+        console.log(newarray);
+        this.setState({ searchedBill: newarray })
+    }
 
     render() {
 
@@ -235,9 +235,9 @@ class BillList extends Component {
                     <div className="AllProjects">
                         <Search className="SearchValue"
                             placeholder="input search text"
-                            // onSearch={(value) => { this.searchClient(value) }}
+                            onSearch={(value) => { this.searchEmail(value) }}
                             style={{ width: 200 }}
-                            // onChange={(e) => { this.showallList(e.target.value) }}
+                            onChange={(e) => { this.showallList(e.target.value) }}
                             enterButton
                             // value={this.state.searchinput}
 
