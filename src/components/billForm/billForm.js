@@ -9,6 +9,7 @@ import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
 import moment from 'moment'
+import * as actioncreators from '../../redux/action';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -25,39 +26,37 @@ class BillForm extends Component {
             projectlist: [],
             disableclient: false,
             filteredclient: [],
-            editBill: false,
-            allCurrencyList:[]
+            editBill: false
         }
 
     }
 
 
     componentDidMount() {
-        
+
         if (this.props.location.data) {
             console.log(this.props.location.data.data);
-        this.props.form.setFieldsValue({
-            ['ProjectName']: this.props.location.data.data.projectName,
-            ['clientName']: this.props.location.data.data.client,
-            ['CompanyName']: this.props.location.data.data.company,
-            ['status']: this.props.location.data.data.status,
-            ['type']: this.props.location.data.data.type,
-            ['billingdate']: this.props.location.data.data.billingDate? moment(this.props.location.data.data.billingDate) : '',
-            ['Paybillno']: this.props.location.data.data.paypalBillNumber,
-            ['billno']: this.props.location.data.data.billNumber,
-            ['bdename']: this.props.location.data.data.BDE,
-            ['email']: this.props.location.data.data.email,
-            ['projectcost']: this.props.location.data.data.projectCost,
-            ['paypalaccount']: this.props.location.data.data.paypalAccountName,
-            ['amountrecord']: this.props.location.data.data.receivedAmount,
-            ['balance']: this.props.location.data.data.balance,
-             ['receiveddate']: this.props.location.data.data.receivedDate? moment(this.props.location.data.data.receivedDate) : '',
-            ['Currency']: this.props.location.data.data.currency,
-        });
-    }
+            this.props.form.setFieldsValue({
+                ['ProjectName']: this.props.location.data.data.projectName,
+                ['clientName']: this.props.location.data.data.client,
+                ['CompanyName']: this.props.location.data.data.company,
+                ['status']: this.props.location.data.data.status,
+                ['type']: this.props.location.data.data.type,
+                ['billingdate']: this.props.location.data.data.billingDate ? moment(this.props.location.data.data.billingDate) : '',
+                ['Paybillno']: this.props.location.data.data.paypalBillNumber,
+                ['billno']: this.props.location.data.data.billNumber,
+                ['bdename']: this.props.location.data.data.BDE,
+                ['email']: this.props.location.data.data.email,
+                ['projectcost']: this.props.location.data.data.projectCost,
+                ['paypalaccount']: this.props.location.data.data.paypalAccountName,
+                ['amountrecord']: this.props.location.data.data.receivedAmount,
+                ['balance']: this.props.location.data.data.balance,
+                ['receiveddate']: this.props.location.data.data.receivedDate ? moment(this.props.location.data.data.receivedDate) : '',
+                ['Currency']: this.props.location.data.data.currency,
+            });
+        }
         console.log('billform component did mount');
         this.projectList();
-        this.currencies();
 
     }
 
@@ -75,21 +74,6 @@ class BillForm extends Component {
 
             })
     }
-
-    // GET LIST OF CURRENCIES
-    currencies = () => {
-        this.props.actions.currencyList().then(response => {
-            console.log(response)
-            let currencylist = [];
-            currencylist = response.map((item) => { return (item.currencies[0].code) }).filter((item) => { return item });
-            // console.log(currencylist)
-            var uniqueCode=[];
-            uniqueCode = Array.from(new Set(currencylist));
-             console.log(uniqueCode);
-        this.setState({allCurrencyList:uniqueCode})       
-        })
-        console.log(this.state.allCurrencyList)
-    }
     // FUNCTION CALLED ON SAVE BUTTON
     save = (e) => {
         e.preventDefault();
@@ -98,6 +82,43 @@ class BillForm extends Component {
 
             if (!err) {
                 console.log('Received values of form: ', values);
+                if (this.props.location.data.data) {
+                    let data = {
+                        userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
+                        billingDate: values.billingdate ? values.billingdate._d : '',
+                        paypalBillNumber: values.Paybillno,
+                        billNumber: values.billno,
+                        BDE: values.bdename,
+                        type: values.type,
+                        client: values.clientName,
+                        company: values.CompanyName,
+                        paypalAccountName: values.paypalaccount,
+                        email: values.email,
+                        projectName: values.ProjectName,
+                        projectCost: values.projectcost,
+                        receivedAmount: values.amountrecord,
+                         balance: values.balance,
+                        currency: values.Currency,
+                        receivedDate: values.receiveddate ? values.receiveddate._d :'',
+                        status: values.status,
+                    }
+                    console.log(data);
+                    this.props.actions.editabelbill(data, this.props.location.data.data._id).then(data => {
+                        console.log(data)
+                        if (!data.error) {
+                            // this.props.opentoast('success', 'Bill Updated Successfully!');
+                            this.props.history.push('/dashboard/billlist')
+                        }
+                        else{
+                            // this.props.opentoast('warning', data.message);
+                        }
+                    },
+                     err => {
+                        this.setState({ show: false });
+                        // this.props.opentoast('warning', 'Bill Not Updated Successfully!');
+                    })
+                }
+               else{
                 let billdata = {
                     userId: this.state.userId,
                     billingDate: values.billingdate._d,
@@ -131,6 +152,7 @@ class BillForm extends Component {
                     this.setState({ show: false });
                     this.props.actions.opentoast('warning', 'Bill Creation Failed!')
                 })
+               } 
 
             }
         })
@@ -251,8 +273,10 @@ class BillForm extends Component {
                                                 // onChange={this.handleSelectChange}
                                                 showSearch
                                             >
-                                                <Option value="pending">PENDING</Option>
-                                                <Option value="complete">COMPLETE</Option>
+                                                <Option value="pending">Pending</Option>
+                                                <Option value="complete">Complete</Option>
+                                                <Option value="Cancelled">Cancelled</Option>
+                                                <Option value="Refunded">Refunded</Option>
 
 
                                             </Select>
@@ -442,16 +466,23 @@ class BillForm extends Component {
                                     <Col xs={24} sm={24} md={24} lg={24}>
                                         <FormItem label="Currency">
                                             {getFieldDecorator('Currency', {
-                                                rules: [{ required: true, message: 'Please input !' }],
+                                                rules: [{ required: true, message: 'Please choose currency !' }],
                                             })(
-                                                <Select
+                                                <Select className="statuspipeline"
                                                     placeholder="Select type"
 
                                                 >
-                                                {this.state.allCurrencyList.map((currencyData,keyy) => {
+                                                    {/* {this.state.allCurrencyList.map((currencyData,keyy) => {
                                                     // console.log(currencyData)
                                                         return <Option key={keyy} value={currencyData}>{currencyData}</Option>
-                                                })}
+                                                })} */}
+                                                    <Option value="USD">USD</Option>
+                                                    <Option value="GBP">GBP</Option>
+                                                    <Option value="AUD">AUD</Option>
+                                                    <Option value="INR">INR</Option>
+                                                    <Option value="EUR">EUR</Option>
+                                                    <Option value="AED">AED</Option>
+
                                                 </Select>
                                             )}
                                         </FormItem>
