@@ -140,7 +140,9 @@ class Dashboard extends Component {
               <Menu
                 onClick={this.handleClick}
                 mode="inline"
-                selectedKeys={this.state.selectedKey}
+                // selectedKeys={this.state.selectedKey}
+                defaultSelectedKeys={this.state.selectedKey}
+                defaultOpenKeys={this.state.selectedKey}
                 style={{ height: '100%', borderRight: 0 }}
               >
                 <Menu.Item key="home">
