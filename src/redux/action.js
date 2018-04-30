@@ -791,36 +791,6 @@ function bill(list) {
 
     }
 }
-
-// GET CURRENCY LIST
-export function currencyList() {
-    return (dispatch) => {
-
-        return new Promise(function (resolve, reject) {
-            fetch('https://restcountries.eu/rest/v2/all?fields=currencies', { method: 'GET' })
-                .then((response) => {
-                    response.json()
-                        .then(function (myJson) {
-                            dispatch(currencylist(myJson))
-                            resolve(myJson);
-                        }, function (error) {
-                            reject(error);
-                        });
-                });
-        })
-
-    }
-}
-
-// CURRENCY LIST
-function currencylist(list) {
-    return {
-        type: "CURRENCY_LIST",
-        list
-
-    }
-}
-
 //API FOR EDIT BILL
 export function editabelbill(data, id) {
     console.log('edit', data)
