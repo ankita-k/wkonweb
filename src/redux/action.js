@@ -791,5 +791,48 @@ function bill(list) {
 
     }
 }
+//API FOR EDIT BILL
+export function editabelbill(data, id) {
+    console.log('edit', data)
+    console.log(id)
+
+    return (dispatch) => {
+
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
 
 
+
+            fetch(config.apiUrl + 'bill?id=' + id ,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+
+
+                    dispatch(editdataBill(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+
+
+function editdataBill(list) {
+    return {
+        type: "EDIT_BILL",
+        list
+
+    }
+}

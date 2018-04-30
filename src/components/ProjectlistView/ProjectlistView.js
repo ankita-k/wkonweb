@@ -15,44 +15,6 @@ const Option = Select.Option;
 const Search = Input.Search;
 // import { Input } from 'antd';
 
-// remaining
-
-// const data = [{
-//   key: '1',
-//   name: 'Sukanta Sinha',
-//   requirement: 'Lorem',
-//   status: 'Pipeline',
-//   technology: 'techniques',
-//   estart: '13-04-2018',
-//   astart: '14-04-2018',
-//   expectedtask: '13-05-2018',
-//   taskend: '14-05-2018',
-
-// }, {
-//   key: '2',
-//   name: 'Payel Dutta',
-//   requirement: 'Lorem',
-//   status: 'Pipeline',
-//   technology: 'techniques',
-//   estart: '15-04-2018',
-//   astart: '09-04-2018',
-//   expectedtask: '25-05-2018',
-//   taskend: '28-05-2018',
-
-
-// }, {
-//   key: '3',
-//   name: 'Priyanka Saha',
-//   requirement: 'Lorem',
-//   status: 'Pipeline',
-//   technology: 'techniques',
-//   estart: '14-04-2018',
-//   astart: '10-04-2018',
-//   expectedtask: '23-05-2018',
-//   taskend: '30-05-2018',
-
-// }];
-
 class ProjectlistView extends Component {
   state = {
     loading: false,
@@ -146,6 +108,10 @@ class ProjectlistView extends Component {
             <Col lg={{ span: 10 }}>
               <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
             </Col>
+            <Col lg={{ span: 8}}></Col>
+            <Col lg={{ span: 10 }}>
+              <Button className="view" onClick={() => { this.detailProject(record) }}>
+                <a href="javascript:;"><Icon type="eye-o" /></a></Button></Col>
           </Row>
         ),
       }
@@ -291,6 +257,11 @@ class ProjectlistView extends Component {
     }
   }
 
+  // NAVIGATE TO PROJECT DETAIL PAGE
+  detailProject = (record) => {
+    this.props.history.push(`/dashboard/:${record.name}`, { id: record._id })
+  }
+
 
   render() {
     console.log('render')
@@ -319,7 +290,7 @@ class ProjectlistView extends Component {
 
 
             />
-            {(this.state.statussearch)?
+            {(this.state.statussearch) ?
               <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
 
                 <Option value="All">All</Option>
@@ -330,7 +301,7 @@ class ProjectlistView extends Component {
                 <Option value="Stalled">Stalled</Option>
                 <Option value="Completed">Completed</Option>
 
-              </Select>:
+              </Select> :
 
 
               <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
@@ -366,7 +337,7 @@ class ProjectlistView extends Component {
           <Table
             onRow={(record, x) => {
               return {
-                onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }),this.props.history.push('/dashboard/file') },
+                onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },
                 // click row
               };
             }}

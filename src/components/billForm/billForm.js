@@ -9,6 +9,7 @@ import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
 import moment from 'moment'
+import * as actioncreators from '../../redux/action';
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -81,6 +82,43 @@ class BillForm extends Component {
 
             if (!err) {
                 console.log('Received values of form: ', values);
+                if (this.props.location.data.data) {
+                    let data = {
+                        userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
+                        billingDate: values.billingdate ? values.billingdate._d : '',
+                        paypalBillNumber: values.Paybillno,
+                        billNumber: values.billno,
+                        BDE: values.bdename,
+                        type: values.type,
+                        client: values.clientName,
+                        company: values.CompanyName,
+                        paypalAccountName: values.paypalaccount,
+                        email: values.email,
+                        projectName: values.ProjectName,
+                        projectCost: values.projectcost,
+                        receivedAmount: values.amountrecord,
+                         balance: values.balance,
+                        currency: values.Currency,
+                        receivedDate: values.receiveddate ? values.receiveddate._d :'',
+                        status: values.status,
+                    }
+                    console.log(data);
+                    this.props.actions.editabelbill(data, this.props.location.data.data._id).then(data => {
+                        console.log(data)
+                        if (!data.error) {
+                            // this.props.opentoast('success', 'Bill Updated Successfully!');
+                            this.props.history.push('/dashboard/billlist')
+                        }
+                        else{
+                            // this.props.opentoast('warning', data.message);
+                        }
+                    },
+                     err => {
+                        this.setState({ show: false });
+                        // this.props.opentoast('warning', 'Bill Not Updated Successfully!');
+                    })
+                }
+               else{
                 let billdata = {
                     userId: this.state.userId,
                     billingDate: values.billingdate._d,
@@ -114,6 +152,7 @@ class BillForm extends Component {
                     this.setState({ show: false });
                     this.props.actions.opentoast('warning', 'Bill Creation Failed!')
                 })
+               } 
 
             }
         })
