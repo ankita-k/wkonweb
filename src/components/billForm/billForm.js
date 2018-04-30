@@ -25,7 +25,8 @@ class BillForm extends Component {
             projectlist: [],
             disableclient: false,
             filteredclient: [],
-            editBill: false
+            editBill: false,
+            allCurrencyList:[]
         }
 
     }
@@ -56,7 +57,7 @@ class BillForm extends Component {
     }
         console.log('billform component did mount');
         this.projectList();
-    this.currencies();
+        this.currencies();
 
     }
 
@@ -75,15 +76,20 @@ class BillForm extends Component {
             })
     }
 
-// GET LIST OF CURRENCIES
-currencies=()=>{
-    this.props.actions.currencyList().then(response=>{
-        console.log(response)
-        let currencylist=[];
-    currencylist=  response.map((item)=>{return (item.currencies[0].code)}).filter((item)=>{return item});
-console.log(currencylist)   
-})
-}
+    // GET LIST OF CURRENCIES
+    currencies = () => {
+        this.props.actions.currencyList().then(response => {
+            console.log(response)
+            let currencylist = [];
+            currencylist = response.map((item) => { return (item.currencies[0].code) }).filter((item) => { return item });
+            // console.log(currencylist)
+            var uniqueCode=[];
+            uniqueCode = Array.from(new Set(currencylist));
+             console.log(uniqueCode);
+        this.setState({allCurrencyList:uniqueCode})       
+        })
+        console.log(this.state.allCurrencyList)
+    }
     // FUNCTION CALLED ON SAVE BUTTON
     save = (e) => {
         e.preventDefault();
@@ -438,8 +444,15 @@ console.log(currencylist)
                                             {getFieldDecorator('Currency', {
                                                 rules: [{ required: true, message: 'Please input !' }],
                                             })(
-                                                // <Input placeholder="Brief Requirement" />
-                                                <Input placeholder="Currency" />
+                                                <Select
+                                                    placeholder="Select type"
+
+                                                >
+                                                {this.state.allCurrencyList.map((currencyData,keyy) => {
+                                                    // console.log(currencyData)
+                                                        return <Option key={keyy} value={currencyData}>{currencyData}</Option>
+                                                })}
+                                                </Select>
                                             )}
                                         </FormItem>
                                     </Col>
