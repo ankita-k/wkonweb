@@ -66,6 +66,9 @@ const reducer = ((state = {}, action) => {
       case "BILL_LIST":                  // FOR BILL LIST
       return action.list
       break;
+      case "EDIT_BILL":                  // FOR EDIT BILL
+      return action.list
+      break;
     default:
       return state
   }

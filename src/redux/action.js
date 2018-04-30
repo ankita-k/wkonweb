@@ -791,31 +791,47 @@ function bill(list) {
 
     }
 }
+//API FOR EDIT BILL
+export function editabelbill(data, id) {
+    console.log('edit', data)
+    console.log(id)
 
-// GET CURRENCY LIST
-export function currencyList() {
     return (dispatch) => {
 
-        return new Promise(function (resolve, reject) {
-            fetch('https://restcountries.eu/rest/v2/all?fields=currencies', { method: 'GET' })
-                .then((response) => {
-                    response.json()
-                        .then(function (myJson) {
-                            dispatch(currencylist(myJson))
-                            resolve(myJson);
-                        }, function (error) {
-                            reject(error);
-                        });
-                });
-        })
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
 
+
+
+            fetch(config.apiUrl + 'bill?id=' + id ,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+
+
+                    dispatch(editdataBill(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     }
 }
 
-// CURRENCY LIST
-function currencylist(list) {
+
+function editdataBill(list) {
     return {
-        type: "CURRENCY_LIST",
+        type: "EDIT_BILL",
         list
 
     }
