@@ -106,7 +106,7 @@ class UserManagement extends Component {
                     let user = {
                         password: values.password,
                         role: values.role,
-                        phone: values.phone,
+                        phoneNumber: values.phone,
                         email: values.email,
                         name: values.name,
                         manager: values.managers

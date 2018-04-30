@@ -1,6 +1,5 @@
 import { config } from '../../src/config';
-
-
+import {push} from 'react-router-redux';
 
 let conf = config.headers;
 
@@ -219,7 +218,7 @@ function allProjectlist(json) {
 export function projectList(userId) {
     return (dispatch) => {
         return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'project/projectlist?userId=' + userId , {
+            fetch(config.apiUrl + 'project/projectlist?userId=' + userId, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
@@ -245,7 +244,7 @@ export function clientlist(userId) {
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
 
-            fetch(config.apiUrl + 'client/clientlist?userId=' + userId ,
+            fetch(config.apiUrl + 'client/clientlist?userId=' + userId,
                 {
                     headers: {
                         'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
@@ -399,7 +398,7 @@ export function deleteclient(id) {
                 {
                     headers: {
                         'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
-                        
+
                     },
                     method: 'DELETE'
                 })
@@ -427,8 +426,8 @@ function deleteclientrow(list) {
 }
 
 //API edit client
-export function updateclient(data,id) {
-    console.log(data,id)
+export function updateclient(data, id) {
+    console.log(data, id)
 
     return (dispatch) => {
 
@@ -441,8 +440,8 @@ export function updateclient(data,id) {
                 {
                     headers: {
                         'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
-                         'Accept': 'application/json',
-                    'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
                     },
                     method: 'PUT',
                     body: JSON.stringify(data)
@@ -463,50 +462,50 @@ export function updateclient(data,id) {
 }
 
 //API FOR EDIT PROJECT
-export function editproject(data,id) {
-    console.log('edit',data)
+export function editproject(data, id) {
+    console.log('edit', data)
     console.log(id)
-    
-        return (dispatch) => {
-            
-            console.log(config.apiUrl)
-            return new Promise((resolve, reject) => {
-                
-                
-    
-                fetch(config.apiUrl + 'project/'+id,
-                    {
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                        },
-                        method: 'PUT',
-                        body: JSON.stringify(data)
-                    })
-                    .then((response) => response.json())
-                    .then((responseJSON) => {
-                        
-                
 
-                        dispatch(editrow(responseJSON))
-                        resolve(responseJSON);
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
-            });
-        }
+    return (dispatch) => {
+
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+
+
+            fetch(config.apiUrl + 'project/' + id,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+
+
+                    dispatch(editrow(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     }
-    
-    
-    function editrow(list) {
-        return {
-            type: "EDIT_PROJECT",
-            list
-    
-        }
+}
+
+
+function editrow(list) {
+    return {
+        type: "EDIT_PROJECT",
+        list
+
     }
+}
 function updateclientlist(list) {
     return {
         type: "UPDATE_CLIENT",
@@ -524,7 +523,7 @@ export function dashboardData(userId) {
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
 
-            fetch(config.apiUrl + 'user/dashboardDetails?id=' + userId ,
+            fetch(config.apiUrl + 'user/dashboardDetails?id=' + userId,
                 {
                     headers: {
                         'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
@@ -545,35 +544,11 @@ export function dashboardData(userId) {
 //GET CUSTOMERS DATA ON DASHBOARD
 
 export function dashboardCustomer(userId) {
-return (dispatch) => {
-    console.log(config.apiUrl)
-    return new Promise((resolve, reject) => {
-
-        fetch(config.apiUrl + 'user/clientDashboardDetails?id=' + userId ,
-            {
-                headers: {
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET'
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                dispatch(receivePosts(responseJSON))
-                resolve(responseJSON);
-            })
-            .catch((error) => {
-                reject(error);
-            });
-    });
-}
-}
-//User ROLE API
-export function findByRole(role) {
     return (dispatch) => {
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
-    
-            fetch(config.apiUrl + 'user/findByRole?role='+role ,      
+
+            fetch(config.apiUrl + 'user/clientDashboardDetails?id=' + userId,
                 {
                     headers: {
                         'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
@@ -590,58 +565,82 @@ export function findByRole(role) {
                 });
         });
     }
-    }
+}
+//User ROLE API
+export function findByRole(role) {
+    return (dispatch) => {
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
 
-    export function userlist() {
+            fetch(config.apiUrl + 'user/findByRole?role=' + role,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(receivePosts(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
 
-        return (dispatch) => {
-            console.log(config.apiUrl)
-            return new Promise((resolve, reject) => {
-    
-                fetch(config.apiUrl + 'user/getAllUser',
-                    {
-                        headers: {
-                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                        },
-                        method: 'GET'
-                    })
-                    .then((response) => response.json())
-                    .then((responseJSON) => {
-                        dispatch(user(responseJSON))
-                        resolve(responseJSON);
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
-            });
-        }
+export function userlist() {
+
+    return (dispatch) => {
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+            fetch(config.apiUrl + 'user/getAllUser',
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(user(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     }
-    //clientlist func
-    function user(list) {
-        return {
-            type: "USER_LIST",
-            list
-    
-        }
+}
+//clientlist func
+function user(list) {
+    return {
+        type: "USER_LIST",
+        list
+
     }
-    //
-    //API call for User delete
+}
+//
+//API call for User delete
 export function deleteUser(id) {
     console.log(id)
 
     return (dispatch) => {
 
-        
+
         return new Promise((resolve, reject) => {
 
 
 
             fetch(config.apiUrl + 'user/delete?id=' + id,
-           
+
                 {
                     headers: {
                         'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
-                        
+
                     },
                     method: 'DELETE'
                 })
@@ -668,48 +667,172 @@ function deleteusers(list) {
     }
 }
 
-    //API FOR EDIT PROJECT
-export function editUser(data,id) {
-    console.log('edit',data)
+//API FOR EDIT PROJECT
+export function editUser(data, id) {
+    console.log('edit', data)
     console.log(id)
-    
-        return (dispatch) => {
-            
-            console.log(config.apiUrl)
-            return new Promise((resolve, reject) => {
-                
-                
-    
-                fetch(config.apiUrl + 'user/'+id,
-                    {
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                        },
-                        method: 'PUT',
-                        body: JSON.stringify(data)
-                    })
-                    .then((response) => response.json())
-                    .then((responseJSON) => {
-                        
-                
 
-                        dispatch(edituser(responseJSON))
-                        resolve(responseJSON);
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
+    return (dispatch) => {
+
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+
+
+            fetch(config.apiUrl + 'user/' + id,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+
+
+                    dispatch(edituser(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+
+
+function edituser(list) {
+    return {
+        type: "EDIT_USER",
+        list
+
+    }
+}
+
+
+// API CALL FOR BILL CREATION
+export function billCreate(billdata) {
+    return (dispatch) => {
+        return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'bill',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'POST',
+                body: JSON.stringify(billdata)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                dispatch(billcreate(responseJSON))
+                resolve(responseJSON);
+                // console.log(responseJSON)
+                // if (responseJSON.error) {
+                //     dispatch(opentoast('warning', 'Bill Creation Failed!'))
+                // }
+                // else {
+                //   dispatch(push('/dashboard')) 
+                //     dispatch(billcreate(responseJSON.result))
+                //     dispatch(opentoast('success', 'Bill Created Successfully!'))
+                // }
+
+
+            })
+            .catch((error) => {
+                reject(error);
+                // dispatch(opentoast('error', 'Bill Creation Failed!'))
             });
-        }
+    })
+}
+}
+
+function billcreate(response) {
+    return {
+        type: "BILL_CREATE_SUCCESS",
+        response
     }
-    
-    
-    function edituser(list) {
-        return {
-            type: "EDIT_USER",
-            list
-    
-        }
+}
+    //Client list api 
+export function billlist(userId) {
+
+    return (dispatch) => {
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+            fetch(config.apiUrl + 'bill?userId=' + userId ,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(bill(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     }
+}
+//billlist func
+function bill(list) {
+    return {
+        type: "BILL_LIST",
+        list
+
+    }
+}
+//API FOR EDIT BILL
+export function editabelbill(data, id) {
+    console.log('edit', data)
+    console.log(id)
+
+    return (dispatch) => {
+
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+
+
+            fetch(config.apiUrl + 'bill?id=' + id ,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+
+
+                    dispatch(editdataBill(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+
+
+function editdataBill(list) {
+    return {
+        type: "EDIT_BILL",
+        list
+
+    }
+}
