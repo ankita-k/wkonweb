@@ -153,6 +153,7 @@ class Dashboard extends Component {
           <Menu
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
+          
             mode="inline"
             theme=""
             inlineCollapsed={this.state.collapsed}
