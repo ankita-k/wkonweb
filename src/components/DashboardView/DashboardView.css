@@ -97,6 +97,9 @@ button.ant-btn.allprojectbtn {
         width: 100%;
         text-align:center;
     }
+    .dashboardMain {
+        margin-top: 3em;
+    }
     img.totalImg {
         margin-right: 0em;
     }
