@@ -33,7 +33,6 @@ class BillForm extends Component {
 
 
     componentDidMount() {
-<<<<<<< HEAD
         console.log(this.props);
         if (this.props.location.data) {
             console.log(this.props.location.data.data);
@@ -56,30 +55,6 @@ class BillForm extends Component {
             ['Currency']: this.props.location.data.data.currency,
         });
     }
-=======
-
-        if (this.props.location.data) {
-            console.log(this.props.location.data.data);
-            this.props.form.setFieldsValue({
-                ['ProjectName']: this.props.location.data.data.projectName,
-                ['clientName']: this.props.location.data.data.client,
-                ['CompanyName']: this.props.location.data.data.company,
-                ['status']: this.props.location.data.data.status,
-                ['type']: this.props.location.data.data.type,
-                ['billingdate']: this.props.location.data.data.billingDate ? moment(this.props.location.data.data.billingDate) : '',
-                ['Paybillno']: this.props.location.data.data.paypalBillNumber,
-                ['billno']: this.props.location.data.data.billNumber,
-                ['bdename']: this.props.location.data.data.BDE,
-                ['email']: this.props.location.data.data.email,
-                ['projectcost']: this.props.location.data.data.projectCost,
-                ['paypalaccount']: this.props.location.data.data.paypalAccountName,
-                ['amountrecord']: this.props.location.data.data.receivedAmount,
-                ['balance']: this.props.location.data.data.balance,
-                ['receiveddate']: this.props.location.data.data.receivedDate ? moment(this.props.location.data.data.receivedDate) : '',
-                ['Currency']: this.props.location.data.data.currency,
-            });
-        }
->>>>>>> 924bf8b778b1329fcebb089fa07196402ac680cc
         console.log('billform component did mount');
         this.projectList();
 
