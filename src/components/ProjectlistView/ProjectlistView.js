@@ -366,7 +366,7 @@ class ProjectlistView extends Component {
           <Table
             onRow={(record, x) => {
               return {
-                onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },
+                onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }),this.props.history.push('/dashboard/file') },
                 // click row
               };
             }}
