@@ -413,18 +413,7 @@ class NewProject extends Component {
                                     </Col>
                                 </Row>
                             </div>
-                            <Row className="briefRequire">
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                    <FormItem label="Brief Requirement">
-                                        {getFieldDecorator('textRequirement', {
-                                            rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                            </Row>
+                            
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem label="Status">
@@ -545,6 +534,18 @@ class NewProject extends Component {
                                         </div>
                                     </Col>
                                 </Row>
+                                <Row className="briefRequire">
+                                <Col xs={24} sm={24} md={24} lg={24}>
+                                    <FormItem label="Brief Requirement">
+                                        {getFieldDecorator('textRequirement', {
+                                            rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
+                                        })(
+                                            // <Input placeholder="Brief Requirement" />
+                                            <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
+                                        )}
+                                    </FormItem>
+                                </Col>
+                            </Row>
                                 {/* <Row>
                                     <Col xs={24} sm={24} md={24} lg={24}>
                                         <p className="expecteDateclient">Choose Client :</p>
