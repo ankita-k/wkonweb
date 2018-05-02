@@ -1,0 +1,99 @@
+/* card css */
+.innercardContent {
+    margin: 0 auto !important;
+    width: 70% !important;
+}
+.inputForminfo .ant-row {
+    margin-bottom: 2em;
+}
+
+.underLine {
+    margin: 0px 0 12px 0;
+}
+.inputForminfo .ant-row.ant-form-item {
+    height: 29px;
+    margin-bottom: 3em;
+}
+.inputForminfo .ant-select-selection--single {
+    height: 43px;
+}
+.inputForminfo .ant-input {
+    height: 45px;
+    border-radius: 5px;
+    border: 1px solid #d4d4d4;
+}
+
+.inputForminfo .ant-select-selection:hover {
+    border-color: #d4d4d4;
+}
+.inputForminfo .ant-select-selection:focus {
+    border-color: #d4d4d4;
+}
+.innercardContent .ant-card-body {
+    padding: 0;
+}
+.innercardContent h1.NewCustomer{
+    margin: 10px 0 10px 27px;
+}
+.inputForminfo {
+    padding: 1em 4em 0 4em;
+}
+.inputForminfo .ant-form-item-label label {
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-left: 5px;
+}
+.inputForminfo .ant-form-item-required:before {
+    display: none;
+}
+.inputForminfo .ant-select-selection__rendered {
+    line-height: 40px;
+}
+.savebutton {
+    padding-bottom:1em;
+    text-align: center;
+}
+.linea {
+    border-top: 5px solid rgb(66, 138, 254);
+}
+.lineb {
+    border-top: 5px solid rgb(158, 158, 158);
+    margin-left: 10px;
+    border-radius: 0px;
+}
+.formcustomer {
+    width: 50%;
+}
+button.ant-btn.cardbuttonCancel.login-form-button {
+    border: 1px solid #428afe;
+    border-radius: 5px;
+    color: #428afe;
+    margin-top: 2em;
+    line-height: 0;
+    height: 38px;
+    background: border-box;
+    width: 98px;
+    font-size: 16px;
+    margin-left: 1em;
+}
+button.ant-btn.cardbuttonSave.login-form-button {
+    border: 1px solid #428afe;
+    color: #ffffff;
+    border-radius: 5px;
+    margin-top: 2em;
+    line-height: 0;
+    height: 38px;
+    background: #428afe;
+    width: 98px;
+    font-size: 16px;
+}
+/* card css */
+
+/* ResponsiveNewInformation  */
+@media (min-width: 320px) and (max-width: 767px) {
+    .innercardContent {
+        width: 100% !important;
+    }
+}
+/* ResponsiveNewInformation  */

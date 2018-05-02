@@ -39,106 +39,8 @@ h1.totalNumber {
 }
 .dashboardView {
     margin-bottom: 3em;
+    position: relative;
 }
-/* dashboardviewcustomer */
-/* --  modal css start-- */
-.vertical-center-modal {
-    text-align: center;
-    white-space: nowrap;
-  }
-  
- .vertical-center-modal:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    width: 0;
-  }
-  
-   .vertical-center-modal .ant-modal {
-    display: inline-block;
-    vertical-align: middle;
-    top: 0;
-    text-align: left;
-  }
-  button.ant-btn.modalbuttonSave {
-    border: 1px solid #428afe;
-    color: #ffffff;
-    border-radius: 5px;
-    margin-top: 2em;
-    line-height: 0;
-    height: 38px;
-    background: #428afe;
-    width: 98px;
-    font-size: 16px;
-}
-.modalcustom .ant-select-auto-complete.ant-select .ant-input {
-    background: rgba(247, 247, 247, 0.27);
-    border-width: 1px;
-    line-height: 1.5;
-    height: 36px;
-    border-radius: 0px;
-}
-.modalcustom .ant-form-item-control {
-    line-height: 0;
-}
-.ant-modal.modalcustom {
-    width: 700px !important;
-}
-.modalcustom .ant-modal-body {
-    padding: 3em 2em 2em 3em;
-}
-.modalcustom .ant-select-selection__placeholder, .ant-select-search__field__placeholder {
-    top: 60%;
-}
-.statuspipeline.ant-select.ant-select-enabled {
-    color: rgba(158, 158, 158, 0.8);
-}
-.modalcustom .ant-select-selection {
-    height: 39px;
-    border-radius: 0;
-}
-.modalcustom .inputText input.ant-input.ant-select-search__field {
-    margin-bottom: 1em;
-}
-  .inputText {
-    text-align: center;
-}
-.modalcustom .ant-modal-title {
-    color: #ffffff;
-}
-.modalcustom .ant-modal-close-x {
-    color: #ffffff;
-}
-.modalcustom .ant-modal-footer{
-    display:none;
-}
-
-.addButton button {
-    float: right;
-    margin-right: 4em;
-    margin-bottom: 1em;
-    border-radius: 50%;
-    padding: 0px 0 8px 8px;
-    color: rgba(158, 158, 158, 0.8);
-    height: 42px;
-    width: 42px;
-    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
-    border: none;
-    font-size: 14px;
-    font-weight: 900;
-}
-.inputModal .ant-input {
-    height: 39px;
-    border-radius: 0px;
-    border: 1px solid #d4d4d4;
-}
-.inputModal .ant-row.ant-form-item {
-    height: 10px;
-    width: 94%;
-    margin-bottom: 4em;
-}
-
 .addButton button:hover {
     box-shadow: 0 10px 45px -10px rgba(0,0,0,0.25), 0 -1px 22px -10px rgba(0,0,0,0.22);
     color: rgb(158, 158, 158);
@@ -151,20 +53,41 @@ h1.totalNumber {
     font-size: 25px;
     padding-right: 9px;
 }
-.savebutton {
-    text-align: center;
+.addButton.btnplace {
+    position: absolute;
+    top: -70px;
+    right: 0;
+    margin-right: 2em;
+    z-index: 9;
 }
-.statesDropdown.ant-select.ant-select-enabled {
-    width: 100%;
-    color: #bbb6c2;
+.addButton.project {
+    position: absolute;
+    top: 0em;
+    right: 0;
+   
 }
-.modalcustom .ant-modal-header {
-    background: rgb(66, 138, 254) !important;
-    border-bottom: none !important;
+.scoping .ant-select-selection__rendered {
+    color: rgb(58, 56, 56);
 }
+.addButton button {
+    float: right;
+    margin-right: 0em;
+    margin-bottom: 1em;
+    border-radius: 50%;
+    padding: 0px 0 8px 8px;
+    color: rgba(158, 158, 158, 0.8);
+    height: 42px;
+    width: 42px;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    border: none;
+    font-size: 14px;
+    font-weight: 900;
+}
+button.ant-btn.allprojectbtn {
+    color: rgba(62, 61, 61, 0.8);
+}
+/* dashboardviewcustomer */
 
-
-/* -- modal css end-- */
 /* Responsivedashboardviewcustomer */
 @media (min-width: 320px) and (max-width: 767px) {
     .addButton button {
@@ -173,6 +96,9 @@ h1.totalNumber {
     .cusTotal {
         width: 100%;
         text-align:center;
+    }
+    .dashboardMain {
+        margin-top: 3em;
     }
     img.totalImg {
         margin-right: 0em;
@@ -305,3 +231,16 @@ p.date {
 }
 /* 
 recent activity css end */
+
+.loader {
+    background-color: #5b6b5b99;
+    height: 100vh;
+    
+}
+.loader .react-overlay-loader-spinner:before{
+    border-top-color: #2e373e;
+    
+}
+.loader span {
+    color: #fff !important;
+}

@@ -123,13 +123,14 @@
   .socialIconsec p{
       margin-top: 5px;
   }
-  .imgsec img{
-      width:100%;
-      height: 100%;
-  }
+
+.imgsec img {
+    width: 25%;
+    height: 100%;
+}
   .imgsec{
     
-    height: 402px;
+    height: 343px;
     width: 610px;
     
     position: absolute;
@@ -137,10 +138,18 @@
     z-index: 0;
       right: 0;
       z-index: 0;
-      background: linear-gradient( to right, rgba(60, 162, 197, 0.81),
-       rgba(103, 58, 183, 0.8), rgba(73, 174, 209, 0.72) 72% ), 
-       url(/static/media/triangle.67f70852.jpg);
-  
+
+      /*background: 
+      linear-gradient(  rgba(143, 34, 217, 0.9),        
+      rgba(137, 62, 225, 0.8),          
+      rgba(74, 147, 188, 0.9)  72%    ),         
+       url(../../Images/triangle.jpg);*/
+           /*background: linear-gradient( to right, rgb(10, 28, 37),rgba(63, 81, 181, 0.6784313725490196),rgba(63, 81, 181, 0.07058823529411765) ),  url(/static/media/triangle.67f70852.jpg);*/
+
+           /* background: linear-gradient( to right, rgb(52, 86, 144), rgb(211, 225, 229), rgba(32, 50, 80, 0.93) 72% ),
+            url(/static/media/triangle.67f70852.jpg); */
+            background: linear-gradient( to right, rgb(255, 255, 255), rgba(63, 130, 243, 0.58), rgba(32, 50, 80, 0.93) 72% ),
+             url(../../Images/stone.jpg);
       background-repeat: no-repeat;
       background-size:cover;
   }
@@ -148,20 +157,18 @@
     padding: 1em 10em 1em 1em;
     margin-left: 2em;
 }
-  .imgsec:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left:0;
-      bottom: 0;
-      width: 0;
-      height: 0;
-      border-bottom: 402px solid white;
-      /* border-right: 509px solid transparent; */
-      border-right: 611px solid transparent;
-      
-  
-  }
+.imgsec:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-bottom: 343px solid white;
+    /* border-right: 509px solid transparent; */
+    border-right: 611px solid transparent;
+}
   .imgsec p{
       text-align: right;
       width: 44%;

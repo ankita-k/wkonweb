@@ -9,6 +9,15 @@ import progress from '../../Images/progress.png';
 import projectpipe from '../../Images/projectpipe.png';
 import man from '../../Images/wkon-2-21.png';
 import mantwo from '../../Images/wkon-2-22.png';
+import ProjectlistView from '../ProjectlistView/ProjectlistView';
+import * as actioncreators from '../../redux/action';
+import { connect } from "react-redux";
+import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
+import Loading from 'react-loading-bar';
+import { Loader } from 'react-overlay-loader';
+import 'react-overlay-loader/styles.css';
+
+
 const Option = Select.Option;
 
 const FormItem = Form.Item;
@@ -16,6 +25,118 @@ function handleChange(value) {
     console.log(`selected ${value}`);
 }
 class DashboardView extends Component {
+    state = {
+        loading: false,
+        visible: false,
+    }
+    constructor(props) {
+        super(props);
+        this.state = {
+            clienttotal: {},
+            clientpipeline: {},
+            clientcommitted: {},
+            projecttotal: {},
+            projectinprogress: {},
+            projectcompleted: {},
+            show: true,  //loading-bar
+            loading: true
+        }
+    }
+
+    componentDidMount() {
+
+        console.log('component did mount')
+        this.getdashboarddata();
+        this.dashboardCustomer();
+
+    }
+
+    //GET DASHBOARD PROJECT COUNT  DATA
+    getdashboarddata = () => {
+        this.setState({ show: true })
+        if (sessionStorage.getItem("id")) {
+            this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
+
+                console.log('dashboardview', response)
+                this.setState({ loading: false });
+                if (!response.error) {
+                    this.setState({ show: false });
+                    if (response.result && response.result.Total)
+                        this.startCounter(response.result.Total, 'projectTotal')
+                    if (response.result && response.result.Completed)
+                        this.startCounter(response.result.Completed, 'projectcompleted')
+
+                    if (response.result && response.result.InProgess)
+                        this.startCounter(response.result.InProgess, 'projectinprogress')
+                }
+                // console.log(this.state.count);
+            }, err => {
+                this.setState({ show: false });
+            })
+        }
+        else {
+            if (localStorage.getItem('id')) {
+                this.props.dashboardData(localStorage.getItem('id')).then((response) => {
+                    console.log('dashboardview', response);
+                    this.setState({ show: false });
+                    if (!response.error) {
+                        if (response.result && response.result.Total)
+                            this.startCounter(response.result.Total, 'projectTotal')
+                        if (response.result && response.result.Completed)
+                            this.startCounter(response.result.Completed, 'projectcompleted')
+
+                        if (response.result && response.result.InProgess)
+                            this.startCounter(response.result.InProgess, 'projectinprogress')
+                    }
+                    // console.log(this.state.count);
+                }, err => {
+                    // console.log(this.state.count);
+                    this.setState({ show: false });
+                })
+            }
+
+        }
+    }
+    //GET DASHBOARD CUSTOERS COUNT DATA
+    dashboardCustomer = () => {
+        this.setState({ show: true });
+        if (sessionStorage.getItem("id")) {
+            console.log('data')
+            this.props.dashboardCustomer(sessionStorage.getItem('id')).then((response) => {
+                console.log('customerview', response);
+                if (!response.error) {
+                    this.setState({ show: false });
+                    if (response.result && response.result.Total)
+                        this.startCounter(response.result.Total, 'clientTotal')
+                    if (response.result && response.result.Pipeline)
+                        this.startCounter(response.result.Pipeline, 'clientpipeline')
+                    if (response.result && response.result.Committed)
+                        this.startCounter(response.result.Committed, 'clientcommitted')
+                }
+            }, err => {
+                this.setState({ show: false });
+            })
+        }
+        else if (localStorage.getItem('id')) {
+            this.props.dashboardCustomer(localStorage.getItem('id')).then(response => {
+                console.log('data...')
+                console.log('customerview', response)
+                if (!response.error) {
+                    this.setState({ show: false });
+                    if (response.result && response.result.Total)
+                        this.startCounter(response.result.Total, 'clientTotal')
+                    if (response.result && response.result.Pipeline)
+                        this.startCounter(response.result.Pipeline, 'clientpipeline')
+                    if (response.result && response.result.Committed)
+                        this.startCounter(response.result.Committed, 'clientcommitted')
+                }
+            }, err => {
+                this.setState({ show: false });
+            })
+        }
+    }
+
+
     handleSelectChange = (value) => {
         console.log(value);
         this.props.form.setFieldsValue({
@@ -30,147 +151,187 @@ class DashboardView extends Component {
             }
         });
     }
-    state = { visible: false }
-    showModal = () => {
-        this.setState({
-            visible: true,
-        });
+
+    // START COUNTER FOR DASHBOARD NUMBER SHOWN
+    startCounter(maxcount, type) {
+        let _base = this;
+        switch (type) {
+            case 'clientTotal':
+                let clienttotal = Object.assign({}, this.state.clienttotal)
+                clienttotal.Total = 0;
+                setInterval(function () {
+                    if (clienttotal.Total == maxcount) {
+                        clearInterval();
+                    }
+                    else {
+                        clienttotal.Total = clienttotal.Total + 1;
+                        _base.setState({ clienttotal })
+                        console.log(clienttotal)
+
+                    }
+                }, 40)
+                break;
+            case 'clientcommitted':
+                let clientcommitted = Object.assign({}, this.state.clientcommitted)
+
+                clientcommitted.Committed = 0;
+                setInterval(function () {
+
+                    if (clientcommitted.Committed == maxcount) {
+                        clearInterval();
+                    }
+                    else {
+                        clientcommitted.Committed = clientcommitted.Committed + 1;
+                        _base.setState({ clientcommitted })
+                        console.log(clientcommitted)
+
+                    }
+                }, 40)
+                break;
+            case 'clientpipeline':
+                let clientpipeline = Object.assign({}, this.state.clientpipeline)
+                clientpipeline.Pipeline = 0;
+                setInterval(function () {
+                    if (clientpipeline.Pipeline == maxcount) {
+                        clearInterval();
+                    }
+                    else {
+                        clientpipeline.Pipeline = clientpipeline.Pipeline + 1;
+                        _base.setState({ clientpipeline })
+                        console.log(clientpipeline)
+
+                    }
+                }, 40)
+                break;
+            case 'projectinprogress':
+                let projectinprogress = Object.assign({}, this.state.projectinprogress)
+                projectinprogress.InProgess = 0;
+                setInterval(function () {
+                    if (projectinprogress.InProgess == maxcount) {
+                        clearInterval();
+                    }
+                    else {
+                        projectinprogress.InProgess = projectinprogress.InProgess + 1;
+                        _base.setState({ projectinprogress })
+                        console.log(projectinprogress)
+
+                    }
+                }, 40)
+                break;
+            case 'projectTotal':
+                let projecttotal = Object.assign({}, this.state.projecttotal)
+                projecttotal.Total = 0;
+                setInterval(function () {
+                    if (projecttotal.Total == maxcount) {
+                        clearInterval();
+                    }
+                    else {
+                        projecttotal.Total = projecttotal.Total + 1;
+                        _base.setState({ projecttotal })
+                        console.log(projecttotal)
+
+                    }
+                }, 40)
+                break;
+            case 'projectcompleted':
+                let projectcompleted = Object.assign({}, this.state.projectcompleted)
+                projectcompleted.Completed = 0;
+                setInterval(function () {
+                    if (projectcompleted.Completed == maxcount) {
+                        clearInterval();
+                    }
+                    else {
+                        projectcompleted.Completed = projectcompleted.Completed + 1;
+                        _base.setState({ projectcompleted })
+                        console.log(projectcompleted)
+
+                    }
+                }, 40)
+                break;
+            default: console.log('not used')
+                break;
+        }
+
     }
-    handleOk = (e) => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
+
+    filterClient = (data) => {
+
+        this.props.history.push({
+            pathname: '/dashboard/clientlist',
+            filterValue: data
+
+
+        })
+        console.log("commited");
     }
-    handleCancel = (e) => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
+    //function for project dashboard (passing data)
+
+    filterProject = (data) => {
+
+        this.props.history.push({
+            pathname: '/dashboard/projectlist',
+            filterValue: data
+
+
+        })
+        console.log("navigated");
     }
+
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { visible, loading } = this.state;
         return (
 
+
             <div className="dashboardMain">
+                {this.state.show == true ? <div className="loader">
+                    <Loader className="ldr" fullPage loading />
+                </div> : ""}
+
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
                 {/* dashboardviewcustomer */}
                 <div className="dashboardView">
-                    <h1 className="customer">CUSTOMERS</h1>
+                    <h1 className="customer">CLIENTS</h1>
                     <Row>
-                        <div className="addButton">
-                            <Button onClick={this.showModal}>+</Button>
-
-                            <Modal
-                                title="Add New Customer"
-                                wrapClassName="vertical-center-modal"
-                                visible={this.state.visible}
-                                onOk={this.handleOk}
-                                onCancel={this.handleCancel}
-                                className="modalcustom">
-                                <Form onSubmit={this.handleSubmit} className="login-form">
-                                <div className="inputModal">
-                                    <Row>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                            <FormItem>
-                                                {getFieldDecorator('email', {
-                                                    rules: [{ required: true, message: 'Please input your Email!' }],
-                                                })(
-                                                    <Input placeholder="Email" />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                            <FormItem>
-                                                {getFieldDecorator('phone', {
-                                                    rules: [{ required: true, message: 'Please input your Phone No.!' }],
-                                                })(
-                                                    <Input placeholder="Phone No." />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                            <FormItem>
-                                                {getFieldDecorator('name', {
-                                                    rules: [{ required: true, message: 'Please input your Name!' }],
-                                                })(
-                                                    <Input placeholder="Name" />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                            <FormItem>
-                                                {getFieldDecorator('domain', {
-                                                    rules: [{ required: true, message: 'Please input your Domain!' }],
-                                                })(
-                                                    <Input placeholder="Domain" />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                            <FormItem>
-                                                {getFieldDecorator('country', {
-                                                    rules: [{ required: true, message: 'Please input your Country!' }],
-                                                })(
-                                                    <Input placeholder="Country" />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                            <FormItem>
-                                                {getFieldDecorator('status', {
-                                                    rules: [{ required: true, message: 'Please select your status!' }],
-                                                })(
-                                                    <Select className="statuspipeline"
-                                                        placeholder="Status"
-                                                        onChange={this.handleSelectChange}
-                                                    >
-                                                        <Option value="Interested">Interested</Option>
-                                                        <Option value="Pipeline">Pipeline</Option>
-                                                        <Option value="Committed">Committed</Option>
-                                                    </Select>
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                    </Row>
-                                    </div>
-                                    <FormItem>
-                                        <div className="savebutton">
-                                            <Button htmlType="submit" className="modalbuttonSave login-form-button">Submit</Button>
-                                        </div>
-                                    </FormItem>
-                                  
-                                </Form>
-                            </Modal>
+                        <div className="addButton btnplace">
+                            <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
                         </div>
                     </Row>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal" onClick={() => { this.filterClient('All') }}>
+
                                 <p>
                                     <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
+
+
                                 </p>
-                                <h1 className="totalNumber">1833</h1>
-                            </div>
-                        </Col>
-                        <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
-                                <p>
-                                    <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Converted</span>
-                                </p>
-                                <h1 className="totalNumber">1000</h1>
+                                <h1 className="totalNumber">{this.state.clienttotal.Total ? this.state.clienttotal.Total : 0}</h1>
+
                             </div>
 
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal" onClick={() => { this.filterClient('Committed') }}>
+                                <p>
+                                    <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Committed</span>
+                                    {/*<NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>*/}
+                                </p>
+                                <h1 className="totalNumber">{this.state.clientcommitted.Committed ? this.state.clientcommitted.Committed : 0}</h1>
+                            </div>
+
+
+                        </Col>
+                        <Col xs={24} sm={24} md={8} lg={8}>
+                            <div className="cusTotal" onClick={() => { this.filterClient('Pipeline') }}>
                                 <p>
                                     <img src={pipeline} className="totalImg" alt="Pipeline" /><span className="totalContent">Pipeline</span>
                                 </p>
-                                <h1 className="totalNumber">500</h1>
+                                <h1 className="totalNumber">{this.state.clientpipeline.Pipeline ? this.state.clientpipeline.Pipeline : 0}</h1>
                             </div>
                         </Col>
                     </Row>
@@ -180,142 +341,35 @@ class DashboardView extends Component {
                 <div className="dashboardView">
                     <h1 className="customer">PROJECTS</h1>
                     <Row>
-                        {/* <div className="addButton">
-                            <Button onClick={this.showModal}>+</Button>
-
-                            <Modal
-                                title="New Project"
-                                wrapClassName="vertical-center-modal"
-                                visible={this.state.visible}
-                                onOk={this.handleOk}
-                                onCancel={this.handleCancel}
-                                className="modalcustom">
-                                <p><Input placeholder="Project Name" /></p>
-                                <p><Input placeholder="Project Description" /></p>
-                                <Row>
-                                    <div className="savebutton">
-                                        <Button className="modalbuttonSave" loading={this.state.iconLoading} onClick={this.IndividualSubscription}>Save</Button>
-                                    </div>
-                                </Row>
-                            </Modal>
-                        </div> */}
-                        
-                    </Row>
-                     {/* <Row>
-                        <div className="addButton">
-                            <Button onClick={this.showModal}>+</Button>
-
-                            <Modal
-                                title="New Project"
-                                wrapClassName="vertical-center-modal"
-                                visible={this.state.visible}
-                                onOk={this.handleOk}
-                                onCancel={this.handleCancel}
-                                className="modalcustom">
-                                <Form onSubmit={this.handleSubmit} className="login-form">
-                                <div className="inputModal">
-                                    <Row>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                            <FormItem>
-                                                {getFieldDecorator('Name', {
-                                                    rules: [{ required: true, message: 'Please input your Name!' }],
-                                                })(
-                                                    <Input placeholder="Name" />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                            <FormItem>
-                                                {getFieldDecorator('requirement', {
-                                                    rules: [{ required: true, message: 'Please input your Requirement!' }],
-                                                })(
-                                                    <Input placeholder="Brief Requirement" />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                        <FormItem>
-                                                {getFieldDecorator('status', {
-                                                    rules: [{ required: true, message: 'Please select your status!' }],
-                                                })(
-                                                    <Select className="statuspipeline"
-                                                        placeholder="Status"
-                                                        onChange={this.handleSelectChange}
-                                                    >
-                                                        <Option value="Interested">Interested</Option>
-                                                        <Option value="Pipeline">Pipeline</Option>
-                                                        <Option value="Committed">Committed</Option>
-                                                    </Select>
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                            <FormItem>
-                                                {getFieldDecorator('technology', {
-                                                    rules: [{ required: true, message: 'Please input your Technology!' }],
-                                                })(
-                                                    <Input placeholder="Technology" />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                            <FormItem>
-                                                {getFieldDecorator('start', {
-                                                    rules: [{ required: true, message: 'Please input !' }],
-                                                })(
-                                                    <Input placeholder="Expected Start Date" />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                        <Col xs={24} sm={24} md={12} lg={12}>
-                                        <FormItem>
-                                                {getFieldDecorator('actual', {
-                                                    rules: [{ required: true, message: 'Please input !' }],
-                                                })(
-                                                    <Input placeholder="Actual Start Date" />
-                                                )}
-                                            </FormItem>
-                                        </Col>
-                                    </Row>
-                                    </div>
-                                    <FormItem>
-                                        <div className="savebutton">
-                                            <Button htmlType="submit" className="modalbuttonSave login-form-button">Log in</Button>
-                                        </div>
-                                    </FormItem>
-                                  
-                                </Form>
-                            </Modal>
+                        <div className="addButton btnplace">
+                            <Button onClick={() => { this.props.history.push('/dashboard/newproject') }}>+</Button>
                         </div>
-                    </Row> */}
+                    </Row>
                     <Row>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal" onClick={() => { this.filterProject('All') }}>
                                 <p>
                                     <img src={projecttotal} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
                                 </p>
-                                <h1 className="totalNumber">300</h1>
+                                <h1 className="totalNumber">{this.state.projecttotal.Total ? this.state.projecttotal.Total : 0}</h1>
+
                             </div>
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal" onClick={() => { this.filterProject('Completed') }}>
                                 <p>
-                                    <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent">In Progress</span>
+                                    <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent"> Completed</span>
                                 </p>
-                                <h1 className="totalNumber">250</h1>
+                                <h1 className="totalNumber">{this.state.projectcompleted.Completed ? this.state.projectcompleted.Completed : 0}</h1>
                             </div>
 
                         </Col>
                         <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal">
+                            <div className="cusTotal" onClick={() => { this.filterProject('InProgess') }}>
                                 <p>
-                                    <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">Pipeline</span>
+                                    <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">InProgess</span>
                                 </p>
-                                <h1 className="totalNumber">200</h1>
+                                <h1 className="totalNumber">{this.state.projectinprogress.InProgess ? this.state.projectinprogress.InProgess : 0}</h1>
                             </div>
                         </Col>
                     </Row>
@@ -475,5 +529,14 @@ class DashboardView extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    console.log('dashboard view state data', state)
+    // this.state.count.total=this.state.count.total+1;
+    return state
+}
+
+
+
 const WrappedDashboardView = Form.create()(DashboardView);
-export default WrappedDashboardView;
+export default connect(mapStateToProps, actioncreators)(WrappedDashboardView);
