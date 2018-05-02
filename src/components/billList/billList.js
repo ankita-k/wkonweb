@@ -10,8 +10,10 @@ import { Select } from 'antd';
 import warning from '../../Images/war.png';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
+import moment from 'moment';
 const Search = Input.Search;
 const Option = Select.Option;
+
 
 
 
@@ -56,63 +58,63 @@ class BillList extends Component {
                 key: 'BDE',
 
             }, {
-                title: 'balance',
+                title: 'Balance',
                 dataIndex: 'balance',
                 key: 'balance',
             }, {
-                title: 'billNumber',
+                title: 'BillNumber',
                 dataIndex: 'billNumber',
                 key: 'billNumber',
             }, {
-                title: 'billingDate',
+                title: 'BillingDate',
                 dataIndex: 'billingDate',
                 key: 'billingDate',
             }, {
-                title: 'client',
+                title: 'Client',
                 dataIndex: 'client',
                 key: 'client',
             }, {
-                title: 'company',
+                title: 'Company',
                 dataIndex: 'company',
                 key: 'company',
             }, {
-                title: 'currency',
+                title: 'Currency',
                 dataIndex: 'currency',
                 key: 'currency',
             }, {
-                title: 'email',
+                title: 'Email',
                 dataIndex: 'email',
                 key: 'email',
             }, {
-                title: 'paypalAccountName',
+                title: 'PaypalAccountName',
                 dataIndex: 'paypalAccountName',
                 key: 'paypalAccountName',
             }, {
-                title: 'paypalBillNumber',
+                title: 'PaypalBillNumber',
                 dataIndex: 'paypalBillNumber',
                 key: 'paypalBillNumber',
             }, {
-                title: 'projectCost',
+                title: 'ProjectCost',
                 dataIndex: 'projectCost',
                 key: 'projectCost',
             }, {
-                title: 'projectName',
+                title: 'ProjectName',
                 dataIndex: 'projectName',
                 key: 'projectName',
             }, {
-                title: 'receivedAmount',
+                title: 'ReceivedAmount',
                 dataIndex: 'receivedAmount',
                 key: 'receivedAmount',
             }, {
-                title: 'receivedDate',
+                title: 'ReceivedDate',
                 dataIndex: 'receivedDate',
                 key: 'receivedDate',
             }, {
-                title: 'status',
+                title: 'Status',
                 dataIndex: 'status',
                 key: 'status',
             }, {
-                title: 'type',
+                title: 'Type',
                 dataIndex: 'type',
                 key: 'type',
             }, {
@@ -144,8 +146,9 @@ class BillList extends Component {
     // get billlist
     getBills = () => {
         this.setState({show:true})
+        console.log(this.state.userId)
         this.props.billlist(this.state.userId).then((result) => {
-            this.setState({show:false})
+            this.setState({ show: false });
             console.log(result);
             if (!result.error) {
                 this.setState({ bills: result.result })
@@ -153,22 +156,23 @@ class BillList extends Component {
                 var data = result.result;
                 data.map(function (item, index) {
                     return data[index] = {
-                        BDE: item.BDE,
-                        balance: item.balance,
-                        billNumber: item.billNumber,
-                        billingDate: item.billingDate,
-                        client: item.client,
-                        company: item.company,
-                        currency: item.currency,
-                        email: item.email,
-                        paypalAccountName: item.paypalAccountName,
-                        paypalBillNumber: item.paypalBillNumber,
-                        projectCost: item.projectCost,
-                        projectName: item.projectName,
-                        receivedAmount: item.receivedAmount,
-                        receivedDate: item.receivedDate,
-                        status: item.status,
-                        type: item.type,
+                        BDE: item.BDE?item.BDE:"-",
+                        balance: item.balance?item.balance:"-",
+                        billNumber: item.billNumber?item.billNumber:"-",
+                        billingDate: moment(item.billingDate).format("ll")?moment(item.billingDate).format("ll"):"-",
+                        client: item.client?item.client.name:'-',
+                        client1:item.client?item.client._id:'-',
+                        company: item.company?item.company:"-",
+                        currency: item.currency?item.currency:"-",
+                        email: item.email?item.email:"-",
+                        paypalAccountName: item.paypalAccountName?item.paypalAccountName:"-",
+                        paypalBillNumber: item.paypalBillNumber?item.paypalBillNumber:"-",
+                        projectCost: item.projectCost?item.projectCost:"-",
+                        projectName: item.projectName.name?item.projectName.name:"-",
+                        receivedAmount: item.receivedAmount?item.receivedAmount:"-",
+                        receivedDate: moment(item.receivedDate).format("ll")?moment(item.receivedDate).format("ll"):"-" ,
+                        status: item.status?item.status:"-",
+                        type: item.type?item.type:"-",
                         key: Math.random() * 1000000000000000000,
                         _id: item._id
                     }
@@ -179,7 +183,7 @@ class BillList extends Component {
             }
 
         }, err => {
-
+            this.setState({ show: false });
         })
     }
     //edit bill
@@ -202,9 +206,9 @@ class BillList extends Component {
     }
 
     // // SEACRH BILL LIST ACCORDING TO INPUT(EMAIL) 
-    searchEmail = (e) => {
+    searchFilter = (e) => {
         let newarray = this.state.bills.filter(item => {
-            return item.email.toLowerCase().indexOf(e.toLowerCase()) > -1
+            return (item.email.toLowerCase().indexOf(e.toLowerCase()) > -1) ||(item.BDE.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.company.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.paypalAccountName.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.status.toLowerCase().indexOf(e.toLowerCase()) > -1)
 
         });
         console.log(newarray);
@@ -219,17 +223,17 @@ class BillList extends Component {
         const columns = this.state.column;
         return (
 
-            <div className="billerListdiv">
-                {/* {this.state.show == true ? <div className="loader">
+            <div className="clientListdiv">
+               {this.state.show == true ? <div className="loader">
           <Loader className="ldr" fullPage loading />
-        </div> : ""} */}
+        </div> : ""}
 
-                {/* <Loading
+            <Loading
           show={this.state.show}
           color="red"
           showSpinner={false}
-        /> */}
-                <h1 className="billerlist">BILL LIST</h1>
+        />
+                <h1 className="clientList">BILL LIST</h1>
                 <Row>
                     <div className="addButton billeradd">
                         <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
@@ -239,7 +243,7 @@ class BillList extends Component {
                     <div className="AllProjects">
                         <Search className="SearchValue"
                             placeholder="input search text"
-                            onSearch={(value) => { this.searchEmail(value) }}
+                            onSearch={(value) => { this.searchFilter(value) }}
                             style={{ width: 200 }}
                             onChange={(e) => { this.showallList(e.target.value) }}
                             enterButton

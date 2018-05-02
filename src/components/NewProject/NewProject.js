@@ -23,6 +23,7 @@ class NewProject extends Component {
             clientlist: [],
             clientarray: [],
             show: false,//loading-bar,
+            showLoader: false,
             disabledate: true,
             disableclient: false,
             userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
@@ -71,6 +72,7 @@ class NewProject extends Component {
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
+        this.setState({showLoader: true});
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
 
@@ -108,6 +110,7 @@ class NewProject extends Component {
                     console.log(data)
 
                     this.props.editproject(data, this.props.location.data.data._id).then(response => {
+                        this.setState({showLoader: false});
                         this.setState({ show: false });
                         console.log(response)
                         if (!response.error) {
@@ -119,6 +122,7 @@ class NewProject extends Component {
                         }
                     }, err => {
                         this.setState({ show: false });
+                        this.setState({showLoader: false});
                         this.props.opentoast('warning', 'Project Not Updated Successfully!');
                     })
                 }
@@ -565,7 +569,7 @@ class NewProject extends Component {
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
                             </div>
                         </FormItem>
