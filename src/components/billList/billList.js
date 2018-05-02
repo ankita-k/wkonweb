@@ -205,7 +205,7 @@ class BillList extends Component {
     // // SEACRH BILL LIST ACCORDING TO INPUT(EMAIL) 
     searchEmail = (e) => {
         let newarray = this.state.bills.filter(item => {
-            return item.email.toLowerCase().indexOf(e.toLowerCase()) > -1
+            return (item.email.toLowerCase().indexOf(e.toLowerCase()) > -1) ||(item.BDE.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.company.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.paypalAccountName.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.status.toLowerCase().indexOf(e.toLowerCase()) > -1)
 
         });
         console.log(newarray);
