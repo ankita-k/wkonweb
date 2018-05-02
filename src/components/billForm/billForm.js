@@ -10,7 +10,6 @@ import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
 import moment from 'moment'
 import * as actioncreators from '../../redux/action';
-
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const Option = Select.Option;
@@ -22,6 +21,7 @@ class BillForm extends Component {
         super(props);
         this.state = {
             show: false,   //FOR PROGRESS LOADING BAR
+            showLoader: false,
             userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
             projectlist: [],
             disableclient: false,
@@ -80,6 +80,8 @@ class BillForm extends Component {
     // FUNCTION CALLED ON SAVE BUTTON
     save = (e) => {
         e.preventDefault();
+        this.setState({showLoader: true});
+    
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
 
@@ -110,7 +112,8 @@ class BillForm extends Component {
                     console.log(data);
 
                     this.props.actions.editabelbill(data, this.props.location.data.data._id).then(data => {
-
+                        this.setState({showLoader: false});
+                        this.setState({show:false})
                         console.log(data)
                         if (!data.error) {
                             this.props.actions.opentoast('success', 'Bill Updated Successfully!');
@@ -149,6 +152,7 @@ class BillForm extends Component {
                     this.props.actions.billCreate(billdata).then(response => {
                         console.log('bill created data', response)
                         this.setState({ show: false });
+                        this.setState({showLoader: false});
                         if (!response.error) {
                             this.props.history.push('/dashboard/billlist');
                             this.props.actions.opentoast('success', 'Bill Created Successfully!')
@@ -158,6 +162,7 @@ class BillForm extends Component {
                         }
                     }, err => {
                         this.setState({ show: false });
+                        this.setState({showLoader: false});
                         this.props.actions.opentoast('warning', 'Bill Creation Failed!')
                     })
                 }
@@ -203,12 +208,11 @@ class BillForm extends Component {
         const { fetching, techArray, value } = this.state;
         return (
             <div>
-                <Loading
+                 <Loading
                     show={this.state.show}
                     color="red"
                     showSpinner={false}
                 />
-
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
                     <div className="newCustomerform">
@@ -499,7 +503,7 @@ class BillForm extends Component {
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/billlist') }} >Cancel</Button>
                             </div>
                         </FormItem>

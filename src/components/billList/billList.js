@@ -16,6 +16,7 @@ const Option = Select.Option;
 
 
 
+
 class BillList extends Component {
 
     state = {
@@ -44,7 +45,7 @@ class BillList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            clientlist: [],
+            billerlist: [],
             show: true, //loading-bar        
             selectedId: '',  //FOR SELECT CLIENT ROW ID
             searchedBill: [],
@@ -147,7 +148,7 @@ class BillList extends Component {
         this.setState({show:true})
         console.log(this.state.userId)
         this.props.billlist(this.state.userId).then((result) => {
-            this.setState({show:false})
+            this.setState({ show: false });
             console.log(result);
             if (!result.error) {
                 this.setState({ bills: result.result })
@@ -182,7 +183,7 @@ class BillList extends Component {
             }
 
         }, err => {
-
+            this.setState({ show: false });
         })
     }
     //edit bill
@@ -223,9 +224,9 @@ class BillList extends Component {
         return (
 
             <div className="clientListdiv">
-                {/* {this.state.show == true ? <div className="loader">
+               {this.state.show == true ? <div className="loader">
           <Loader className="ldr" fullPage loading />
-        </div> : ""} */}
+        </div> : ""}
 
             <Loading
           show={this.state.show}
@@ -234,7 +235,7 @@ class BillList extends Component {
         />
                 <h1 className="clientList">BILL LIST</h1>
                 <Row>
-                    <div className="addButton clientadd">
+                    <div className="addButton billeradd">
                         <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
                     </div>
                 </Row>
