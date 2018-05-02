@@ -153,10 +153,10 @@ class ClientList extends Component {
         key: 'action',
         render: (text, record) => (
           <Row>
-            <Col lg={{ span: 10 }}>
+            <Col lg={{ span: 4 }}>
               <Button className="edit" onClick={() => { this.editClient(record) }}>
                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-            <Col lg={{ span: 8 }}></Col>
+            {/* <Col lg={{ span: 8 }}></Col> */}
             <Col lg={{ span: 10 }}>
               <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
             </Col>
