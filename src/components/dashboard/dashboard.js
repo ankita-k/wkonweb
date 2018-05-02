@@ -235,12 +235,13 @@ class Dashboard extends Component {
                       <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
                     </Menu.Item>
                   </SubMenu> : '' : ''}
-                {this.state.userrole ? this.state.userrole == "Developer" || "admin" ?
+                {this.state.userrole ? this.state.userrole == "Developer" || "admin"||'Sales' ?
                   <SubMenu key="projects" title={<span><Icon type="file-text" /> Projects</span>} subMenuCloseDelay={0.1}>
-                    <Menu.Item key="create_project">
-                      <span>Project Create</span>
-                      <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
-                    </Menu.Item>
+                  {this.state.userrole!="Developer"?
+                <Menu.Item key="create_project">
+                <span>Project Create</span>
+                <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
+              </Menu.Item>:'' }  
                     <Menu.Item key="project_list">
                       <span>Project List</span>
                       <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
@@ -258,18 +259,21 @@ class Dashboard extends Component {
                     </Menu.Item>
                   </SubMenu> : '' : ''}
 
-                {/* {this.state.userrole?this.state.userrole== "admin" ?  to be uncommented */}
+                {this.state.userrole?this.state.userrole== "admin" ||"Sales"? 
                 <SubMenu key="bill" title={<span><Icon type="solution" />Bill Managements</span>} subMenuCloseDelay={0.1}>
-                  <Menu.Item key="create_bill">
-                    <span>Create Bill</span>
-                    <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
-                  </Menu.Item>
+                 {
+                   this.state.userrole=="Sales"?
+                   <Menu.Item key="create_bill">
+                   <span>Create Bill</span>
+                   <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
+                 </Menu.Item>:''
+                 }
                   <Menu.Item key="bill_list">
                     <span>Bill List</span>
                     <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink>
                   </Menu.Item>
                 </SubMenu>
-                {/* : '':''}  to be uncommented */}
+                : '':''} 
                 {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
                 <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item> */}
 
