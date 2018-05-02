@@ -32,7 +32,7 @@ class NewProject extends Component {
             techsValue: [],
             value: [],
             fetching: false,
-           
+            editClient:false
         }
     
     }

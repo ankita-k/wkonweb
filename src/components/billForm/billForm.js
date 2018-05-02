@@ -27,7 +27,8 @@ class BillForm extends Component {
             disableclient: false,
             disableproject: false,
             filteredclient: [],
-            editBill: false
+            editBill: false,
+
         }
 
     }
@@ -39,6 +40,7 @@ class BillForm extends Component {
             console.log(this.props.location.data.data);
             this.setState({ disableclient: true });
             this.setState({ disableproject: true });
+            this.setState({editBill:true})
             this.props.form.setFieldsValue({
                 ['ProjectName']: this.props.location.data.data.projectName,
                 ['clientName']: this.props.location.data.data.client ? this.props.location.data.data.client : '',
@@ -217,10 +219,10 @@ class BillForm extends Component {
                     {/* --NewProject details-- */}
                     <div className="newCustomerform">
 
-                        {/* {(this.state.editBill == true) ?
+                        {(this.state.editBill == true) ?
                         <h1 className="NewCustomer">Edit Bill</h1> : <h1 className="NewCustomer">New Bill</h1>
-                    } */}
-                        <h1 className="NewCustomer">New Bill</h1>
+                    }
+                        {/* <h1 className="NewCustomer">New Bill</h1> */}
                         {/* <Divider dashed className="underLine" /> */}
                     </div>
                     <Form onSubmit={this.save} className="login-form">
