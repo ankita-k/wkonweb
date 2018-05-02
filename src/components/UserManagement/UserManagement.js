@@ -24,7 +24,6 @@ class UserManagement extends Component {
             tag: ['Vertical Lead', 'Manager'],
             tagValue: [],
             value: [],
-            // disabletag: true,
             fetching: false,
             RoleDeveloper: "",
             
