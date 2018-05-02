@@ -19,6 +19,7 @@ class UserManagement extends Component {
             developerarray: [],
             developers: [],
             show: false, //loading-bar
+            showLoader: false,
             userEdit: false,
             tagArray: ['Vertical Lead', 'Manager'],
             tag: ['Vertical Lead', 'Manager'],
@@ -161,6 +162,7 @@ class UserManagement extends Component {
 //sending user values
 handleSubmit = (e) => {
     this.setState({ show: true });
+    this.setState({ showLoader: true });
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
         if (!err) {
@@ -177,6 +179,7 @@ handleSubmit = (e) => {
                 }
                 console.log(user)
                 this.props.editUser(user, this.props.location.userData._id).then(response => {
+                    this.setState({ showLoader: false });
                     this.setState({ show: false });
                     console.log(response);
                     if (!response.error) {
@@ -189,6 +192,7 @@ handleSubmit = (e) => {
                 },
                     err => {
                         this.setState({ show: false });
+                        this.setState({ showLoader: false });
                         this.props.opentoast('warning', 'User Not Updated Successfully!');
                     })
             }
@@ -203,6 +207,7 @@ handleSubmit = (e) => {
                     tags:values.tags
                 }
                 this.props.createUser(data).then(result => {
+                    this.setState({ showLoader: false });
                     this.setState({ show: false });
                     console.log(result);
                     if (!result.error) {
@@ -214,6 +219,7 @@ handleSubmit = (e) => {
                     }
                 }, err => {
                     this.setState({ show: false });
+                    this.setState({ showLoader: false });
                     this.props.opentoast('warning', 'UserNot  Created  Successfully!');
                 })
             }
@@ -381,7 +387,7 @@ render() {
                     </div>
                     <FormItem>
                         <div className="savebutton">
-                            <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                            <Button htmlType="submit" className="cardbuttonSave login-form-button"  loading={this.state.showLoader}>Save</Button>
                             <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/Userlist') }}>Cancel</Button>
                         </div>
                     </FormItem>

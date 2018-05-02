@@ -10,8 +10,10 @@ import { Select } from 'antd';
 import warning from '../../Images/war.png';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
+import moment from 'moment';
 const Search = Input.Search;
 const Option = Select.Option;
+
 
 
 
@@ -144,8 +146,9 @@ class BillList extends Component {
     // get billlist
     getBills = () => {
         this.setState({show:true})
+        console.log(this.state.userId)
         this.props.billlist(this.state.userId).then((result) => {
-            this.setState({show:false})
+            this.setState({ show: false });
             console.log(result);
             if (!result.error) {
                 this.setState({ bills: result.result })
@@ -156,17 +159,18 @@ class BillList extends Component {
                         BDE: item.BDE,
                         balance: item.balance,
                         billNumber: item.billNumber,
-                        billingDate: item.billingDate,
-                        client: item.client,
+                        billingDate: moment(item.billingDate).format("ll"),
+                        client: item.client?item.client.name:'',
+                        client1:item.client?item.client._id:'',
                         company: item.company,
                         currency: item.currency,
                         email: item.email,
                         paypalAccountName: item.paypalAccountName,
                         paypalBillNumber: item.paypalBillNumber,
                         projectCost: item.projectCost,
-                        projectName: item.projectName,
+                        projectName: item.projectName.name,
                         receivedAmount: item.receivedAmount,
-                        receivedDate: item.receivedDate,
+                        receivedDate: moment(item.receivedDate).format("ll") ,
                         status: item.status,
                         type: item.type,
                         key: Math.random() * 1000000000000000000,
@@ -179,7 +183,7 @@ class BillList extends Component {
             }
 
         }, err => {
-
+            this.setState({ show: false });
         })
     }
     //edit bill
@@ -202,9 +206,9 @@ class BillList extends Component {
     }
 
     // // SEACRH BILL LIST ACCORDING TO INPUT(EMAIL) 
-    searchEmail = (e) => {
+    filterBill = (e) => {
         let newarray = this.state.bills.filter(item => {
-            return item.email.toLowerCase().indexOf(e.toLowerCase()) > -1
+            return (item.email.toLowerCase().indexOf(e.toLowerCase()) > -1) ||(item.BDE.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.company.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.paypalAccountName.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.status.toLowerCase().indexOf(e.toLowerCase()) > -1)
 
         });
         console.log(newarray);
@@ -219,17 +223,17 @@ class BillList extends Component {
         const columns = this.state.column;
         return (
 
-            <div className="billerListdiv">
-                {/* {this.state.show == true ? <div className="loader">
+            <div className="clientListdiv">
+               {this.state.show == true ? <div className="loader">
           <Loader className="ldr" fullPage loading />
-        </div> : ""} */}
+        </div> : ""}
 
-                {/* <Loading
+            <Loading
           show={this.state.show}
           color="red"
           showSpinner={false}
-        /> */}
-                <h1 className="billerlist">BILL LIST</h1>
+        />
+                <h1 className="clientList">BILL LIST</h1>
                 <Row>
                     <div className="addButton billeradd">
                         <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
@@ -238,8 +242,8 @@ class BillList extends Component {
                 <Row>
                     <div className="AllProjects">
                         <Search className="SearchValue"
-                            placeholder="input search text"
-                            onSearch={(value) => { this.searchEmail(value) }}
+                            placeholder="BDE,Email,Company,Account,Status"
+                            onSearch={(value) => { this.filterBill(value) }}
                             style={{ width: 200 }}
                             onChange={(e) => { this.showallList(e.target.value) }}
                             enterButton
