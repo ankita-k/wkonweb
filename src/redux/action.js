@@ -1,5 +1,5 @@
 import { config } from '../../src/config';
-import {push} from 'react-router-redux';
+import { push } from 'react-router-redux';
 
 let conf = config.headers;
 
@@ -718,38 +718,38 @@ function edituser(list) {
 export function billCreate(billdata) {
     return (dispatch) => {
         return new Promise((resolve, reject) => {
-        fetch(config.apiUrl + 'bill',
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'POST',
-                body: JSON.stringify(billdata)
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                dispatch(billcreate(responseJSON))
-                resolve(responseJSON);
-                // console.log(responseJSON)
-                // if (responseJSON.error) {
-                //     dispatch(opentoast('warning', 'Bill Creation Failed!'))
-                // }
-                // else {
-                //   dispatch(push('/dashboard')) 
-                //     dispatch(billcreate(responseJSON.result))
-                //     dispatch(opentoast('success', 'Bill Created Successfully!'))
-                // }
+            fetch(config.apiUrl + 'bill',
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(billdata)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(billcreate(responseJSON))
+                    resolve(responseJSON);
+                    // console.log(responseJSON)
+                    // if (responseJSON.error) {
+                    //     dispatch(opentoast('warning', 'Bill Creation Failed!'))
+                    // }
+                    // else {
+                    //   dispatch(push('/dashboard')) 
+                    //     dispatch(billcreate(responseJSON.result))
+                    //     dispatch(opentoast('success', 'Bill Created Successfully!'))
+                    // }
 
 
-            })
-            .catch((error) => {
-                reject(error);
-                // dispatch(opentoast('error', 'Bill Creation Failed!'))
-            });
-    })
-}
+                })
+                .catch((error) => {
+                    reject(error);
+                    // dispatch(opentoast('error', 'Bill Creation Failed!'))
+                });
+        })
+    }
 }
 
 function billcreate(response) {
@@ -758,14 +758,14 @@ function billcreate(response) {
         response
     }
 }
-    //Client list api 
+//Client list api 
 export function billlist(userId) {
 
     return (dispatch) => {
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
 
-            fetch(config.apiUrl + 'bill?userId=' + userId ,
+            fetch(config.apiUrl + 'bill?userId=' + userId,
                 {
                     headers: {
                         'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
@@ -803,7 +803,7 @@ export function editabelbill(data, id) {
 
 
 
-            fetch(config.apiUrl + 'bill?id=' + id ,
+            fetch(config.apiUrl + 'bill?id=' + id,
                 {
                     headers: {
                         'Accept': 'application/json',
@@ -833,6 +833,39 @@ function editdataBill(list) {
     return {
         type: "EDIT_BILL",
         list
+
+    }
+}
+//API FOR GET VERTICAL LEAD
+export function verticalLeads(tags) {
+
+    return (dispatch) => {
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+            fetch(config.apiUrl + 'user/findBytags?tags=' + tags,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(bill(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+
+function Vertical(json) {
+    return {
+        type: "VERTICAL_LEAD",
+        json
 
     }
 }

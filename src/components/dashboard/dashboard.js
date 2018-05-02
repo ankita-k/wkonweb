@@ -37,7 +37,8 @@ class Dashboard extends Component {
     this.state = {
       username: '',
       selectedKey: ['home'],
-      userrole: ''
+      userrole: '',
+      openKeys: []
     }
     if (!sessionStorage.getItem('id') && !localStorage.getItem('id')) {
       this.props.history.push('/login');
@@ -67,7 +68,8 @@ class Dashboard extends Component {
 
   gotoDashboard = () => {
     this.setState({
-      selectedKey: ['home']
+      selectedKey: ['home'],
+      openKeys: []
     });
   }
 
@@ -77,6 +79,26 @@ class Dashboard extends Component {
     this.setState({
       selectedKey: navArr
     });
+    if (nav.key == 'home') {
+      this.setState({
+        openKeys: []
+      });
+    }
+  }
+
+  openChange = (nav) => {
+    if (nav.length >= 1) {
+      let key = nav[nav.length - 1];
+      let keys = [];
+      keys.push(key);
+      this.setState({
+        openKeys: keys
+      });
+    } else {
+      this.setState({
+        openKeys: []
+      });
+    }
   }
 
   renderSidemenuSelection = () => {
@@ -212,12 +234,14 @@ class Dashboard extends Component {
           <Layout>
             <Sider width={200} style={{ background: '#fff' }} className="siderDisplay">
               <Menu
+                onOpenChange={this.openChange}
                 onClick={this.handleClick}
                 mode="inline"
                 // selectedKeys={this.state.selectedKey}
                 defaultSelectedKeys={this.state.selectedKey}
                 defaultOpenKeys={this.state.selectedKey}
                 style={{ height: '100%', borderRight: 0 }}
+                openKeys={this.state.openKeys}
               >
                 <Menu.Item key="home">
                   <Icon type="home" />
