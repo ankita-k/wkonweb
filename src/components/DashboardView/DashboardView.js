@@ -381,7 +381,7 @@ class DashboardView extends Component {
 
                     <div className="firstman1">
                         <Row>
-                            <Col lg={11} className="firstman">
+                            <Col lg={7} className="firstman">
                                 <Row className="padng20">
                                     <Col lg={4} className="resalign">
                                         <img src={man} />
@@ -395,8 +395,21 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
-                            <Col lg={11} className="firstman">
+                          
+                            <Col lg={7} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey R.Eshelman our recently converted customer.</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                            <Col lg={7} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
                                         <img src={man} /></Col>
@@ -412,9 +425,10 @@ class DashboardView extends Component {
                         </Row>
 
                     </div>
+                  
                     <div className="firstman1">
                         <Row>
-                            <Col lg={11} className="firstman">
+                            <Col lg={7} className="firstman">
                                 <Row className="padng20">
                                     <Col lg={4} className="resalign">
                                         <img src={man} />
@@ -428,8 +442,21 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
-                            <Col lg={11} className="firstman">
+                          
+                            <Col lg={7} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey R.Eshelman our recently converted customer.</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                            <Col lg={7} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
                                         <img src={man} /></Col>
@@ -470,7 +497,7 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
+                           
                             <Col lg={11} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
@@ -503,7 +530,7 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
+                   
                             <Col lg={11} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
