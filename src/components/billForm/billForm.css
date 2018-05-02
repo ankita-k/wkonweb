@@ -19,8 +19,25 @@
     width: 85%;
     /* margin-top: 7px; */
 }
+.innercardContent{
+    width:90% !important;
+}
 .innercardContent.cardProject h1.NewCustomer{
     margin: 10px 0 10px 27px;
+}
+inputForminfo .ant-row.ant-form-item {
+    height: auto;
+    margin-bottom: 0;
+}
+.ant-row.briefRequire {
+    margin-bottom: 0 !important;
+}
+.inputForminfo .ant-row {
+    margin-bottom: 0;
+}
+.inputForminfo .ant-row.ant-form-item {
+    height: auto;
+    margin-bottom: 0;
 }
 p.expecteDate {
     color: rgba(7, 7, 7, 0.65);
@@ -85,7 +102,7 @@ textarea#textRequirement {
         width: 100%;
     }
     .inputForminfo.informationProject .ant-select-selection--single {
-        width: 100%;
+        width: 116%;
     }
     .startDate span.ant-calendar-picker {
         width: 100%;
@@ -99,6 +116,10 @@ textarea#textRequirement {
     .inputForminfo .ant-row.ant-form-item {
         margin-top: 1em;
     }
+    .newCustomerform {
+        border-bottom: 1px dashed #e8e8e8;
+        margin-top: 3em;
+    } 
 }
 .tech .ant-select.ant-select-enabled {
     width: 85% !important;

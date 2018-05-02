@@ -66,8 +66,8 @@ button.ant-btn.wkonlogout {
     }
     .logo {
       width: 120px;
-      height: 31px;
-      background: rgba(255,255,255,.2);
+      height: auto;
+      background: none;
       margin: 0;
       float: left;
   }
@@ -89,7 +89,7 @@ button.ant-btn.wkonlogout {
     .mobilenavbar {
       position: absolute;
       z-index: 99;
-      height: 100vh;
+      height: auto;
       width: 100%;
       /* background: rgba(0, 0, 0, 0.47); */
     }
