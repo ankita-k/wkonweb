@@ -100,16 +100,16 @@ class ProjectlistView extends Component {
           //     <a href="javascript:;"><Icon type="edit" /></a></Button>
           //   <Button className="delete" onClick={() => { this.deleteProject(record) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
           // </span>
-          <Row>
-            <Col lg={{ span: 10 }}>
+          <Row className="btns">
+            <Col lg={8}>
               <Button className="edit" onClick={() => { this.editProject(record) }}>
                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-            <Col lg={{ span: 8 }}></Col>
-            <Col lg={{ span: 10 }}>
+            {/* <Col lg={{ span: 8 }}></Col> */}
+            <Col lg={8}>
               <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
             </Col>
-            <Col lg={{ span: 8}}></Col>
-            <Col lg={{ span: 10 }}>
+            {/* <Col lg={{ span: 8}}></Col> */}
+            <Col lg={8}>
               <Button className="view" onClick={() => { this.detailProject(record) }}>
                 <a href="javascript:;"><Icon type="eye-o" /></a></Button></Col>
           </Row>
@@ -278,6 +278,7 @@ class ProjectlistView extends Component {
           color="red"
           showSpinner={false}
         />
+        <div className="projectlistheader">
         <h1 className="clientList">PROJECT LIST</h1>
         <Row>
           <div className="AllProjects">
@@ -332,7 +333,7 @@ class ProjectlistView extends Component {
 
           </div>
         </Row>
-
+</div>
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
           <Table

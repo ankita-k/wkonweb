@@ -139,7 +139,7 @@ class Dashboard extends Component {
               <p className="username" style={{ color: '#fff' }}> {this.state.username ? this.state.username : ''} <Button className="wkonlogout" onClick={() => {
                 this.showConfirm();
 
-              }}>Log Out</Button></p>
+              }}><Icon type="logout" />Log Out</Button></p>
             </Row>
           </Header>
 
@@ -304,6 +304,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/project/:projectname`} component={Files} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
+                
               </Content>
             </Layout>
           </Layout>
