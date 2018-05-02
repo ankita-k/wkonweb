@@ -15,13 +15,15 @@ const Option = Select.Option;
 
 
 
+
 class BillList extends Component {
 
     state = {
         loading: false,
         visible: false,
         bills: [],
-        selectedId: ''
+        selectedId: '',
+        show: true, //loading-bar  
     }
     showModal = () => {
         this.setState({
@@ -42,7 +44,7 @@ class BillList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            clientlist: [],
+            billerlist: [],
             show: true, //loading-bar        
             selectedId: '',  //FOR SELECT CLIENT ROW ID
             searchedBill: [],
@@ -134,6 +136,7 @@ class BillList extends Component {
         }
     }
     componentDidMount() {
+        console.log(this.props)
         this.getBills();
 
     }
@@ -141,7 +144,9 @@ class BillList extends Component {
 
     // get billlist
     getBills = () => {
+        this.setState({show:true})
         this.props.billlist(this.state.userId).then((result) => {
+            this.setState({ show: false });
             console.log(result);
             if (!result.error) {
                 this.setState({ bills: result.result })
@@ -175,7 +180,7 @@ class BillList extends Component {
             }
 
         }, err => {
-
+            this.setState({ show: false });
         })
     }
     //edit bill
@@ -216,18 +221,18 @@ class BillList extends Component {
         return (
 
             <div className="clientListdiv">
-                {/* {this.state.show == true ? <div className="loader">
+               {this.state.show == true ? <div className="loader">
           <Loader className="ldr" fullPage loading />
-        </div> : ""} */}
+        </div> : ""}
 
-                {/* <Loading
+                <Loading
           show={this.state.show}
           color="red"
           showSpinner={false}
-        /> */}
+        />
                 <h1 className="clientList">BILL LIST</h1>
                 <Row>
-                    <div className="addButton clientadd">
+                    <div className="addButton billeradd">
                         <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
                     </div>
                 </Row>

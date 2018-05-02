@@ -16,7 +16,8 @@ class ClientComponent extends Component {
         this.state = {
             countrylist: [],
             show: false,  //loading-bar
-            clientEdit: false
+            clientEdit: false,
+            showLoader: false,
         }
     }
 
@@ -71,6 +72,7 @@ class ClientComponent extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.setState({ show: true });
+        this.setState({showLoader: true});
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log(values)
@@ -87,6 +89,7 @@ class ClientComponent extends Component {
                     }
                     console.log('edshgj')
                     this.props.updateclient(data, this.props.location.data.data._id).then(data => {
+                        this.setState({showLoader: false});
                         console.log(data)
                         if (!data.error) {
                             this.props.opentoast('success', 'Client Updated Successfully!');
@@ -111,6 +114,7 @@ class ClientComponent extends Component {
                         domain: values.domain
                     }
                     this.props.createClient(data).then(result => {
+                        this.setState({showLoader: false});
                         this.setState({ show: false });
                         console.log(result);
                         if (!result.error) {
@@ -122,6 +126,7 @@ class ClientComponent extends Component {
                         }
                     }, err => {
                         this.setState({ show: false });
+                        this.setState({showLoader: false});
                         this.props.opentoast('warning', 'Client Not Added Successfully!');
                     })
                 }
@@ -321,7 +326,7 @@ class ClientComponent extends Component {
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button" >Save</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
                             </div>
                         </FormItem>

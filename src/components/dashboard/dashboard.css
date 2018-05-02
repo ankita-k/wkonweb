@@ -37,6 +37,16 @@ button.ant-btn.wkonlogout {
   text-transform: capitalize;
   margin-left: 11em;
 }
+p.welcomeUser {
+  margin-top: 2em;
+  padding-left: 2em;
+}
+.logouser {
+  width: 20px;
+  margin-right: 4px;
+  vertical-align: text-top;
+  height: 20px;
+}
 .header {
   padding: 0 50px 0 25px;
   
@@ -66,8 +76,8 @@ button.ant-btn.wkonlogout {
     }
     .logo {
       width: 120px;
-      height: 31px;
-      background: rgba(255,255,255,.2);
+      height: auto;
+      background: none;
       margin: 0;
       float: left;
   }
@@ -89,7 +99,7 @@ button.ant-btn.wkonlogout {
     .mobilenavbar {
       position: absolute;
       z-index: 99;
-      height: 100vh;
+      height: auto;
       width: 100%;
       /* background: rgba(0, 0, 0, 0.47); */
     }

@@ -95,5 +95,8 @@ button.ant-btn.cardbuttonSave.login-form-button {
     .innercardContent {
         width: 100% !important;
     }
+    .inputForminfo {
+        padding: 1em 1em 0 1em;
+    }
 }
 /* ResponsiveNewInformation  */
