@@ -313,7 +313,7 @@ class ClientList extends Component {
           color="red"
           showSpinner={false}
         />
-        <h1 className="clientList">CLIENT LIST</h1>
+        <h1 className="clientList">Client List</h1>
         <Row>
           <div className="addButton clientadd">
             <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>

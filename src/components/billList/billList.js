@@ -233,13 +233,13 @@ class BillList extends Component {
           color="red"
           showSpinner={false}
         />
-                <h1 className="clientList">BILL LIST</h1>
+                <h1 className="clientList">Bill List</h1>
                 <Row>
                     <div className="addButton billeradd">
                         <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
                     </div>
-                </Row>
-                <Row>
+                {/* </Row>
+                <Row> */}
                     <div className="AllProjects">
                         <Search className="SearchValue"
                             placeholder="input search text"
