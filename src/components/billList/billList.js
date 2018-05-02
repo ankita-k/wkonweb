@@ -242,7 +242,7 @@ class BillList extends Component {
                 <Row>
                     <div className="AllProjects">
                         <Search className="SearchValue"
-                            placeholder="Search by BDE,Email,Company,Account,Status"
+                            placeholder="BDE,Email,Company,Account,Status"
                             onSearch={(value) => { this.filterBill(value) }}
                             style={{ width: 200 }}
                             onChange={(e) => { this.showallList(e.target.value) }}
