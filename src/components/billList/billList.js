@@ -206,7 +206,7 @@ class BillList extends Component {
     }
 
     // // SEACRH BILL LIST ACCORDING TO INPUT(EMAIL) 
-    searchEmail = (e) => {
+    filterBill = (e) => {
         let newarray = this.state.bills.filter(item => {
             return (item.email.toLowerCase().indexOf(e.toLowerCase()) > -1) ||(item.BDE.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.company.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.paypalAccountName.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.status.toLowerCase().indexOf(e.toLowerCase()) > -1)
 
@@ -242,8 +242,8 @@ class BillList extends Component {
                 <Row>
                     <div className="AllProjects">
                         <Search className="SearchValue"
-                            placeholder="input search text"
-                            onSearch={(value) => { this.searchEmail(value) }}
+                            placeholder="Search by BDE,Email,Company,Account,Status"
+                            onSearch={(value) => { this.filterBill(value) }}
                             style={{ width: 200 }}
                             onChange={(e) => { this.showallList(e.target.value) }}
                             enterButton
