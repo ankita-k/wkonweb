@@ -259,18 +259,21 @@ class Dashboard extends Component {
                     </Menu.Item>
                   </SubMenu> : '' : ''}
 
-                {/* {this.state.userrole?this.state.userrole== "admin" ?  to be uncommented */}
+                {this.state.userrole?this.state.userrole== "admin" ||"Sales"? 
                 <SubMenu key="bill" title={<span><Icon type="solution" />Bill Managements</span>} subMenuCloseDelay={0.1}>
-                  <Menu.Item key="create_bill">
-                    <span>Create Bill</span>
-                    <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
-                  </Menu.Item>
+                 {
+                   this.state.userrole=="Sales"?
+                   <Menu.Item key="create_bill">
+                   <span>Create Bill</span>
+                   <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
+                 </Menu.Item>:''
+                 }
                   <Menu.Item key="bill_list">
                     <span>Bill List</span>
                     <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink>
                   </Menu.Item>
                 </SubMenu>
-                {/* : '':''}  to be uncommented */}
+                : '':''} 
                 {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
                 <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item> */}
 
