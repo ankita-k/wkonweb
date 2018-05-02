@@ -320,7 +320,7 @@ render() {
                                     })(
                                         <Select className="statuspipeline"
                                             placeholder="Choose Role"
-                                            onChange={this.selectStatus}
+                                            // onChange={this.selectStatus}
                                             showSearch
                                         >
                                             {this.state.developerarray.map((item, index) => {
