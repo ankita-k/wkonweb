@@ -304,6 +304,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/project/:projectname`} component={Files} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
+                
               </Content>
             </Layout>
           </Layout>
