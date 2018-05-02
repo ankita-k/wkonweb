@@ -1,17 +1,26 @@
 
-
+.innercardContenta .ant-table-body{
+    /* width: 1300px !important; */
+  }
 button.ant-btn.edit {
     background: transparent;
     color: #81d2ff;
     border: none;
     padding: 0;
 }
+.btns .ant-col-lg-8 {
+    width: auto;
+}
 button.ant-btn.delete {
     background: transparent;
     color: #ff8181;
     border: none;
-    margin-left: 0;
-    
+    padding-left: 14px;
+    width: 10px;
+}
+button.ant-btn.view {
+    background: transparent;
+    border: none;
 }
 .scoping .ant-select-selection__rendered {
     color: rgb(58, 56, 56);

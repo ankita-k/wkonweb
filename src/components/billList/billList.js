@@ -58,63 +58,63 @@ class BillList extends Component {
                 key: 'BDE',
 
             }, {
-                title: 'balance',
+                title: 'Balance',
                 dataIndex: 'balance',
                 key: 'balance',
             }, {
-                title: 'billNumber',
+                title: 'BillNumber',
                 dataIndex: 'billNumber',
                 key: 'billNumber',
             }, {
-                title: 'billingDate',
+                title: 'BillingDate',
                 dataIndex: 'billingDate',
                 key: 'billingDate',
             }, {
-                title: 'client',
+                title: 'Client',
                 dataIndex: 'client',
                 key: 'client',
             }, {
-                title: 'company',
+                title: 'Company',
                 dataIndex: 'company',
                 key: 'company',
             }, {
-                title: 'currency',
+                title: 'Currency',
                 dataIndex: 'currency',
                 key: 'currency',
             }, {
-                title: 'email',
+                title: 'Email',
                 dataIndex: 'email',
                 key: 'email',
             }, {
-                title: 'paypalAccountName',
+                title: 'PaypalAccountName',
                 dataIndex: 'paypalAccountName',
                 key: 'paypalAccountName',
             }, {
-                title: 'paypalBillNumber',
+                title: 'PaypalBillNumber',
                 dataIndex: 'paypalBillNumber',
                 key: 'paypalBillNumber',
             }, {
-                title: 'projectCost',
+                title: 'ProjectCost',
                 dataIndex: 'projectCost',
                 key: 'projectCost',
             }, {
-                title: 'projectName',
+                title: 'ProjectName',
                 dataIndex: 'projectName',
                 key: 'projectName',
             }, {
-                title: 'receivedAmount',
+                title: 'ReceivedAmount',
                 dataIndex: 'receivedAmount',
                 key: 'receivedAmount',
             }, {
-                title: 'receivedDate',
+                title: 'ReceivedDate',
                 dataIndex: 'receivedDate',
                 key: 'receivedDate',
             }, {
-                title: 'status',
+                title: 'Status',
                 dataIndex: 'status',
                 key: 'status',
             }, {
-                title: 'type',
+                title: 'Type',
                 dataIndex: 'type',
                 key: 'type',
             }, {
@@ -156,23 +156,23 @@ class BillList extends Component {
                 var data = result.result;
                 data.map(function (item, index) {
                     return data[index] = {
-                        BDE: item.BDE,
-                        balance: item.balance,
-                        billNumber: item.billNumber,
-                        billingDate: moment(item.billingDate).format("ll"),
-                        client: item.client?item.client.name:'',
-                        client1:item.client?item.client._id:'',
-                        company: item.company,
-                        currency: item.currency,
-                        email: item.email,
-                        paypalAccountName: item.paypalAccountName,
-                        paypalBillNumber: item.paypalBillNumber,
-                        projectCost: item.projectCost,
-                        projectName: item.projectName.name,
-                        receivedAmount: item.receivedAmount,
-                        receivedDate: moment(item.receivedDate).format("ll") ,
-                        status: item.status,
-                        type: item.type,
+                        BDE: item.BDE?item.BDE:"-",
+                        balance: item.balance?item.balance:"-",
+                        billNumber: item.billNumber?item.billNumber:"-",
+                        billingDate: moment(item.billingDate).format("ll")?moment(item.billingDate).format("ll"):"-",
+                        client: item.client?item.client.name:'-',
+                        client1:item.client?item.client._id:'-',
+                        company: item.company?item.company:"-",
+                        currency: item.currency?item.currency:"-",
+                        email: item.email?item.email:"-",
+                        paypalAccountName: item.paypalAccountName?item.paypalAccountName:"-",
+                        paypalBillNumber: item.paypalBillNumber?item.paypalBillNumber:"-",
+                        projectCost: item.projectCost?item.projectCost:"-",
+                        projectName: item.projectName.name?item.projectName.name:"-",
+                        receivedAmount: item.receivedAmount?item.receivedAmount:"-",
+                        receivedDate: moment(item.receivedDate).format("ll")?moment(item.receivedDate).format("ll"):"-" ,
+                        status: item.status?item.status:"-",
+                        type: item.type?item.type:"-",
                         key: Math.random() * 1000000000000000000,
                         _id: item._id
                     }
@@ -206,7 +206,7 @@ class BillList extends Component {
     }
 
     // // SEACRH BILL LIST ACCORDING TO INPUT(EMAIL) 
-    filterBill = (e) => {
+    searchFilter = (e) => {
         let newarray = this.state.bills.filter(item => {
             return (item.email.toLowerCase().indexOf(e.toLowerCase()) > -1) ||(item.BDE.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.company.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.paypalAccountName.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.status.toLowerCase().indexOf(e.toLowerCase()) > -1)
 
@@ -233,17 +233,17 @@ class BillList extends Component {
           color="red"
           showSpinner={false}
         />
-                <h1 className="clientList">BILL LIST</h1>
+                <h1 className="clientList">Bill List</h1>
                 <Row>
                     <div className="addButton billeradd">
                         <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
                     </div>
-                </Row>
-                <Row>
+                {/* </Row>
+                <Row> */}
                     <div className="AllProjects">
                         <Search className="SearchValue"
-                            placeholder="BDE,Email,Company,Account,Status"
-                            onSearch={(value) => { this.filterBill(value) }}
+                            placeholder="input search text"
+                            onSearch={(value) => { this.searchFilter(value) }}
                             style={{ width: 200 }}
                             onChange={(e) => { this.showallList(e.target.value) }}
                             enterButton

@@ -32,7 +32,7 @@ class NewProject extends Component {
             techsValue: [],
             value: [],
             fetching: false,
-           
+            editClient:false
         }
     
     }
@@ -342,10 +342,7 @@ class NewProject extends Component {
                     color="red"
                     showSpinner={false}
                 />
-
-                <Card className="innercardContent cardProject" bordered={false}>
-                    {/* --NewProject details-- */}
-                    <div className="newCustomerform">
+<div className="">
 
                         {(this.state.editClient == true) ?
                             <h1 className="NewCustomer">Edit Project</h1> : <h1 className="NewCustomer">New Project</h1>
@@ -353,6 +350,9 @@ class NewProject extends Component {
 
                         {/* <Divider dashed className="underLine" /> */}
                     </div>
+                <Card className="innercardContent cardProject" bordered={false}>
+                    {/* --NewProject details-- */}
+                    
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="inputForminfo informationProject">
                             <div className="spaceLess">

@@ -193,8 +193,14 @@ button.ant-btn.delete i.anticon.anticon-delete {
         overflow-x: scroll;
     }
     .innercardContenta .ant-table-body{
-       width: 2200px;
+       /* width: 2200px; */
     }
+    .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+        padding: 16px 16px;
+        word-break: normal;
+    }
+    
+    
 
     @media (min-width: 320px) and (max-width: 767px) {
 
