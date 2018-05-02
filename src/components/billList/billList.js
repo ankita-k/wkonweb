@@ -10,6 +10,7 @@ import { Select } from 'antd';
 import warning from '../../Images/war.png';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
+import moment from 'moment';
 const Search = Input.Search;
 const Option = Select.Option;
 
@@ -144,6 +145,7 @@ class BillList extends Component {
     // get billlist
     getBills = () => {
         this.setState({show:true})
+        console.log(this.state.userId)
         this.props.billlist(this.state.userId).then((result) => {
             this.setState({show:false})
             console.log(result);
@@ -156,17 +158,18 @@ class BillList extends Component {
                         BDE: item.BDE,
                         balance: item.balance,
                         billNumber: item.billNumber,
-                        billingDate: item.billingDate,
-                        client: item.client,
+                        billingDate: moment(item.billingDate).format("ll"),
+                        client: item.client?item.client.name:'',
+                        client1:item.client?item.client._id:'',
                         company: item.company,
                         currency: item.currency,
                         email: item.email,
                         paypalAccountName: item.paypalAccountName,
                         paypalBillNumber: item.paypalBillNumber,
                         projectCost: item.projectCost,
-                        projectName: item.projectName,
+                        projectName: item.projectName.name,
                         receivedAmount: item.receivedAmount,
-                        receivedDate: item.receivedDate,
+                        receivedDate: moment(item.receivedDate).format("ll") ,
                         status: item.status,
                         type: item.type,
                         key: Math.random() * 1000000000000000000,
@@ -224,11 +227,11 @@ class BillList extends Component {
           <Loader className="ldr" fullPage loading />
         </div> : ""} */}
 
-                {/* <Loading
+            <Loading
           show={this.state.show}
           color="red"
           showSpinner={false}
-        /> */}
+        />
                 <h1 className="clientList">BILL LIST</h1>
                 <Row>
                     <div className="addButton clientadd">
