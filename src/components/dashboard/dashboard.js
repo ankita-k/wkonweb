@@ -11,6 +11,7 @@ import UserManagement from '../UserManagement/UserManagement';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import brandlogo from '../../Images/wkonlogo.png';
+import userlogo from '../../Images/userprofile.png';
 import BillForm from '../billForm/billForm';
 import BillList from '../billList/billList';
 import Userlist from '../Userlist/Userlist';
@@ -141,66 +142,73 @@ class Dashboard extends Component {
               }}>Log Out</Button></p>
             </Row>
           </Header>
-          
-        {/* Mobile navbar */}
-        <div className="mobilenavbar" lg={0}>
-          <div className="navbarHeader">
-            <img className="logo" src={brandlogo} />
-            <Button onClick={this.toggleCollapsed}>
-              <Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} />
-            </Button>
+
+          {/* Mobile navbar */}
+          <div className="mobilenavbar" lg={0}>
+            <div className="navbarHeader">
+              <img className="logo" src={brandlogo} />
+              <Button onClick={this.toggleCollapsed}>
+                <Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'} />
+              </Button>
+            </div>
+            <Menu
+              defaultSelectedKeys={['1']}
+              defaultOpenKeys={['sub1']}
+
+              mode="inline"
+              theme=""
+              inlineCollapsed={this.state.collapsed}
+            >  
+            <p className="welcomeUser"> <img className="logouser" src={userlogo} />Welcome User</p>
+              <SubMenu key="client" title={<span><Icon type="usergroup-add" />Clients</span>} subMenuCloseDelay={0.1}>
+                <Menu.Item key="create_client">
+                  <span>Client Create</span>
+                  <NavLink to="../dashboard/clientcreate" activeClassName="active"></NavLink>
+                </Menu.Item>
+                <Menu.Item key="client_list">
+                  <span>Client List</span>
+                  <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
+                </Menu.Item>
+              </SubMenu>
+              <SubMenu key="projects" title={<span><Icon type="file-text" /> Projects</span>} subMenuCloseDelay={0.1}>
+                <Menu.Item key="create_project">
+                  <span>Project Create</span>
+                  <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
+                </Menu.Item>
+                <Menu.Item key="project_list">
+                  <span>Project List</span>
+                  <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
+                </Menu.Item>
+              </SubMenu>
+              <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
+                <Menu.Item key="create_user">
+                  <span>Create User</span>
+                  <NavLink to="../dashboard/createuser" activeClassName="active"></NavLink>
+                </Menu.Item>
+                <Menu.Item key="user_list">
+                  <span>User List</span>
+                  <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
+                </Menu.Item>
+              </SubMenu>
+             
+              <SubMenu key="bill" title={<span><Icon type="file-text" />Bill Managements</span>} subMenuCloseDelay={0.1}>
+                <Menu.Item key="create_bill">
+                  <span>Create Bill</span>
+                  <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
+                </Menu.Item>
+                <Menu.Item key="bill_list">
+                  <span>Bill List</span>
+                  <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink>
+                </Menu.Item>
+              </SubMenu>
+              <Menu.Item key="bill_list">
+                  <span><Icon type="logout" /> Log Out</span>
+                </Menu.Item>
+
+              
+            </Menu>
           </div>
-          <Menu
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-          
-            mode="inline"
-            theme=""
-            inlineCollapsed={this.state.collapsed}
-          >
-        <SubMenu key="client" title={<span><Icon type="usergroup-add" />Clients</span>} subMenuCloseDelay={0.1}>
-                    <Menu.Item key="create_client">
-                      <span>Client Create</span>
-                      <NavLink to="../dashboard/clientcreate" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                    <Menu.Item key="client_list">
-                      <span>Client List</span>
-                      <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                  </SubMenu> 
-            <SubMenu key="projects" title={<span><Icon type="file-text" /> Projects</span>} subMenuCloseDelay={0.1}>
-                    <Menu.Item key="create_project">
-                      <span>Project Create</span>
-                      <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                    <Menu.Item key="project_list">
-                      <span>Project List</span>
-                      <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                  </SubMenu>
-            <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
-                    <Menu.Item key="create_user">
-                      <span>Create User</span>
-                      <NavLink to="../dashboard/createuser" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                    <Menu.Item key="user_list">
-                      <span>User List</span>
-                      <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                  </SubMenu> 
-            <SubMenu key="bill" title={<span><Icon type="solution" />Bill Management</span>} subMenuCloseDelay={0.1}>
-                    <Menu.Item key="create_bill">
-                      <span>Create Bill</span>
-                      <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                    <Menu.Item key="bill_list">
-                      <span>Bill List</span>
-                      <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                  </SubMenu> 
-          </Menu>
-        </div>
-        {/* Mobile navbar */}
+          {/* Mobile navbar */}
           <Layout>
             <Sider width={200} style={{ background: '#fff' }} className="siderDisplay">
               <Menu
@@ -251,7 +259,7 @@ class Dashboard extends Component {
                   </SubMenu> : '' : ''}
 
                 {/* {this.state.userrole?this.state.userrole== "admin" ?  to be uncommented */}
-                <SubMenu key="bill" title={<span>Bill Management</span>} subMenuCloseDelay={0.1}>
+                <SubMenu key="bill" title={<span><Icon type="solution" />Bill Managements</span>} subMenuCloseDelay={0.1}>
                   <Menu.Item key="create_bill">
                     <span>Create Bill</span>
                     <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
