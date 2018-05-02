@@ -21,7 +21,8 @@ class BillList extends Component {
         loading: false,
         visible: false,
         bills: [],
-        selectedId: ''
+        selectedId: '',
+        show: true, //loading-bar  
     }
     showModal = () => {
         this.setState({
@@ -141,7 +142,9 @@ class BillList extends Component {
 
     // get billlist
     getBills = () => {
+        this.setState({show:true})
         this.props.billlist(this.state.userId).then((result) => {
+            this.setState({show:false})
             console.log(result);
             if (!result.error) {
                 this.setState({ bills: result.result })

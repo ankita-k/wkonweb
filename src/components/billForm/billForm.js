@@ -33,28 +33,28 @@ class BillForm extends Component {
 
 
     componentDidMount() {
-
+        console.log(this.props);
         if (this.props.location.data) {
             console.log(this.props.location.data.data);
-            this.props.form.setFieldsValue({
-                ['ProjectName']: this.props.location.data.data.projectName,
-                ['clientName']: this.props.location.data.data.client,
-                ['CompanyName']: this.props.location.data.data.company,
-                ['status']: this.props.location.data.data.status,
-                ['type']: this.props.location.data.data.type,
-                ['billingdate']: this.props.location.data.data.billingDate ? moment(this.props.location.data.data.billingDate) : '',
-                ['Paybillno']: this.props.location.data.data.paypalBillNumber,
-                ['billno']: this.props.location.data.data.billNumber,
-                ['bdename']: this.props.location.data.data.BDE,
-                ['email']: this.props.location.data.data.email,
-                ['projectcost']: this.props.location.data.data.projectCost,
-                ['paypalaccount']: this.props.location.data.data.paypalAccountName,
-                ['amountrecord']: this.props.location.data.data.receivedAmount,
-                ['balance']: this.props.location.data.data.balance,
-                ['receiveddate']: this.props.location.data.data.receivedDate ? moment(this.props.location.data.data.receivedDate) : '',
-                ['Currency']: this.props.location.data.data.currency,
-            });
-        }
+        this.props.form.setFieldsValue({
+            ['ProjectName']: this.props.location.data.data.projectName.name,
+            ['clientName']: this.props.location.data.data.client?this.props.location.data.data.client:'',
+            ['CompanyName']: this.props.location.data.data.company,
+            ['status']: this.props.location.data.data.status,
+            ['type']: this.props.location.data.data.type,
+            ['billingdate']: this.props.location.data.data.billingDate? moment(this.props.location.data.data.billingDate) : '',
+            ['Paybillno']: this.props.location.data.data.paypalBillNumber,
+            ['billno']: this.props.location.data.data.billNumber,
+            ['bdename']: this.props.location.data.data.BDE,
+            ['email']: this.props.location.data.data.email,
+            ['projectcost']: this.props.location.data.data.projectCost,
+            ['paypalaccount']: this.props.location.data.data.paypalAccountName,
+            ['amountrecord']: this.props.location.data.data.receivedAmount,
+            ['balance']: this.props.location.data.data.balance,
+             ['receiveddate']: this.props.location.data.data.receivedDate? moment(this.props.location.data.data.receivedDate) : '',
+            ['Currency']: this.props.location.data.data.currency,
+        });
+    }
         console.log('billform component did mount');
         this.projectList();
 
@@ -82,7 +82,9 @@ class BillForm extends Component {
 
             if (!err) {
                 console.log('Received values of form: ', values);
+                console.log(this.props.location.data.data._id)
                 if (this.props.location.data.data) {
+                    debugger;
                     let data = {
                         userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
                         billingDate: values.billingdate ? values.billingdate._d : '',
@@ -94,16 +96,17 @@ class BillForm extends Component {
                         company: values.CompanyName,
                         paypalAccountName: values.paypalaccount,
                         email: values.email,
-                        projectName: values.ProjectName,
-                        projectCost: values.projectcost,
-                        receivedAmount: values.amountrecord,
-                         balance: values.balance,
+                        ProjectName: values.ProjectName,
+                        projectCost: parseInt(values.projectcost),
+                        receivedAmount:parseInt( values.amountrecord),
+                         balance: parseInt(values.balance),
                         currency: values.Currency,
                         receivedDate: values.receiveddate ? values.receiveddate._d :'',
                         status: values.status,
                     }
                     console.log(data);
                     this.props.actions.editabelbill(data, this.props.location.data.data._id).then(data => {
+                        debugger;
                         console.log(data)
                         if (!data.error) {
                             // this.props.opentoast('success', 'Bill Updated Successfully!');
