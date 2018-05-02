@@ -25,9 +25,9 @@ class UserManagement extends Component {
             tag: ['Vertical Lead', 'Manager'],
             tagValue: [],
             value: [],
-            // disabletag: true,
             fetching: false,
             RoleDeveloper: "",
+            disabletag: true,
             
 
         }
@@ -41,9 +41,17 @@ class UserManagement extends Component {
         if (this.props.location.userData) {
             this.setState({ userEdit: true })
             if(this.props.location.userData.role=="Developer"){
-            this.setState({ RoleDeveloper:this.props.location.userData.role })}
+            // this.setState({ RoleDeveloper:this.props.location.userData.role })
+           
+            this.setState({ disabletag: false })}
+
+            
+
             else{
-                this.setState({RoleDeveloper:''})
+                // this.setState({RoleDeveloper:''})
+            
+                this.setState({ disabledtag: true })
+                
             }
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.userData.name,
@@ -51,12 +59,14 @@ class UserManagement extends Component {
                 ['phone']: this.props.location.userData.phoneNumber,
                 ['password']: this.props.location.userData.password,
                 ['role']: this.props.location.userData.role,
-                ['managers']: this.props.location.userData.manager ? this.props.location.userData.manager._id : ''
+                ['managers']: this.props.location.userData.manager ? this.props.location.userData.manager._id : '',
+                ['tags']:this.props.location.userData.tags
             });
             console.log(this.props.form)
 
         }
     }
+    
     //USER ROLE
     getDevelopersList = (role) => {
         this.props.findByRole('Developer').then(response => {
@@ -145,11 +155,14 @@ class UserManagement extends Component {
         console.log(value);
         if (value == "Developer") {
             this.setState({ RoleDeveloper: value })
+            this.setState({ disabletag: false })
+            
             console.log(this.state.RoleDeveloper);
         }
         else {
             this.setState({RoleDeveloper:''})
-            // this.setState({RoleSales:value})
+            this.setState({ disabletag: true })
+           // this.setState({RoleSales:value})
            // console.log(this.state.RoleSales);
 
         }
@@ -174,7 +187,8 @@ handleSubmit = (e) => {
                     phoneNumber: values.phone,
                     email: values.email,
                     name: values.name,
-                    manager: values.managers
+                    manager: values.managers,
+                    tags:values.tags
                 }
                 console.log(user)
                 this.props.editUser(user, this.props.location.userData._id).then(response => {
@@ -202,7 +216,8 @@ handleSubmit = (e) => {
                     phoneNumber: values.phone,
                     role: values.role,
                     password: values.password,
-                    manager: values.managers
+                    manager: values.managers,
+                    tags:values.tags
                 }
                 this.props.createUser(data).then(result => {
                     this.setState({ showLoader: false });
@@ -307,8 +322,9 @@ render() {
                                     {getFieldDecorator('role', {
                                         rules: [{ required: true, message: 'Please select your role!' }],
                                     })(
-                                        <Select className="statuspipeline"
-
+                                        <Select className="statuspipeline "
+                                       
+                                        // visibility="hidden;"
                                             placeholder="Choose Role"
                                             onChange={this.selectStatus}
                                         >
@@ -327,7 +343,7 @@ render() {
                                     })(
                                         <Select className="statuspipeline"
                                             placeholder="Choose Role"
-                                            onChange={this.selectStatus}
+                                            // onChange={this.selectStatus}
                                             showSearch
                                         >
                                             {this.state.developerarray.map((item, index) => {
@@ -350,13 +366,13 @@ render() {
                                 </FormItem>
                             </Col>
                         </Row>
-                        {this.state.RoleDeveloper == "Developer" ?
+                        {/* {this.state.RoleDeveloper == "Developer" ? */}
                             <Row>
 
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem className="tag" label="Tag">
-                                        {getFieldDecorator('tag', {
-                                            rules: [{ required: true, message: 'please tag !' }],
+                                        {getFieldDecorator('tags', {
+                                            rules: [{ required: true, message: 'please select the  tag !' }],
                                         })(
                                             <Select
                                                 mode="multiple"
@@ -364,22 +380,24 @@ render() {
                                                 placeholder="Select Tag"
                                                 notFoundContent={fetching ? <Spin size="small" /> : null}
                                                 filterOption={false}
-                                                
+                                                disabled={this.state.disabletag}
                                                 onSearch={this.searchTag}
                                                 onChange={this.handleChange}
                                                 style={{ width: '100%' }}
+                                                // value={value}
 
                                         >
-                                                {tagArray.map(d =>
-                                                    <Option value={d}>{d}</Option>
-                                                )}
+                                                {/* {tagArray.map(d => */}
+                                                    <Option value="VerticalLead">Vertical Lead</Option>
+                                                    <Option value="Manager">Manager</Option>
+                                                {/* )} */}
 
                                             </Select>
                                             )}
                                     </FormItem>
                                 </Col>
                             </Row>
-                            : ""}
+                            {/* : ""} */}
                         
                     </div>
                     <FormItem>
@@ -397,6 +415,7 @@ render() {
     );
 }
 }
+
 const mapStateToProps = (state) => {
     return state
 }

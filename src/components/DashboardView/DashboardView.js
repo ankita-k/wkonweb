@@ -295,7 +295,7 @@ class DashboardView extends Component {
                 />
                 {/* dashboardviewcustomer */}
                 <div className="dashboardView">
-                    <h1 className="customer">CLIENTS</h1>
+                    <h1 className="customer">Clients</h1>
                     <Row>
                         <div className="addButton btnplace">
                             <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
@@ -339,7 +339,7 @@ class DashboardView extends Component {
                 {/* dashboardviewcustomer */}
                 {/* Project section start */}
                 <div className="dashboardView">
-                    <h1 className="customer">PROJECTS</h1>
+                    <h1 className="customer">Projects</h1>
                     <Row>
                         <div className="addButton btnplace">
                             <Button onClick={() => { this.props.history.push('/dashboard/newproject') }}>+</Button>
@@ -377,11 +377,11 @@ class DashboardView extends Component {
                 {/* Project section end */}
                 {/* Recentactivity start*/}
                 <div className="recentactivity">
-                    <h1>RECENT ACTIVITY</h1>
+                    <h1>Recent Activity</h1>
 
                     <div className="firstman1">
                         <Row>
-                            <Col lg={11} className="firstman">
+                            <Col lg={7} className="firstman">
                                 <Row className="padng20">
                                     <Col lg={4} className="resalign">
                                         <img src={man} />
@@ -395,8 +395,21 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
-                            <Col lg={11} className="firstman">
+                          
+                            <Col lg={7} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey R.Eshelman our recently converted customer.</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                            <Col lg={7} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
                                         <img src={man} /></Col>
@@ -412,9 +425,10 @@ class DashboardView extends Component {
                         </Row>
 
                     </div>
+                  
                     <div className="firstman1">
                         <Row>
-                            <Col lg={11} className="firstman">
+                            <Col lg={7} className="firstman">
                                 <Row className="padng20">
                                     <Col lg={4} className="resalign">
                                         <img src={man} />
@@ -428,8 +442,21 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
-                            <Col lg={11} className="firstman">
+                          
+                            <Col lg={7} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey R.Eshelman our recently converted customer.</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                            <Col lg={7} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
                                         <img src={man} /></Col>
@@ -452,7 +479,7 @@ class DashboardView extends Component {
                 {/* Recentactivity end*/}
                 {/* payment area start*/}
                 <div className="recentactivity">
-                    <h1>PAYMENT</h1>
+                    <h1>Payment</h1>
 
                     <div className="firstman1">
                         <Row>
@@ -470,7 +497,7 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
+                           
                             <Col lg={11} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
@@ -503,7 +530,7 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
+                   
                             <Col lg={11} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">

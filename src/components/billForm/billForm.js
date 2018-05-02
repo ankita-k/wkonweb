@@ -25,8 +25,10 @@ class BillForm extends Component {
             userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
             projectlist: [],
             disableclient: false,
+            disableproject: false,
             filteredclient: [],
-            editBill: false
+            editBill: false,
+
         }
 
     }
@@ -36,25 +38,28 @@ class BillForm extends Component {
         console.log(this.props);
         if (this.props.location.data) {
             console.log(this.props.location.data.data);
-        this.props.form.setFieldsValue({
-            ['ProjectName']: this.props.location.data.data.projectName.name,
-            ['clientName']: this.props.location.data.data.client?this.props.location.data.data.client:'',
-            ['CompanyName']: this.props.location.data.data.company,
-            ['status']: this.props.location.data.data.status,
-            ['type']: this.props.location.data.data.type,
-            ['billingdate']: this.props.location.data.data.billingDate? moment(this.props.location.data.data.billingDate) : '',
-            ['Paybillno']: this.props.location.data.data.paypalBillNumber,
-            ['billno']: this.props.location.data.data.billNumber,
-            ['bdename']: this.props.location.data.data.BDE,
-            ['email']: this.props.location.data.data.email,
-            ['projectcost']: this.props.location.data.data.projectCost,
-            ['paypalaccount']: this.props.location.data.data.paypalAccountName,
-            ['amountrecord']: this.props.location.data.data.receivedAmount,
-            ['balance']: this.props.location.data.data.balance,
-             ['receiveddate']: this.props.location.data.data.receivedDate? moment(this.props.location.data.data.receivedDate) : '',
-            ['Currency']: this.props.location.data.data.currency,
-        });
-    }
+            this.setState({ disableclient: true });
+            this.setState({ disableproject: true });
+            this.setState({editBill:true})
+            this.props.form.setFieldsValue({
+                ['ProjectName']: this.props.location.data.data.projectName,
+                ['clientName']: this.props.location.data.data.client ? this.props.location.data.data.client : '',
+                ['CompanyName']: this.props.location.data.data.company,
+                ['status']: this.props.location.data.data.status,
+                ['type']: this.props.location.data.data.type,
+                ['billingdate']: this.props.location.data.data.billingDate ? moment(this.props.location.data.data.billingDate) : '',
+                ['Paybillno']: this.props.location.data.data.paypalBillNumber,
+                ['billno']: this.props.location.data.data.billNumber,
+                ['bdename']: this.props.location.data.data.BDE,
+                ['email']: this.props.location.data.data.email,
+                ['projectcost']: this.props.location.data.data.projectCost,
+                ['paypalaccount']: this.props.location.data.data.paypalAccountName,
+                ['amountrecord']: this.props.location.data.data.receivedAmount,
+                ['balance']: this.props.location.data.data.balance,
+                ['receiveddate']: this.props.location.data.data.receivedDate ? moment(this.props.location.data.data.receivedDate) : '',
+                ['Currency']: this.props.location.data.data.currency,
+            });
+        }
         console.log('billform component did mount');
         this.projectList();
 
@@ -76,88 +81,93 @@ class BillForm extends Component {
     }
     // FUNCTION CALLED ON SAVE BUTTON
     save = (e) => {
-        this.setState({showLoader: true});
         e.preventDefault();
+        this.setState({showLoader: true});
+    
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
 
             if (!err) {
                 console.log('Received values of form: ', values);
-                // console.log(this.props.location.data.data._id)
-                // if (this.props.location.data.data) {
-                //     let data = {
-                //         userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
-                //         billingDate: values.billingdate ? values.billingdate._d : '',
-                //         paypalBillNumber: values.Paybillno,
-                //         billNumber: values.billno,
-                //         BDE: values.bdename,
-                //         type: values.type,
-                //         client: values.clientName,
-                //         company: values.CompanyName,
-                //         paypalAccountName: values.paypalaccount,
-                //         email: values.email,
-                //         ProjectName: values.ProjectName,
-                //         projectCost: parseInt(values.projectcost),
-                //         receivedAmount:parseInt( values.amountrecord),
-                //          balance: parseInt(values.balance),
-                //         currency: values.Currency,
-                //         receivedDate: values.receiveddate ? values.receiveddate._d :'',
-                //         status: values.status,
-                //     }
-                //     console.log(data);
-                //     this.props.actions.editabelbill(data, this.props.location.data.data._id).then(data => {
-                //         this.setState({showLoader: false});
-                //         console.log(data)
-                //         if (!data.error) {
-                //             // this.props.opentoast('success', 'Bill Updated Successfully!');
-                //             this.props.history.push('/dashboard/billlist')
-                //         }
-                //         else{
-                //             // this.props.opentoast('warning', data.message);
-                //         }
-                //     },
-                //      err => {
-                //         this.setState({ show: false });
-                //         // this.props.opentoast('warning', 'Bill Not Updated Successfully!');
-                //     })
-                // }
-            //    else{
-                let billdata = {
-                    userId: this.state.userId,
-                    billingDate: values.billingdate._d,
-                    paypalBillNumber: values.Paybillno,
-                    billNumber: values.billno,
-                    BDE: values.bdename,
-                    type: values.type,
-                    client: this.state.filteredclient[0]._id,
-                    company: values.CompanyName,
-                    paypalAccountName: values.paypalaccount,
-                    email: values.email,
-                    projectName: values.ProjectName,
-                    projectCost: parseInt(values.projectcost),
-                    receivedAmount: parseInt(values.amountrecord),
-                    balance: parseInt(values.balance),
-                    currency: values.Currency,
-                    receivedDate: values.receiveddate._d,
-                    status: values.status
+
+                if (this.props.location.data && this.props.location.data.data) {
+
+                    let data = {
+                        userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
+                        billingDate: values.billingdate ? values.billingdate._d : '',
+                        paypalBillNumber: values.Paybillno,
+                        billNumber: values.billno,
+                        BDE: values.bdename,
+                        type: values.type,
+                        client: this.props.location.data.data.client1,
+                        company: values.CompanyName,
+                        paypalAccountName: values.paypalaccount,
+                        email: values.email,
+                        ProjectName: values.ProjectName,
+                        projectCost: parseInt(values.projectcost),
+                        receivedAmount: parseInt(values.amountrecord),
+                        balance: parseInt(values.balance),
+                        currency: values.Currency,
+                        receivedDate: values.receiveddate ? values.receiveddate._d : '',
+                        status: values.status,
+                    }
+                    console.log(data);
+
+                    this.props.actions.editabelbill(data, this.props.location.data.data._id).then(data => {
+                        this.setState({showLoader: false});
+                        this.setState({show:false})
+                        console.log(data)
+                        if (!data.error) {
+                            this.props.actions.opentoast('success', 'Bill Updated Successfully!');
+                            this.props.history.push('/dashboard/billlist')
+                        }
+                        else {
+                            this.props.actions.opentoast('warning', data.message);
+                        }
+                    },
+                        err => {
+                            this.setState({ show: false });
+                            this.props.actions.opentoast('warning', 'Bill Not Updated Successfully!');
+                        })
                 }
-                console.log(billdata)
-                this.props.actions.billCreate(billdata).then(response => {
-                    this.setState({showLoader: false});
-                    this.setState({ show: false });
-                    if (!response.error) {
-                        this.props.history.push('/dashboard/billlist');
-                        this.props.actions.opentoast('success', 'Bill Created Successfully!')
+                else {
+                    let billdata = {
+                        userId: this.state.userId,
+                        billingDate: values.billingdate._d,
+                        paypalBillNumber: values.Paybillno,
+                        billNumber: values.billno,
+                        BDE: values.bdename,
+                        type: values.type,
+                        client: this.state.filteredclient[0].client._id,
+                        company: values.CompanyName,
+                        paypalAccountName: values.paypalaccount,
+                        email: values.email,
+                        projectName: values.ProjectName,
+                        projectCost: parseInt(values.projectcost),
+                        receivedAmount: parseInt(values.amountrecord),
+                        balance: parseInt(values.balance),
+                        currency: values.Currency,
+                        receivedDate: values.receiveddate._d,
+                        status: values.status
                     }
-                    else {
+                    console.log(billdata)
+                    this.props.actions.billCreate(billdata).then(response => {
+                        console.log('bill created data', response)
+                        this.setState({ show: false });
+                        this.setState({showLoader: false});
+                        if (!response.error) {
+                            this.props.history.push('/dashboard/billlist');
+                            this.props.actions.opentoast('success', 'Bill Created Successfully!')
+                        }
+                        else {
+                            this.props.actions.opentoast('warning', 'Bill Creation Failed!')
+                        }
+                    }, err => {
+                        this.setState({ show: false });
+                        this.setState({showLoader: false});
                         this.props.actions.opentoast('warning', 'Bill Creation Failed!')
-                    }
-                }, err => {
-                    this.setState({ show: false });
-                    this.setState({ showLoader: false });
-                    this.props.actions.opentoast('warning', 'Bill Creation Failed!')
-                })
-            //    } 
+                    })
+                }
 
             }
         })
@@ -170,8 +180,9 @@ class BillForm extends Component {
 
             return d._id.toLowerCase().indexOf(id.toLowerCase()) > -1
         });
-
+        console.log(filteredValue)
         this.setState({ filteredclient: filteredValue })
+
         this.props.form.setFieldsValue({
             ['clientName']: filteredValue[0].client.name,
             ['email']: filteredValue[0].client.email,
@@ -199,16 +210,21 @@ class BillForm extends Component {
         const { fetching, techArray, value } = this.state;
         return (
             <div>
-                <Card className="innercardContent cardProject" bordered={false}>
-                    {/* --NewProject details-- */}
-                    <div className="newCustomerform">
+                 <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
+                     <div className="newCustomerform">
 
-                        {/* {(this.state.editBill == true) ?
+                        {(this.state.editBill == true) ?
                         <h1 className="NewCustomer">Edit Bill</h1> : <h1 className="NewCustomer">New Bill</h1>
-                    } */}
-                        <h1 className="NewCustomer">New Bill</h1>
+                    }
+                        {/* <h1 className="NewCustomer">New Bill</h1> */}
                         {/* <Divider dashed className="underLine" /> */}
                     </div>
+                <Card className="innercardContent cardProject" bordered={false}>
+                    {/* --NewProject details-- */}
                     <Form onSubmit={this.save} className="login-form">
                         <div className="inputForminfo informationProject">
                             <div className="spaceLess">
@@ -226,6 +242,7 @@ class BillForm extends Component {
                                                     placeholder="Project"
                                                     onChange={this.selectProject}
                                                     showSearch
+                                                    disabled={this.state.disableproject}
                                                 >
                                                     {this.state.projectlist.map((project, index) => {
                                                         return <Option key={index} value={project._id}>{project.name}</Option>
@@ -259,8 +276,8 @@ class BillForm extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
-                            
-                            <Col xs={24} sm={24} md={24} lg={12}>
+
+                                <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem label="Bill Status">
                                         {getFieldDecorator('status', {
                                             rules: [{ required: true, message: 'Please select Biiling status!' }],
@@ -281,58 +298,46 @@ class BillForm extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
-                                </Row>
+                            </Row>
                             <Row>
-                               
+
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem className="tech" label="Type">
                                         {getFieldDecorator('type', {
                                             rules: [{ required: true, message: 'Please input  Type!' }],
                                         })(
                                             <Select
-                                                // mode="multiple"
-                                                // labelInValue
-                                                // value={value}
                                                 placeholder="Select type"
-                                            // notFoundContent={fetching ? <Spin size="small" /> : null}
-                                            // filterOption={false}
-                                            // onSearch={this.searchTechnology}
-                                            // onChange={this.handleChange}
-                                            // style={{ width: '100%' }}
-
                                             >
-                                                {/* {techArray.map(d =>
-                                                    <Option value={d}>{d}</Option>
-                                                )} */}
-                                                <Option value="type1">New</Option>
-                                                <Option value="type2">Old</Option>
+                                                <Option value="New">New</Option>
+                                                <Option value="Old">Old</Option>
                                             </Select>
                                         )}
                                     </FormItem>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
-                                        <div className="startDate">
-                                            <p className="expecteDate">Billing Date :</p>
-                                            <FormItem
-                                                {...formItemLayout}
-                                            >
-                                                {getFieldDecorator('billingdate', {
-                                                    rules: [{ required: false, message: 'Please select billing date!' },
-                                                        // {
-                                                        //     validator: this.validatetoexpecend
-                                                        // }
-                                                    ]
-                                                })(
-                                                    <DatePicker />
-                                                )}
-                                            </FormItem>
-                                        </div>
-                                    </Col>
+                                    <div className="startDate">
+                                        <p className="expecteDate">Billing Date :</p>
+                                        <FormItem
+                                            {...formItemLayout}
+                                        >
+                                            {getFieldDecorator('billingdate', {
+                                                rules: [{ required: false, message: 'Please select billing date!' },
+                                                    // {
+                                                    //     validator: this.validatetoexpecend
+                                                    // }
+                                                ]
+                                            })(
+                                                <DatePicker />
+                                            )}
+                                        </FormItem>
+                                    </div>
+                                </Col>
                             </Row>
 
                             <div className="spaceLess">
                                 <Row>
-                                    
+
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="Pay Bill No">
                                             {getFieldDecorator('Paybillno', {
@@ -357,7 +362,7 @@ class BillForm extends Component {
                             </div>
                             <div className="spaceLess">
                                 <Row>
-                                    
+
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="BDE Name">
                                             {getFieldDecorator('bdename', {
@@ -386,7 +391,7 @@ class BillForm extends Component {
                             {/* **************ROW FOR EMAIL AND PROJECTCOST  STARTS*************** */}
                             <div className="spaceLess">
                                 <Row>
-                                    
+
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="Project Cost">
                                             {getFieldDecorator('projectcost', {
@@ -412,7 +417,7 @@ class BillForm extends Component {
                             {/* ********** ROW FOR PAYPALACCOUNT AND AMOUNT RECORD STARTS***************** */}
                             <div>
                                 <Row>
-                                    
+
 
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="Amount Record">
@@ -440,7 +445,7 @@ class BillForm extends Component {
                             {/* ************************ROW FOR BALANCE AND CREDIT RECORD STARTS************* */}
                             <div>
                                 <Row>
-                                    
+
 
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <div className="startDate">
@@ -493,7 +498,7 @@ class BillForm extends Component {
                             {/* *************ROW FOR CURRENCY STARTS*********** */}
                             <div>
                                 <Row>
-                                   
+
                                 </Row>
                             </div>
                             {/* **********ROW FOR CURRENCY ENDS*********** */}
