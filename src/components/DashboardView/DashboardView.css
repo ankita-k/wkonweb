@@ -92,6 +92,7 @@ button.ant-btn.allprojectbtn {
 @media (min-width: 320px) and (max-width: 767px) {
     .addButton button {
         float: left;
+        margin-right: -2em;
     }
     .cusTotal {
         width: 100%;

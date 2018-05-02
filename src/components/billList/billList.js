@@ -44,7 +44,7 @@ class BillList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            clientlist: [],
+            billerlist: [],
             show: true, //loading-bar        
             selectedId: '',  //FOR SELECT CLIENT ROW ID
             searchedBill: [],
@@ -136,6 +136,7 @@ class BillList extends Component {
         }
     }
     componentDidMount() {
+        console.log(this.props)
         this.getBills();
 
     }
@@ -231,7 +232,7 @@ class BillList extends Component {
         />
                 <h1 className="clientList">BILL LIST</h1>
                 <Row>
-                    <div className="addButton clientadd">
+                    <div className="addButton billeradd">
                         <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
                     </div>
                 </Row>
