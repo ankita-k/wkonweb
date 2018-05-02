@@ -6,6 +6,9 @@
     height: 43px;
     width: 100%;
 }
+.ant-layout-content {
+    padding: 15px !important;
+}
 .innercardContent.cardProject .ant-card-body {
     padding: 0;
 }
@@ -20,7 +23,7 @@
     /* margin-top: 7px; */
 }
 .innercardContent{
-    width:90% !important;
+    width:100% !important;
 }
 .innercardContent.cardProject h1.NewCustomer{
     margin: 10px 0 10px 27px;
