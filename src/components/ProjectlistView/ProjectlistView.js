@@ -279,7 +279,7 @@ class ProjectlistView extends Component {
           showSpinner={false}
         />
         <div className="projectlistheader">
-        <h1 className="clientList">PROJECT LIST</h1>
+        <h1 className="clientList">Project List</h1>
         <Row>
           <div className="AllProjects">
             <Search className="SearchValue"
