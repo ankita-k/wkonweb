@@ -1,10 +1,15 @@
 
-
+.innercardContenta .ant-table-body{
+    /* width: 1300px !important; */
+  }
 button.ant-btn.edit {
     background: transparent;
     color: #81d2ff;
     border: none;
     padding: 0;
+}
+.btns .ant-col-lg-8 {
+    width: auto;
 }
 button.ant-btn.delete {
     background: transparent;

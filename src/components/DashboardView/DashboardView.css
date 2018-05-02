@@ -66,6 +66,12 @@ h1.totalNumber {
     right: 0;
    
 }
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item{
+    background: none;
+}
+.ant-menu-item:active, .ant-menu-submenu-title:active{
+    background: none;
+}
 .scoping .ant-select-selection__rendered {
     color: rgb(58, 56, 56);
 }
@@ -75,13 +81,19 @@ h1.totalNumber {
     margin-bottom: 1em;
     border-radius: 50%;
     padding: 0px 0 8px 8px;
-    color: rgba(158, 158, 158, 0.8);
+    color: rgb(255, 255, 255);
     height: 42px;
     width: 42px;
+    -webkit-box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
     box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
     border: none;
     font-size: 14px;
     font-weight: 900;
+    background: #479ef0e5;
+}
+.addButton button:hover{
+    background: #2c72b4e5;
+    color: rgb(255, 255, 255);
 }
 button.ant-btn.allprojectbtn {
     color: rgba(62, 61, 61, 0.8);
