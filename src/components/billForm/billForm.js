@@ -215,9 +215,7 @@ class BillForm extends Component {
                     color="red"
                     showSpinner={false}
                 />
-                <Card className="innercardContent cardProject" bordered={false}>
-                    {/* --NewProject details-- */}
-                    <div className="newCustomerform">
+                     <div className="newCustomerform">
 
                         {(this.state.editBill == true) ?
                         <h1 className="NewCustomer">Edit Bill</h1> : <h1 className="NewCustomer">New Bill</h1>
@@ -225,6 +223,8 @@ class BillForm extends Component {
                         {/* <h1 className="NewCustomer">New Bill</h1> */}
                         {/* <Divider dashed className="underLine" /> */}
                     </div>
+                <Card className="innercardContent cardProject" bordered={false}>
+                    {/* --NewProject details-- */}
                     <Form onSubmit={this.save} className="login-form">
                         <div className="inputForminfo informationProject">
                             <div className="spaceLess">

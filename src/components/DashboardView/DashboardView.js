@@ -295,7 +295,7 @@ class DashboardView extends Component {
                 />
                 {/* dashboardviewcustomer */}
                 <div className="dashboardView">
-                    <h1 className="customer">CLIENTS</h1>
+                    <h1 className="customer">Clients</h1>
                     <Row>
                         <div className="addButton btnplace">
                             <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
@@ -339,7 +339,7 @@ class DashboardView extends Component {
                 {/* dashboardviewcustomer */}
                 {/* Project section start */}
                 <div className="dashboardView">
-                    <h1 className="customer">PROJECTS</h1>
+                    <h1 className="customer">Projects</h1>
                     <Row>
                         <div className="addButton btnplace">
                             <Button onClick={() => { this.props.history.push('/dashboard/newproject') }}>+</Button>
@@ -377,7 +377,7 @@ class DashboardView extends Component {
                 {/* Project section end */}
                 {/* Recentactivity start*/}
                 <div className="recentactivity">
-                    <h1>RECENT ACTIVITY</h1>
+                    <h1>Recent Activity</h1>
 
                     <div className="firstman1">
                         <Row>
@@ -479,7 +479,7 @@ class DashboardView extends Component {
                 {/* Recentactivity end*/}
                 {/* payment area start*/}
                 <div className="recentactivity">
-                    <h1>PAYMENT</h1>
+                    <h1>Payment</h1>
 
                     <div className="firstman1">
                         <Row>
