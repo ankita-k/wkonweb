@@ -10,7 +10,6 @@ import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
 import moment from 'moment'
 import * as actioncreators from '../../redux/action';
-
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const Option = Select.Option;
@@ -22,6 +21,7 @@ class BillForm extends Component {
         super(props);
         this.state = {
             show: false,   //FOR PROGRESS LOADING BAR
+            showLoader: false,
             userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
             projectlist: [],
             disableclient: false,
@@ -76,52 +76,52 @@ class BillForm extends Component {
     }
     // FUNCTION CALLED ON SAVE BUTTON
     save = (e) => {
+        this.setState({showLoader: true});
         e.preventDefault();
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
 
             if (!err) {
                 console.log('Received values of form: ', values);
-                console.log(this.props.location.data.data._id)
-                if (this.props.location.data.data) {
-                    debugger;
-                    let data = {
-                        userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
-                        billingDate: values.billingdate ? values.billingdate._d : '',
-                        paypalBillNumber: values.Paybillno,
-                        billNumber: values.billno,
-                        BDE: values.bdename,
-                        type: values.type,
-                        client: values.clientName,
-                        company: values.CompanyName,
-                        paypalAccountName: values.paypalaccount,
-                        email: values.email,
-                        ProjectName: values.ProjectName,
-                        projectCost: parseInt(values.projectcost),
-                        receivedAmount:parseInt( values.amountrecord),
-                         balance: parseInt(values.balance),
-                        currency: values.Currency,
-                        receivedDate: values.receiveddate ? values.receiveddate._d :'',
-                        status: values.status,
-                    }
-                    console.log(data);
-                    this.props.actions.editabelbill(data, this.props.location.data.data._id).then(data => {
-                        debugger;
-                        console.log(data)
-                        if (!data.error) {
-                            // this.props.opentoast('success', 'Bill Updated Successfully!');
-                            this.props.history.push('/dashboard/billlist')
-                        }
-                        else{
-                            // this.props.opentoast('warning', data.message);
-                        }
-                    },
-                     err => {
-                        this.setState({ show: false });
-                        // this.props.opentoast('warning', 'Bill Not Updated Successfully!');
-                    })
-                }
-               else{
+                // console.log(this.props.location.data.data._id)
+                // if (this.props.location.data.data) {
+                //     let data = {
+                //         userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
+                //         billingDate: values.billingdate ? values.billingdate._d : '',
+                //         paypalBillNumber: values.Paybillno,
+                //         billNumber: values.billno,
+                //         BDE: values.bdename,
+                //         type: values.type,
+                //         client: values.clientName,
+                //         company: values.CompanyName,
+                //         paypalAccountName: values.paypalaccount,
+                //         email: values.email,
+                //         ProjectName: values.ProjectName,
+                //         projectCost: parseInt(values.projectcost),
+                //         receivedAmount:parseInt( values.amountrecord),
+                //          balance: parseInt(values.balance),
+                //         currency: values.Currency,
+                //         receivedDate: values.receiveddate ? values.receiveddate._d :'',
+                //         status: values.status,
+                //     }
+                //     console.log(data);
+                //     this.props.actions.editabelbill(data, this.props.location.data.data._id).then(data => {
+                //         this.setState({showLoader: false});
+                //         console.log(data)
+                //         if (!data.error) {
+                //             // this.props.opentoast('success', 'Bill Updated Successfully!');
+                //             this.props.history.push('/dashboard/billlist')
+                //         }
+                //         else{
+                //             // this.props.opentoast('warning', data.message);
+                //         }
+                //     },
+                //      err => {
+                //         this.setState({ show: false });
+                //         // this.props.opentoast('warning', 'Bill Not Updated Successfully!');
+                //     })
+                // }
+            //    else{
                 let billdata = {
                     userId: this.state.userId,
                     billingDate: values.billingdate._d,
@@ -143,6 +143,7 @@ class BillForm extends Component {
                 }
                 console.log(billdata)
                 this.props.actions.billCreate(billdata).then(response => {
+                    this.setState({showLoader: false});
                     this.setState({ show: false });
                     if (!response.error) {
                         this.props.history.push('/dashboard/billlist');
@@ -153,9 +154,10 @@ class BillForm extends Component {
                     }
                 }, err => {
                     this.setState({ show: false });
+                    this.setState({ showLoader: false });
                     this.props.actions.opentoast('warning', 'Bill Creation Failed!')
                 })
-               } 
+            //    } 
 
             }
         })
@@ -197,12 +199,6 @@ class BillForm extends Component {
         const { fetching, techArray, value } = this.state;
         return (
             <div>
-                <Loading
-                    show={this.state.show}
-                    color="red"
-                    showSpinner={false}
-                />
-
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
                     <div className="newCustomerform">
@@ -306,7 +302,8 @@ class BillForm extends Component {
                                                 {/* {techArray.map(d =>
                                                     <Option value={d}>{d}</Option>
                                                 )} */}
-                                                <Option value="type1">type1</Option>
+                                                <Option value="type1">New</Option>
+                                                <Option value="type2">Old</Option>
                                             </Select>
                                         )}
                                     </FormItem>
@@ -496,7 +493,7 @@ class BillForm extends Component {
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/billlist') }} >Cancel</Button>
                             </div>
                         </FormItem>

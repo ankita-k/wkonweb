@@ -19,6 +19,7 @@ class UserManagement extends Component {
             developerarray: [],
             developers: [],
             show: false, //loading-bar
+            showLoader: false,
             userEdit: false
 
         }
@@ -98,6 +99,7 @@ class UserManagement extends Component {
     //sending user values
     handleSubmit = (e) => {
         this.setState({ show: true });
+        this.setState({showLoader: true});
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
@@ -113,6 +115,7 @@ class UserManagement extends Component {
                     }
                     console.log(user)
                     this.props.editUser(user, this.props.location.userData._id).then(response => {
+                        this.setState({showLoader: true});
                         this.setState({ show: false });
                         console.log(response);
                         if (!response.error) {
@@ -138,6 +141,7 @@ class UserManagement extends Component {
                         manager: values.managers
                     }
                     this.props.createUser(data).then(result => {
+                        this.setState({showLoader: true});
                         this.setState({ show: false });
                         console.log(result);
                         if (!result.error) {
@@ -146,9 +150,11 @@ class UserManagement extends Component {
                         }
                         else{
                             this.props.opentoast('warning', result.message);
+                            this.setState({showLoader: false});
                         }
                     }, err => {
                         this.setState({ show: false });
+                        this.setState({showLoader: false});
                         this.props.opentoast('warning', 'UserNot  Created  Successfully!');
                     })
                 }
@@ -282,7 +288,7 @@ class UserManagement extends Component {
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/Userlist') }}>Cancel</Button>
                             </div>
                         </FormItem>
