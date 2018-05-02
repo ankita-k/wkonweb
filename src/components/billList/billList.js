@@ -43,7 +43,7 @@ class BillList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            clientlist: [],
+            billerlist: [],
             show: true, //loading-bar        
             selectedId: '',  //FOR SELECT CLIENT ROW ID
             searchedBill: [],
@@ -135,6 +135,7 @@ class BillList extends Component {
         }
     }
     componentDidMount() {
+        console.log(this.props)
         this.getBills();
 
     }
@@ -218,7 +219,7 @@ class BillList extends Component {
         const columns = this.state.column;
         return (
 
-            <div className="clientListdiv">
+            <div className="billerListdiv">
                 {/* {this.state.show == true ? <div className="loader">
           <Loader className="ldr" fullPage loading />
         </div> : ""} */}
@@ -228,9 +229,9 @@ class BillList extends Component {
           color="red"
           showSpinner={false}
         /> */}
-                <h1 className="clientList">BILL LIST</h1>
+                <h1 className="billerlist">BILL LIST</h1>
                 <Row>
-                    <div className="addButton clientadd">
+                    <div className="addButton billeradd">
                         <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
                     </div>
                 </Row>

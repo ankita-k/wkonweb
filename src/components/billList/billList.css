@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Lato|Roboto');
  /* clientlist css*/
- .clientListdiv .ant-table-pagination.ant-pagination {
+ .billerListdiv .ant-table-pagination.ant-pagination {
     margin: 16px 17px;
 }
 .projectListdiv .ant-table-pagination.ant-pagination {
@@ -195,3 +195,13 @@ button.ant-btn.delete i.anticon.anticon-delete {
     .innercardContenta .ant-table-body{
        width: 2200px;
     }
+
+    @media (min-width: 320px) and (max-width: 767px) {
+
+    .billeradd button.ant-btn {
+        position: absolute;
+        right: 2em;
+    }
+    }
+
+

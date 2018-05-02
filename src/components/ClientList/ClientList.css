@@ -188,3 +188,20 @@ button.ant-btn.delete i.anticon.anticon-delete {
     .loader span {
         color: #fff !important;
     }
+
+    @media (min-width: 320px) and (max-width: 767px) {
+
+
+
+        .AllProjects button.ant-btn.allprojectbtn {
+           
+            margin-left: 0em;
+            margin-top: 1em;
+        }
+        .clientadd.addButton button {
+            float: left;
+            position: absolute;
+            right: 0;
+            top: 4em;
+        }
+    }
