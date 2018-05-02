@@ -254,7 +254,7 @@ class BillForm extends Component {
                                 </Row>
                             </div>
                             <Row className="briefRequire">
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem label="Company Name">
                                         {getFieldDecorator('CompanyName', {
                                             rules: [{ required: true, message: 'Please provide Company Name !' }],
@@ -264,9 +264,8 @@ class BillForm extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={12}>
+                            
+                            <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem label="Bill Status">
                                         {getFieldDecorator('status', {
                                             rules: [{ required: true, message: 'Please select Biiling status!' }],
@@ -287,6 +286,9 @@ class BillForm extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
+                                </Row>
+                            <Row>
+                               
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem className="tech" label="Type">
                                         {getFieldDecorator('type', {
@@ -312,11 +314,7 @@ class BillForm extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
-                            </Row>
-
-                            <div className="spaceLess">
-                                <Row>
-                                    <Col xs={24} sm={24} md={24} lg={12}>
+                                <Col xs={24} sm={24} md={24} lg={12}>
                                         <div className="startDate">
                                             <p className="expecteDate">Billing Date :</p>
                                             <FormItem
@@ -334,6 +332,11 @@ class BillForm extends Component {
                                             </FormItem>
                                         </div>
                                     </Col>
+                            </Row>
+
+                            <div className="spaceLess">
+                                <Row>
+                                    
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="Pay Bill No">
                                             {getFieldDecorator('Paybillno', {
@@ -344,10 +347,6 @@ class BillForm extends Component {
                                             )}
                                         </FormItem>
                                     </Col>
-                                </Row>
-                            </div>
-                            <div className="spaceLess">
-                                <Row>
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="Meme Bill No ">
                                             {getFieldDecorator('billno', {
@@ -358,6 +357,11 @@ class BillForm extends Component {
                                             )}
                                         </FormItem>
                                     </Col>
+                                </Row>
+                            </div>
+                            <div className="spaceLess">
+                                <Row>
+                                    
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="BDE Name">
                                             {getFieldDecorator('bdename', {
@@ -365,6 +369,16 @@ class BillForm extends Component {
                                             })(
 
                                                 <Input maxLength="50" placeholder="Name" />
+                                            )}
+                                        </FormItem>
+                                    </Col>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
+                                        <FormItem label="Email ">
+                                            {getFieldDecorator('email', {
+                                                rules: [{ required: true, message: 'Please input client email !' }],
+                                            })(
+
+                                                <Input disabled={this.state.disableclient} placeholder="Email" />
                                             )}
                                         </FormItem>
                                     </Col>
@@ -376,16 +390,7 @@ class BillForm extends Component {
                             {/* **************ROW FOR EMAIL AND PROJECTCOST  STARTS*************** */}
                             <div className="spaceLess">
                                 <Row>
-                                    <Col xs={24} sm={24} md={24} lg={12}>
-                                        <FormItem label="Email ">
-                                            {getFieldDecorator('email', {
-                                                rules: [{ required: true, message: 'Please input client email !' }],
-                                            })(
-
-                                                <Input disabled={this.state.disableclient} placeholder="Email" />
-                                            )}
-                                        </FormItem>
-                                    </Col>
+                                    
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="Project Cost">
                                             {getFieldDecorator('projectcost', {
@@ -396,13 +401,7 @@ class BillForm extends Component {
                                             )}
                                         </FormItem>
                                     </Col>
-                                </Row>
-                            </div>
-                            {/* ***************OW FOR EMAIL AND PROJECTCOST  ENDS************ */}
-                            {/* ********** ROW FOR PAYPALACCOUNT AND AMOUNT RECORD STARTS***************** */}
-                            <div>
-                                <Row>
-                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="Pay Pal Account Name">
                                             {getFieldDecorator('paypalaccount', {
                                                 rules: [{ required: true, message: 'Please input account!' }],
@@ -411,8 +410,15 @@ class BillForm extends Component {
                                             )}
                                         </FormItem>
                                     </Col>
+                                </Row>
+                            </div>
+                            {/* ***************OW FOR EMAIL AND PROJECTCOST  ENDS************ */}
+                            {/* ********** ROW FOR PAYPALACCOUNT AND AMOUNT RECORD STARTS***************** */}
+                            <div>
+                                <Row>
+                                    
 
-                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="Amount Record">
                                             {getFieldDecorator('amountrecord', {
                                                 rules: [{ required: true, message: 'Please input record!' }],
@@ -422,15 +428,7 @@ class BillForm extends Component {
                                             )}
                                         </FormItem>
                                     </Col>
-
-                                </Row>
-
-                            </div>
-                            {/* **************ROW FOR PAYPALACCOUNT AND AMOUNT RECORD ENDS************** */}
-                            {/* ************************ROW FOR BALANCE AND CREDIT RECORD STARTS************* */}
-                            <div>
-                                <Row>
-                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="Balance">
                                             {getFieldDecorator('balance', {
                                                 rules: [{ required: true, message: 'Please input !' }],
@@ -439,8 +437,16 @@ class BillForm extends Component {
                                             )}
                                         </FormItem>
                                     </Col>
+                                </Row>
 
-                                    <Col xs={24} sm={24} md={24} lg={24}>
+                            </div>
+                            {/* **************ROW FOR PAYPALACCOUNT AND AMOUNT RECORD ENDS************** */}
+                            {/* ************************ROW FOR BALANCE AND CREDIT RECORD STARTS************* */}
+                            <div>
+                                <Row>
+                                    
+
+                                    <Col xs={24} sm={24} md={24} lg={12}>
                                         <div className="startDate">
                                             <p className="expecteDate">Received Date :</p>
                                             <FormItem
@@ -458,16 +464,7 @@ class BillForm extends Component {
                                             </FormItem>
                                         </div>
                                     </Col>
-
-                                </Row>
-
-                            </div>
-                            {/* *******************ROW FOR BALANCE AND CREDIT RECORD ENDS******************** */}
-
-                            {/* *************ROW FOR CURRENCY STARTS*********** */}
-                            <div>
-                                <Row>
-                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                    <Col xs={24} sm={24} md={24} lg={12}>
                                         <FormItem label="Currency">
                                             {getFieldDecorator('Currency', {
                                                 rules: [{ required: true, message: 'Please choose currency !' }],
@@ -491,6 +488,16 @@ class BillForm extends Component {
                                             )}
                                         </FormItem>
                                     </Col>
+
+                                </Row>
+
+                            </div>
+                            {/* *******************ROW FOR BALANCE AND CREDIT RECORD ENDS******************** */}
+
+                            {/* *************ROW FOR CURRENCY STARTS*********** */}
+                            <div>
+                                <Row>
+                                   
                                 </Row>
                             </div>
                             {/* **********ROW FOR CURRENCY ENDS*********** */}
