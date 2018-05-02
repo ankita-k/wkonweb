@@ -139,7 +139,7 @@ class Dashboard extends Component {
               <p className="username" style={{ color: '#fff' }}> {this.state.username ? this.state.username : ''} <Button className="wkonlogout" onClick={() => {
                 this.showConfirm();
 
-              }}>Log Out</Button></p>
+              }}><Icon type="logout" />Log Out</Button></p>
             </Row>
           </Header>
 
@@ -193,7 +193,7 @@ class Dashboard extends Component {
              
               <SubMenu key="bill" title={<span><Icon type="file-text" />Bill Managements</span>} subMenuCloseDelay={0.1}>
                 <Menu.Item key="create_bill">
-                  <span>Create Bill</span>
+                  <span>Bill Create</span>
                   <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
                 </Menu.Item>
                 <Menu.Item key="bill_list">
@@ -264,7 +264,7 @@ class Dashboard extends Component {
                  {
                    this.state.userrole=="Sales"?
                    <Menu.Item key="create_bill">
-                   <span>Create Bill</span>
+                   <span>Bill Create</span>
                    <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
                  </Menu.Item>:''
                  }

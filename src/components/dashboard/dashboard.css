@@ -15,8 +15,7 @@ button.ant-btn.wkonlogout {
   background: transparent;
   color: #fff;
   padding-bottom: 3px;
-  border: 2px solid #fff;
-  border-radius: 50px;
+  border:none !important;
 }
 #client1{
   color:red;

@@ -144,28 +144,15 @@ class ClientComponent extends Component {
                     color="red"
                     showSpinner={false}
                 />
-                <Card className="innercardContent" bordered={false}>
-                    {/* --new customer details-- */}
-                    <div className="newCustomerform">
+                     <div>
                         {/* <h1 className="NewCustomer">New Client</h1> */}
                         {(this.state.clientEdit == true) ?
                             <h1 className="NewCustomer">Edit Client</h1> : <h1 className="NewCustomer">New Client</h1>
-                        }
-                        {/* <Divider dashed className="underLine" /> */}
-                        {/* <div className="headingLine">
-                            <Row className="formcustomer">
-                                <Col xs={24} sm={24} md={12} lg={24}>
-                                <Row>
-                                <Col xs={24} sm={24} md={6} lg={4} className="linea"></Col>
-                                <Col xs={24} sm={24} md={6} lg={4} className="lineb"></Col>
-                                <Col xs={24} sm={24} md={6} lg={4} className="lineb"></Col>
-                                <Col xs={24} sm={24} md={6} lg={4} className="lineb"></Col>
-                                </Row>
-                                
-                                </Col>
-                            </Row>
-                        </div> */}
+                        }              
                     </div>
+                <Card className="innercardContent" bordered={false}>
+                    {/* --new customer details-- */}
+               
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="inputForminfo">
                             <Row>
