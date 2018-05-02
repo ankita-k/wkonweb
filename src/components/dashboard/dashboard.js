@@ -235,12 +235,13 @@ class Dashboard extends Component {
                       <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
                     </Menu.Item>
                   </SubMenu> : '' : ''}
-                {this.state.userrole ? this.state.userrole == "Developer" || "admin" ?
+                {this.state.userrole ? this.state.userrole == "Developer" || "admin"||'Sales' ?
                   <SubMenu key="projects" title={<span><Icon type="file-text" /> Projects</span>} subMenuCloseDelay={0.1}>
-                    <Menu.Item key="create_project">
-                      <span>Project Create</span>
-                      <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
-                    </Menu.Item>
+                  {this.state.userrole!="Developer"?
+                <Menu.Item key="create_project">
+                <span>Project Create</span>
+                <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
+              </Menu.Item>:'' }  
                     <Menu.Item key="project_list">
                       <span>Project List</span>
                       <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>

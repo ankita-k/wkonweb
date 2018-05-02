@@ -82,7 +82,7 @@ class BillForm extends Component {
 
             if (!err) {
                 console.log('Received values of form: ', values);
-                // console.log(this.props.location.data.data._id)
+             
                 if (this.props.location.data && this.props.location.data.data) {
                  
                     let data = {
