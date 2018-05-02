@@ -82,9 +82,9 @@ class BillForm extends Component {
 
             if (!err) {
                 console.log('Received values of form: ', values);
-                console.log(this.props.location.data.data._id)
-                if (this.props.location.data.data) {
-                    debugger;
+                // console.log(this.props.location.data.data._id)
+                if (this.props.location.data && this.props.location.data.data) {
+                 
                     let data = {
                         userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
                         billingDate: values.billingdate ? values.billingdate._d : '',
@@ -106,7 +106,7 @@ class BillForm extends Component {
                     }
                     console.log(data);
                     this.props.actions.editabelbill(data, this.props.location.data.data._id).then(data => {
-                        debugger;
+                       
                         console.log(data)
                         if (!data.error) {
                             // this.props.opentoast('success', 'Bill Updated Successfully!');
@@ -143,6 +143,7 @@ class BillForm extends Component {
                 }
                 console.log(billdata)
                 this.props.actions.billCreate(billdata).then(response => {
+                    console.log(response)
                     this.setState({ show: false });
                     if (!response.error) {
                         this.props.history.push('/dashboard/billlist');

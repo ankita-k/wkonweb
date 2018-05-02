@@ -135,6 +135,7 @@ class BillList extends Component {
         }
     }
     componentDidMount() {
+        console.log(this.props)
         this.getBills();
 
     }
