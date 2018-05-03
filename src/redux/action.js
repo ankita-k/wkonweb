@@ -770,11 +770,11 @@ export function billlist(userId) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                dispatch(BillList(responseJSON))
+                dispatch(BillList(responseJSON.result))
 
             })
             .catch((error) => {
-
+                dispatch(BillList([]))
             });
 
     }
