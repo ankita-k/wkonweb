@@ -18,19 +18,12 @@ button.ant-btn.delete {
     padding-left: 0px;
     width: 10px;
 }
-button.ant-btn.view i.anticon.anticon-eye-o {
-    color: #fff;
-}
+
+
 button.ant-btn.view {
-    background: #028679;
+    background: transparent;
     border: none;
-    border-radius: 50%;
-    height: 22px;
-    width: 22px;
-    margin-left: 1em;
-    padding-left: 4px;
-    margin-top: 6px;
-    line-height: 1;
+   
 }
 .scoping .ant-select-selection__rendered {
     color: rgb(58, 56, 56);
