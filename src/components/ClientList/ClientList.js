@@ -8,6 +8,8 @@ import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import { Select } from 'antd';
 import warning from '../../Images/war.png';
+import editList from '../../Images/file.svg';
+import deleteList from '../../Images/garbage.svg';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
 const Search = Input.Search;
@@ -155,10 +157,10 @@ class ClientList extends Component {
           <Row>
             <Col lg={{ span: 4 }}>
               <Button className="edita" onClick={() => { this.editClient(record) }}>
-                <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+                <a href="javascript:;"> <img className="fileIcon" src={editList} /></a></Button></Col>
             {/* <Col lg={{ span: 8 }}></Col> */}
             <Col lg={{ span: 10 }}>
-              <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
+              <Button className="delete" onClick={this.showModal}><a href="javascript:;"><img className="fileIcon" src={deleteList} /></a></Button>
             </Col>
 
           </Row>
