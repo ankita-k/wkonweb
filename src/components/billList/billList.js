@@ -12,6 +12,8 @@ import warning from '../../Images/war.png';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
 import moment from 'moment';
+import editList from '../../Images/file.svg';
+import deleteList from '../../Images/garbage.svg';
 const Search = Input.Search;
 const Option = Select.Option;
 
@@ -125,7 +127,7 @@ class BillList extends Component {
                     <Row>
                         <Col lg={{ span: 10 }}>
                             <Button className="edit" onClick={() => { this.editBill(record) }}>
-                                <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+                                <a href="javascript:;"><img className="fileIcon" src={editList} /></a></Button></Col>
                         <Col lg={{ span: 8 }}></Col>
                         {/* <Col lg={{ span: 10 }}>
                             <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
