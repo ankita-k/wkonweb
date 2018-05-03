@@ -33,7 +33,11 @@ class ClientComponent extends Component {
                 ['phone']: this.props.location.data.data.phoneNumber,
                 ['domain']: this.props.location.data.data.domain,
                 ['country']: this.props.location.data.data.country,
-                ['status']: this.props.location.data.data.status
+                ['status']: this.props.location.data.data.status,
+                ['currency']: this.props.location.data.data.currency,
+                ['paypal_id']: this.props.location.data.data.paypalId
+
+                
             });
             console.log(this.props.form)
         }
@@ -85,7 +89,10 @@ class ClientComponent extends Component {
                         email: values.email,
                         name: values.name,
 
-                        domain: values.domain
+                        domain: values.domain,
+                        currency:values.currency,
+                        paypalId:values.paypal_id
+                        // paypal_id:values.paypalId
                     }
                     console.log('edshgj')
                     this.props.updateclient(data, this.props.location.data.data._id).then(data => {
@@ -111,7 +118,10 @@ class ClientComponent extends Component {
                         email: values.email,
                         name: values.name,
                         userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
-                        domain: values.domain
+                        domain: values.domain,
+                        currency:values.currency,
+                        // paypal_id:values.paypalId
+                        paypalId:values.paypal_id
                     }
                     this.props.createClient(data).then(result => {
                         this.setState({showLoader: false});
@@ -217,7 +227,11 @@ class ClientComponent extends Component {
                                 <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="paypal_id">
                                         {getFieldDecorator('paypal_id', {
-                                            rules: [{ required: true, message: 'Please input your paypal_id!' }],
+                                             rules: [{
+                                                type: 'email', message: 'The input is not valid paypal id!'
+                                            },
+                                            { required: true, message: 'Please input your Paypal id!' }],
+
                                         })(
                                             <Input
                                                 maxLength="15"
@@ -308,8 +322,12 @@ class ClientComponent extends Component {
                                                 showSearch
 
                                             >
-                                                <Option value="India">INR</Option>
-                                                <Option value="Us">UNR</Option>
+                                                 <Option value="USD">USD</Option>
+                                                 <Option value="GBP">GBP</Option>
+                                                 <Option value="AUD">AUD</Option>
+                                                 <Option value="INR">INR</Option>
+                                                 <Option value="EUR">EUR</Option>
+                                                 <Option value="AED">AED</Option>
                                             </Select>
                                         )}
                                     </FormItem>
