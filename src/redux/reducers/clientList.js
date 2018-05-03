@@ -13,6 +13,8 @@ export function clientList(state = [], action) {
                     email: item.email,
                     domain: item.domain,
                     country: item.country,
+                    currency:item.currency,
+                    paypal_id:item.paypalId,
                     status: item.status,
                     key: Math.random() * 1000000000000000000,
                     _id: item._id

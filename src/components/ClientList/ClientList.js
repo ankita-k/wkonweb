@@ -143,9 +143,17 @@ class ClientList extends Component {
         dataIndex: 'domain',
         key: 'domain',
       }, {
+        title: 'currency',
+        dataIndex: 'currency',
+        key: 'currency',
+      }, {
         title: 'Country',
         dataIndex: 'country',
         key: 'country',
+      }, {
+        title: 'paypal-id',
+        dataIndex: 'paypal_id',
+        key: 'paypal_id',
       }, {
         title: 'Status',
         dataIndex: 'status',
@@ -207,7 +215,7 @@ class ClientList extends Component {
     this.setState({ show: true });
     /* GETTING CLIENT LIST
     */
-    this.props.actions.clientlist(this.state.userId);    
+    this.props.actions.clientlist(this.state.userId);
   }
 
   componentWillReceiveProps(props) {
@@ -243,7 +251,7 @@ class ClientList extends Component {
       });
     }
   }
-  
+
   //handlechange function
   handleChange = (value) => {
     // let searchedclient = [];
@@ -291,51 +299,51 @@ class ClientList extends Component {
           color="red"
           showSpinner={false}
         />
-          <div className="projectListheader">
-        <h1 className="clientList">Client List</h1>
-        <Row>
-          <div className="addButton clientadd">
-            <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
-          </div>
-        </Row>
-        <Row>
-          <div className="AllProjects">
-            <Search className="SearchValue"
-              placeholder="input search text"
-              onSearch={(value) => { this.searchClient(value) }}
-              style={{ width: 200 }}
-              onChange={(e) => { this.showallList(e.target.value) }}
-              enterButton
-              value={this.state.searchinput}
-            />
-            {(this.state.statussearch) ?
-              <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
-                <Option value="All">All</Option>
-                <Option value="Interested">Interested</Option>
-                <Option value="Pipeline">Pipeline</Option>
-                <Option value="Commited">Committed</Option>
+        <div className="projectListheader">
+          <h1 className="clientList">Client List</h1>
+          <Row>
+            <div className="addButton clientadd">
+              <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
+            </div>
+          </Row>
+          <Row>
+            <div className="AllProjects">
+              <Search className="SearchValue"
+                placeholder="input search text"
+                onSearch={(value) => { this.searchClient(value) }}
+                style={{ width: 200 }}
+                onChange={(e) => { this.showallList(e.target.value) }}
+                enterButton
+                value={this.state.searchinput}
+              />
+              {(this.state.statussearch) ?
+                <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
+                  <Option value="All">All</Option>
+                  <Option value="Interested">Interested</Option>
+                  <Option value="Pipeline">Pipeline</Option>
+                  <Option value="Commited">Committed</Option>
 
 
-              </Select> :
-              <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
-                <Option value="All">All</Option>
-                <Option value="Interested">Interested</Option>
-                <Option value="Pipeline">Pipeline</Option>
-                <Option value="Commited">Committed</Option>
+                </Select> :
+                <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+                  <Option value="All">All</Option>
+                  <Option value="Interested">Interested</Option>
+                  <Option value="Pipeline">Pipeline</Option>
+                  <Option value="Commited">Committed</Option>
 
 
-              </Select>
-            }
-            <Button className="allprojectbtn" onClick={() => {
-              this.handleChange('All')
-            }}>Show All</Button>
+                </Select>
+              }
+              <Button className="allprojectbtn" onClick={() => {
+                this.handleChange('All')
+              }}>Show All</Button>
 
-          </div>
-        </Row>
-</div>
+            </div>
+          </Row>
+        </div>
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
-          <Table 
+          <Table
             onRow={(record) => {
               return {
                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
