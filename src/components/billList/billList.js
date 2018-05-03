@@ -233,6 +233,7 @@ class BillList extends Component {
           color="red"
           showSpinner={false}
         />
+         <div className="billlistheader">
                 <h1 className="clientList">Bill List</h1>
                 <Row>
                     <div className="addButton billeradd">
@@ -265,10 +266,10 @@ class BillList extends Component {
 
                     </div>
                 </Row>
-
+                </div>
                 {/* billlist */}
                 <Card className="innercardContenta" bordered={false}>
-                    <Table columns={columns}  pagination={{ pageSize: 50 }} scroll={{ y: 280 }}
+                    <Table 
                         onRow={(record) => {
                             return {
                                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
@@ -276,6 +277,7 @@ class BillList extends Component {
                         }}
                         columns={columns} dataSource={this.state.searchedBill} />
                 </Card>
+               
                 {/* clientlist */}
                 <div className="deletemodal">
 
