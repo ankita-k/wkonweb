@@ -123,7 +123,7 @@ class ClientList extends Component {
       searchedclient: [],
       trueClientList: [],
       searchinput: '',
-      c: 'All',
+      allclient: 'All',
       userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
       column: [{
         title: 'Name',
@@ -170,6 +170,28 @@ class ClientList extends Component {
     }
   }
 
+  componentDidMount() {
+    console.log('component will mount');
+    this.setState({ show: true });
+    this.commonFunction();
+  }
+
+  componentWillReceiveProps(props) {
+    console.log(props);
+    this.commonFunction();
+
+  }
+
+  // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
+  commonFunction() {
+    /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
+    if (this.props.clientList.length > 0) {
+      this.setState({ searchedclient: (this.props.clientList) });
+      this.setState({ show: false });
+    }
+    this.handleChange((this.props.location.filterValue));
+  }
+  
   //edit client
   editClient = (data) => {
     this.props.history.push({
@@ -202,25 +224,9 @@ class ClientList extends Component {
 
   }
 
-  componentDidMount() {
-    console.log('component will mount');
-    this.setState({ show: true });
-    /* GETTING CLIENT LIST
-    */
-    this.props.actions.clientlist(this.state.userId);    
-  }
+ 
 
-  componentWillReceiveProps(props) {
-    console.log(props);
-
-    /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
-    if (props.clientList.length > 0) {
-      this.setState({ show: false });
-      this.setState({ searchedclient: props.clientList })
-    }
-
-  }
-
+  
 
   // SEACRH CLIENT LIST ACCORDING TO INPUT 
   searchClient = (e) => {
@@ -243,14 +249,14 @@ class ClientList extends Component {
       });
     }
   }
-  
+
   //handlechange function
   handleChange = (value) => {
     // let searchedclient = [];
     if (value != null || value != undefined) {
       this.setState({ statussearch: value })
       if (value == 'All') {
-        this.setState({ statussearch: this.state.c });
+        this.setState({ statussearch: 'All' });
         this.setState({ searchinput: '' });
         this.setState({
           searchedclient: this.props.clientList
@@ -291,51 +297,51 @@ class ClientList extends Component {
           color="red"
           showSpinner={false}
         />
-          <div className="projectListheader">
-        <h1 className="clientList">Client List</h1>
-        <Row>
-          <div className="addButton clientadd">
-            <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
-          </div>
-        </Row>
-        <Row>
-          <div className="AllProjects">
-            <Search className="SearchValue"
-              placeholder="input search text"
-              onSearch={(value) => { this.searchClient(value) }}
-              style={{ width: 200 }}
-              onChange={(e) => { this.showallList(e.target.value) }}
-              enterButton
-              value={this.state.searchinput}
-            />
-            {(this.state.statussearch) ?
-              <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
-                <Option value="All">All</Option>
-                <Option value="Interested">Interested</Option>
-                <Option value="Pipeline">Pipeline</Option>
-                <Option value="Commited">Committed</Option>
+        <div className="projectListheader">
+          <h1 className="clientList">Client List</h1>
+          <Row>
+            <div className="addButton clientadd">
+              <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
+            </div>
+          </Row>
+          <Row>
+            <div className="AllProjects">
+              <Search className="SearchValue"
+                placeholder="input search text"
+                onSearch={(value) => { this.searchClient(value) }}
+                style={{ width: 200 }}
+                onChange={(e) => { this.showallList(e.target.value) }}
+                enterButton
+                value={this.state.searchinput}
+              />
+              {(this.state.statussearch) ?
+                <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
+                  <Option value="All">All</Option>
+                  <Option value="Interested">Interested</Option>
+                  <Option value="Pipeline">Pipeline</Option>
+                  <Option value="Commited">Committed</Option>
 
 
-              </Select> :
-              <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
-                <Option value="All">All</Option>
-                <Option value="Interested">Interested</Option>
-                <Option value="Pipeline">Pipeline</Option>
-                <Option value="Commited">Committed</Option>
+                </Select> :
+                <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+                  <Option value="All">All</Option>
+                  <Option value="Interested">Interested</Option>
+                  <Option value="Pipeline">Pipeline</Option>
+                  <Option value="Commited">Committed</Option>
 
 
-              </Select>
-            }
-            <Button className="allprojectbtn" onClick={() => {
-              this.handleChange('All')
-            }}>Show All</Button>
+                </Select>
+              }
+              <Button className="allprojectbtn" onClick={() => {
+                this.handleChange('All')
+              }}>Show All</Button>
 
-          </div>
-        </Row>
-</div>
+            </div>
+          </Row>
+        </div>
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
-          <Table 
+          <Table
             onRow={(record) => {
               return {
                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
