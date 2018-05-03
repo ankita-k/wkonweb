@@ -207,34 +207,34 @@ function toast(type, message) {
 
 }
 // PROJECTLIST  ACTION
-function allProjectlist(json) {
+function Projectlist(list) {
     return {
         type: "PROJECT_LIST",
-        json
+        list
 
     }
 }
 // FUNCTION FOR APICALL OF PROJECT LIST
 export function projectList(userId) {
     return (dispatch) => {
-        return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'project/projectlist?userId=' + userId, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET'
+        fetch(config.apiUrl + 'project/projectlist?userId=' + userId, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'GET'
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error)
+                    dispatch(Projectlist(responseJSON.result))
+
             })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(allProjectlist(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+            .catch((error) => {
+                dispatch(Projectlist([]))
+            });
+
     }
 }
 

@@ -138,27 +138,27 @@ class BillList extends Component {
         }
     }
     componentDidMount() {
-        console.log(this.props)
-        this.getBills();
+        console.log(this.props);
+        this.setState({ show: true })
+        this.commonFunction();
 
     }
     componentWillReceiveProps(props) {
         console.log('component will receive props');
         console.log(props)
+        this.commonFunction();
 
-        /* CODE FOR GETTING BILLIST AND SHOWING IN TABLE USING PROPS  */
-        if (props.billList.length > 0) {
-            this.setState({ show: false });
-            this.setState({ searchedBill: props.billList });
-        }
-      /*   CODE FOR GETTING BILLIST AND SHOWING IN TABLE USING PROPS ENDS   */
     }
 
+    // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
 
-    // get billlist
-    getBills = () => {
-        this.setState({ show: true })
-        this.props.actions.billlist(this.state.userId)
+    commonFunction() {
+        /* CODE FOR GETTING BILLIST AND SHOWING IN TABLE USING PROPS  */
+        if (this.props.billList.length > 0) {
+            this.setState({ show: false });
+            this.setState({ searchedBill: this.props.billList });
+        }
+        /*   CODE FOR GETTING BILLIST AND SHOWING IN TABLE USING PROPS ENDS   */
     }
 
     //edit bill
