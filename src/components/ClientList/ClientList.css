@@ -10,7 +10,7 @@ button.ant-btn.edit {
     background: transparent;
     color: #81d2ff;
     border: none;
-    padding: 0;
+   margin-right:3em;
 }
 button.ant-btn.delete {
     background: transparent;
