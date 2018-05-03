@@ -3,7 +3,8 @@ import { Card, Table, Button, Icon, Row, Input, Modal, Col } from 'antd';
 import '../NewProject/NewProject.css';
 import './billList.css';
 import { connect } from "react-redux";
-import * as actioncreators from '../../redux/action';
+import * as billlistAction from '../../redux/action';
+import { bindActionCreators } from 'redux';
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import { Select } from 'antd';
@@ -41,7 +42,7 @@ class BillList extends Component {
         this.setState({ visible: false });
     }
 
-   
+
     constructor(props) {
         super(props);
         this.state = {
@@ -141,51 +142,98 @@ class BillList extends Component {
         this.getBills();
 
     }
+    componentWillReceiveProps(props) {
+        console.log('component will receive props');
+        console.log(props)
 
-
-    // get billlist
-    getBills = () => {
-        this.setState({show:true})
-        console.log(this.state.userId)
-        this.props.billlist(this.state.userId).then((result) => {
-            this.setState({ show: false });
-            console.log(result);
-            if (!result.error) {
-                this.setState({ bills: result.result })
-                console.log(this.state.bills);
-                var data = result.result;
+        /* CODE FOR GETTING BILLIST AND SHOWING IN TABLE USING PROPS  */
+        if (props.billList.billlist) {
+            let billListData = props.billList.billlist;
+            if (!billListData.error) {
+                this.setState({ show: false });
+                this.setState({ bills: billListData.result });
+                var data = billListData.result;
                 data.map(function (item, index) {
                     return data[index] = {
-                        BDE: item.BDE?item.BDE:"-",
-                        balance: item.balance?item.balance:"-",
-                        billNumber: item.billNumber?item.billNumber:"-",
-                        billingDate: moment(item.billingDate).format("ll")?moment(item.billingDate).format("ll"):"-",
-                        client: item.client?item.client.name:'-',
-                        client1:item.client?item.client._id:'-',
-                        company: item.company?item.company:"-",
-                        currency: item.currency?item.currency:"-",
-                        email: item.email?item.email:"-",
-                        paypalAccountName: item.paypalAccountName?item.paypalAccountName:"-",
-                        paypalBillNumber: item.paypalBillNumber?item.paypalBillNumber:"-",
-                        projectCost: item.projectCost?item.projectCost:"-",
-                        projectName: item.projectName.name?item.projectName.name:"-",
-                        receivedAmount: item.receivedAmount?item.receivedAmount:"-",
-                        receivedDate: moment(item.receivedDate).format("ll")?moment(item.receivedDate).format("ll"):"-" ,
-                        status: item.status?item.status:"-",
-                        type: item.type?item.type:"-",
+                        BDE: item.BDE ? item.BDE : "-",
+                        balance: item.balance ? item.balance : "-",
+                        billNumber: item.billNumber ? item.billNumber : "-",
+                        billingDate: moment(item.billingDate).format("ll") ? moment(item.billingDate).format("ll") : "-",
+                        client: item.client ? item.client.name : '-',
+                        client1: item.client ? item.client._id : '-',
+                        company: item.company ? item.company : "-",
+                        currency: item.currency ? item.currency : "-",
+                        email: item.email ? item.email : "-",
+                        paypalAccountName: item.paypalAccountName ? item.paypalAccountName : "-",
+                        paypalBillNumber: item.paypalBillNumber ? item.paypalBillNumber : "-",
+                        projectCost: item.projectCost ? item.projectCost : "-",
+                        projectName: item.projectName.name ? item.projectName.name : "-",
+                        receivedAmount: item.receivedAmount ? item.receivedAmount : "-",
+                        receivedDate: moment(item.receivedDate).format("ll") ? moment(item.receivedDate).format("ll") : "-",
+                        status: item.status ? item.status : "-",
+                        type: item.type ? item.type : "-",
                         key: Math.random() * 1000000000000000000,
                         _id: item._id
                     }
 
                 })
                 this.setState({ searchedBill: data });
-
             }
-
-        }, err => {
-            this.setState({ show: false });
-        })
+        }
+        /*   CODE FOR GETTING BILLIST AND SHOWING IN TABLE USING PROPS ENDS   */
     }
+
+
+    // get billlist
+    getBills = () => {
+        this.setState({ show: true })
+
+        this.props.actions.billlist(this.state.userId)
+        // console.log(this.props.billList.billlist)
+        // if(this.props.billList.billlist){
+        //     let x=this.props.BillList.billlist;
+        //     console.log(x)
+        // }
+        // this.props.actions.billlist(this.state.userId).then((result) => {
+        //     this.setState({ show: false });
+        //     console.log(result);
+        //     if (!result.error) {
+        //         this.setState({ bills: result.result })
+        //         console.log(this.state.bills);
+        //         var data = result.result;
+        //         data.map(function (item, index) {
+        //             return data[index] = {
+        //                 BDE: item.BDE ? item.BDE : "-",
+        //                 balance: item.balance ? item.balance : "-",
+        //                 billNumber: item.billNumber ? item.billNumber : "-",
+        //                 billingDate: moment(item.billingDate).format("ll") ? moment(item.billingDate).format("ll") : "-",
+        //                 client: item.client ? item.client.name : '-',
+        //                 client1: item.client ? item.client._id : '-',
+        //                 company: item.company ? item.company : "-",
+        //                 currency: item.currency ? item.currency : "-",
+        //                 email: item.email ? item.email : "-",
+        //                 paypalAccountName: item.paypalAccountName ? item.paypalAccountName : "-",
+        //                 paypalBillNumber: item.paypalBillNumber ? item.paypalBillNumber : "-",
+        //                 projectCost: item.projectCost ? item.projectCost : "-",
+        //                 projectName: item.projectName.name ? item.projectName.name : "-",
+        //                 receivedAmount: item.receivedAmount ? item.receivedAmount : "-",
+        //                 receivedDate: moment(item.receivedDate).format("ll") ? moment(item.receivedDate).format("ll") : "-",
+        //                 status: item.status ? item.status : "-",
+        //                 type: item.type ? item.type : "-",
+        //                 key: Math.random() * 1000000000000000000,
+        //                 _id: item._id
+        //             }
+
+        //         })
+        //         this.setState({ searchedBill: data });
+
+        //     }
+
+        // }, err => {
+        //     this.setState({ show: false });
+        // })
+    }
+    
     //edit bill
     editBill = (data) => {
         this.props.history.push({
@@ -208,7 +256,7 @@ class BillList extends Component {
     // // SEACRH BILL LIST ACCORDING TO INPUT(EMAIL) 
     searchFilter = (e) => {
         let newarray = this.state.bills.filter(item => {
-            return (item.email.toLowerCase().indexOf(e.toLowerCase()) > -1) ||(item.BDE.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.company.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.paypalAccountName.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.status.toLowerCase().indexOf(e.toLowerCase()) > -1)
+            return (item.email.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.BDE.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.company.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.paypalAccountName.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.status.toLowerCase().indexOf(e.toLowerCase()) > -1)
 
         });
         console.log(newarray);
@@ -224,21 +272,21 @@ class BillList extends Component {
         return (
 
             <div className="clientListdiv">
-               {this.state.show == true ? <div className="loader">
-          <Loader className="ldr" fullPage loading />
-        </div> : ""}
+                {this.state.show == true ? <div className="loader">
+                    <Loader className="ldr" fullPage loading />
+                </div> : ""}
 
-            <Loading
-          show={this.state.show}
-          color="red"
-          showSpinner={false}
-        />
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
                 <h1 className="clientList">Bill List</h1>
                 <Row>
                     <div className="addButton billeradd">
                         <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
                     </div>
-                {/* </Row>
+                    {/* </Row>
                 <Row> */}
                     <div className="AllProjects">
                         <Search className="SearchValue"
@@ -247,7 +295,7 @@ class BillList extends Component {
                             style={{ width: 200 }}
                             onChange={(e) => { this.showallList(e.target.value) }}
                             enterButton
-                            // value={this.state.searchinput}
+                        // value={this.state.searchinput}
 
                         />
 
@@ -309,8 +357,13 @@ class BillList extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    // console.log(state);
+    console.log('bill list', state);
     return state
 }
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(billlistAction, dispatch)
+    })
+}
 //export default ClientList;
-export default connect(mapStateToProps, actioncreators)(BillList);
+export default connect(mapStateToProps, mapDispatchToProps)(BillList);

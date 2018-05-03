@@ -3,7 +3,8 @@ import { Card, Table, Button, Icon, Row, Input, Modal, Col } from 'antd';
 import '../NewProject/NewProject.css';
 import './ClientList.css';
 import { connect } from "react-redux";
-import * as actioncreators from '../../redux/action';
+import * as clientListAction from '../../redux/action';
+import { bindActionCreators } from 'redux';
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import { Select } from 'antd';
@@ -120,9 +121,10 @@ class ClientList extends Component {
       show: true, //loading-bar        
       selectedId: '',  //FOR SELECT CLIENT ROW ID
       searchedclient: [],
+      trueClientList: [],
       searchinput: '',
-      c:'All',
-      userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
+      c: 'All',
+      userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
       column: [{
         title: 'Name',
         dataIndex: 'name',
@@ -181,84 +183,49 @@ class ClientList extends Component {
 
   //delete client
   deleteClient = () => {
-    this.setState({show:true})
+    this.setState({ show: true })
     this.props.deleteclient(this.state.selectedId._id).then(response => {
       console.log(response)
-      this.setState({show:false})
+      this.setState({ show: false })
       this.setState({ visible: false })
       if (!response.error) {
         this.props.opentoast('success', 'Client Deleted Successfully!');
         this.getclients();
       }
-      else{
-        this.props.opentoast('warning',response.message);
+      else {
+        this.props.opentoast('warning', response.message);
       }
     }, err => {
-      this.setState({show:false})
+      this.setState({ show: false });
       this.props.opentoast('warning', 'Client  Not Deleted Successfully!');
     })
 
   }
 
   componentDidMount() {
-    console.log(this.props)
-    this.getclients().then(success => {
-      if (this.props.location.filterValue) {
+    console.log('component will mount');
+    this.setState({ show: true });
+    /* GETTING CLIENT LIST
+    */
+    this.props.actions.clientlist(this.state.userId);    
+  }
 
-        // this.setState({statussearch:this.props.location.filterValue})
-        this.handleChange(this.props.location.filterValue)
-        console.log(this.state.statussearch)
-      }
-    })
+  componentWillReceiveProps(props) {
+    console.log(props);
 
-
-    // GET CLIENT LIST
-    this.setState({ show: true })
-    console.log('component will mount')
+    /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
+    if (props.clientList.length > 0) {
+      this.setState({ show: false });
+      this.setState({ searchedclient: props.clientList })
+    }
 
   }
 
 
-  getclients = () => {
-    return new Promise((resolve, reject) => {
-
-      this.props.clientlist(this.state.userId, 0, 30).then((data) => {
-        if (!data.error) {
-          this.setState({ show: false });
-          console.log(data);
-          this.setState({ clientlist: data.result });
-          var data = data.result;
-          data.map(function (item, index) {
-            return data[index] = {
-              name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
-              phoneNumber: item.phoneNumber,
-              email: item.email,
-              domain: item.domain,
-              country: item.country,
-              status: item.status,
-              key: Math.random() * 1000000000000000000,
-              _id: item._id
-            }
-
-          })
-
-          if (!this.props.location.filterValue) {
-            this.setState({ searchedclient: data });
-
-          }
-          resolve(true)
-        }
-
-      }, err => {
-        this.setState({ show: false });
-      })
-
-    })
-  }
   // SEACRH CLIENT LIST ACCORDING TO INPUT 
   searchClient = (e) => {
     console.log('search data', e);
-    let newarray = this.state.clientlist.filter(d => {
+    let newarray = this.props.clientList.filter(d => {
       return d.name.toLowerCase().indexOf(e.toLowerCase()) > -1
 
     });
@@ -271,26 +238,37 @@ class ClientList extends Component {
     console.log('target value', e)
     this.setState({ searchinput: e })
     if (e == '') {
-      this.setState({ searchedclient: this.state.clientlist })
+      this.setState({
+        searchedclient: this.props.clientList
+      });
     }
   }
+  
   //handlechange function
   handleChange = (value) => {
-
-    console.log(`selected ${value}`);
-    let searchedclient;
-    if (value) {
-      this.setState({statussearch:value})
+    // let searchedclient = [];
+    if (value != null || value != undefined) {
+      this.setState({ statussearch: value })
       if (value == 'All') {
-        this.setState({ searchedclient: this.state.clientlist });
+        this.setState({ statussearch: this.state.c });
+        this.setState({ searchinput: '' });
+        this.setState({
+          searchedclient: this.props.clientList
+        });
       }
       else {
-        searchedclient = this.state.clientlist.filter(a => {
-          return a.status.indexOf(value) > -1
-        });
-        this.setState({ searchedclient })
-        console.log("filtered data", this.state.searchedclient);
+        this.setState({
+          searchedclient:
+            this.props.clientList.filter(a => {
+              return a.status.indexOf(value) > -1
+            })
+        })
       }
+    }
+    else {
+      this.setState({
+        searchedclient: this.props.clientList
+      });
     }
 
   }
@@ -329,28 +307,26 @@ class ClientList extends Component {
               enterButton
               value={this.state.searchinput}
             />
-            {(this.state.statussearch)?
-              <Select className="scoping" value={this.state.statussearch}style={{ width: 120 }} onChange={this.handleChange}>
+            {(this.state.statussearch) ?
+              <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
                 <Option value="All">All</Option>
                 <Option value="Interested">Interested</Option>
                 <Option value="Pipeline">Pipeline</Option>
-                <Option value="Commited">Commited</Option>
+                <Option value="Commited">Committed</Option>
 
 
-              </Select>:
+              </Select> :
               <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
                 <Option value="All">All</Option>
                 <Option value="Interested">Interested</Option>
                 <Option value="Pipeline">Pipeline</Option>
-                <Option value="Commited">Commited</Option>
+                <Option value="Commited">Committed</Option>
 
 
               </Select>
             }
             <Button className="allprojectbtn" onClick={() => {
-              this.setState({ searchedclient: this.state.clientlist });
-              this.setState({statussearch:this.state.c});
-              this.setState({ searchinput: '' })
+              this.handleChange('All')
             }}>Show All</Button>
 
           </div>
@@ -402,5 +378,10 @@ const mapStateToProps = (state) => {
   // console.log(state);
   return state
 }
+function mapDispatchToProps(dispatch, state) {
+  return ({
+    actions: bindActionCreators(clientListAction, dispatch)
+  })
+}
 //export default ClientList;
-export default connect(mapStateToProps, actioncreators)(ClientList);
+export default connect(mapStateToProps, mapDispatchToProps)(ClientList);

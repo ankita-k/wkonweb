@@ -3,14 +3,18 @@ import { loginReducer } from '../reducers/login';
 import { toasts } from '../reducers/toast';
 import { projectList } from '../reducers/projectlist';
 import { billCreate } from '../reducers/billcreate';
-import { currencylist } from '../reducers/currencylist';
+import { billList } from '../reducers/billList';
+import {clientList} from '../reducers/clientList';
+
 // reducers list
 const rootReducer = combineReducers({
     loginReducer,                    //for user login
     toasts,                          // to show toast
     projectList,                     // to get projectlist
-    billCreate,                           // create bill
-    currencylist,                         // get currenct list        
+    billCreate,                       // create bill
+    billList,                         // getting all billlist
+    clientList,                      // get client list
+
 })
 
 
