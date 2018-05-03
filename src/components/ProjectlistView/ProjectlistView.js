@@ -12,6 +12,8 @@ import moment from 'moment';
 import warning from '../../Images/war.png';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
+import editList from '../../Images/file.svg';
+import deleteList from '../../Images/garbage.svg';
 const Option = Select.Option;
 const Search = Input.Search;
 // import { Input } from 'antd';
@@ -100,10 +102,10 @@ class ProjectlistView extends Component {
           <Row className="btns">
             <Col lg={8}>
               <Button className="edit" onClick={() => { this.editProject(record) }}>
-                <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+                <a href="javascript:;"><img className="fileIcon" src={editList} /></a></Button></Col>
             {/* <Col lg={{ span: 8 }}></Col> */}
             <Col lg={8}>
-              <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><Icon type="delete" /></a></Button>
+              <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><img className="fileIcon" src={deleteList} /></a></Button>
             </Col>
             {/* <Col lg={{ span: 8}}></Col> */}
             <Col lg={8}>
