@@ -23,7 +23,9 @@ export function projectList (state = [], action) {
                 actualEndDate: item.actualEndDate ? moment(item.actualEndDate).format("ll") : '',
                 key: Math.random() * 1000000000000000000,
                 _id: item._id,
-                client: item.client
+                client: item.client,
+                members:item.members,
+
             }})
                    // returning project list array
             break;
