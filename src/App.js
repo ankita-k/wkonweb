@@ -20,6 +20,7 @@ class App extends Component {
     this.props.actions.clientlist(this.state.userId);
     this.props.actions.billlist(this.state.userId);
     this.props.actions.projectList(this.state.userId);
+    this.props.actions.userList();
   }
 
 
