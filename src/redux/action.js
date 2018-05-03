@@ -111,8 +111,10 @@ function countrylist(list) {
 
 // CREATE CLIENT APICALL
 export function createClient(data) {
+    
     return (dispatch) => {
-        return new Promise((resolve, reject) => {
+        
+        // return new Promise((resolve, reject) => {
             fetch(config.apiUrl + 'client', {
                 headers: {
                     'Accept': 'application/json',
@@ -124,13 +126,21 @@ export function createClient(data) {
             })
                 .then((response) => response.json())
                 .then((responseJSON) => {
-                    dispatch(receivePosts(responseJSON))
-                    resolve(responseJSON);
+                    dispatch(clientcreate(responseJSON))
+                    // resolve(responseJSON);
                 })
                 .catch((error) => {
-                    reject(error);
+                    // reject(error);
                 });
-        });
+        // });
+    }
+}
+//Client create function
+function clientcreate(response) {
+    console.log(response);
+    return {
+        type: "CLIENT_CREATE_SUCCESS",
+        response
     }
 }
 
@@ -715,7 +725,7 @@ function edituser(list) {
 // API CALL FOR BILL CREATION
 export function billCreate(billdata) {
     return (dispatch) => {
-        return new Promise((resolve, reject) => {
+        // return new Promise((resolve, reject) => {
             fetch(config.apiUrl + 'bill',
                 {
                     headers: {
@@ -729,7 +739,7 @@ export function billCreate(billdata) {
                 .then((response) => response.json())
                 .then((responseJSON) => {
                     dispatch(billcreate(responseJSON))
-                    resolve(responseJSON);
+                   //resolve(responseJSON);
                     // console.log(responseJSON)
                     // if (responseJSON.error) {
                     //     dispatch(opentoast('warning', 'Bill Creation Failed!'))
@@ -743,11 +753,11 @@ export function billCreate(billdata) {
 
                 })
                 .catch((error) => {
-                    reject(error);
+                    // reject(error);
                     // dispatch(opentoast('error', 'Bill Creation Failed!'))
                 });
-        })
-    }
+    
+}
 }
 
 function billcreate(response) {
