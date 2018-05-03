@@ -48,7 +48,7 @@ p.welcomeUser {
 }
 .header {
   padding: 0 50px 0 25px;
-  
+  z-index: 99;
 }
 
 

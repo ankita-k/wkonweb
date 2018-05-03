@@ -268,7 +268,7 @@ class BillList extends Component {
 
                 {/* billlist */}
                 <Card className="innercardContenta" bordered={false}>
-                    <Table
+                    <Table columns={columns}  pagination={{ pageSize: 50 }} scroll={{ y: 280 }}
                         onRow={(record) => {
                             return {
                                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
