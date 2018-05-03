@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Row, Input, Modal, Col } from 'antd';
+import { Card, Table, Button, Icon, Row, Input, Modal, Col, Layout } from 'antd';
 import '../NewProject/NewProject.css';
 import './ClientList.css';
 import { connect } from "react-redux";
@@ -156,7 +156,7 @@ class ClientList extends Component {
         render: (text, record) => (
           <Row>
             <Col lg={{ span: 4 }}>
-              <Button className="edit" onClick={() => { this.editClient(record) }}>
+              <Button className="edita" onClick={() => { this.editClient(record) }}>
                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
             {/* <Col lg={{ span: 8 }}></Col> */}
             <Col lg={{ span: 10 }}>
@@ -291,6 +291,7 @@ class ClientList extends Component {
           color="red"
           showSpinner={false}
         />
+          <div className="projectListheader">
         <h1 className="clientList">Client List</h1>
         <Row>
           <div className="addButton clientadd">
@@ -331,10 +332,10 @@ class ClientList extends Component {
 
           </div>
         </Row>
-
+</div>
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
-          <Table
+          <Table 
             onRow={(record) => {
               return {
                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row

@@ -278,7 +278,8 @@ class ProjectlistView extends Component {
           color="red"
           showSpinner={false}
         />
-        <div className="projectlistheader">
+        
+    <div className="projectListheader">
         <h1 className="clientList">Project List</h1>
         <Row>
           <div className="AllProjects">
@@ -333,6 +334,7 @@ class ProjectlistView extends Component {
 
           </div>
         </Row>
+
 </div>
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>

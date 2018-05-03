@@ -128,9 +128,16 @@ class Userlist extends Component {
                                                 <p><span className="span1">Roles </span>: {item.role}</p>
                                             </Col>
                                             <Row><p><span className="span1">Reporting Manager </span>: {item.manager ? item.manager.name : ""}</p></Row>
-                                            <Row><p ><span className="span1">Tag </span>:{item.tags.map((tag=>{
-                                           return tag
-                                            }))}</p></Row>
+                                            <Row>
+                                            {item.tags.length!=0?
+                                             <p><span className="span1">Tag:</span>{item.tags.map(((tag,index)=>{
+                                               
+                                              return index<item.tags.length-1? tag+',':tag
+                                                 }))} </p> 
+                                                 :''
+                                            }
+                                               
+                                            </Row>
                                             </Col>
                                             
                                     </Row>

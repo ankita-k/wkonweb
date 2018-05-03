@@ -272,15 +272,16 @@ class BillList extends Component {
         return (
 
             <div className="clientListdiv">
-                {this.state.show == true ? <div className="loader">
-                    <Loader className="ldr" fullPage loading />
-                </div> : ""}
+               {this.state.show == true ? <div className="loader">
+          <Loader className="ldr" fullPage loading />
+        </div> : ""}
 
-                <Loading
-                    show={this.state.show}
-                    color="red"
-                    showSpinner={false}
-                />
+            <Loading
+          show={this.state.show}
+          color="red"
+          showSpinner={false}
+        />
+         <div className="billlistheader">
                 <h1 className="clientList">Bill List</h1>
                 <Row>
                     <div className="addButton billeradd">
@@ -313,10 +314,10 @@ class BillList extends Component {
 
                     </div>
                 </Row>
-
+                </div>
                 {/* billlist */}
                 <Card className="innercardContenta" bordered={false}>
-                    <Table
+                    <Table 
                         onRow={(record) => {
                             return {
                                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
@@ -324,6 +325,7 @@ class BillList extends Component {
                         }}
                         columns={columns} dataSource={this.state.searchedBill} />
                 </Card>
+               
                 {/* clientlist */}
                 <div className="deletemodal">
 
