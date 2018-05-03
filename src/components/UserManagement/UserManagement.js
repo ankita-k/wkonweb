@@ -155,7 +155,7 @@ class UserManagement extends Component {
     selectStatus = (value) => {
         console.log(value);
         if (value == "Developer") {
-            // this.setState({ RoleDeveloper: value })
+             this.setState({ RoleDeveloper: value })
             this.setState({ disabletag: false })
             
             console.log(this.state.RoleDeveloper);
@@ -194,12 +194,12 @@ handleSubmit = (e) => {
                     email: values.email,
                     name: values.name,
                     manager: values.managers,
-                    // tags:values.tags
+                    tags:values.tags.length!=0?values.tags:[]
                 }
-                if(values.tags.length!=0)
-                {
-                   user.tags=values.tags  
-                }
+                // if(values.tags.length!=0 )
+                // {
+                //    user.tags=values.tags  
+                // }
                 console.log(user)
                 this.props.editUser(user, this.props.location.userData._id).then(response => {
                     this.setState({ showLoader: false });
@@ -218,7 +218,7 @@ handleSubmit = (e) => {
                         this.setState({ showLoader: false });
                         this.props.opentoast('warning', 'User Not Updated Successfully!');
                     })
-            }
+             }
             else {
                 let data = {
                     name: values.name,
@@ -227,12 +227,9 @@ handleSubmit = (e) => {
                     role: values.role,
                     password: values.password,
                     manager: values.managers,
-                    // tags:values.tags
+                    tags:values.tags.length!=0?values.tags:[]
                 }
-                if(values.tags.length!=0)
-                {
-                   data.tags=values.tags  
-                }
+              
                 this.props.createUser(data).then(result => {
                     this.setState({ showLoader: false });
                     this.setState({ show: false });
