@@ -147,6 +147,7 @@ class UserManagement extends Component {
             });
             console.log(this.state.tagValue)
             this.setState({ tagArray: this.state.tag })
+            this.setState({ showLoader: false });
         }
 
     }
@@ -154,7 +155,7 @@ class UserManagement extends Component {
     selectStatus = (value) => {
         console.log(value);
         if (value == "Developer") {
-            this.setState({ RoleDeveloper: value })
+            // this.setState({ RoleDeveloper: value })
             this.setState({ disabletag: false })
             
             console.log(this.state.RoleDeveloper);
@@ -162,6 +163,11 @@ class UserManagement extends Component {
         else {
             this.setState({RoleDeveloper:''})
             this.setState({ disabletag: true })
+            this.props.form.setFieldsValue({
+                ['tags']:[]
+            });
+            console.log(this.props.form)
+            
            // this.setState({RoleSales:value})
            // console.log(this.state.RoleSales);
 
@@ -188,7 +194,11 @@ handleSubmit = (e) => {
                     email: values.email,
                     name: values.name,
                     manager: values.managers,
-                    tags:values.tags
+                    // tags:values.tags
+                }
+                if(values.tags.length!=0)
+                {
+                   user.tags=values.tags  
                 }
                 console.log(user)
                 this.props.editUser(user, this.props.location.userData._id).then(response => {
@@ -217,7 +227,11 @@ handleSubmit = (e) => {
                     role: values.role,
                     password: values.password,
                     manager: values.managers,
-                    tags:values.tags
+                    // tags:values.tags
+                }
+                if(values.tags.length!=0)
+                {
+                   data.tags=values.tags  
                 }
                 this.props.createUser(data).then(result => {
                     this.setState({ showLoader: false });
@@ -372,7 +386,7 @@ render() {
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem className="tag" label="Tag">
                                         {getFieldDecorator('tags', {
-                                            rules: [{ required: true, message: 'please select the  tag !' }],
+                                            rules: [{ required: false, message: 'please select the  tag !' }],
                                         })(
                                             <Select
                                                 mode="multiple"
