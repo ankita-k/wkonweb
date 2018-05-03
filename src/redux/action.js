@@ -1,5 +1,6 @@
 import { config } from '../../src/config';
 import { push } from 'react-router-redux';
+import { developerList } from './reducers/developerList';
 
 let conf = config.headers;
 
@@ -568,7 +569,7 @@ export function dashboardCustomer(userId) {
 export function findByRole(role) {
     return (dispatch) => {
         console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+     
 
             fetch(config.apiUrl + 'user/findByRole?role=' + role,
                 {
@@ -579,16 +580,24 @@ export function findByRole(role) {
                 })
                 .then((response) => response.json())
                 .then((responseJSON) => {
-                    dispatch(receivePosts(responseJSON))
-                    resolve(responseJSON);
+                    dispatch(developerlist(responseJSON.result))
+                   
                 })
                 .catch((error) => {
-                    reject(error);
+                    
                 });
-        });
+       
     }
 }
 
+function developerlist(list) {
+    console.log(list)
+    return {
+        type: "DEVELOPER_LIST",
+        list
+
+    }
+}
 //FUNCTION FOR API CALL FOR GETTING USER LIST AND DISPATCHING ACTION
 export function userList() {
     return (dispatch) => {
