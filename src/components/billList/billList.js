@@ -3,7 +3,8 @@ import { Card, Table, Button, Icon, Row, Input, Modal, Col } from 'antd';
 import '../NewProject/NewProject.css';
 import './billList.css';
 import { connect } from "react-redux";
-import * as actioncreators from '../../redux/action';
+import * as billlistAction from '../../redux/action';
+import { bindActionCreators } from 'redux';
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import { Select } from 'antd';
@@ -41,7 +42,7 @@ class BillList extends Component {
         this.setState({ visible: false });
     }
 
-   
+
     constructor(props) {
         super(props);
         this.state = {
@@ -141,51 +142,25 @@ class BillList extends Component {
         this.getBills();
 
     }
+    componentWillReceiveProps(props) {
+        console.log('component will receive props');
+        console.log(props)
+
+        /* CODE FOR GETTING BILLIST AND SHOWING IN TABLE USING PROPS  */
+        if (props.billList.length > 0) {
+            this.setState({ show: false });
+            this.setState({ searchedBill: props.billList });
+        }
+      /*   CODE FOR GETTING BILLIST AND SHOWING IN TABLE USING PROPS ENDS   */
+    }
 
 
     // get billlist
     getBills = () => {
-        this.setState({show:true})
-        console.log(this.state.userId)
-        this.props.billlist(this.state.userId).then((result) => {
-            this.setState({ show: false });
-            console.log(result);
-            if (!result.error) {
-                this.setState({ bills: result.result })
-                console.log(this.state.bills);
-                var data = result.result;
-                data.map(function (item, index) {
-                    return data[index] = {
-                        BDE: item.BDE?item.BDE:"-",
-                        balance: item.balance?item.balance:"-",
-                        billNumber: item.billNumber?item.billNumber:"-",
-                        billingDate: moment(item.billingDate).format("ll")?moment(item.billingDate).format("ll"):"-",
-                        client: item.client?item.client.name:'-',
-                        client1:item.client?item.client._id:'-',
-                        company: item.company?item.company:"-",
-                        currency: item.currency?item.currency:"-",
-                        email: item.email?item.email:"-",
-                        paypalAccountName: item.paypalAccountName?item.paypalAccountName:"-",
-                        paypalBillNumber: item.paypalBillNumber?item.paypalBillNumber:"-",
-                        projectCost: item.projectCost?item.projectCost:"-",
-                        projectName: item.projectName.name?item.projectName.name:"-",
-                        receivedAmount: item.receivedAmount?item.receivedAmount:"-",
-                        receivedDate: moment(item.receivedDate).format("ll")?moment(item.receivedDate).format("ll"):"-" ,
-                        status: item.status?item.status:"-",
-                        type: item.type?item.type:"-",
-                        key: Math.random() * 1000000000000000000,
-                        _id: item._id
-                    }
-
-                })
-                this.setState({ searchedBill: data });
-
-            }
-
-        }, err => {
-            this.setState({ show: false });
-        })
+        this.setState({ show: true })
+        this.props.actions.billlist(this.state.userId)
     }
+
     //edit bill
     editBill = (data) => {
         this.props.history.push({
@@ -201,14 +176,14 @@ class BillList extends Component {
         console.log('target value', e)
         this.setState({ searchinput: e })
         if (e == '') {
-            this.setState({ searchedBill: this.state.bills })
+            this.setState({ searchedBill: this.props.billList })
         }
     }
 
-    // // SEACRH BILL LIST ACCORDING TO INPUT(EMAIL) 
+    // // SEACRH BILL LIST ACCORDING TO INPUT
     searchFilter = (e) => {
-        let newarray = this.state.bills.filter(item => {
-            return (item.email.toLowerCase().indexOf(e.toLowerCase()) > -1) ||(item.BDE.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.company.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.paypalAccountName.toLowerCase().indexOf(e.toLowerCase()) > -1)||(item.status.toLowerCase().indexOf(e.toLowerCase()) > -1)
+        let newarray = this.props.billList.filter(item => {
+            return (item.email.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.BDE.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.company.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.paypalAccountName.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.status.toLowerCase().indexOf(e.toLowerCase()) > -1)
 
         });
         console.log(newarray);
@@ -224,52 +199,52 @@ class BillList extends Component {
         return (
 
             <div className="clientListdiv">
-               {this.state.show == true ? <div className="loader">
-          <Loader className="ldr" fullPage loading />
-        </div> : ""}
+                {this.state.show == true ? <div className="loader">
+                    <Loader className="ldr" fullPage loading />
+                </div> : ""}
 
-            <Loading
-          show={this.state.show}
-          color="red"
-          showSpinner={false}
-        />
-         <div className="billlistheader">
-                <h1 className="clientList">Bill List</h1>
-                <Row>
-                    <div className="addButton billeradd">
-                        <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
-                    </div>
-                {/* </Row>
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                />
+                <div className="billlistheader">
+                    <h1 className="clientList">Bill List</h1>
+                    <Row>
+                        <div className="addButton billeradd">
+                            <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
+                        </div>
+                        {/* </Row>
                 <Row> */}
-                    <div className="AllProjects">
-                        <Search className="SearchValue"
-                            placeholder="input search text"
-                            onSearch={(value) => { this.searchFilter(value) }}
-                            style={{ width: 200 }}
-                            onChange={(e) => { this.showallList(e.target.value) }}
-                            enterButton
+                        <div className="AllProjects">
+                            <Search className="SearchValue"
+                                placeholder="input search text"
+                                onSearch={(value) => { this.searchFilter(value) }}
+                                style={{ width: 200 }}
+                                onChange={(e) => { this.showallList(e.target.value) }}
+                                enterButton
                             // value={this.state.searchinput}
 
-                        />
+                            />
 
-                        {/* <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+                            {/* <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
                             <Option value="All">All</Option>
                             <Option value="Interested">Pending</Option>
                             <Option value="Pipeline">Completed</Option>
                         </Select> */}
 
-                        {/* <Button className="allprojectbtn" onClick={() => {
+                            {/* <Button className="allprojectbtn" onClick={() => {
                             this.setState({ searchedclient: this.state.clientlist });
                             this.setState({ statussearch: this.state.c });
                             this.setState({ searchinput: '' })
                         }}>Show All</Button> */}
 
-                    </div>
-                </Row>
+                        </div>
+                    </Row>
                 </div>
                 {/* billlist */}
                 <Card className="innercardContenta" bordered={false}>
-                    <Table 
+                    <Table
                         onRow={(record) => {
                             return {
                                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
@@ -277,7 +252,7 @@ class BillList extends Component {
                         }}
                         columns={columns} dataSource={this.state.searchedBill} />
                 </Card>
-               
+
                 {/* clientlist */}
                 <div className="deletemodal">
 
@@ -311,8 +286,13 @@ class BillList extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    // console.log(state);
+    console.log('bill list', state);
     return state
 }
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(billlistAction, dispatch)
+    })
+}
 //export default ClientList;
-export default connect(mapStateToProps, actioncreators)(BillList);
+export default connect(mapStateToProps, mapDispatchToProps)(BillList);
