@@ -10,7 +10,7 @@ button.ant-btn.edit {
     background: transparent;
     color: #81d2ff;
     border: none;
-    padding: 0;
+ margin-right:1em;
 }
 button.ant-btn.delete {
     background: transparent;
@@ -62,11 +62,18 @@ button.ant-btn.allprojectbtn {
 .innercardContenta {
     margin: 15px auto !important;
 }
-button.ant-btn.edit i.anticon.anticon-edit {
+button.ant-btn.edita i.anticon.anticon-edit {
     font-size: 16px;
 }
 button.ant-btn.delete i.anticon.anticon-delete {
     font-size: 16px;
+}
+button.ant-btn.edita {
+    background: transparent;
+    color: #81d2ff;
+    border: none;
+    padding: 0;
+    margin-right:3em;
 }
 .addButton.clientadd {
     position: absolute;

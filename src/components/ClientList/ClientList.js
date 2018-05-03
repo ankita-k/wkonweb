@@ -154,7 +154,7 @@ class ClientList extends Component {
         render: (text, record) => (
           <Row>
             <Col lg={{ span: 4 }}>
-              <Button className="edit" onClick={() => { this.editClient(record) }}>
+              <Button className="edita" onClick={() => { this.editClient(record) }}>
                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
             {/* <Col lg={{ span: 8 }}></Col> */}
             <Col lg={{ span: 10 }}>
@@ -313,6 +313,7 @@ class ClientList extends Component {
           color="red"
           showSpinner={false}
         />
+          <div className="projectListheader">
         <h1 className="clientList">Client List</h1>
         <Row>
           <div className="addButton clientadd">
@@ -355,10 +356,10 @@ class ClientList extends Component {
 
           </div>
         </Row>
-
+</div>
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
-          <Table columns={columns} dataSource={data} pagination={{ pageSize: 50 }} scroll={{ y: 290 }}
+          <Table 
             onRow={(record) => {
               return {
                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
