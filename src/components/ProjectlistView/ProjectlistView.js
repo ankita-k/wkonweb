@@ -279,7 +279,7 @@ class ProjectlistView extends Component {
           showSpinner={false}
         />
         
-      
+    <div className="projectListheader">
         <h1 className="clientList">Project List</h1>
         <Row>
           <div className="AllProjects">
@@ -335,10 +335,10 @@ class ProjectlistView extends Component {
           </div>
         </Row>
 
-
+</div>
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
-          <Table columns={columns}  pagination={{ pageSize: 50 }} scroll={{ y: 290 }}
+          <Table
             onRow={(record, x) => {
               return {
                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },
