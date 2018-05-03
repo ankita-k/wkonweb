@@ -26,26 +26,41 @@ class NewProject extends Component {
             showLoader: false,
             disabledate: true,
             disableclient: false,
-            userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
+            userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
             techArray: ['ReactJS', 'Php', 'ReactNative'],
             techs: ['ReactJS', 'Php', 'ReactNative'],
             techsValue: [],
             value: [],
             fetching: false,
+            verticalHeadrarray: [],
+            verticalHead: '',
+
             editClient:false
         }
-    
+
     }
 
     componentDidMount() {
-        console.log("component Did Mount");
-        console.log(this.props.location);
-        console.log(this.props.form)
-        console.log(this.props.location.data)
         if (this.props.location.data) {
             this.setState({ disabledate: false })
             this.setState({ disableclient: true })
             this.setState({ editClient: true })
+
+            console.log(this.props.location.data.data);
+
+            if (this.props.location.data.data.status == "InProgress" || this.props.location.data.data.status == "InProgess") {
+                this.setState((prevState) => {
+                    return { verticalHead: 'InProgress' }
+                });
+                this.setState({ verticalHeadrarray: [] });
+            }
+            else {
+                this.setState({ verticalHeadrarray: [] });
+                this.setState((prevState) => {
+                    return { verticalHead: '' }
+                });
+            }
+
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name1,
                 ['textRequirement']: this.props.location.data.data.requirement1,
@@ -55,6 +70,7 @@ class NewProject extends Component {
                 ['actualstart']: this.props.location.data.data.actualStartDate ? moment(this.props.location.data.data.actualStartDate) : '',
                 ['actualend']: this.props.location.data.data.actualEndDate ? moment(this.props.location.data.data.actualEndDate) : '',
                 ['status']: this.props.location.data.data.status,
+                // ['assign']: (this.props.location.data.data.members[0]) ? this.props.location.data.data.members[0].userId : null,
                 ['client']: this.props.location.data.data.client ? this.props.location.data.data.client.name : ''
             })
 
@@ -68,11 +84,12 @@ class NewProject extends Component {
         }, err => {
 
         })
+        this.getVerticalHeadList();
     }
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.setState({showLoader: true});
+        this.setState({ showLoader: true });
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
 
@@ -110,19 +127,19 @@ class NewProject extends Component {
                     console.log(data)
 
                     this.props.editproject(data, this.props.location.data.data._id).then(response => {
-                        this.setState({showLoader: false});
+                        this.setState({ showLoader: false });
                         this.setState({ show: false });
                         console.log(response)
                         if (!response.error) {
                             this.props.opentoast('success', 'Project Updated Successfully!');
                             this.props.history.push('/dashboard/projectlist')
                         }
-                        else{
+                        else {
                             this.props.opentoast('warning', response.message);
                         }
                     }, err => {
                         this.setState({ show: false });
-                        this.setState({showLoader: false});
+                        this.setState({ showLoader: false });
                         this.props.opentoast('warning', 'Project Not Updated Successfully!');
                     })
                 }
@@ -131,13 +148,13 @@ class NewProject extends Component {
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
-                        technology:(values.technology).toString(),
+                        technology: (values.technology).toString(),
                         // expectedStartDate: values.expecstart ? values.expecstart._d : '',
                         // actualStartDate: values.actualstart ? values.actualstart._d : '',
                         // expectedEndDate: values.expecend ? values.expecend._d : '',
                         // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
-                        userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
+                        userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
                         client: values.client
 
                     }
@@ -159,7 +176,7 @@ class NewProject extends Component {
                             this.props.opentoast('success', 'Project Added Successfully!');
                             this.props.history.push('/dashboard/projectlist')
                         }
-                        else{
+                        else {
                             this.props.opentoast('warning', response.message);
                         }
                     }, err => {
@@ -283,22 +300,22 @@ class NewProject extends Component {
     searchTechnology = (value) => {
 
         console.log('fetching user', value);
-        this.setState({ techArray:[],fetching: true });
+        this.setState({ techArray: [], fetching: true });
 
-        let techArray ;
-        
-            this.setState({ data: [], fetching: true });
-            techArray = this.state.techs.filter(d => {
+        let techArray;
 
-                return d.toLowerCase().indexOf(value.toLowerCase()) > -1
-            });
-            this.setState({ techArray, fetching: false });
-      
+        this.setState({ data: [], fetching: true });
+        techArray = this.state.techs.filter(d => {
+
+            return d.toLowerCase().indexOf(value.toLowerCase()) > -1
+        });
+        this.setState({ techArray, fetching: false });
+
     }
 
     // SELECTED TECHNOLOGY VALUE
     handleChange = (value) => {
-     
+
         if (value.length > 0) {
             this.setState({ techsValue: value })
             this.setState({
@@ -306,8 +323,32 @@ class NewProject extends Component {
                 fetching: false,
             });
             console.log(this.state.techsValue)
-            this.setState({techArray:this.state.techs})
+            this.setState({ techArray: this.state.techs })
         }
+
+    }
+    //FOR STATUS VALUE
+    handleSelectChange = (value) => {
+        console.log(value);
+        if (value == 'InProgress') {
+            this.setState({ verticalHead: value })
+        }
+        else {
+            this.setState({ verticalHead: '' })
+        }
+
+    }
+    // GET VERTICAL LEAD FIND BY TAGS
+    getVerticalHeadList = () => {
+        this.props.verticalLeads('VerticalLead').then(response => {
+            console.log('VERTICAL LEADS', response)
+            if (!response.error) {
+                this.setState({ verticalHeadrarray: response.result });
+
+            }
+
+            console.log(this.state.verticalHeadrarray);
+        })
 
     }
     render() {
@@ -347,6 +388,9 @@ class NewProject extends Component {
                         {(this.state.editClient == true) ?
                             <h1 className="NewCustomer">Edit Project</h1> : <h1 className="NewCustomer">New Project</h1>
                         }
+                        {/* {(this.state.editClient == true) ?
+                           
+                        } */}
 
                         {/* <Divider dashed className="underLine" /> */}
                     </div>
@@ -370,9 +414,9 @@ class NewProject extends Component {
                                                     placeholder="Choose Role"
                                                     onChange={this.selectStatus}
                                                 >
-                                                  {this.state.clientlist.map((item, index) => {
-                                                return <Option key={index} value={item._id}>{item.name}</Option>
-                                            })}
+                                                    {this.state.clientlist.map((item, index) => {
+                                                        return <Option key={index} value={item._id}>{item.name}</Option>
+                                                    })}
                                                     {/* <Option value="Sales">Client1</Option>
                                                     <Option value="Developer">Client2</Option> */}
                                                 </Select>
@@ -413,18 +457,7 @@ class NewProject extends Component {
                                     </Col>
                                 </Row>
                             </div>
-                            <Row className="briefRequire">
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                    <FormItem label="Brief Requirement">
-                                        {getFieldDecorator('textRequirement', {
-                                            rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                            </Row>
+                            
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem label="Status">
@@ -440,13 +473,55 @@ class NewProject extends Component {
                                                 <Option value="New">New</Option>
                                                 <Option value="InDiscussion">InDiscussion</Option>
                                                 <Option value="Scoping">Scoping</Option>
-                                                <Option value="InProgess">InProgess</Option>
+                                                <Option value="InProgress">InProgress</Option>
                                                 <Option value="Stalled">Stalled</Option>
                                                 <Option value="Completed">Completed</Option>
                                             </Select>
                                         )}
                                     </FormItem>
                                 </Col>
+                                {/* {(this.state.verticalHead == 'InProgress') ? */}
+                                <Col xs={24} sm={24} md={24} lg={12}>
+                                    <FormItem label="ASSIGN TO">
+                                        {getFieldDecorator('assign', {
+                                            rules: [{ required: true, message: 'Please select !' }],
+                                        })(
+                                            <Select className="statuspipeline"
+
+                                                placeholder="Assign To"
+                                                showSearch
+                                            >
+                                                {this.state.verticalHeadrarray.map((item, index) => {
+                                                    return <Option key={index} value={item._id}>{item.name}</Option>
+                                                })}
+
+                                            </Select>
+                                        )}
+                                    </FormItem>
+                                </Col>
+
+                                {/* : ''} */}
+                                {/* {console.log(this.props.location.data.data.status)} */}
+
+                                {/* {this.props.location.data.data.status=="InProgress"? <Col xs={24} sm={24} md={24} lg={12}>
+                                        <FormItem label="ASSIGN TO">
+                                            {getFieldDecorator('assign', {
+                                                rules: [{ required: true, message: 'Please select !' }],
+                                            })(
+                                                <Select className="statuspipeline"
+
+                                                    placeholder="Assign To"
+                                                    showSearch
+                                                >
+                                                    {this.state.verticalHeadrarray.map((item, index) => {
+                                                        return <Option key={index} value={item._id}>{item.name}</Option>
+                                                    })}
+
+                                                </Select>
+                                            )}
+                                        </FormItem>
+                                    </Col>:''} */}
+
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem className="tech" label="Technology">
                                         {getFieldDecorator('technology', {
@@ -464,8 +539,8 @@ class NewProject extends Component {
                                                 style={{ width: '100%' }}
 
                                             >
-                                                {techArray.map(d =>
-                                                    <Option value={d}>{d}</Option>
+                                                {techArray.map((d, index) =>
+                                                    <Option key={index} value={d}>{d}</Option>
                                                 )}
 
                                             </Select>
@@ -545,6 +620,18 @@ class NewProject extends Component {
                                         </div>
                                     </Col>
                                 </Row>
+                                <Row className="briefRequire">
+                                <Col xs={24} sm={24} md={24} lg={24}>
+                                    <FormItem label="Brief Requirement">
+                                        {getFieldDecorator('textRequirement', {
+                                            rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
+                                        })(
+                                            // <Input placeholder="Brief Requirement" />
+                                            <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
+                                        )}
+                                    </FormItem>
+                                </Col>
+                            </Row>
                                 {/* <Row>
                                     <Col xs={24} sm={24} md={24} lg={24}>
                                         <p className="expecteDateclient">Choose Client :</p>

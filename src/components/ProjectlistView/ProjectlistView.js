@@ -324,7 +324,7 @@ class ProjectlistView extends Component {
               this.setState({ statussearch: this.state.p });
               this.setState({ searchinput: '' })
             }}>All Projects</Button>
-
+            
 
             <div className="addButton project">
               <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>
