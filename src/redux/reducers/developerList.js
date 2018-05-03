@@ -1,16 +1,18 @@
 import { createStore, applyMiddleware } from 'redux';
 import * as actionCreators from '../action';
 
-
-export function currencylist (state = {}, action) {
+//REDUCER FOR DEVELOPERLIST
+export function developerlist(state = [], action) {
+    console.log(action)
   
     switch (action.type) {
-       
-        case 'CURRENCY_LIST':
-          return action.list  //returning user info 
+
+        case 'DEVELOPER_LIST':
+            return action.list
             break;
+
         default:
             return state
     }
-}
 
+}

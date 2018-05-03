@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Card, Table, Button, Icon, Row, Input, Col, Modal } from 'antd';
 import { connect } from "react-redux";
-import * as actioncreators from '../../redux/action';
+import * as projectlistAction from '../../redux/action';
+import { bindActionCreators } from 'redux';
 import { Select } from 'antd';
 import '../ClientList/ClientList.css';
 import '../ProjectlistView/ProjectlistView.css';
@@ -37,10 +38,6 @@ class ProjectlistView extends Component {
   }
 
 
-
-
-
-
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +46,7 @@ class ProjectlistView extends Component {
       userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
       selectedRowKeys: [],
       show: true,  //loading-bar
-      p: 'All',
+      allproject: 'All',
       column: [{
         title: 'Name',
         dataIndex: 'name',
@@ -119,6 +116,30 @@ class ProjectlistView extends Component {
     }
   }
 
+
+
+  componentDidMount() {
+    this.setState({ show: true });
+    this.commonFunction();
+
+  }
+
+  componentWillReceiveProps(props) {
+    console.log(props);
+    this.commonFunction();
+  }
+  
+// COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
+  commonFunction() {
+    /*
+    * FETCH PROJECT LIST FROM REDUCER
+    */
+    if (this.props.projectList.length > 0) {
+      this.setState({ searchedList: (this.props.projectList) });
+      this.setState({ show: false });
+    }
+    this.handleChange((this.props.location.filterValue))
+  }
   // delete 
   deleteProject = () => {
     // console.log(data);
@@ -159,87 +180,44 @@ class ProjectlistView extends Component {
 
 
 
-
+  // CHANGE FOR STATUS CHANGE OF PROJECT
   handleChange = (value) => {
     console.log(`selected ${value}`);
     let searchedList;
-    if (value) {
+    if (value != null || value != undefined) {
       this.setState({ statussearch: value })
       if (value == 'All') {
-        this.setState({ searchedList: this.state.projectList });
+        this.setState({ searchinput: '' })
+        this.setState({ statussearch: 'All' });
+        this.setState({ searchedList: this.props.projectList });
       }
       else {
-        searchedList = this.state.projectList.filter(a => {
+        searchedList = this.props.projectList.filter(a => {
           return a.status.indexOf(value) > -1
         });
         this.setState({ searchedList })
         console.log("filtered data", this.state.searchedList);
       }
     }
+    else {
+      this.setState({
+        searchedList: this.props.projectList
+      });
+    }
+
 
   }
-  componentDidMount() {
-    //  this.viewProject();
-    this.viewProject().then(success => {
-      if (this.props.location.filterValue) {
 
-        // this.setState({statussearch:this.props.location.filterValue})
-        this.handleChange(this.props.location.filterValue)
-        console.log(this.state.statussearch)
-      }
-    })
-  }
 
   // GET ALL PROJECT LIST
   viewProject = () => {
-    return new Promise((resolve, reject) => {
-      console.log('project List');
-      this.setState({ show: true })
-      this.props.projectList(this.state.userId).then((sucess) => {
-        this.setState({ show: false });
-
-        if (!sucess.error) {
-          console.log(sucess);
-          this.setState({ projectList: sucess.result });
-          var data = sucess.result;
-          data.map(function (item, index) {
-            return data[index] = {
-              name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,
-              name1: item.name,
-              requirement: item.requirement.length > 15 ? (item.requirement.slice(0, 15) + '...') : item.requirement,
-              requirement1: item.requirement,
-              status: item.status,
-              technology: (item.technology.replace(/"/g, '')).split(',').length > 1 ? ((item.technology.replace(/"/g, '')).split(',')[0] + '..') : (item.technology.replace(/"/g, '')).split(','),
-              technology1: (item.technology.replace(/"/g, '')).split(','),
-              expectedStartDate: item.expectedStartDate ? moment(item.expectedStartDate).format("ll") : '',
-              expectedEndDate: item.expectedEndDate ? moment(item.expectedEndDate).format("ll") : '',
-              actualStartDate: item.actualStartDate ? moment(item.actualStartDate).format("ll") : '',
-              actualEndDate: item.actualEndDate ? moment(item.actualEndDate).format("ll") : '',
-              key: Math.random() * 1000000000000000000,
-              _id: item._id,
-              client: item.client
-            }
-          })
-          console.log(data)
-          // .length > 20 ? (item.technology.slice(0, 20) + '...') : item.technology,
-          if (!this.props.location.filterValue) {
-            this.setState({ searchedList: data });
-          }
-          resolve(true)
-        }
-
-      }, err => {
-        this.setState({ show: false });
-      })
-    })
+    this.setState({ show: true });
+    this.props.actions.projectList(this.state.userId);
   }
 
-
-
-
-  //SearchProject
+  // SearchProject ACCORDING TO INPUR GIVEN
   searchproject = (val) => {
-    let newarray = this.state.projectList.filter(f => {
+    let newarray = this.props.projectList.filter(f => {
       return f.name.toLowerCase().indexOf(val.toLowerCase()) > -1
     });
     console.log(newarray)
@@ -253,13 +231,13 @@ class ProjectlistView extends Component {
     console.log(e);
     this.setState({ searchinput: e })
     if (e == '') {
-      this.setState({ searchedList: this.state.projectList })
+      this.setState({ searchedList: this.props.projectList })
     }
   }
 
   // NAVIGATE TO PROJECT DETAIL PAGE
   detailProject = (record) => {
- 
+
     this.props.history.push(`/dashboard/project/:${record.name}`, { id: record._id })
   }
 
@@ -278,62 +256,62 @@ class ProjectlistView extends Component {
           color="red"
           showSpinner={false}
         />
-        <div className="projectlistheader">
-        <h1 className="clientList">Project List</h1>
-        <Row>
-          <div className="AllProjects">
-            <Search className="SearchValue"
-              placeholder="Search Here.."
-              onSearch={value => { this.searchproject(value) }}
-              style={{ width: 200 }}
-              onChange={(e) => { this.showallList(e.target.value) }}
-              enterButton
-              value={this.state.searchinput}
+
+        <div className="projectListheader">
+          <h1 className="clientList">Project List</h1>
+          <Row>
+            <div className="AllProjects">
+              <Search className="SearchValue"
+                placeholder="Search Here.."
+                onSearch={value => { this.searchproject(value) }}
+                style={{ width: 200 }}
+                onChange={(e) => { this.showallList(e.target.value) }}
+                enterButton
+                value={this.state.searchinput}
 
 
-            />
-            {(this.state.statussearch) ?
-              <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
+              />
+              {(this.state.statussearch) ?
+                <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
 
-                <Option value="All">All</Option>
-                <Option value="New">New</Option>
-                <Option value="InDiscussion">InDiscussion</Option>
-                <Option value="Scoping">Scoping</Option>
-                <Option value="InProgess">InProgess</Option>
-                <Option value="Stalled">Stalled</Option>
-                <Option value="Completed">Completed</Option>
+                  <Option value="All">All</Option>
+                  <Option value="New">New</Option>
+                  <Option value="InDiscussion">InDiscussion</Option>
+                  <Option value="Scoping">Scoping</Option>
+                  <Option value="InProgess">InProgess</Option>
+                  <Option value="Stalled">Stalled</Option>
+                  <Option value="Completed">Completed</Option>
 
-              </Select> :
+                </Select> :
 
 
-              <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+                <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
 
-                <Option value="All">All</Option>
-                <Option value="New">New</Option>
-                <Option value="InDiscussion">InDiscussion</Option>
-                <Option value="Scoping">Scoping</Option>
-                <Option value="InProgess">InProgess</Option>
-                <Option value="Stalled">Stalled</Option>
-                <Option value="Completed">Completed</Option>
+                  <Option value="All">All</Option>
+                  <Option value="New">New</Option>
+                  <Option value="InDiscussion">InDiscussion</Option>
+                  <Option value="Scoping">Scoping</Option>
+                  <Option value="InProgess">InProgess</Option>
+                  <Option value="Stalled">Stalled</Option>
+                  <Option value="Completed">Completed</Option>
 
-              </Select>
-            }
+                </Select>
+              }
 
-            <Button className="allprojectbtn" onClick={() => {
-              this.setState({ searchedList: this.state.projectList });
-              this.setState({ statussearch: this.state.p });
-              this.setState({ searchinput: '' })
-            }}>All Projects</Button>
-            
+              <Button className="allprojectbtn" onClick={() => {
+                this.handleChange('All')
+              }}>All Projects</Button>
 
-            <div className="addButton project">
-              <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>
+
+              <div className="addButton project">
+                <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>
+              </div>
+
+
             </div>
+          </Row>
 
-
-          </div>
-        </Row>
-</div>
+        </div>
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
           <Table
@@ -381,6 +359,13 @@ class ProjectlistView extends Component {
 const mapStateToProps = (state) => {
   return state
 }
+
+
+function mapDispatchToProps(dispatch, state) {
+  return ({
+    actions: bindActionCreators(projectlistAction, dispatch)
+  })
+}
 // const WrappedProjectlistView 
 
-export default connect(mapStateToProps, actioncreators)(ProjectlistView);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectlistView);

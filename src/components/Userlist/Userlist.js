@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import * as actioncreators from '../../redux/action';
+import * as userlistActions from '../../redux/action';
 import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 import './Userlist.css';
 import Loading from 'react-loading-bar'
 
@@ -19,7 +20,7 @@ class Userlist extends Component {
     constructor(props) {
         console.log(props);
         super(props);
-        
+
         this.state = {
             userList: [],
             show: true,  //loading-bar
@@ -30,21 +31,24 @@ class Userlist extends Component {
 
     }
 
-    componentDidMount(){
-        this.getUser();
+    componentDidMount() {
+        console.log(this.props)
+        this.setState({ show: true });
+        this.commonFunction();
     }
-    // get user list
-    getUser = () => {
-        this.setState({ show: true })
-        this.props.userlist().then(result => {
-            console.log(result);
-            this.setState({ show: false });
 
-            this.setState({ userList: result.result });
-            console.log(this.state.userList)
-        }, err => {
+    componentWillReceiveProps() {
+        this.commonFunction();
+    }
+
+    // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
+    commonFunction() {
+        /** FETCH USER LIST FROM REDUCEr */
+        if (this.props.userList.length > 0) {
+            this.setState({ userList: (this.props.userList) });
             this.setState({ show: false });
-        })
+        }
+
     }
 
     //edit client
@@ -128,11 +132,18 @@ class Userlist extends Component {
                                                 <p><span className="span1">Roles </span>: {item.role}</p>
                                             </Col>
                                             <Row><p><span className="span1">Reporting Manager </span>: {item.manager ? item.manager.name : ""}</p></Row>
-                                            <Row><p ><span className="span1">Tag </span>:{item.tags.map((tag=>{
-                                           return tag
-                                            }))}</p></Row>
-                                            </Col>
-                                            
+                                            <Row>
+                                                {item.tags.length != 0 ?
+                                                    <p><span className="span1">Tag:</span>{item.tags.map(((tag, index) => {
+
+                                                        return index < item.tags.length - 1 ? tag + ',' : tag
+                                                    }))} </p>
+                                                    : ''
+                                                }
+
+                                            </Row>
+                                        </Col>
+
                                     </Row>
 
 
@@ -249,6 +260,10 @@ class Userlist extends Component {
 const mapStateToProps = (state) => {
     return state
 }
-
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(userlistActions, dispatch)
+    })
+}
 // const  Userlist= Form.create()(NewProject);
-export default connect(mapStateToProps, actioncreators)(Userlist)
+export default connect(mapStateToProps, mapDispatchToProps)(Userlist)

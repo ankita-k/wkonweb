@@ -6,7 +6,9 @@ import { Divider } from 'antd';
 import moment from 'moment'
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
-import Loading from 'react-loading-bar'
+import { bindActionCreators } from 'redux';
+import Loading from 'react-loading-bar';
+
 import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
 
@@ -40,8 +42,7 @@ class NewProject extends Component {
             assign: '',
             assignRole: [],  
             memeberId:'',
-            assignRolee:[]
-
+            editClient: false
         }
 
     }
@@ -52,7 +53,9 @@ class NewProject extends Component {
             this.setState({ disableclient: true })
             this.setState({ editClient: true })
 
-            console.log('members',this.props.location.data.data);
+            console.log('members',this.props.location.data.data.members);
+            this.setState({assignRole:this.props.location.data.data.members})
+            console.log(this.state.assignRole)
             console.log("projectId", this.props.location.data.data._id)
             this.setState({ projectId: this.props.location.data.data._id })
             console.log(this.state.projectId)
@@ -86,16 +89,11 @@ class NewProject extends Component {
 
         }
         // GET CLIENT LIST
-        this.props.clientlist(this.state.userId).then((data) => {
-            // this.setState({ show: false });
-            // console.log(data);
-            this.setState({ clientlist: data.result });
-            console.log(this.state.clientlist);
-        }, err => {
-
-        })
+            this.setState({ clientlist: this.props.clientList });
         this.getVerticalHeadList();
     }
+
+
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -115,10 +113,6 @@ class NewProject extends Component {
                         requirement: values.textRequirement,
                         status: values.status,
                         technology: (values.technology).toString(),
-                        // expectedStartDate: values.expecstart ? values.expecstart._d : '',
-                        // actualStartDate: values.actualstart ? values.actualstart._d : '',
-                        // expectedEndDate: values.expecend ? values.expecend._d : '',
-                        // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
                         client: this.props.location.data.data.client._id,
 
@@ -196,7 +190,10 @@ class NewProject extends Component {
         });
     }
 
-
+    componentWillReceiveProps(props) {
+        console.log(props)
+        // this.setState({ clientlist: props.clientList });
+    }
     // VALIADTE EXPECTED START DATE AND END DATE
     validatetoexpecstart = (rule, value, callback) => {
         const form = this.props.form;
@@ -507,18 +504,7 @@ class NewProject extends Component {
                                     </Col>
                                 </Row>
                             </div>
-                            <Row className="briefRequire">
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                    <FormItem label="Brief Requirement">
-                                        {getFieldDecorator('textRequirement', {
-                                            rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                            </Row>
+
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem label="Status">
@@ -641,9 +627,10 @@ class NewProject extends Component {
                                 </Row>
 
                                 <Row>
-                                    {this.state.assignRole.map((item, index) => {
+                                  {this.state.assignValue!=[]?this.state.assignRole.map((item, index) => {
                                         return <span key={index}>{item.name}:{item.role},</span>
-                                    })}
+                                    }):''} 
+                                   
                                 </Row>
 
                                 <Row>
@@ -697,6 +684,18 @@ class NewProject extends Component {
                                             </FormItem>
                                         </Col>
                                         : ''}
+                                        </Row>
+                                <Row className="briefRequire">
+                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                        <FormItem label="Brief Requirement">
+                                            {getFieldDecorator('textRequirement', {
+                                                rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
+                                            })(
+                                                // <Input placeholder="Brief Requirement" />
+                                                <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
+                                            )}
+                                        </FormItem>
+                                    </Col>
                                 </Row>
                                 {/* <Row>
                                     <Col xs={24} sm={24} md={24} lg={24}>
@@ -720,11 +719,12 @@ class NewProject extends Component {
                                 </Row> */}
                             </div>
                         </div>
-                        <Row>
+                        {(this.state.editClient == true) ?<Row>
                             <div className="savebutton">
                                 <Button onClick={this.plusIcon}>+</Button>
                             </div>
-                        </Row>
+                        </Row>:''}
+                        
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>

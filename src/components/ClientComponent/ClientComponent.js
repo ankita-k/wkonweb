@@ -33,7 +33,11 @@ class ClientComponent extends Component {
                 ['phone']: this.props.location.data.data.phoneNumber,
                 ['domain']: this.props.location.data.data.domain,
                 ['country']: this.props.location.data.data.country,
-                ['status']: this.props.location.data.data.status
+                ['status']: this.props.location.data.data.status,
+                ['currency']: this.props.location.data.data.currency,
+                ['paypal_id']: this.props.location.data.data.paypalId
+
+                
             });
             console.log(this.props.form)
         }
@@ -85,7 +89,10 @@ class ClientComponent extends Component {
                         email: values.email,
                         name: values.name,
 
-                        domain: values.domain
+                        domain: values.domain,
+                        currency:values.currency,
+                        paypalId:values.paypal_id
+                        // paypal_id:values.paypalId
                     }
                     console.log('edshgj')
                     this.props.updateclient(data, this.props.location.data.data._id).then(data => {
@@ -111,7 +118,10 @@ class ClientComponent extends Component {
                         email: values.email,
                         name: values.name,
                         userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
-                        domain: values.domain
+                        domain: values.domain,
+                        currency:values.currency,
+                        // paypal_id:values.paypalId
+                        paypalId:values.paypal_id
                     }
                     this.props.createClient(data).then(result => {
                         this.setState({showLoader: false});
@@ -156,7 +166,7 @@ class ClientComponent extends Component {
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="inputForminfo">
                             <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Name">
                                         {getFieldDecorator('name', {
                                             rules: [{ required: true, message: 'Please input your Name!' }],
@@ -167,9 +177,10 @@ class ClientComponent extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                            {/* </Row>
+                            <Row> */}
+                            <Col md={2} lg={2}></Col>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Email">
                                         {getFieldDecorator('email', {
                                             rules: [{
@@ -186,7 +197,7 @@ class ClientComponent extends Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                             <FormItem label="Address">
                                         {getFieldDecorator('address', {
                                             rules: [{ required: true, message: 'Please input your Address!' }],
@@ -197,9 +208,10 @@ class ClientComponent extends Component {
                                         )}
                                     </FormItem>
                                     </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                            {/* </Row>
+                            <Row> */}
+                             <Col md={2} lg={2}></Col>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Company">
                                         {getFieldDecorator('company', {
                                             rules: [{ required: true, message: 'Please input your Company!' }],
@@ -212,10 +224,14 @@ class ClientComponent extends Component {
                                     </Col>
                             </Row>
                             <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="paypal_id">
                                         {getFieldDecorator('paypal_id', {
-                                            rules: [{ required: true, message: 'Please input your paypal_id!' }],
+                                             rules: [{
+                                                type: 'email', message: 'The input is not valid paypal id!'
+                                            },
+                                            { required: true, message: 'Please input your Paypal id!' }],
+
                                         })(
                                             <Input
                                                 maxLength="15"
@@ -223,9 +239,10 @@ class ClientComponent extends Component {
                                         )}
                                     </FormItem>
                                     </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                            {/* </Row>
+                            <Row> */}
+                             <Col md={2} lg={2}></Col>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Country">
                                         {getFieldDecorator('country', {
                                             rules: [{ required: true, message: 'Please select your Country!' }],
@@ -246,7 +263,7 @@ class ClientComponent extends Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Phone No.">
                                         {getFieldDecorator('phone', {
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
@@ -258,10 +275,11 @@ class ClientComponent extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
-                            </Row>
+                            {/* </Row>
 
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                            <Row> */}
+                             <Col md={2} lg={2}></Col>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Domain">
                                         {getFieldDecorator('domain', {
                                             rules: [{ required: true, message: 'Please input your Domain!' }],
@@ -272,7 +290,7 @@ class ClientComponent extends Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Status">
                                         {getFieldDecorator('status', {
                                             rules: [{ required: true, message: 'Please select your status!' }],
@@ -290,9 +308,10 @@ class ClientComponent extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                            {/* </Row>
+                            <Row> */}
+                             <Col md={2} lg={2}></Col>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                             <FormItem label="Currency">
                                         {getFieldDecorator('currency', {
                                             rules: [{ required: true, message: 'Please select your Currency!' }],
@@ -303,8 +322,12 @@ class ClientComponent extends Component {
                                                 showSearch
 
                                             >
-                                                <Option value="India">INR</Option>
-                                                <Option value="Us">UNR</Option>
+                                                 <Option value="USD">USD</Option>
+                                                 <Option value="GBP">GBP</Option>
+                                                 <Option value="AUD">AUD</Option>
+                                                 <Option value="INR">INR</Option>
+                                                 <Option value="EUR">EUR</Option>
+                                                 <Option value="AED">AED</Option>
                                             </Select>
                                         )}
                                     </FormItem>
