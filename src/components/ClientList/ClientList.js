@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Table, Button, Icon, Row, Input, Modal, Col } from 'antd';
+import { Card, Table, Button, Icon, Row, Input, Modal, Col, Layout } from 'antd';
 import '../NewProject/NewProject.css';
 import './ClientList.css';
 import { connect } from "react-redux";
@@ -358,7 +358,7 @@ class ClientList extends Component {
 
         {/* clientlist */}
         <Card className="innercardContenta" bordered={false}>
-          <Table
+          <Table columns={columns} dataSource={data} pagination={{ pageSize: 50 }} scroll={{ y: 290 }}
             onRow={(record) => {
               return {
                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
