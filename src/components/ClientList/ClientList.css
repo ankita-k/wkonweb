@@ -72,12 +72,16 @@ button.ant-btn.edita i.anticon.anticon-edit {
 button.ant-btn.delete i.anticon.anticon-delete {
     font-size: 16px;
 }
+img.fileIcon {
+    height: 20px;
+    width: 20px;
+}
 button.ant-btn.edita {
     background: transparent;
     color: #81d2ff;
     border: none;
     padding: 0;
-    margin-right:3em;
+    margin-right:4em;
 }
 .addButton.clientadd {
     position: absolute;
