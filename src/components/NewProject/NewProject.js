@@ -6,7 +6,9 @@ import { Divider } from 'antd';
 import moment from 'moment'
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
-import Loading from 'react-loading-bar'
+import { bindActionCreators } from 'redux';
+import Loading from 'react-loading-bar';
+
 import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
 
@@ -35,7 +37,7 @@ class NewProject extends Component {
             verticalHeadrarray: [],
             verticalHead: '',
 
-            editClient:false
+            editClient: false
         }
 
     }
@@ -76,16 +78,18 @@ class NewProject extends Component {
 
         }
         // GET CLIENT LIST
-        this.props.clientlist(this.state.userId).then((data) => {
-            // this.setState({ show: false });
-            console.log(data);
-            this.setState({ clientlist: data.result });
-            console.log(this.state.clientlist);
-        }, err => {
+        // this.props.clientlist(this.state.userId).then((data) => {
+        //     // this.setState({ show: false });
+        //     console.log(data);
+            this.setState({ clientlist: this.props.clientList });
+        //     console.log(this.state.clientlist);
+        // }, err => {
 
-        })
+        // })
         this.getVerticalHeadList();
     }
+
+
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -189,7 +193,10 @@ class NewProject extends Component {
         });
     }
 
-
+    componentWillReceiveProps(props) {
+        console.log(props)
+        // this.setState({ clientlist: props.clientList });
+    }
     // VALIADTE EXPECTED START DATE AND END DATE
     validatetoexpecstart = (rule, value, callback) => {
         const form = this.props.form;
@@ -383,20 +390,20 @@ class NewProject extends Component {
                     color="red"
                     showSpinner={false}
                 />
-<div className="">
+                <div className="">
 
-                        {(this.state.editClient == true) ?
-                            <h1 className="NewCustomer">Edit Project</h1> : <h1 className="NewCustomer">New Project</h1>
-                        }
-                        {/* {(this.state.editClient == true) ?
+                    {(this.state.editClient == true) ?
+                        <h1 className="NewCustomer">Edit Project</h1> : <h1 className="NewCustomer">New Project</h1>
+                    }
+                    {/* {(this.state.editClient == true) ?
                            
                         } */}
 
-                        {/* <Divider dashed className="underLine" /> */}
-                    </div>
+                    {/* <Divider dashed className="underLine" /> */}
+                </div>
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
-                    
+
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="inputForminfo informationProject">
                             <div className="spaceLess">
@@ -457,7 +464,7 @@ class NewProject extends Component {
                                     </Col>
                                 </Row>
                             </div>
-                            
+
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem label="Status">
@@ -621,17 +628,17 @@ class NewProject extends Component {
                                     </Col>
                                 </Row>
                                 <Row className="briefRequire">
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                    <FormItem label="Brief Requirement">
-                                        {getFieldDecorator('textRequirement', {
-                                            rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                            </Row>
+                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                        <FormItem label="Brief Requirement">
+                                            {getFieldDecorator('textRequirement', {
+                                                rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
+                                            })(
+                                                // <Input placeholder="Brief Requirement" />
+                                                <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
+                                            )}
+                                        </FormItem>
+                                    </Col>
+                                </Row>
                                 {/* <Row>
                                     <Col xs={24} sm={24} md={24} lg={24}>
                                         <p className="expecteDateclient">Choose Client :</p>

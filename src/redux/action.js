@@ -1,5 +1,6 @@
 import { config } from '../../src/config';
 import { push } from 'react-router-redux';
+import { developerList } from './reducers/developerList';
 
 let conf = config.headers;
 
@@ -217,34 +218,34 @@ function toast(type, message) {
 
 }
 // PROJECTLIST  ACTION
-function allProjectlist(json) {
+function Projectlist(list) {
     return {
         type: "PROJECT_LIST",
-        json
+        list
 
     }
 }
 // FUNCTION FOR APICALL OF PROJECT LIST
 export function projectList(userId) {
     return (dispatch) => {
-        return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'project/projectlist?userId=' + userId, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET'
+        fetch(config.apiUrl + 'project/projectlist?userId=' + userId, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'GET'
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error)
+                    dispatch(Projectlist(responseJSON.result))
+
             })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(allProjectlist(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+            .catch((error) => {
+                dispatch(Projectlist([]))
+            });
+
     }
 }
 
@@ -578,7 +579,7 @@ export function dashboardCustomer(userId) {
 export function findByRole(role) {
     return (dispatch) => {
         console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+     
 
             fetch(config.apiUrl + 'user/findByRole?role=' + role,
                 {
@@ -589,42 +590,51 @@ export function findByRole(role) {
                 })
                 .then((response) => response.json())
                 .then((responseJSON) => {
-                    dispatch(receivePosts(responseJSON))
-                    resolve(responseJSON);
+                    dispatch(developerlist(responseJSON.result))
+                   
                 })
                 .catch((error) => {
-                    reject(error);
+                    
                 });
-        });
+       
     }
 }
 
-export function userlist() {
+function developerlist(list) {
+    console.log(list)
+    return {
+        type: "DEVELOPER_LIST",
+        list
 
+    }
+}
+//FUNCTION FOR API CALL FOR GETTING USER LIST AND DISPATCHING ACTION
+export function userList() {
     return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'user/getAllUser',
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
 
-            fetch(config.apiUrl + 'user/getAllUser',
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(user(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+                console.log(responseJSON)
+                dispatch(userlist(responseJSON.result))
+
+
+
+            })
+            .catch((error) => {
+                dispatch(userlist([]))
+            });
+
     }
 }
-//clientlist func
-function user(list) {
+// FOR DISPATCHING ACTION TO REDUCER
+function userlist(list) {
     return {
         type: "USER_LIST",
         list

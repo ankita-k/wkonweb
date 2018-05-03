@@ -125,7 +125,7 @@ class ClientList extends Component {
       searchedclient: [],
       trueClientList: [],
       searchinput: '',
-      c: 'All',
+      allclient: 'All',
       userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
       column: [{
         title: 'Name',
@@ -180,6 +180,28 @@ class ClientList extends Component {
     }
   }
 
+  componentDidMount() {
+    console.log('component will mount');
+    this.setState({ show: true });
+    this.commonFunction();
+  }
+
+  componentWillReceiveProps(props) {
+    console.log(props);
+    this.commonFunction();
+
+  }
+
+  // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
+  commonFunction() {
+    /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
+    if (this.props.clientList.length > 0) {
+      this.setState({ searchedclient: (this.props.clientList) });
+      this.setState({ show: false });
+    }
+    this.handleChange((this.props.location.filterValue));
+  }
+  
   //edit client
   editClient = (data) => {
     this.props.history.push({
@@ -212,25 +234,9 @@ class ClientList extends Component {
 
   }
 
-  componentDidMount() {
-    console.log('component will mount');
-    this.setState({ show: true });
-    /* GETTING CLIENT LIST
-    */
-    this.props.actions.clientlist(this.state.userId);
-  }
+ 
 
-  componentWillReceiveProps(props) {
-    console.log(props);
-
-    /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
-    if (props.clientList.length > 0) {
-      this.setState({ show: false });
-      this.setState({ searchedclient: props.clientList })
-    }
-
-  }
-
+  
 
   // SEACRH CLIENT LIST ACCORDING TO INPUT 
   searchClient = (e) => {
@@ -260,7 +266,7 @@ class ClientList extends Component {
     if (value != null || value != undefined) {
       this.setState({ statussearch: value })
       if (value == 'All') {
-        this.setState({ statussearch: this.state.c });
+        this.setState({ statussearch: 'All' });
         this.setState({ searchinput: '' });
         this.setState({
           searchedclient: this.props.clientList

@@ -2,43 +2,32 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import logo from './logo.svg';
 import './App.css';
-// import MainLayout from './layout.js';
-// import axios from 'axios';
-// import { Table } from 'antd';
+import { connect } from "react-redux";
+import * as listActions from './redux/action';
+import { bindActionCreators } from 'redux';
 import Routes from './routes';
-// import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
-
-
 class App extends Component {
   constructor(props) {
-    // Pass props to parent class
     super(props);
-    // Set initial state
     this.state = {
       data: [],
-      userId: ''
+      userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
     }
-    console.log(props)
-
-    // this.apiUrl = 'http://localhost:5020/transaction/list'
   }
 
   componentDidMount() {
-    // Make HTTP reques with Axios
-    // axios.get(this.apiUrl)
-    //   .then((res) => {
-    //     // Set state with result
-    //     console.log(res);
-    //     if (res)
-    //       this.setState({ data: res.data.result });
-    //   });
-    // else {
-    //   return;
+    // var id = localStorage.getItem('id');
+    // if (id) {
+    //   sessionStorage.setItem('id', id);
     // }
-    var id = localStorage.getItem('id');
-    if (id) {
-      sessionStorage.setItem('id', id);
-    }
+   
+      this.props.actions.clientlist(this.state.userId);
+      this.props.actions.billlist(this.state.userId);
+      this.props.actions.projectList(this.state.userId);
+      this.props.actions.userList();
+      this.props.actions.findByRole('Developer');
+    
+
   }
 
 
@@ -51,4 +40,13 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return state
+}
+function mapDispatchToProps(dispatch, state) {
+  return ({
+    actions: bindActionCreators(listActions, dispatch)
+  })
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
