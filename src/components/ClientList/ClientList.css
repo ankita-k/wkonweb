@@ -63,9 +63,9 @@ button.ant-btn.allprojectbtn {
 .innercardContenta {
     margin: 15px auto !important;
 }
-.innercardContenta table{
+/* .innercardContenta table{
     margin-top: 8em !important;
-}
+} */
 button.ant-btn.edita i.anticon.anticon-edit {
     font-size: 16px;
 }

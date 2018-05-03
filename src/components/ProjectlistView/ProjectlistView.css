@@ -45,17 +45,17 @@ button.ant-btn.allprojectbtn {
    vertical-align: middle;
    width: 0;
  }
- .innercardContenta table {
+ /* .innercardContenta table {
     margin-top: 6em;
-}
- .projectListheader {
+} */
+ /* .projectListheader {
     position: fixed;
     top: 0;
     z-index: 9;
     width: 82%;
     top: 9%;
     background: #f0f4f5;
-}
+} */
  
  .vertical-center-modal .ant-modal {
    display: inline-block;
