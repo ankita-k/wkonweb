@@ -16,11 +16,18 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // var id = localStorage.getItem('id');
+    // if (id) {
+    //   sessionStorage.setItem('id', id);
+    // }
+   
+      this.props.actions.clientlist(this.state.userId);
+      this.props.actions.billlist(this.state.userId);
+      this.props.actions.projectList(this.state.userId);
+      this.props.actions.userList();
+      this.props.actions.findByRole('Developer');
+    
 
-    this.props.actions.clientlist(this.state.userId);
-    this.props.actions.billlist(this.state.userId);
-    this.props.actions.projectList(this.state.userId);
-    this.props.actions.userList();
   }
 
 
