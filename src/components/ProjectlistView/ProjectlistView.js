@@ -146,8 +146,8 @@ class ProjectlistView extends Component {
 
   // NAVIAGET TO EDIT PROJECT PAGE WITH DATA
   editProject = (data) => {
-    console.log(data);
-    console.log("hellllloo");
+    // console.log(data);
+    // console.log("hellllloo");
     this.props.history.push({
       pathname: '/dashboard/editProject',
       data: {
