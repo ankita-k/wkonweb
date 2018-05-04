@@ -45,7 +45,7 @@ const reducer = ((state = {}, action) => {
     case "DELETE_CLIENT":                  // FOR CLIENT DELETE
       return action.list
       break;
-      case "DELETE_USER":                  // FOR CLIENT DELETE
+    case "DELETE_USER":                  // FOR CLIENT DELETE
       return action.list
       break;
     case "TOAST":                         // FOR SHOWING NOTIFICATION
@@ -60,16 +60,19 @@ const reducer = ((state = {}, action) => {
     case "USER_LIST":                  // FOR USER LIST
       return action.list
       break;
-      case "EDIT_USER":                  // FOR USER EDIT
+    case "EDIT_USER":                  // FOR USER EDIT
       return action.list
       break;
-      case "BILL_LIST":                  // FOR BILL LIST
+    case "BILL_LIST":                  // FOR BILL LIST
       return action.list
       break;
-      case "EDIT_BILL":                  // FOR EDIT BILL
+    case "EDIT_BILL":                  // FOR EDIT BILL
       return action.list
       break;
-      case "VERTICAL_LEAD":                  // FOR VERTICAL LEADS
+    case "VERTICAL_LEAD":                  // FOR VERTICAL LEADS
+      return action.json
+      break;
+    case "ADD_MEMBER":                  // FOR ADD MEMBER
       return action.json
       break;
     default:
