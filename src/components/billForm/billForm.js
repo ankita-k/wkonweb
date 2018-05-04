@@ -40,7 +40,7 @@ class BillForm extends Component {
             console.log(this.props.location.data.data);
             this.setState({ disableclient: true });
             this.setState({ disableproject: true });
-            this.setState({editBill:true})
+            this.setState({ editBill: true })
             this.props.form.setFieldsValue({
                 ['ProjectName']: this.props.location.data.data.projectName,
                 ['clientName']: this.props.location.data.data.client ? this.props.location.data.data.client : '',
@@ -60,30 +60,20 @@ class BillForm extends Component {
                 ['Currency']: this.props.location.data.data.currency,
             });
         }
-        console.log('billform component did mount');
-        this.projectList();
+        
+        /*GET PROJECT LIST FROM PROPS*/
+        if (this.props.projectList.length > 0) {
+            this.setState({ projectlist: this.props.projectList })
+        }
+        /*GET PROJECT LIST FROM PROPS  ENDS*/
 
     }
 
-
-    // GET PROJECT LIST ARRAY FROM API CALL USING REDUX 
-    projectList = () => {
-
-        this.props.actions.projectList(this.state.userId).then(response => {
-            console.log(response);
-            if (!response.error) {
-                this.setState({ projectlist: response.result })
-            }
-        },
-            err => {
-
-            })
-    }
     // FUNCTION CALLED ON SAVE BUTTON
     save = (e) => {
         e.preventDefault();
-        this.setState({showLoader: true});
-    
+        this.setState({ showLoader: true });
+
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
 
@@ -114,8 +104,8 @@ class BillForm extends Component {
                     console.log(data);
 
                     this.props.actions.BillEdit(data, this.props.location.data.data._id).then(data => {
-                        this.setState({showLoader: false});
-                        this.setState({show:false})
+                        this.setState({ showLoader: false });
+                        this.setState({ show: false })
                         console.log(data)
                         if (!data.error) {
                             this.props.actions.opentoast('success', 'Bill Updated Successfully!');
@@ -154,7 +144,7 @@ class BillForm extends Component {
                     this.props.actions.billCreate(billdata).then(response => {
                         console.log('bill created data', response)
                         this.setState({ show: false });
-                        this.setState({showLoader: false});
+                        this.setState({ showLoader: false });
                         if (!response.error) {
                             this.props.history.push('/dashboard/billlist');
                             this.props.actions.opentoast('success', 'Bill Created Successfully!')
@@ -164,7 +154,7 @@ class BillForm extends Component {
                         }
                     }, err => {
                         this.setState({ show: false });
-                        this.setState({showLoader: false});
+                        this.setState({ showLoader: false });
                         this.props.actions.opentoast('warning', 'Bill Creation Failed!')
                     })
                 }
@@ -210,19 +200,19 @@ class BillForm extends Component {
         const { fetching, techArray, value } = this.state;
         return (
             <div>
-                 <Loading
+                <Loading
                     show={this.state.show}
                     color="red"
                     showSpinner={false}
                 />
-                     <div className="newCustomerform">
+                <div className="newCustomerform">
 
-                        {(this.state.editBill == true) ?
+                    {(this.state.editBill == true) ?
                         <h1 className="NewCustomer">Edit Bill</h1> : <h1 className="NewCustomer">New Bill</h1>
                     }
-                        {/* <h1 className="NewCustomer">New Bill</h1> */}
-                        {/* <Divider dashed className="underLine" /> */}
-                    </div>
+                    {/* <h1 className="NewCustomer">New Bill</h1> */}
+                    {/* <Divider dashed className="underLine" /> */}
+                </div>
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
                     <Form onSubmit={this.save} className="login-form">
