@@ -3,6 +3,8 @@ import { Form, Input, Button, Row, Col, Card, Select } from 'antd';
 import './ClientComponent.css';
 import { Divider } from 'antd';
 import * as actioncreators from '../../redux/action';
+import { bindActionCreators } from 'redux';
+import * as ClientCreate from '../../redux/action';
 import { connect } from "react-redux";
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
@@ -37,22 +39,33 @@ class ClientComponent extends Component {
                 ['currency']: this.props.location.data.data.currency,
                 ['paypal_id']: this.props.location.data.data.paypalId
 
-                
+
             });
             console.log(this.props.form)
         }
 
-        // GET COUNTRY LIST
-
-        console.log('component will didmount')
-        this.props.countrylist().then((data) => {
-            // this.setState({ show: false });
-            this.setState({ countrylist: data });
-            console.log(this.state.countrylist)
-        }, err => {
-
-        })
     }
+    componentWillReceiveProps(props) {
+       console.log("componentwillrecieveprops")
+
+
+    //     // debugger;
+    //     // console.log(props)
+    //     // if (props.clientCreate) {
+    //     //     debugger;
+    //     //     this.setState({ showLoader: false });
+    //     //     this.setState({ show: false });
+
+    //     //     if (!props.clientCreate.error) {
+    //     //         this.props.actions.opentoast('success', 'Client Added Successfully!');
+    //     //         this.props.history.push('/dashboard/clientlist')
+    //     //     }
+    //     //     else {
+    //     //         this.props.actions.opentoast('warning', (props.clientCreate.message));
+    //     //     }
+
+    //     // }
+     }
 
 
     // TAKE INPUT FIELD VALUE
@@ -72,11 +85,18 @@ class ClientComponent extends Component {
         this.setState({ country: e });
         console.log(e)
     }
+    //Currency SELECTED
+    selectCurrency = (e) => {
+        this.setState({ currency: e });
+        console.log(e)
+    }
+
 
     handleSubmit = (e) => {
+        
         e.preventDefault();
         this.setState({ show: true });
-        this.setState({showLoader: true});
+        this.setState({ showLoader: true });
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log(values)
@@ -90,19 +110,19 @@ class ClientComponent extends Component {
                         name: values.name,
 
                         domain: values.domain,
-                        currency:values.currency,
-                        paypalId:values.paypal_id
+                        currency: values.currency,
+                        paypalId: values.paypal_id
                         // paypal_id:values.paypalId
                     }
                     console.log('edshgj')
                     this.props.updateclient(data, this.props.location.data.data._id).then(data => {
-                        this.setState({showLoader: false});
+                        this.setState({ showLoader: false });
                         console.log(data)
                         if (!data.error) {
                             this.props.opentoast('success', 'Client Updated Successfully!');
                             this.props.history.push('/dashboard/clientlist')
                         }
-                        else{
+                        else {
                             this.props.opentoast('warning', data.message);
                         }
                     }, err => {
@@ -119,26 +139,27 @@ class ClientComponent extends Component {
                         name: values.name,
                         userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
                         domain: values.domain,
-                        currency:values.currency,
+                        currency: values.currency,
                         // paypal_id:values.paypalId
-                        paypalId:values.paypal_id
+                        paypalId: values.paypal_id
                     }
-                    this.props.createClient(data).then(result => {
-                        this.setState({showLoader: false});
-                        this.setState({ show: false });
-                        console.log(result);
-                        if (!result.error) {
-                            this.props.opentoast('success', 'Client Added Successfully!');
-                            this.props.history.push('/dashboard/clientlist')
-                        }
-                        else{
-                            this.props.opentoast('warning', result.message);
-                        }
-                    }, err => {
-                        this.setState({ show: false });
-                        this.setState({showLoader: false});
-                        this.props.opentoast('warning', 'Client Not Added Successfully!');
-                    })
+                    this.props.actions.createClient(data,this.props.history)
+                    //     .then(result => {
+                    //         this.setState({showLoader: false});
+                    //         this.setState({ show: false });
+                    //         console.log(result);
+                    //         if (!result.error) {
+                    //             this.props.opentoast('success', 'Client Added Successfully!');
+                    //             this.props.history.push('/dashboard/clientlist')
+                    //         }
+                    //         else{
+                    //             this.props.opentoast('warning', result.message);
+                    //         }
+                    //     }, err => {
+                    //         this.setState({ show: false });
+                    //         this.setState({showLoader: false});
+                    //         this.props.opentoast('warning', 'Client Not Added Successfully!');
+                    //     })
                 }
 
 
@@ -154,15 +175,15 @@ class ClientComponent extends Component {
                     color="red"
                     showSpinner={false}
                 />
-                     <div>
-                        {/* <h1 className="NewCustomer">New Client</h1> */}
-                        {(this.state.clientEdit == true) ?
-                            <h1 className="NewCustomer">Edit Client</h1> : <h1 className="NewCustomer">New Client</h1>
-                        }              
-                    </div>
+                <div>
+                    {/* <h1 className="NewCustomer">New Client</h1> */}
+                    {(this.state.clientEdit == true) ?
+                        <h1 className="NewCustomer">Edit Client</h1> : <h1 className="NewCustomer">New Client</h1>
+                    }
+                </div>
                 <Card className="innercardContent" bordered={false}>
                     {/* --new customer details-- */}
-               
+
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="inputForminfo">
                             <Row>
@@ -174,12 +195,12 @@ class ClientComponent extends Component {
                                             <Input
                                                 maxLength="15"
                                                 placeholder="Name" name="name" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
-                            {/* </Row>
+                                {/* </Row>
                             <Row> */}
-                            <Col md={2} lg={2}></Col>
+                                <Col md={2} lg={2}></Col>
                                 <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Email">
                                         {getFieldDecorator('email', {
@@ -192,25 +213,25 @@ class ClientComponent extends Component {
                                             <Input
                                                 maxLength="200"
                                                 placeholder="Email" name="email" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
                             <Row>
                                 <Col xs={24} sm={24} md={11} lg={11}>
-                            <FormItem label="Address">
+                                    <FormItem label="Address">
                                         {getFieldDecorator('address', {
                                             rules: [{ required: true, message: 'Please input your Address!' }],
                                         })(
                                             <Input
                                                 maxLength="15"
                                                 placeholder="Address" name="address" />
-                                        )}
+                                            )}
                                     </FormItem>
-                                    </Col>
-                            {/* </Row>
+                                </Col>
+                                {/* </Row>
                             <Row> */}
-                             <Col md={2} lg={2}></Col>
+                                <Col md={2} lg={2}></Col>
                                 <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Company">
                                         {getFieldDecorator('company', {
@@ -219,15 +240,15 @@ class ClientComponent extends Component {
                                             <Input
                                                 maxLength="20"
                                                 placeholder="Company" name="company" />
-                                        )}
+                                            )}
                                     </FormItem>
-                                    </Col>
+                                </Col>
                             </Row>
                             <Row>
                                 <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="paypal_id">
                                         {getFieldDecorator('paypal_id', {
-                                             rules: [{
+                                            rules: [{
                                                 type: 'email', message: 'The input is not valid paypal id!'
                                             },
                                             { required: true, message: 'Please input your Paypal id!' }],
@@ -236,12 +257,12 @@ class ClientComponent extends Component {
                                             <Input
                                                 maxLength="15"
                                                 placeholder="paypal_id" name="paypal_id" />
-                                        )}
+                                            )}
                                     </FormItem>
-                                    </Col>
-                            {/* </Row>
+                                </Col>
+                                {/* </Row>
                             <Row> */}
-                             <Col md={2} lg={2}></Col>
+                                <Col md={2} lg={2}></Col>
                                 <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Country">
                                         {getFieldDecorator('country', {
@@ -253,12 +274,12 @@ class ClientComponent extends Component {
                                                 name="country"
                                                 showSearch
                                             >
-                                                {this.state.countrylist.map((item, index) => {
+                                                {this.props.countrylists.map((item, index) => {
                                                     return (<Option key={index} value={item.name}>{item.name}</Option>)
                                                 })}
 
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -272,20 +293,20 @@ class ClientComponent extends Component {
                                                 type="test"
                                                 maxLength="15"
                                                 placeholder="Phone No." name="phoneNumber" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
-                            {/* </Row>
+                                {/* </Row>
 
                             <Row> */}
-                             <Col md={2} lg={2}></Col>
+                                <Col md={2} lg={2}></Col>
                                 <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Domain">
                                         {getFieldDecorator('domain', {
                                             rules: [{ required: true, message: 'Please input your Domain!' }],
                                         })(
                                             <Input placeholder="Domain" name="domain" />
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -305,38 +326,39 @@ class ClientComponent extends Component {
                                                 <Option value="Pipeline">Pipeline</Option>
                                                 <Option value="Committed">Committed</Option>
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
-                            {/* </Row>
+                                {/* </Row>
                             <Row> */}
-                             <Col md={2} lg={2}></Col>
+                                <Col md={2} lg={2}></Col>
                                 <Col xs={24} sm={24} md={11} lg={11}>
-                            <FormItem label="Currency">
+                                    <FormItem label="Currency">
                                         {getFieldDecorator('currency', {
                                             rules: [{ required: true, message: 'Please select your Currency!' }],
                                         })(
                                             <Select className="statuspipeline"
                                                 placeholder="Currency"
-                                                onChange={this.selectStatus}
+                                                onChange={this.selectCurrency}
                                                 showSearch
 
                                             >
-                                                 <Option value="USD">USD</Option>
-                                                 <Option value="GBP">GBP</Option>
-                                                 <Option value="AUD">AUD</Option>
-                                                 <Option value="INR">INR</Option>
-                                                 <Option value="EUR">EUR</Option>
-                                                 <Option value="AED">AED</Option>
+                                                <Option value="USD">USD</Option>
+                                                <Option value="GBP">GBP</Option>
+                                                <Option value="AUD">AUD</Option>
+                                                <Option value="INR">INR</Option>
+                                                <Option value="EUR">EUR</Option>
+                                                <Option value="AED">AED</Option>
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
-                                    </Col>
+                                </Col>
                             </Row>
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
+                             {/* loading={this.state.showLoader} */}
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
                             </div>
                         </FormItem>
@@ -352,8 +374,14 @@ class ClientComponent extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state)
     return state
+}
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(ClientCreate, dispatch)
+    })
 }
 
 const WrappedClientComponent = Form.create()(ClientComponent);
-export default connect(mapStateToProps, actioncreators)(WrappedClientComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedClientComponent);

@@ -10,6 +10,8 @@ import {developerlist} from '../reducers/developerList'
 import {loggeduserDetails} from '../reducers/userDetails';
 import {dashboardProjectData} from '../reducers/dashboardProjectData';
 import {dashboardCustomerData} from '../reducers/dashboardCustomerData';
+import {clientCreate} from '../reducers/clientcreate';
+import {countrylists} from '../reducers/countrylist';
 import {fullloader} from '../reducers/loader';
 // reducers list
 const rootReducer = combineReducers({
@@ -23,9 +25,10 @@ const rootReducer = combineReducers({
     developerlist,                   // get develper list
     loggeduserDetails,               // logged in user detail
     dashboardProjectData,                    // dashboard numbers for customer,project 
-    dashboardCustomerData,        
-    fullloader,                             //loader
-
+    dashboardCustomerData,     
+    clientCreate ,                   //create client
+    countrylists,                    // get countrylist
+    fullloader,
 })
 
 
