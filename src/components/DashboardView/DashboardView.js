@@ -445,6 +445,19 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
+                            <Col lg={11} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey successfully paided</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
                         </Row>
 
                     </div>
@@ -465,6 +478,19 @@ class DashboardView extends Component {
 
                             </Col>
 
+                            <Col lg={11} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey successfully paided</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
                             <Col lg={11} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">

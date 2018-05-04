@@ -138,3 +138,23 @@ textarea#textRequirement {
     }
 }
 /* ResponsiveNewProject  */
+
+.ant-row .addbtn button{
+    width: 91px;
+    background: #428afe;
+    color: #ffffff;
+}
+
+.addbtn {
+    margin-top: 3em;
+}
+.roleassign {
+    margin: 2em 4em 1em 0em;
+    font-size: 18px;
+    color: rgba(68, 68, 68, 0.68);
+    font-weight: 500;
+    word-break: break-all;
+}
+span.usrnm {
+    color: #428afe;
+}
