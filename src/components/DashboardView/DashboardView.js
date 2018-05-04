@@ -12,6 +12,7 @@ import mantwo from '../../Images/wkon-2-22.png';
 import ProjectlistView from '../ProjectlistView/ProjectlistView';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 import Loading from 'react-loading-bar';
 import { Loader } from 'react-overlay-loader';
@@ -44,96 +45,41 @@ class DashboardView extends Component {
     }
 
     componentDidMount() {
+        console.log('component did mount', this.props)
+        this.commonFunction();
+    }
 
-        console.log('component did mount')
-        this.getdashboarddata();
-        this.dashboardCustomer();
+    componentWillReceiveProps(props) {
+        console.log(props)
+        this.commonFunction();
+
 
     }
 
-    //GET DASHBOARD PROJECT COUNT  DATA
-    getdashboarddata = () => {
-        this.setState({ show: true })
-        if (sessionStorage.getItem("id")) {
-            this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
+    // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
+    commonFunction() {
+        /*SHOW COUNTER FOR PROJECT DASHBOARD NUMBERS*/
+        if (this.props.dashboardProjectData) {
+            if (this.props.dashboardProjectData.Total)
+                this.startCounter(this.props.dashboardProjectData.Total, 'projectTotal')
+            if (this.props.dashboardProjectData.Completed)
+                this.startCounter(this.props.dashboardProjectData.Completed, 'projectcompleted')
 
-                console.log('dashboardview', response)
-                this.setState({ loading: false });
-                if (!response.error) {
-                    this.setState({ show: false });
-                    if (response.result && response.result.Total)
-                        this.startCounter(response.result.Total, 'projectTotal')
-                    if (response.result && response.result.Completed)
-                        this.startCounter(response.result.Completed, 'projectcompleted')
+            if (this.props.dashboardProjectData.InProgess)
+                this.startCounter(this.props.dashboardProjectData.InProgess, 'projectinprogress')
+        }
+        /*SHOW COUNTER FOR PROJECT DASHBOARD NUMBER ENDS*/
 
-                    if (response.result && response.result.InProgess)
-                        this.startCounter(response.result.InProgess, 'projectinprogress')
-                }
-                // console.log(this.state.count);
-            }, err => {
-                this.setState({ show: false });
-            })
+        /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
+        if (this.props.dashboardCustomerData) {
+            if (this.props.dashboardCustomerData.Total)
+                this.startCounter(this.props.dashboardCustomerData.Total, 'clientTotal')
+            if (this.props.dashboardCustomerData.Pipeline)
+                this.startCounter(this.props.dashboardCustomerData.Pipeline, 'clientpipeline')
+            if (this.props.dashboardCustomerData.Committed)
+                this.startCounter(this.props.dashboardCustomerData.Committed, 'clientcommitted')
         }
-        else {
-            if (localStorage.getItem('id')) {
-                this.props.dashboardData(localStorage.getItem('id')).then((response) => {
-                    console.log('dashboardview', response);
-                    this.setState({ show: false });
-                    if (!response.error) {
-                        if (response.result && response.result.Total)
-                            this.startCounter(response.result.Total, 'projectTotal')
-                        if (response.result && response.result.Completed)
-                            this.startCounter(response.result.Completed, 'projectcompleted')
-
-                        if (response.result && response.result.InProgess)
-                            this.startCounter(response.result.InProgess, 'projectinprogress')
-                    }
-                    // console.log(this.state.count);
-                }, err => {
-                    // console.log(this.state.count);
-                    this.setState({ show: false });
-                })
-            }
-
-        }
-    }
-    //GET DASHBOARD CUSTOERS COUNT DATA
-    dashboardCustomer = () => {
-        this.setState({ show: true });
-        if (sessionStorage.getItem("id")) {
-            console.log('data')
-            this.props.dashboardCustomer(sessionStorage.getItem('id')).then((response) => {
-                console.log('customerview', response);
-                if (!response.error) {
-                    this.setState({ show: false });
-                    if (response.result && response.result.Total)
-                        this.startCounter(response.result.Total, 'clientTotal')
-                    if (response.result && response.result.Pipeline)
-                        this.startCounter(response.result.Pipeline, 'clientpipeline')
-                    if (response.result && response.result.Committed)
-                        this.startCounter(response.result.Committed, 'clientcommitted')
-                }
-            }, err => {
-                this.setState({ show: false });
-            })
-        }
-        else if (localStorage.getItem('id')) {
-            this.props.dashboardCustomer(localStorage.getItem('id')).then(response => {
-                console.log('data...')
-                console.log('customerview', response)
-                if (!response.error) {
-                    this.setState({ show: false });
-                    if (response.result && response.result.Total)
-                        this.startCounter(response.result.Total, 'clientTotal')
-                    if (response.result && response.result.Pipeline)
-                        this.startCounter(response.result.Pipeline, 'clientpipeline')
-                    if (response.result && response.result.Committed)
-                        this.startCounter(response.result.Committed, 'clientcommitted')
-                }
-            }, err => {
-                this.setState({ show: false });
-            })
-        }
+        /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
     }
 
 
@@ -166,8 +112,6 @@ class DashboardView extends Component {
                     else {
                         clienttotal.Total = clienttotal.Total + 1;
                         _base.setState({ clienttotal })
-                        console.log(clienttotal)
-
                     }
                 }, 40)
                 break;
@@ -183,8 +127,6 @@ class DashboardView extends Component {
                     else {
                         clientcommitted.Committed = clientcommitted.Committed + 1;
                         _base.setState({ clientcommitted })
-                        console.log(clientcommitted)
-
                     }
                 }, 40)
                 break;
@@ -198,8 +140,6 @@ class DashboardView extends Component {
                     else {
                         clientpipeline.Pipeline = clientpipeline.Pipeline + 1;
                         _base.setState({ clientpipeline })
-                        console.log(clientpipeline)
-
                     }
                 }, 40)
                 break;
@@ -213,8 +153,6 @@ class DashboardView extends Component {
                     else {
                         projectinprogress.InProgess = projectinprogress.InProgess + 1;
                         _base.setState({ projectinprogress })
-                        console.log(projectinprogress)
-
                     }
                 }, 40)
                 break;
@@ -228,8 +166,6 @@ class DashboardView extends Component {
                     else {
                         projecttotal.Total = projecttotal.Total + 1;
                         _base.setState({ projecttotal })
-                        console.log(projecttotal)
-
                     }
                 }, 40)
                 break;
@@ -243,8 +179,6 @@ class DashboardView extends Component {
                     else {
                         projectcompleted.Completed = projectcompleted.Completed + 1;
                         _base.setState({ projectcompleted })
-                        console.log(projectcompleted)
-
                     }
                 }, 40)
                 break;
@@ -284,15 +218,15 @@ class DashboardView extends Component {
 
 
             <div className="dashboardMain">
-                {this.state.show == true ? <div className="loader">
+                {/* {this.state.show == true ? <div className="loader">
                     <Loader className="ldr" fullPage loading />
-                </div> : ""}
+                </div> : ""} */}
 
-                <Loading
+                {/* <Loading
                     show={this.state.show}
                     color="red"
                     showSpinner={false}
-                />
+                /> */}
                 {/* dashboardviewcustomer */}
                 <div className="dashboardView">
                     <h1 className="customer">Clients</h1>
@@ -395,7 +329,7 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                          
+
                             <Col lg={7} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
@@ -425,7 +359,7 @@ class DashboardView extends Component {
                         </Row>
 
                     </div>
-                  
+
                     <div className="firstman1">
                         <Row>
                             <Col lg={7} className="firstman">
@@ -442,7 +376,7 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                          
+
                             <Col lg={7} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
@@ -497,7 +431,7 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                           
+
                             <Col lg={11} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
@@ -530,7 +464,7 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                   
+
                             <Col lg={11} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
@@ -558,12 +492,14 @@ class DashboardView extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log('dashboard view state data', state)
-    // this.state.count.total=this.state.count.total+1;
     return state
 }
 
-
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(actioncreators, dispatch)
+    })
+}
 
 const WrappedDashboardView = Form.create()(DashboardView);
-export default connect(mapStateToProps, actioncreators)(WrappedDashboardView);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedDashboardView);
