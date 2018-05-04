@@ -23,7 +23,12 @@ button.ant-btn.delete {
 button.ant-btn.view {
     background: transparent;
     border: none;
+    line-height: 40px;
+    font-size: 16px;
    
+}
+.btns a:hover{
+    color:rgba(0, 0, 0, 0.45) !important;
 }
 .scoping .ant-select-selection__rendered {
     color: rgb(58, 56, 56);
