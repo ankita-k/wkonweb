@@ -40,8 +40,8 @@ class NewProject extends Component {
             projectId: '',
             role: '',
             assign: '',
-            assignRole: [],  
-            memeberId:'',
+            assignRole: [],
+            memeberId: '',
             editClient: false
         }
 
@@ -53,8 +53,8 @@ class NewProject extends Component {
             this.setState({ disableclient: true })
             this.setState({ editClient: true })
 
-            console.log('members',this.props.location.data.data.members);
-            this.setState({assignRole:this.props.location.data.data.members})
+            console.log('members', this.props.location.data.data.members);
+            this.setState({ assignRole: this.props.location.data.data.members })
             console.log(this.state.assignRole)
             console.log("projectId", this.props.location.data.data._id)
             this.setState({ projectId: this.props.location.data.data._id })
@@ -89,7 +89,7 @@ class NewProject extends Component {
 
         }
         // GET CLIENT LIST
-            this.setState({ clientlist: this.props.clientList });
+        this.setState({ clientlist: this.props.clientList });
         this.getVerticalHeadList();
     }
 
@@ -350,7 +350,7 @@ class NewProject extends Component {
                 this.setState({ verticalHeadrarray: response.result });
 
             }
-            console.log('Vertical head....',this.state.verticalHeadrarray);
+            console.log('Vertical head....', this.state.verticalHeadrarray);
         })
 
     }
@@ -363,7 +363,7 @@ class NewProject extends Component {
     //GET ASSIGN VALUR FOR PROJECT
     assignValue = (value) => {
         console.log('assign', value)
-        this.setState({memeberId:value})
+        this.setState({ memeberId: value })
         let newarray = this.state.verticalHeadrarray.filter(item => {
             return (item._id.toLowerCase().indexOf(value.toLowerCase()) > -1)
         });
@@ -378,21 +378,21 @@ class NewProject extends Component {
         let data = {
             userId: this.state.memeberId,
             role: this.state.role,
-            name:this.state.assign
+            name: this.state.assign
         }
         this.state.assignRole.push(data)
         console.log(this.state.assignRole)
         console.log(this.props.form)
         this.props.form.setFieldsValue({    //for clear the field
-            ['assign']:'',
-            ['role']:'',
+            ['assign']: '',
+            ['role']: '',
         })
-    
+
     }
     //ADD MEMBER
     addMember = () => {
-    
-        this.props.addMember(this.state.assignRole,this.state.projectId).then(response => {
+
+        this.props.addMember(this.state.assignRole, this.state.projectId).then(response => {
             console.log('memeber', response);
             if (!response.error) {
             }
@@ -467,7 +467,7 @@ class NewProject extends Component {
                                                     {/* <Option value="Sales">Client1</Option>
                                                     <Option value="Developer">Client2</Option> */}
                                                 </Select>
-                                            )}
+                                                )}
                                         </FormItem>
                                     </Col>
                                     <Col xs={24} sm={24} md={24} lg={12}>
@@ -477,7 +477,7 @@ class NewProject extends Component {
                                             })(
 
                                                 <Input maxLength="50" placeholder="Name" />
-                                            )}
+                                                )}
                                         </FormItem>
                                         {/* <FormItem label="Brief Requirement">
                                         {getFieldDecorator('requirement', {
@@ -524,7 +524,7 @@ class NewProject extends Component {
                                                 <Option value="Stalled">Stalled</Option>
                                                 <Option value="Completed">Completed</Option>
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                                 <Col xs={24} sm={24} md={24} lg={12}>
@@ -549,7 +549,7 @@ class NewProject extends Component {
                                                 )}
 
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -568,7 +568,7 @@ class NewProject extends Component {
                                                     }]
                                                 })(
                                                     <DatePicker />
-                                                )}
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
@@ -584,7 +584,7 @@ class NewProject extends Component {
                                                     }]
                                                 })(
                                                     <DatePicker />
-                                                )}
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
@@ -604,7 +604,7 @@ class NewProject extends Component {
                                                     }]
                                                 })(
                                                     <DatePicker />
-                                                )}
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
@@ -620,32 +620,27 @@ class NewProject extends Component {
                                                     }]
                                                 })(
                                                     <DatePicker disabled={this.state.disabledate} />
-                                                )}
+                                                    )}
                                             </FormItem>
                                         </div>
                                     </Col>
                                 </Row>
 
-                                <Row>
-                                  {this.state.assignValue!=[]?this.state.assignRole.map((item, index) => {
-                                        return <span key={index}>{item.name}:{item.role},</span>
-                                    }):''} 
-                                   
-                                </Row>
+
 
                                 <Row>
                                     {(this.state.editClient == true) ?
-                                        <Col xs={24} sm={24} md={24} lg={12}>
-                                            <FormItem label="Assign To"> 
+                                        <Col xs={24} sm={24} md={24} lg={10}>
+                                            <FormItem label="Assign To">
                                                 {getFieldDecorator('assign', {
                                                     rules: [{ required: false, message: 'Please select !' }],
                                                 })(
                                                     <Select className="statuspipeline"
-                                                       
+
                                                         placeholder="Assign To"
-                                                        style={{ width: '100%' }}
+
                                                         onSelect={this.assignValue}
-                                                    
+
                                                         showSearch
                                                     >
                                                         {this.state.verticalHeadrarray.map((item, index) => {
@@ -653,15 +648,15 @@ class NewProject extends Component {
                                                         })}
 
                                                     </Select>
-                                                 )}
+                                                    )}
                                             </FormItem>
                                         </Col>
 
                                         : ''}
-                                </Row>
-                                <Row>
+
+
                                     {(this.state.editClient == true) ?
-                                        <Col xs={24} sm={24} md={24} lg={12}>
+                                        <Col xs={24} sm={24} md={24} lg={10}>
                                             <FormItem label="Role">
                                                 {getFieldDecorator('role', {
                                                     rules: [{ required: false, message: 'Please select ' }],
@@ -669,7 +664,7 @@ class NewProject extends Component {
                                                     <Select className="statuspipeline"
                                                         // mode="multiple"
                                                         placeholder="Role"
-                                                        style={{ width: '100%' }}
+
                                                         // filterOption={false}
                                                         onChange={this.roleValue}
                                                         showSearch
@@ -680,11 +675,41 @@ class NewProject extends Component {
                                                         <Option value="Consultant4">Consultant4</Option>
 
                                                     </Select>
-                                                )} 
+                                                    )}
                                             </FormItem>
                                         </Col>
+
                                         : ''}
-                                        </Row>
+                                    <Col xs={24} sm={24} md={24} lg={2}>
+                                        {(this.state.editClient == true) ?
+
+                                            <div className="addbtn">
+                                                <Button onClick={this.plusIcon}>Add</Button>
+                                            </div>
+                                            : ''}
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    {/* <div className="roleassign">
+                                        {this.state.assignValue != [] ? this.state.assignRole.map((item, index) => {
+                                            return <span key={index}><span className="itemname">{item.name}</span>:{item.role},</span>
+                                        }) : ''}
+                                    </div> */}
+                                    <div className="roleassign">
+                                        <Col xs={24} sm={24} md={24} lg={24}>
+                                            <p className="rolelist">
+                                                {/* {this.state.assignValue != [] ? this.state.assignRole.map((item, index) => {
+                                                    return <span key={index}><span className="itemname">{item.name}</span>:{item.role},</span>
+                                                }) : ''} */}
+                                                <span className="usrnm">Owner:</span><span className="role">Johnn &nbsp;</span>
+                                                
+
+
+                                            </p>
+                                        </Col>
+                                    </div>
+
+                                </Row>
                                 <Row className="briefRequire">
                                     <Col xs={24} sm={24} md={24} lg={24}>
                                         <FormItem label="Brief Requirement">
@@ -693,7 +718,7 @@ class NewProject extends Component {
                                             })(
                                                 // <Input placeholder="Brief Requirement" />
                                                 <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
-                                            )}
+                                                )}
                                         </FormItem>
                                     </Col>
                                 </Row>
@@ -719,12 +744,8 @@ class NewProject extends Component {
                                 </Row> */}
                             </div>
                         </div>
-                        {(this.state.editClient == true) ?<Row>
-                            <div className="savebutton">
-                                <Button onClick={this.plusIcon}>+</Button>
-                            </div>
-                        </Row>:''}
-                        
+
+
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
