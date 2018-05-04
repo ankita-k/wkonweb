@@ -10,7 +10,7 @@ button.ant-btn.edit {
     background: transparent;
     color: #81d2ff;
     border: none;
-   margin-right:3em;
+ margin-right:1em;
 }
 button.ant-btn.delete {
     background: transparent;
@@ -24,7 +24,8 @@ button.ant-btn.delete {
 }
 h1.clientList {
     font-family: 'Lato', sans-serif;
-    margin-bottom: 1em;
+    margin-bottom: 15px;
+    margin-top: 15px;
 }
 .AllProjects input.ant-input {
     box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
@@ -44,7 +45,7 @@ h1.clientList {
     width: auto;
 }
 .AllProjects {
-    margin-bottom: 1em;
+    margin-bottom: 2em !important;
 }
 .scoping.ant-select.ant-select-enabled {
     margin-left: 1em;
@@ -62,11 +63,25 @@ button.ant-btn.allprojectbtn {
 .innercardContenta {
     margin: 15px auto !important;
 }
-button.ant-btn.edit i.anticon.anticon-edit {
+/* .innercardContenta table{
+    margin-top: 8em !important;
+} */
+button.ant-btn.edita i.anticon.anticon-edit {
     font-size: 16px;
 }
 button.ant-btn.delete i.anticon.anticon-delete {
     font-size: 16px;
+}
+img.fileIcon {
+    height: 12px;
+    width: 12px;
+}
+button.ant-btn.edita {
+    background: transparent;
+    color: #81d2ff;
+    border: none;
+    padding: 0;
+    margin-right:4em;
 }
 .addButton.clientadd {
     position: absolute;

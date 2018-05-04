@@ -1,5 +1,6 @@
 import { config } from '../../src/config';
 import { push } from 'react-router-redux';
+import { developerList } from './reducers/developerList';
 
 let conf = config.headers;
 
@@ -207,63 +208,61 @@ function toast(type, message) {
 
 }
 // PROJECTLIST  ACTION
-function allProjectlist(json) {
+function Projectlist(list) {
     return {
         type: "PROJECT_LIST",
-        json
+        list
 
     }
 }
 // FUNCTION FOR APICALL OF PROJECT LIST
 export function projectList(userId) {
     return (dispatch) => {
-        return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'project/projectlist?userId=' + userId, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET'
+        fetch(config.apiUrl + 'project/projectlist?userId=' + userId, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'GET'
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error)
+                    dispatch(Projectlist(responseJSON.result))
+
             })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(allProjectlist(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+            .catch((error) => {
+                dispatch(Projectlist([]))
+            });
+
     }
 }
+
 //Client list api 
 export function clientlist(userId) {
 
     return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
 
-            fetch(config.apiUrl + 'client/clientlist?userId=' + userId,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(client(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+        fetch(config.apiUrl + 'client/clientlist?userId=' + userId,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                dispatch(clientList(responseJSON.result))
+            })
+            .catch((error) => {
+                dispatch(clientList([]))
+            });
+
     }
 }
 //clientlist func
-function client(list) {
+function clientList(list) {
     return {
         type: "CLIENT_LIST",
         list
@@ -570,7 +569,7 @@ export function dashboardCustomer(userId) {
 export function findByRole(role) {
     return (dispatch) => {
         console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+     
 
             fetch(config.apiUrl + 'user/findByRole?role=' + role,
                 {
@@ -581,42 +580,51 @@ export function findByRole(role) {
                 })
                 .then((response) => response.json())
                 .then((responseJSON) => {
-                    dispatch(receivePosts(responseJSON))
-                    resolve(responseJSON);
+                    dispatch(developerlist(responseJSON.result))
+                   
                 })
                 .catch((error) => {
-                    reject(error);
+                    
                 });
-        });
+       
     }
 }
 
-export function userlist() {
+function developerlist(list) {
+    console.log(list)
+    return {
+        type: "DEVELOPER_LIST",
+        list
 
+    }
+}
+//FUNCTION FOR API CALL FOR GETTING USER LIST AND DISPATCHING ACTION
+export function userList() {
     return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'user/getAllUser',
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
 
-            fetch(config.apiUrl + 'user/getAllUser',
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(user(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+                console.log(responseJSON)
+                dispatch(userlist(responseJSON.result))
+
+
+
+            })
+            .catch((error) => {
+                dispatch(userlist([]))
+            });
+
     }
 }
-//clientlist func
-function user(list) {
+// FOR DISPATCHING ACTION TO REDUCER
+function userlist(list) {
     return {
         type: "USER_LIST",
         list
@@ -760,31 +768,31 @@ function billcreate(response) {
 }
 //Client list api 
 export function billlist(userId) {
-
+    console.log(userId)
     return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
 
-            fetch(config.apiUrl + 'bill?userId=' + userId,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(bill(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+        fetch(config.apiUrl + 'bill?userId=' + userId,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                dispatch(BillList(responseJSON.result))
+
+            })
+            .catch((error) => {
+                dispatch(BillList([]))
+            });
+
     }
 }
+
 //billlist func
-function bill(list) {
+function BillList(list) {
+    console.log(list)
     return {
         type: "BILL_LIST",
         list
@@ -792,7 +800,7 @@ function bill(list) {
     }
 }
 //API FOR EDIT BILL
-export function editabelbill(data, id) {
+export function BillEdit(data, id) {
     console.log('edit', data)
     console.log(id)
 
@@ -852,7 +860,7 @@ export function verticalLeads(tags) {
                 })
                 .then((response) => response.json())
                 .then((responseJSON) => {
-                    dispatch(bill(responseJSON))
+                    dispatch(Vertical(responseJSON))
                     resolve(responseJSON);
                 })
                 .catch((error) => {
@@ -867,5 +875,44 @@ function Vertical(json) {
         type: "VERTICAL_LEAD",
         json
 
+    }
+}
+//API  FOR ADD MEMBER
+export function addMember(data, id) {
+    console.log(data, id)
+
+    return (dispatch) => {
+
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'project/addmember?id=' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+                    console.log('response');
+
+                    dispatch(member(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
+// ADD MEMBER
+function member(json) {
+    return {
+        type: "ADD_MEMBER",
+        json
     }
 }

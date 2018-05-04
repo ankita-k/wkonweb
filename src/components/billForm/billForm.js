@@ -113,7 +113,7 @@ class BillForm extends Component {
                     }
                     console.log(data);
 
-                    this.props.actions.editabelbill(data, this.props.location.data.data._id).then(data => {
+                    this.props.actions.BillEdit(data, this.props.location.data.data._id).then(data => {
                         this.setState({showLoader: false});
                         this.setState({show:false})
                         console.log(data)
