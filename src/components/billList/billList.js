@@ -210,7 +210,7 @@ class BillList extends Component {
                     color="red"
                     showSpinner={false}
                 />
-                <div className="billlistheader">
+                {/* <div className="billlistheader"> */}
                     <h1 className="clientList">Bill List</h1>
                     <Row>
                         <div className="addButton billeradd">
@@ -243,7 +243,7 @@ class BillList extends Component {
 
                         </div>
                     </Row>
-                </div>
+                {/* </div> */}
                 {/* billlist */}
                 <Card className="innercardContenta" bordered={false}>
                     <Table

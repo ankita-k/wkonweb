@@ -101,7 +101,9 @@ export function password(data) {
 
 
 // COUNTRY LIST ACTION DISPATCHED
-function countrylist(list) {
+
+function countryList(list) {
+    console.log("action dispatched")
     return {
         type: "COUNTRY_LIST",
         list
@@ -109,48 +111,79 @@ function countrylist(list) {
     }
 }
 
-
 // CREATE CLIENT APICALL
-export function createClient(data) {
+export function createClient(data, location) {
     return (dispatch) => {
-        return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'client', {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'POST',
-                body: JSON.stringify(data)
+        fetch(config.apiUrl + 'client', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'Client Creation failed!'));
+                } else {
+                    console.log("Get client's list");
+                    fetch(config.apiUrl + 'client/clientlist?userId=' + sessionStorage.getItem('id') ? (sessionStorage.getItem('id')) : (localStorage.getItem('id')),
+                        {
+                            headers: {
+                                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                            },
+                            method: 'GET'
+                        })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            dispatch(clientcreate(responseJSON))
+                            dispatch(toast('success', 'Client Added Successfully!'));
+                            location.push("../dashboard/clientlist")
+                        })
+                        .catch((error) => {
+                            dispatch(toast('warning', 'Client Added Successfully!'));
+                        });
+
+                }
             })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(receivePosts(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+            .catch((error) => {
+                dispatch(toast('Warning', 'Client Creation failed!'));
+            });
+    }
+}
+
+//Client create function
+function clientcreate(response) {
+    console.log(response);
+    return {
+        type: "CLIENT_CREATE_SUCCESS",
+        response
     }
 }
 
 //GET COUNTRIES LIST 
 export function countrylist() {
+
     return (dispatch) => {
 
-        return new Promise(function (resolve, reject) {
-            fetch('/assets/countrieslist.json', { method: 'GET' })
-                .then((response) => {
-                    response.json()
-                        .then(function (myJson) {
-                            dispatch(countrylist(myJson))
-                            resolve(myJson);
-                        }, function (error) {
-                            reject(error);
-                        });
-                });
-        })
+
+        console.log("action")
+
+        // return new Promise(function (resolve, reject) {
+        fetch('/assets/countrieslist.json', { method: 'GET' })
+            .then((response) => {
+
+                response.json()
+                    .then(function (myJson) {
+                        dispatch(countryList(myJson))
+                        // resolve(myJson);
+                    }, function (error) {
+                        // reject(error);
+                    });
+            });
+        // })
 
     }
 }
@@ -241,7 +274,7 @@ export function projectList(userId) {
 
 //Client list api 
 export function clientlist(userId) {
-
+    console.log("clientlist api call")
     return (dispatch) => {
 
         fetch(config.apiUrl + 'client/clientlist?userId=' + userId,
@@ -253,10 +286,11 @@ export function clientlist(userId) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                dispatch(clientList(responseJSON.result))
+                console.log(responseJSON)
+                return dispatch(clientList(responseJSON.result))
             })
             .catch((error) => {
-                dispatch(clientList([]))
+                return dispatch(clientList([]))
             });
 
     }
@@ -270,33 +304,43 @@ function clientList(list) {
     }
 }
 //Api call for fetching loggedin user on header
-export function userdetails(id) {
+export function username(id) {
+
     return (dispatch) => {
+
         console.log(config.apiUrl)
-        fetch(config.apiUrl + 'user/' + id,
-            {
-                headers: {
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET'
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                if (!responseJSON.error)
-                    dispatch(userdetail(responseJSON.result))
+        return new Promise((resolve, reject) => {
 
-            })
-            .catch((error) => {
 
-            });
+
+            fetch(config.apiUrl + 'user/' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+
+                    console.log('response');
+
+                    dispatch(user(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
     }
 }
 
 //function for loggedin username 
-function userdetail(detail) {
+//clientlist func
+function user(list) {
     return {
-        type: "LOGGED_USER_DETAILS",
-        detail
+        type: "USER_NAME",
+        list
 
     }
 }
@@ -308,6 +352,9 @@ export function deleteproject(id) {
 
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
+
+
+
             fetch(config.apiUrl + 'project/' + id,
                 {
                     headers: {
@@ -372,8 +419,14 @@ export function createUser(data) {
 //API call for client delete
 export function deleteclient(id) {
     console.log(id)
+
     return (dispatch) => {
+
+        console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
+
+
+
             fetch(config.apiUrl + 'client/' + id,
                 {
                     headers: {
@@ -408,8 +461,14 @@ function deleteclientrow(list) {
 //API edit client
 export function updateclient(data, id) {
     console.log(data, id)
+
     return (dispatch) => {
+
+        console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
+
+
+
             fetch(config.apiUrl + 'client/' + id,
                 {
                     headers: {
@@ -439,9 +498,13 @@ export function updateclient(data, id) {
 export function editproject(data, id) {
     console.log('edit', data)
     console.log(id)
+
     return (dispatch) => {
+
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
+
+
 
             fetch(config.apiUrl + 'project/' + id,
                 {
@@ -455,6 +518,8 @@ export function editproject(data, id) {
                 })
                 .then((response) => response.json())
                 .then((responseJSON) => {
+
+
 
                     dispatch(editrow(responseJSON))
                     resolve(responseJSON);
@@ -483,10 +548,38 @@ function updateclientlist(list) {
 }
 
 
+// GET DASHBOARD DETAILS
+
+export function dashboardData(userId) {
+
+    return (dispatch) => {
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+
+            fetch(config.apiUrl + 'user/dashboardDetails?id=' + userId,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET'
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    dispatch(receivePosts(responseJSON))
+                    resolve(responseJSON);
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        });
+    }
+}
 
 //User ROLE API
 export function findByRole(role) {
     return (dispatch) => {
+        console.log(config.apiUrl)
+
 
         fetch(config.apiUrl + 'user/findByRole?role=' + role,
             {
@@ -531,6 +624,8 @@ export function userList() {
                 console.log(responseJSON)
                 dispatch(userlist(responseJSON.result))
 
+
+
             })
             .catch((error) => {
                 dispatch(userlist([]))
@@ -550,9 +645,13 @@ function userlist(list) {
 //API call for User delete
 export function deleteUser(id) {
     console.log(id)
+
     return (dispatch) => {
 
+
         return new Promise((resolve, reject) => {
+
+
 
             fetch(config.apiUrl + 'user/delete?id=' + id,
 
@@ -589,9 +688,15 @@ function deleteusers(list) {
 //API FOR EDIT PROJECT
 export function editUser(data, id) {
     console.log('edit', data)
+    console.log(id)
+
     return (dispatch) => {
 
+        console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
+
+
+
             fetch(config.apiUrl + 'user/' + id,
                 {
                     headers: {
@@ -630,38 +735,38 @@ function edituser(list) {
 // API CALL FOR BILL CREATION
 export function billCreate(billdata) {
     return (dispatch) => {
-        return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'bill',
-                {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(billdata)
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(billcreate(responseJSON))
-                    resolve(responseJSON);
-                    // console.log(responseJSON)
-                    // if (responseJSON.error) {
-                    //     dispatch(opentoast('warning', 'Bill Creation Failed!'))
-                    // }
-                    // else {
-                    //   dispatch(push('/dashboard')) 
-                    //     dispatch(billcreate(responseJSON.result))
-                    //     dispatch(opentoast('success', 'Bill Created Successfully!'))
-                    // }
+        // return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'bill',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'POST',
+                body: JSON.stringify(billdata)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                dispatch(billcreate(responseJSON))
+                //resolve(responseJSON);
+                // console.log(responseJSON)
+                // if (responseJSON.error) {
+                //     dispatch(opentoast('warning', 'Bill Creation Failed!'))
+                // }
+                // else {
+                //   dispatch(push('/dashboard')) 
+                //     dispatch(billcreate(responseJSON.result))
+                //     dispatch(opentoast('success', 'Bill Created Successfully!'))
+                // }
 
 
-                })
-                .catch((error) => {
-                    reject(error);
-                    // dispatch(opentoast('error', 'Bill Creation Failed!'))
-                });
-        })
+            })
+            .catch((error) => {
+                // reject(error);
+                // dispatch(opentoast('error', 'Bill Creation Failed!'))
+            });
+
     }
 }
 
@@ -750,35 +855,31 @@ function editdataBill(list) {
     }
 }
 //API FOR GET VERTICAL LEAD
-export function verticalLeads(tags) {
-
+export function tagsList(tags) {
     return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'user/findBytags?tags=' + tags,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error) {
+                    dispatch(RoleWithTags(responseJSON.result))
+                }
+            })
+            .catch((error) => {
 
-            fetch(config.apiUrl + 'user/findBytags?tags=' + tags,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(Vertical(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+            });
     }
 }
 
-function Vertical(json) {
+function RoleWithTags(list) {
     return {
         type: "VERTICAL_LEAD",
-        json
+        list
 
     }
 }
@@ -807,7 +908,8 @@ export function dashboardProject(userId) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (!responseJSON.error)
-                    dispatch(dashboardproject(responseJSON.result))
+                    dispatch(dashboardproject(responseJSON.result));
+                // loader(false);
             })
             .catch((error) => {
             });
@@ -828,8 +930,11 @@ export function dashboardCustomer(userId) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                if (!responseJSON.error)
+                if (!responseJSON.error) {
                     dispatch(dashboardcustomer(responseJSON.result))
+                    // dispatch(loader(false))
+                }
+
             })
             .catch((error) => {
 
@@ -888,3 +993,52 @@ function member(json) {
         json
     }
 }
+
+// FULL PAGE LOADER
+export function loader(data) {
+    console.log(data)
+    return (dispatch) => {
+        dispatch(loaders(data))
+    }
+
+}
+
+function loaders(data) {
+    return {
+        type: "FULL_PAGE_LOADER",
+        data
+    }
+}
+
+//Api call for fetching loggedin user on header
+export function userdetails(id) {
+    return (dispatch) => {
+        console.log(config.apiUrl)
+        fetch(config.apiUrl + 'user/' + id,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error)
+                    dispatch(userdetail(responseJSON.result))
+
+            })
+            .catch((error) => {
+
+            });
+    }
+}
+
+//function for loggedin username 
+function userdetail(detail) {
+    return {
+        type: "LOGGED_USER_DETAILS",
+        detail
+
+    }
+}
+

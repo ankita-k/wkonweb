@@ -12,13 +12,9 @@ class App extends Component {
     this.state = {
  }
     
-  
-  }
+}
 
-  
-
-
-  render() {
+render() {
     return (
       <div className="App">
         <Routes></Routes>

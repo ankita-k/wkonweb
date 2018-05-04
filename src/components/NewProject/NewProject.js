@@ -116,15 +116,23 @@ if(index>-1)    {
             })
 
         }
-        // GET CLIENT LIST
-        this.setState({ clientlist: this.props.clientList });
-        this.getVerticalHeadList();
+        /** GET CLIENT LIST FROM PROPS*/
+        if (this.props.clientList) {
+            this.setState({ clientlist: this.props.clientList });
+        }
+        /** GET CLIENT LIST FROM PROPS*/
+
         //LOGGEDIN USER DETAILS
-        console.log(this.props.loggeduserDetails);
         if (this.props.loggeduserDetails) {
             console.log(this.props.loggeduserDetails.role)
             this.setState({ loggedInRole: this.props.loggeduserDetails.role })
         }
+
+        /** GET VERTICAL LEADS LIST*/
+        if (this.props.listByTags) {
+            this.setState({ verticalHeadrarray: this.props.listByTags });
+        }
+        /** GET VERTICAL LEADS LIST ENDS*/
     }
 
     // ADD PROJECT FUNCTION 
@@ -375,18 +383,7 @@ if(index>-1)    {
         }
 
     }
-    // GET VERTICAL LEAD FIND BY TAGS
-    getVerticalHeadList = () => {
-        this.props.verticalLeads('VerticalLead').then(response => {
-            // console.log('VERTICAL LEADS', response)
-            if (!response.error) {
-                this.setState({ verticalHeadrarray: response.result });
 
-            }
-            console.log('Vertical head....', this.state.verticalHeadrarray);
-        })
-
-    }
     // GET ROLE FOE PROJECT
     roleValue = (value) => {
         console.log('role', value)
