@@ -854,10 +854,7 @@ function dashboardcustomer(data) {
 }
 //API  FOR ADD MEMBER
 export function addMember(data, id) {
-    console.log(data, id)
-
     return (dispatch) => {
-
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
             fetch(config.apiUrl + 'project/addmember?id=' + id,
