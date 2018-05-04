@@ -128,6 +128,8 @@ class Dashboard extends Component {
       this.props.actions.userdetails(sessionStorage.getItem('id'));
       this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
       this.props.actions.dashboardProject(sessionStorage.getItem('id'));
+      this.props.actions.countrylist();
+      
     }
     else if (localStorage.getItem('id')) {
 
@@ -139,6 +141,8 @@ class Dashboard extends Component {
       this.props.actions.userdetails(localStorage.getItem('id'));
       this.props.actions.dashboardCustomer(localStorage.getItem('id'));
       this.props.actions.dashboardProject(localStorage.getItem('id'));
+      this.props.actions.countrylist();
+      
     }
     /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA  ENDS
        */
