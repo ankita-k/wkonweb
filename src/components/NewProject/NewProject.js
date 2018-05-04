@@ -42,8 +42,6 @@ class NewProject extends Component {
             assign: '',
             assignRole: [],
             memeberId: '',
-            editClient: false,
-            assignRolee: [],
         }
 
     }
@@ -56,15 +54,29 @@ class NewProject extends Component {
 
             console.log('members', this.props.location.data.data.members);
 
-            this.setState({ assignRolee: this.props.location.data.data.members })
-            console.log(this.state.assignRolee)
+            this.setState({ assignRole: this.props.location.data.data.members })
+            console.log(this.state.assignRole)
 
             console.log("projectId", this.props.location.data.data._id)
             this.setState({ projectId: this.props.location.data.data._id })
             console.log(this.state.projectId)
-            
-// for filter role,name,userId from members
-            if (this.props.location.data.data.members!= []) {
+
+            // For Status Checking
+            if (this.props.location.data.data.status == "InProgress" || this.props.location.data.data.status == "InProgess") {
+                this.setState((prevState) => {
+                    return { verticalHead: 'InProgress' }
+                });
+                this.setState({ verticalHeadrarray: [] });
+            }
+            else {
+                this.setState({ verticalHeadrarray: [] });
+                this.setState((prevState) => {
+                    return { verticalHead: '' }
+                });
+            }
+
+            // for filter role,name,userId from members
+            if (this.props.location.data.data.members != []) {
                 let newarray1 = this.props.location.data.data.members.map(function (item, index) {
                     return {
                         userId: item.userId._id,
@@ -92,6 +104,12 @@ class NewProject extends Component {
         // GET CLIENT LIST
         this.setState({ clientlist: this.props.clientList });
         this.getVerticalHeadList();
+        //LOGGEDIN USER DETAILS
+        console.log(this.props.loggeduserDetails);
+        if (this.props.loggeduserDetails) {
+            console.log(this.props.loggeduserDetails.role)
+            this.setState({ loggedInRole: this.props.loggeduserDetails.role })
+        }
     }
 
 
@@ -399,16 +417,6 @@ class NewProject extends Component {
             }
         })
     }
-    // x=()=>{
-    //     let newarray1 = this.props.location.data.data.members.filter(item => {
-    //         return (item.userId.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
-    //     });
-    //     console.log(newarray1)
-    //     let newarray2 = this.props.location.data.data.members.filter(item => {
-    //         return (item.role.toLowerCase().indexOf(value.toLowerCase()) > -1)
-    //     });
-    //     console.log(newarray2)
-    // }
     render() {
         // const { clientarray } = this.state;
         // console.log(this.state.clientarray)
@@ -490,28 +498,6 @@ class NewProject extends Component {
                                                 <Input maxLength="50" placeholder="Name" />
                                             )}
                                         </FormItem>
-                                        {/* <FormItem label="Brief Requirement">
-                                        {getFieldDecorator('requirement', {
-                                            rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
-                                        })(
-                                            <Input placeholder="Brief Requirement" />
-                                        )}
-                                    </FormItem> */}
-                                        {/* <FormItem label="Client List">
-                                        {getFieldDecorator('client', {
-                                            rules: [{ required: true, message: 'Please select your client!' }],
-                                        })(
-                                            <Select className="statuspipeline"
-                                                placeholder="Choose Client"
-                                                onChange={this.handleSelectChange}
-                                            >
-                                                <Option value="Client1">Client1</Option>
-                                                <Option value="Client2">Client2</Option>
-                                                <Option value="Client3">Client3</Option>
-                                            </Select>
-                                        )}
-                                    </FormItem> */}
-
                                     </Col>
                                 </Row>
                             </div>
@@ -637,22 +623,11 @@ class NewProject extends Component {
                                     </Col>
                                 </Row>
 
-                                <Row>
-                                    {/* {this.state.assignRolee!==[] ? this.state.assignRolee.map((item, index) => {
-                                        return <span key={index}>{item.userId.name}:{item.role},</span>
-                                    }) : this.state.assignRole.map((item, index) => {
-                                        return <span key={index}>{item.name}:{item.role},</span>
-                                    }) } */}
-                                    {this.state.assignRole.map((item, index) => {
-                                        return <span key={index}>{item.name}:{item.role},</span>
-                                    })}
 
-
-                                </Row>
 
                                 <Row>
-                                    {(this.state.editClient == true) ?
-                                        <Col xs={24} sm={24} md={24} lg={12}>
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
+                                        <Col xs={24} sm={24} md={24} lg={10}>
                                             <FormItem label="Assign To">
                                                 {getFieldDecorator('assign', {
                                                     rules: [{ required: false, message: 'Please select !' }],
@@ -660,7 +635,7 @@ class NewProject extends Component {
                                                     <Select className="statuspipeline"
 
                                                         placeholder="Assign To"
-                                                        style={{ width: '100%' }}
+
                                                         onSelect={this.assignValue}
 
                                                         showSearch
@@ -675,10 +650,10 @@ class NewProject extends Component {
                                         </Col>
 
                                         : ''}
-                                </Row>
-                                <Row>
-                                    {(this.state.editClient == true) ?
-                                        <Col xs={24} sm={24} md={24} lg={12}>
+
+
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
+                                        <Col xs={24} sm={24} md={24} lg={10}>
                                             <FormItem label="Role">
                                                 {getFieldDecorator('role', {
                                                     rules: [{ required: false, message: 'Please select ' }],
@@ -686,7 +661,7 @@ class NewProject extends Component {
                                                     <Select className="statuspipeline"
                                                         // mode="multiple"
                                                         placeholder="Role"
-                                                        style={{ width: '100%' }}
+
                                                         // filterOption={false}
                                                         onChange={this.roleValue}
                                                         showSearch
@@ -700,8 +675,39 @@ class NewProject extends Component {
                                                 )}
                                             </FormItem>
                                         </Col>
+
                                         : ''}
+
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
+                                        <Col xs={24} sm={24} md={24} lg={2}>
+                                            {(this.state.editClient == true) ?
+
+                                                <div className="addbtn">
+                                                    <Button onClick={this.plusIcon}>Add</Button>
+                                                </div>
+                                                : ''}
+                                        </Col>
+                                        : ""}
+
                                 </Row>
+                                {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
+                                    <Row>
+                                        <div className="roleassign">
+                                            <Col xs={24} sm={24} md={24} lg={24}>
+                                                <span className="rolelist">
+                                                    {this.state.assignRole.map((item, index) => {
+                                                        return <span><span className="usrnm" key={index} >{item.name}:</span><span className="role">{item.role} &nbsp;</span></span>
+                                                    })}
+
+                                                    {/* <span className="usrnm">Owner:</span><span className="role">Johnn &nbsp;</span> */}
+
+
+
+                                                </span>
+                                            </Col>
+                                        </div>
+                                    </Row>
+                                    : ""}
                                 <Row className="briefRequire">
                                     <Col xs={24} sm={24} md={24} lg={24}>
                                         <FormItem label="Brief Requirement">
@@ -736,11 +742,6 @@ class NewProject extends Component {
                                 </Row> */}
                             </div>
                         </div>
-                        {(this.state.editClient == true) ? <Row>
-                            <div className="savebutton">
-                                <Button onClick={this.plusIcon}>+</Button>
-                            </div>
-                        </Row> : ''}
 
                         <FormItem>
                             <div className="savebutton">
@@ -748,6 +749,7 @@ class NewProject extends Component {
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
                             </div>
                         </FormItem>
+
 
                     </Form>
 

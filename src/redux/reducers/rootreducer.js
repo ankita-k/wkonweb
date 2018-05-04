@@ -7,6 +7,9 @@ import { billList } from '../reducers/billList';
 import { clientList } from '../reducers/clientList';
 import {userList} from  '../reducers/userlist';
 import {developerlist} from '../reducers/developerList'
+import {loggeduserDetails} from '../reducers/userDetails';
+import {dashboardProjectData} from '../reducers/dashboardProjectData';
+import {dashboardCustomerData} from '../reducers/dashboardCustomerData';
 // reducers list
 const rootReducer = combineReducers({
     loginReducer,                    //for user login
@@ -17,6 +20,9 @@ const rootReducer = combineReducers({
     clientList,                      // get client list
     userList,                        // get userlist
     developerlist,                   // get develper list
+    loggeduserDetails,               // logged in user detail
+    dashboardProjectData,                    // dashboard numbers for customer,project 
+    dashboardCustomerData,     
 
 })
 

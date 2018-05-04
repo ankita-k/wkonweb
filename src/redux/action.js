@@ -270,43 +270,33 @@ function clientList(list) {
     }
 }
 //Api call for fetching loggedin user on header
-export function username(id) {
-
+export function userdetails(id) {
     return (dispatch) => {
-
         console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'user/' + id,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error)
+                    dispatch(userdetail(responseJSON.result))
 
+            })
+            .catch((error) => {
 
-
-            fetch(config.apiUrl + 'user/' + id,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-
-                    console.log('response');
-
-                    dispatch(user(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+            });
     }
 }
 
 //function for loggedin username 
-//clientlist func
-function user(list) {
+function userdetail(detail) {
     return {
-        type: "USER_NAME",
-        list
+        type: "LOGGED_USER_DETAILS",
+        detail
 
     }
 }
@@ -318,9 +308,6 @@ export function deleteproject(id) {
 
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
-
-
-
             fetch(config.apiUrl + 'project/' + id,
                 {
                     headers: {
@@ -385,14 +372,8 @@ export function createUser(data) {
 //API call for client delete
 export function deleteclient(id) {
     console.log(id)
-
     return (dispatch) => {
-
-        console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
-
-
-
             fetch(config.apiUrl + 'client/' + id,
                 {
                     headers: {
@@ -427,14 +408,8 @@ function deleteclientrow(list) {
 //API edit client
 export function updateclient(data, id) {
     console.log(data, id)
-
     return (dispatch) => {
-
-        console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
-
-
-
             fetch(config.apiUrl + 'client/' + id,
                 {
                     headers: {
@@ -464,13 +439,9 @@ export function updateclient(data, id) {
 export function editproject(data, id) {
     console.log('edit', data)
     console.log(id)
-
     return (dispatch) => {
-
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
-
-
 
             fetch(config.apiUrl + 'project/' + id,
                 {
@@ -484,8 +455,6 @@ export function editproject(data, id) {
                 })
                 .then((response) => response.json())
                 .then((responseJSON) => {
-
-
 
                     dispatch(editrow(responseJSON))
                     resolve(responseJSON);
@@ -514,79 +483,27 @@ function updateclientlist(list) {
 }
 
 
-// GET DASHBOARD DETAILS
 
-export function dashboardData(userId) {
-
-    return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
-
-            fetch(config.apiUrl + 'user/dashboardDetails?id=' + userId,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(receivePosts(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-}
-//GET CUSTOMERS DATA ON DASHBOARD
-
-export function dashboardCustomer(userId) {
-    return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
-
-            fetch(config.apiUrl + 'user/clientDashboardDetails?id=' + userId,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(receivePosts(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-}
 //User ROLE API
 export function findByRole(role) {
     return (dispatch) => {
-        console.log(config.apiUrl)
-     
 
-            fetch(config.apiUrl + 'user/findByRole?role=' + role,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(developerlist(responseJSON.result))
-                   
-                })
-                .catch((error) => {
-                    
-                });
-       
+        fetch(config.apiUrl + 'user/findByRole?role=' + role,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                dispatch(developerlist(responseJSON.result))
+
+            })
+            .catch((error) => {
+
+            });
+
     }
 }
 
@@ -614,8 +531,6 @@ export function userList() {
                 console.log(responseJSON)
                 dispatch(userlist(responseJSON.result))
 
-
-
             })
             .catch((error) => {
                 dispatch(userlist([]))
@@ -635,13 +550,9 @@ function userlist(list) {
 //API call for User delete
 export function deleteUser(id) {
     console.log(id)
-
     return (dispatch) => {
 
-
         return new Promise((resolve, reject) => {
-
-
 
             fetch(config.apiUrl + 'user/delete?id=' + id,
 
@@ -678,15 +589,9 @@ function deleteusers(list) {
 //API FOR EDIT PROJECT
 export function editUser(data, id) {
     console.log('edit', data)
-    console.log(id)
-
     return (dispatch) => {
 
-        console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
-
-
-
             fetch(config.apiUrl + 'user/' + id,
                 {
                     headers: {
@@ -875,6 +780,76 @@ function Vertical(json) {
         type: "VERTICAL_LEAD",
         json
 
+    }
+}
+
+// CLEAR LOGGEN IN USER DATA
+function cleardata() {
+    return {
+        type: "CLEAR_USER_DATA",
+    }
+}
+
+// GET DASHBOARD DETAILS
+
+export function dashboardProject(userId) {
+
+    return (dispatch) => {
+        console.log(config.apiUrl)
+
+        fetch(config.apiUrl + 'user/dashboardDetails?id=' + userId,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error)
+                    dispatch(dashboardproject(responseJSON.result))
+            })
+            .catch((error) => {
+            });
+
+    }
+}
+//GET CUSTOMERS DATA ON DASHBOARD
+export function dashboardCustomer(userId) {
+    return (dispatch) => {
+        console.log(config.apiUrl)
+
+        fetch(config.apiUrl + 'user/clientDashboardDetails?id=' + userId,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error)
+                    dispatch(dashboardcustomer(responseJSON.result))
+            })
+            .catch((error) => {
+
+            });
+
+    }
+}
+
+// GET DASHBOARD DETAILS FRO PROJECT
+function dashboardproject(data) {
+    return {
+        type: "DASHBOARD_PROJECT",
+        data
+    }
+}
+// GET DASHBOARD DETAILS FRO CUSTOMER
+function dashboardcustomer(data) {
+    return {
+        type: "DASHBOARD_CUSTOMER",
+        data
     }
 }
 //API  FOR ADD MEMBER

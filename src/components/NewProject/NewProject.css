@@ -19,6 +19,9 @@
     width: 85%;
     /* margin-top: 7px; */
 }
+.informationProject .ant-row.ant-form-item {
+    margin-bottom: 10px !important;
+}
 .innercardContent.cardProject h1.NewCustomer{
     margin: 10px 0 10px 27px;
 }
@@ -36,6 +39,7 @@ p.expecteDate4 {
     font-weight: 600;
     margin-bottom: 10px;
     margin-left: 5px;
+    margin-top: 10px;
 }
 p.expecteDateclient { 
     color: rgba(7, 7, 7, 0.65);
@@ -138,3 +142,23 @@ textarea#textRequirement {
     }
 }
 /* ResponsiveNewProject  */
+
+.ant-row .addbtn button{
+    width: 91px;
+    background: #428afe;
+    color: #ffffff;
+}
+
+.addbtn {
+    margin-top: 3em;
+}
+.roleassign {
+    margin: 1em 4em 1em 5px;
+    font-size: 18px;
+    color: rgba(68, 68, 68, 0.68);
+    font-weight: 500;
+    word-break: break-all;
+}
+span.usrnm {
+    color: #428afe;
+}

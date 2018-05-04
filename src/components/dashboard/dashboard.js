@@ -8,7 +8,8 @@ import DashboardView from '../DashboardView/DashboardView';
 import ClientList from '../ClientList/ClientList';
 import ChangePassword from '../passwordChange/passwordChange';
 import UserManagement from '../UserManagement/UserManagement';
-import * as actioncreators from '../../redux/action';
+import * as basicActions from '../../redux/action';
+import { bindActionCreators } from 'redux';
 import { connect } from "react-redux";
 import brandlogo from '../../Images/wkonlogo.png';
 import userlogo from '../../Images/userprofile.png';
@@ -44,6 +45,7 @@ class Dashboard extends Component {
       this.props.history.push('/login');
       return;
     }
+
     this.showConfirm = this.showConfirm.bind(this);
 
   }
@@ -56,8 +58,8 @@ class Dashboard extends Component {
         console.log('OK');
         sessionStorage.clear();
         localStorage.clear();
+        _base.props.history.push('/login');
 
-        _base.props.history.push('/login')
       },
       onCancel() {
         console.log('Cancel');
@@ -110,44 +112,56 @@ class Dashboard extends Component {
     }
   }
 
-  //GET USER NAME
+
   componentDidMount() {
-
     console.log(this.props);
-    if (sessionStorage.getItem("id")) {
-      console.log('data')
 
-      this.props.username(sessionStorage.getItem('id')).then((data) => {
-        console.log(data);
-        if (!data.error) {
-          this.setState({ username: data.result.name });
-          this.setState({ userrole: data.result.role })
-          console.log(this.state.username);
-        }
+    /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA 
+    */
+    if (sessionStorage.getItem('id')) {
 
-      }, err => {
-
-      })
+      this.props.actions.clientlist(sessionStorage.getItem('id'));
+      this.props.actions.billlist(sessionStorage.getItem('id'));
+      this.props.actions.projectList(sessionStorage.getItem('id'));
+      this.props.actions.userList();
+      this.props.actions.findByRole('Developer');
+      this.props.actions.userdetails(sessionStorage.getItem('id'));
+      this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
+      this.props.actions.dashboardProject(sessionStorage.getItem('id'));
     }
     else if (localStorage.getItem('id')) {
 
-      this.props.username(localStorage.getItem('id')).then((data) => {
-        console.log('data')
-        console.log(data);
-        if (!data.error) {
-          this.setState({ username: data.result.name });
-          this.setState({ userrole: data.result.role })
-          console.log(this.state.username);
-        }
-
-      }, err => {
-
-      })
+      this.props.actions.clientlist(localStorage.getItem('id'));
+      this.props.actions.billlist(localStorage.getItem('id'));
+      this.props.actions.projectList(localStorage.getItem('id'));
+      this.props.actions.userList();
+      this.props.actions.findByRole('Developer');
+      this.props.actions.userdetails(localStorage.getItem('id'));
+      this.props.actions.dashboardCustomer(localStorage.getItem('id'));
+      this.props.actions.dashboardProject(localStorage.getItem('id'));
     }
+    /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA  ENDS
+       */
+
+    /*GET USER NAME AND ROLE*/
+    this.commonFunction();
+    //***** */
+
     this.renderSidemenuSelection();
+
   }
-
-
+  componentWillReceiveProps(props) {
+    this.commonFunction();
+  }
+  // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
+  commonFunction() {
+    /* SHOWING LOGGEDIN USER NAME AFTER RECEIVING DATA FROM PROPS*/
+    if (this.props.loggeduserDetails) {
+      console.log('*******************************************', this.props)
+      this.setState({ username: this.props.loggeduserDetails.name });
+      this.setState({ userrole: this.props.loggeduserDetails.role })
+    }
+  }
 
   render() {
 
@@ -180,8 +194,8 @@ class Dashboard extends Component {
               mode="inline"
               theme=""
               inlineCollapsed={this.state.collapsed}
-            >  
-            <p className="welcomeUser"> <img className="logouser" src={userlogo} />Welcome User</p>
+            >
+              <p className="welcomeUser"> <img className="logouser" src={userlogo} />Welcome User</p>
               <SubMenu key="client" title={<span><Icon type="usergroup-add" />Clients</span>} subMenuCloseDelay={0.1}>
                 <Menu.Item key="create_client">
                   <span>Client Create</span>
@@ -212,7 +226,7 @@ class Dashboard extends Component {
                   <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
                 </Menu.Item>
               </SubMenu>
-             
+
               <SubMenu key="bill" title={<span><Icon type="file-text" />Bill Managements</span>} subMenuCloseDelay={0.1}>
                 <Menu.Item key="create_bill">
                   <span>Bill Create</span>
@@ -224,10 +238,10 @@ class Dashboard extends Component {
                 </Menu.Item>
               </SubMenu>
               <Menu.Item key="bill_list">
-                  <span><Icon type="logout" /> Log Out</span>
-                </Menu.Item>
+                <span><Icon type="logout" /> Log Out</span>
+              </Menu.Item>
 
-              
+
             </Menu>
           </div>
           {/* Mobile navbar */}
@@ -259,13 +273,13 @@ class Dashboard extends Component {
                       <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
                     </Menu.Item>
                   </SubMenu> : '' : ''}
-                {this.state.userrole ? this.state.userrole == "Developer" || "admin"||'Sales' ?
+                {this.state.userrole ? this.state.userrole == "Developer" || "admin" || 'Sales' ?
                   <SubMenu key="projects" title={<span><Icon type="file-text" /> Projects</span>} subMenuCloseDelay={0.1}>
-                  {this.state.userrole!="Developer"?
-                <Menu.Item key="create_project">
-                <span>Project Create</span>
-                <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
-              </Menu.Item>:'' }  
+                    {this.state.userrole != "Developer" ?
+                      <Menu.Item key="create_project">
+                        <span>Project Create</span>
+                        <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
+                      </Menu.Item> : ''}
                     <Menu.Item key="project_list">
                       <span>Project List</span>
                       <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
@@ -283,21 +297,21 @@ class Dashboard extends Component {
                     </Menu.Item>
                   </SubMenu> : '' : ''}
 
-                {this.state.userrole?this.state.userrole== "admin" ||"Sales"? 
-                <SubMenu key="bill" title={<span><Icon type="solution" />Bill Managements</span>} subMenuCloseDelay={0.1}>
-                 {
-                   this.state.userrole=="Sales"?
-                   <Menu.Item key="create_bill">
-                   <span>Bill Create</span>
-                   <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
-                 </Menu.Item>:''
-                 }
-                  <Menu.Item key="bill_list">
-                    <span>Bill List</span>
-                    <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink>
-                  </Menu.Item>
-                </SubMenu>
-                : '':''} 
+                {this.state.userrole ? this.state.userrole == "admin" || "Sales" ?
+                  <SubMenu key="bill" title={<span><Icon type="solution" />Bill Managements</span>} subMenuCloseDelay={0.1}>
+                    {
+                      this.state.userrole == "Sales" ?
+                        <Menu.Item key="create_bill">
+                          <span>Bill Create</span>
+                          <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
+                        </Menu.Item> : ''
+                    }
+                    <Menu.Item key="bill_list">
+                      <span>Bill List</span>
+                      <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink>
+                    </Menu.Item>
+                  </SubMenu>
+                  : '' : ''}
                 {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
                 <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item> */}
 
@@ -328,7 +342,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/project/:projectname`} component={Files} />
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
-                
+
               </Content>
             </Layout>
           </Layout>
@@ -340,6 +354,11 @@ class Dashboard extends Component {
 const mapStateToProps = (state) => {
   return state
 }
-export default connect(mapStateToProps, actioncreators)(Dashboard);
+function mapDispatchToProps(dispatch, state) {
+  return ({
+    actions: bindActionCreators(basicActions, dispatch)
+  })
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 
 //export default Dashboard;
