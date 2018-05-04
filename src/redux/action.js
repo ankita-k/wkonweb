@@ -156,11 +156,7 @@ export function createClient(data, location) {
                         });
 
                 }
-<<<<<<< HEAD
                 // resolve(responseJSON);
-=======
-                clientlist(sessionStorage.getItem('id') ? (sessionStorage.getItem('id')) : (localStorage.getItem('id')));
->>>>>>> 510dd242d737759fac489892b680f4b41aeeda7b
             })
             .catch((error) => {
                 // dispatch(toast('Warning', 'Client Creation failed!'));
@@ -289,12 +285,6 @@ export function projectList(userId) {
 
 //Client list api 
 export function clientlist(userId) {
-<<<<<<< HEAD
-=======
-
-    console.log("Fetch client");
-
->>>>>>> 510dd242d737759fac489892b680f4b41aeeda7b
     return (dispatch) => {
 
         fetch(config.apiUrl + 'client/clientlist?userId=' + userId,
@@ -307,17 +297,10 @@ export function clientlist(userId) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
-<<<<<<< HEAD
-                dispatch(clientList(responseJSON.result))
-            })
-            .catch((error) => {
-                dispatch(clientList([]))
-=======
                 return dispatch(clientList(responseJSON.result))
             })
             .catch((error) => {
                 return dispatch(clientList([]))
->>>>>>> 510dd242d737759fac489892b680f4b41aeeda7b
             });
 
     }
@@ -601,31 +584,7 @@ export function dashboardData(userId) {
         });
     }
 }
-//GET CUSTOMERS DATA ON DASHBOARD
 
-export function dashboardCustomer(userId) {
-    return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
-
-            fetch(config.apiUrl + 'user/clientDashboardDetails?id=' + userId,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(receivePosts(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-}
 //User ROLE API
 export function findByRole(role) {
     return (dispatch) => {
@@ -933,9 +892,6 @@ function RoleWithTags(list) {
         list
 
     }
-<<<<<<< HEAD
-}
-=======
 }
 
 // CLEAR LOGGEN IN USER DATA
@@ -1064,5 +1020,35 @@ function loaders(data) {
     }
 }
 
+//Api call for fetching loggedin user on header
+export function userdetails(id) {
+    return (dispatch) => {
+        console.log(config.apiUrl)
+        fetch(config.apiUrl + 'user/' + id,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error)
+                    dispatch(userdetail(responseJSON.result))
 
->>>>>>> 510dd242d737759fac489892b680f4b41aeeda7b
+            })
+            .catch((error) => {
+
+            });
+    }
+}
+
+//function for loggedin username 
+function userdetail(detail) {
+    return {
+        type: "LOGGED_USER_DETAILS",
+        detail
+
+    }
+}
+
