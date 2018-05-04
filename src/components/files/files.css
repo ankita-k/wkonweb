@@ -1,0 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Lato');
+.uploadFile h1 {
+    font-family: 'Lato', sans-serif;
+    padding-left: 1em;
+    color: #565656;
+}

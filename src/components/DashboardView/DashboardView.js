@@ -412,7 +412,7 @@ class DashboardView extends Component {
                 </div>
                 {/* Recentactivity end*/}
                 {/* payment area start*/}
-                <div className="recentactivity">
+                <div className="recentactivity recentPaymentactivity">
                     <h1>Payment</h1>
 
                     <div className="firstman1">

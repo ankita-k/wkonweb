@@ -26,6 +26,9 @@ img.totalImg {
     height: 35px;
     width: auto;
 }
+.recentactivity.recentPaymentactivity {
+    margin-bottom: 4em;
+}
 .cusTotal:hover {
     transition: 0.3s ease-in;
     box-shadow: 0 10px 45px -10px rgba(0,0,0,0.25), 0 -1px 22px -10px rgba(0,0,0,0.22);
