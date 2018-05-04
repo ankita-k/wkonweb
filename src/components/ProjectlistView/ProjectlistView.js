@@ -104,11 +104,13 @@ class ProjectlistView extends Component {
               <Button className="edit" onClick={() => { this.editProject(record) }}>
                 <a href="javascript:;"><img className="fileIcon" src={editList} /></a></Button></Col>
             {/* <Col lg={{ span: 8 }}></Col> */}
+            
             <Col lg={8}>
               <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><img className="fileIcon" src={deleteList} /></a></Button>
             </Col>
+           
             {/* <Col lg={{ span: 8}}></Col> */}
-            <Col lg={8}>
+            <Col lg={7}>
               <Button className="view" onClick={() => { this.detailProject(record) }}>
                 <a href="javascript:;"><Icon type="eye-o" /></a></Button></Col>
           </Row>
