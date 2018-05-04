@@ -113,10 +113,7 @@ function countryList(list) {
 
 // CREATE CLIENT APICALL
 export function createClient(data, location) {
-
     return (dispatch) => {
-
-        // return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'client', {
             headers: {
                 'Accept': 'application/json',
@@ -128,12 +125,10 @@ export function createClient(data, location) {
         })
             .then((response) => response.json())
             .then((responseJSON) => {
-                console.log(responseJSON)
                 if (responseJSON.error) {
                     dispatch(toast('Warning', 'Client Creation failed!'));
-                }
-                else {
-
+                } else {
+                    console.log("Get client's list");
                     fetch(config.apiUrl + 'client/clientlist?userId=' + sessionStorage.getItem('id') ? (sessionStorage.getItem('id')) : (localStorage.getItem('id')),
                         {
                             headers: {
@@ -146,25 +141,19 @@ export function createClient(data, location) {
                             dispatch(clientcreate(responseJSON))
                             dispatch(toast('success', 'Client Added Successfully!'));
                             location.push("../dashboard/clientlist")
-                            console.log('***************************')
                         })
                         .catch((error) => {
-                            dispatch(clientcreate(responseJSON))
-                            dispatch(toast('success', 'Client Added Successfully!'));
-                            location.push("../dashboard/clientlist")
-                            console.log('***************************')
+                            dispatch(toast('warning', 'Client Added Successfully!'));
                         });
 
                 }
-                // resolve(responseJSON);
             })
             .catch((error) => {
-                // dispatch(toast('Warning', 'Client Creation failed!'));
-                // reject(error);
+                dispatch(toast('Warning', 'Client Creation failed!'));
             });
-        // });
     }
 }
+
 //Client create function
 function clientcreate(response) {
     console.log(response);
@@ -285,6 +274,7 @@ export function projectList(userId) {
 
 //Client list api 
 export function clientlist(userId) {
+    console.log("clientlist api call")
     return (dispatch) => {
 
         fetch(config.apiUrl + 'client/clientlist?userId=' + userId,
@@ -876,10 +866,10 @@ export function tagsList(tags) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                if(!responseJSON.error){
+                if (!responseJSON.error) {
                     dispatch(RoleWithTags(responseJSON.result))
                 }
-  })
+            })
             .catch((error) => {
 
             });
