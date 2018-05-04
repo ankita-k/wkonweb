@@ -156,7 +156,11 @@ export function createClient(data, location) {
                         });
 
                 }
+<<<<<<< HEAD
                 // resolve(responseJSON);
+=======
+                clientlist(sessionStorage.getItem('id') ? (sessionStorage.getItem('id')) : (localStorage.getItem('id')));
+>>>>>>> 510dd242d737759fac489892b680f4b41aeeda7b
             })
             .catch((error) => {
                 // dispatch(toast('Warning', 'Client Creation failed!'));
@@ -285,6 +289,12 @@ export function projectList(userId) {
 
 //Client list api 
 export function clientlist(userId) {
+<<<<<<< HEAD
+=======
+
+    console.log("Fetch client");
+
+>>>>>>> 510dd242d737759fac489892b680f4b41aeeda7b
     return (dispatch) => {
 
         fetch(config.apiUrl + 'client/clientlist?userId=' + userId,
@@ -297,10 +307,17 @@ export function clientlist(userId) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+<<<<<<< HEAD
                 dispatch(clientList(responseJSON.result))
             })
             .catch((error) => {
                 dispatch(clientList([]))
+=======
+                return dispatch(clientList(responseJSON.result))
+            })
+            .catch((error) => {
+                return dispatch(clientList([]))
+>>>>>>> 510dd242d737759fac489892b680f4b41aeeda7b
             });
 
     }
@@ -889,22 +906,132 @@ function editdataBill(list) {
     }
 }
 //API FOR GET VERTICAL LEAD
-export function verticalLeads(tags) {
+export function tagsList(tags) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'user/findBytags?tags=' + tags,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if(!responseJSON.error){
+                    dispatch(RoleWithTags(responseJSON.result))
+                }
+  })
+            .catch((error) => {
+
+            });
+    }
+}
+
+function RoleWithTags(list) {
+    return {
+        type: "VERTICAL_LEAD",
+        list
+
+    }
+<<<<<<< HEAD
+}
+=======
+}
+
+// CLEAR LOGGEN IN USER DATA
+function cleardata() {
+    return {
+        type: "CLEAR_USER_DATA",
+    }
+}
+
+// GET DASHBOARD DETAILS
+
+export function dashboardProject(userId) {
 
     return (dispatch) => {
         console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
 
-            fetch(config.apiUrl + 'user/findBytags?tags=' + tags,
+        fetch(config.apiUrl + 'user/dashboardDetails?id=' + userId,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error)
+                    dispatch(dashboardproject(responseJSON.result));
+                // loader(false);
+            })
+            .catch((error) => {
+            });
+
+    }
+}
+//GET CUSTOMERS DATA ON DASHBOARD
+export function dashboardCustomer(userId) {
+    return (dispatch) => {
+        console.log(config.apiUrl)
+
+        fetch(config.apiUrl + 'user/clientDashboardDetails?id=' + userId,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error) {
+                    dispatch(dashboardcustomer(responseJSON.result))
+                    // dispatch(loader(false))
+                }
+
+            })
+            .catch((error) => {
+
+            });
+
+    }
+}
+
+// GET DASHBOARD DETAILS FRO PROJECT
+function dashboardproject(data) {
+    return {
+        type: "DASHBOARD_PROJECT",
+        data
+    }
+}
+// GET DASHBOARD DETAILS FRO CUSTOMER
+function dashboardcustomer(data) {
+    return {
+        type: "DASHBOARD_CUSTOMER",
+        data
+    }
+}
+//API  FOR ADD MEMBER
+export function addMember(data, id) {
+    return (dispatch) => {
+        console.log(config.apiUrl)
+        return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'project/addmember?id=' + id,
                 {
                     headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
                     },
-                    method: 'GET'
+                    method: 'PUT',
+                    body: JSON.stringify(data)
                 })
                 .then((response) => response.json())
                 .then((responseJSON) => {
-                    dispatch(Vertical(responseJSON))
+
+                    console.log('response');
+
+                    dispatch(member(responseJSON))
                     resolve(responseJSON);
                 })
                 .catch((error) => {
@@ -913,11 +1040,29 @@ export function verticalLeads(tags) {
         });
     }
 }
-
-function Vertical(json) {
+// ADD MEMBER
+function member(json) {
     return {
-        type: "VERTICAL_LEAD",
+        type: "ADD_MEMBER",
         json
-
     }
 }
+
+// FULL PAGE LOADER
+export function loader(data) {
+    console.log(data)
+    return (dispatch) => {
+        dispatch(loaders(data))
+    }
+
+}
+
+function loaders(data) {
+    return {
+        type: "FULL_PAGE_LOADER",
+        data
+    }
+}
+
+
+>>>>>>> 510dd242d737759fac489892b680f4b41aeeda7b

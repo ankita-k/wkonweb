@@ -12,6 +12,8 @@ import {dashboardProjectData} from '../reducers/dashboardProjectData';
 import {dashboardCustomerData} from '../reducers/dashboardCustomerData';
 import {clientCreate} from '../reducers/clientcreate';
 import {countrylists} from '../reducers/countrylist';
+import {fullloader} from '../reducers/loader';
+import {listByTags} from '../reducers/listByTags';
 // reducers list
 const rootReducer = combineReducers({
     loginReducer,                    //for user login
@@ -27,6 +29,8 @@ const rootReducer = combineReducers({
     dashboardCustomerData,     
     clientCreate ,                   //create client
     countrylists,                    // get countrylist
+    fullloader,
+    listByTags
 })
 
 

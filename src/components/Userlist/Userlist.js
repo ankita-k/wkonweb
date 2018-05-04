@@ -49,6 +49,11 @@ class Userlist extends Component {
             this.setState({ show: false });
         }
 
+        /*HIDE FULL LOADER */
+        // if (this.props.fullloader == false) {
+        //     this.setState({ show: this.props.fullloader })
+        // }
+        /*HIDE FULL LOADER ENDS */
     }
 
     //edit client
