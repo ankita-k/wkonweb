@@ -138,7 +138,7 @@ export function createClient(data, location) {
                     location.push("../dashboard/clientlist");
                     console.log('***************************');
                 }
-                clientlist(sessionStorage.getItem('id') ? (sessionStorage.getItem('id')) : (localStorage.getItem('id')));                
+                clientlist(sessionStorage.getItem('id') ? (sessionStorage.getItem('id')) : (localStorage.getItem('id')));
             })
             .catch((error) => {
                 // dispatch(toast('Warning', 'Client Creation failed!'));
@@ -267,7 +267,7 @@ export function projectList(userId) {
 
 //Client list api 
 export function clientlist(userId) {
- 
+
     console.log("Fetch client");
 
     return (dispatch) => {
@@ -280,12 +280,12 @@ export function clientlist(userId) {
                 method: 'GET'
             })
             .then((response) => response.json())
-             .then((responseJSON) => {
+            .then((responseJSON) => {
                 console.log(responseJSON)
-               return dispatch(clientList(responseJSON.result))
+                return dispatch(clientList(responseJSON.result))
             })
             .catch((error) => {
-                 return dispatch(clientList([]))
+                return dispatch(clientList([]))
             });
 
     }
@@ -771,35 +771,31 @@ function editdataBill(list) {
     }
 }
 //API FOR GET VERTICAL LEAD
-export function verticalLeads(tags) {
-
+export function tagsList(tags) {
     return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'user/findBytags?tags=' + tags,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if(!responseJSON.error){
+                    dispatch(RoleWithTags(responseJSON.result))
+                }
+  })
+            .catch((error) => {
 
-            fetch(config.apiUrl + 'user/findBytags?tags=' + tags,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(Vertical(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+            });
     }
 }
 
-function Vertical(json) {
+function RoleWithTags(list) {
     return {
         type: "VERTICAL_LEAD",
-        json
+        list
 
     }
 }
@@ -829,7 +825,7 @@ export function dashboardProject(userId) {
             .then((responseJSON) => {
                 if (!responseJSON.error)
                     dispatch(dashboardproject(responseJSON.result));
-                    // loader(false);
+                // loader(false);
             })
             .catch((error) => {
             });
@@ -850,11 +846,11 @@ export function dashboardCustomer(userId) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                if (!responseJSON.error){
+                if (!responseJSON.error) {
                     dispatch(dashboardcustomer(responseJSON.result))
                     // dispatch(loader(false))
                 }
-                    
+
             })
             .catch((error) => {
 
@@ -915,12 +911,12 @@ function member(json) {
 }
 
 // FULL PAGE LOADER
-export function loader(data){
-console.log(data)
+export function loader(data) {
+    console.log(data)
     return (dispatch) => {
         dispatch(loaders(data))
     }
-    
+
 }
 
 function loaders(data) {
