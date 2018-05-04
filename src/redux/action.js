@@ -807,7 +807,8 @@ export function dashboardProject(userId) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (!responseJSON.error)
-                    dispatch(dashboardproject(responseJSON.result))
+                    dispatch(dashboardproject(responseJSON.result));
+                    // loader(false);
             })
             .catch((error) => {
             });
@@ -828,8 +829,11 @@ export function dashboardCustomer(userId) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                if (!responseJSON.error)
+                if (!responseJSON.error){
                     dispatch(dashboardcustomer(responseJSON.result))
+                    // dispatch(loader(false))
+                }
+                    
             })
             .catch((error) => {
 
@@ -891,3 +895,21 @@ function member(json) {
         json
     }
 }
+
+// FULL PAGE LOADER
+export function loader(data){
+console.log(data)
+    return (dispatch) => {
+        dispatch(loaders(data))
+    }
+    
+}
+
+function loaders(data) {
+    return {
+        type: "FULL_PAGE_LOADER",
+        data
+    }
+}
+
+
