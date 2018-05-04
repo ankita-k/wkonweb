@@ -26,7 +26,7 @@ class App extends Component {
       this.props.actions.projectList(this.state.userId);
       this.props.actions.userList();
       this.props.actions.findByRole('Developer');
-    
+      this.props.actions.countrylist();
 
   }
 

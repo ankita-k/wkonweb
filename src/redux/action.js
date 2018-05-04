@@ -101,7 +101,9 @@ export function password(data) {
 
 
 // COUNTRY LIST ACTION DISPATCHED
-function countrylist(list) {
+
+function countryList(list) {
+    console.log("action dispatched")
     return {
         type: "COUNTRY_LIST",
         list
@@ -109,33 +111,42 @@ function countrylist(list) {
     }
 }
 
-
 // CREATE CLIENT APICALL
-export function createClient(data) {
-    
+export function createClient(data, location) {
+
     return (dispatch) => {
-        
+
         // return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'client', {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'POST',
-                body: JSON.stringify(data)
+        fetch(config.apiUrl + 'client', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'Client Creation failed!'));
+                }
+                else {
+                    console.log(responseJSON);
+                    dispatch(toast('success', 'Client Added Successfully!'));
+                    location.push("../dashboard/clientlist");
+                    console.log('***************************');
+                }
+                clientlist(sessionStorage.getItem('id') ? (sessionStorage.getItem('id')) : (localStorage.getItem('id')));                
             })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(clientcreate(responseJSON))
-                    // resolve(responseJSON);
-                })
-                .catch((error) => {
-                    // reject(error);
-                });
+            .catch((error) => {
+                // dispatch(toast('Warning', 'Client Creation failed!'));
+            });
         // });
     }
 }
+
 //Client create function
 function clientcreate(response) {
     console.log(response);
@@ -147,20 +158,25 @@ function clientcreate(response) {
 
 //GET COUNTRIES LIST 
 export function countrylist() {
+
     return (dispatch) => {
 
-        return new Promise(function (resolve, reject) {
-            fetch('/assets/countrieslist.json', { method: 'GET' })
-                .then((response) => {
-                    response.json()
-                        .then(function (myJson) {
-                            dispatch(countrylist(myJson))
-                            resolve(myJson);
-                        }, function (error) {
-                            reject(error);
-                        });
-                });
-        })
+
+        console.log("action")
+
+        // return new Promise(function (resolve, reject) {
+        fetch('/assets/countrieslist.json', { method: 'GET' })
+            .then((response) => {
+
+                response.json()
+                    .then(function (myJson) {
+                        dispatch(countryList(myJson))
+                        // resolve(myJson);
+                    }, function (error) {
+                        // reject(error);
+                    });
+            });
+        // })
 
     }
 }
@@ -251,6 +267,8 @@ export function projectList(userId) {
 
 //Client list api 
 export function clientlist(userId) {
+ 
+    console.log("Fetch client");
 
     return (dispatch) => {
 
@@ -262,11 +280,12 @@ export function clientlist(userId) {
                 method: 'GET'
             })
             .then((response) => response.json())
-            .then((responseJSON) => {
-                dispatch(clientList(responseJSON.result))
+             .then((responseJSON) => {
+                console.log(responseJSON)
+               return dispatch(clientList(responseJSON.result))
             })
             .catch((error) => {
-                dispatch(clientList([]))
+                 return dispatch(clientList([]))
             });
 
     }
@@ -579,24 +598,24 @@ export function dashboardCustomer(userId) {
 export function findByRole(role) {
     return (dispatch) => {
         console.log(config.apiUrl)
-     
 
-            fetch(config.apiUrl + 'user/findByRole?role=' + role,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(developerlist(responseJSON.result))
-                   
-                })
-                .catch((error) => {
-                    
-                });
-       
+
+        fetch(config.apiUrl + 'user/findByRole?role=' + role,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                dispatch(developerlist(responseJSON.result))
+
+            })
+            .catch((error) => {
+
+            });
+
     }
 }
 
@@ -736,38 +755,38 @@ function edituser(list) {
 export function billCreate(billdata) {
     return (dispatch) => {
         // return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'bill',
-                {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'POST',
-                    body: JSON.stringify(billdata)
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(billcreate(responseJSON))
-                   //resolve(responseJSON);
-                    // console.log(responseJSON)
-                    // if (responseJSON.error) {
-                    //     dispatch(opentoast('warning', 'Bill Creation Failed!'))
-                    // }
-                    // else {
-                    //   dispatch(push('/dashboard')) 
-                    //     dispatch(billcreate(responseJSON.result))
-                    //     dispatch(opentoast('success', 'Bill Created Successfully!'))
-                    // }
+        fetch(config.apiUrl + 'bill',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'POST',
+                body: JSON.stringify(billdata)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                dispatch(billcreate(responseJSON))
+                //resolve(responseJSON);
+                // console.log(responseJSON)
+                // if (responseJSON.error) {
+                //     dispatch(opentoast('warning', 'Bill Creation Failed!'))
+                // }
+                // else {
+                //   dispatch(push('/dashboard')) 
+                //     dispatch(billcreate(responseJSON.result))
+                //     dispatch(opentoast('success', 'Bill Created Successfully!'))
+                // }
 
 
-                })
-                .catch((error) => {
-                    // reject(error);
-                    // dispatch(opentoast('error', 'Bill Creation Failed!'))
-                });
-    
-}
+            })
+            .catch((error) => {
+                // reject(error);
+                // dispatch(opentoast('error', 'Bill Creation Failed!'))
+            });
+
+    }
 }
 
 function billcreate(response) {
@@ -813,14 +832,9 @@ function BillList(list) {
 export function BillEdit(data, id) {
     console.log('edit', data)
     console.log(id)
-
     return (dispatch) => {
-
         console.log(config.apiUrl)
         return new Promise((resolve, reject) => {
-
-
-
             fetch(config.apiUrl + 'bill?id=' + id,
                 {
                     headers: {
@@ -833,9 +847,6 @@ export function BillEdit(data, id) {
                 })
                 .then((response) => response.json())
                 .then((responseJSON) => {
-
-
-
                     dispatch(editdataBill(responseJSON))
                     resolve(responseJSON);
                 })

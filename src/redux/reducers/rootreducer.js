@@ -8,6 +8,7 @@ import { clientList } from '../reducers/clientList';
 import {userList} from  '../reducers/userlist';
 import {developerlist} from '../reducers/developerList';
 import {clientCreate} from '../reducers/clientcreate';
+import {countrylists} from '../reducers/countrylist';
 // reducers list
 const rootReducer = combineReducers({
     loginReducer,                    //for user login
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
     userList,                        // get userlist
     developerlist,                   // get develper list
     clientCreate ,                   //create client
+    countrylists,                    // get countrylist
 
 })
 

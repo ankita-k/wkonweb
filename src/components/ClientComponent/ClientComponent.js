@@ -44,36 +44,28 @@ class ClientComponent extends Component {
             console.log(this.props.form)
         }
 
-
-        // GET COUNTRY LIST
-
-        console.log('component will didmount')
-        this.props.actions.countrylist().then((data) => {
-            // this.setState({ show: false });
-            this.setState({ countrylist: data });
-            console.log(this.state.countrylist)
-        }, err => {
-
-        })
     }
     componentWillReceiveProps(props) {
-        debugger;
-        console.log(props)
-        if (props.clientCreate) {
-            debugger;
-            this.setState({ showLoader: false });
-            this.setState({ show: false });
+       console.log("componentwillrecieveprops")
 
-            if (!props.clientCreate.error) {
-                this.props.actions.opentoast('success', 'Client Added Successfully!');
-                this.props.history.push('/dashboard/clientlist')
-            }
-            else {
-                this.props.actions.opentoast('warning', (props.clientCreate.message));
-            }
 
-        }
-    }
+    //     // debugger;
+    //     // console.log(props)
+    //     // if (props.clientCreate) {
+    //     //     debugger;
+    //     //     this.setState({ showLoader: false });
+    //     //     this.setState({ show: false });
+
+    //     //     if (!props.clientCreate.error) {
+    //     //         this.props.actions.opentoast('success', 'Client Added Successfully!');
+    //     //         this.props.history.push('/dashboard/clientlist')
+    //     //     }
+    //     //     else {
+    //     //         this.props.actions.opentoast('warning', (props.clientCreate.message));
+    //     //     }
+
+    //     // }
+     }
 
 
     // TAKE INPUT FIELD VALUE
@@ -101,7 +93,7 @@ class ClientComponent extends Component {
 
 
     handleSubmit = (e) => {
-        debugger;
+        
         e.preventDefault();
         this.setState({ show: true });
         this.setState({ showLoader: true });
@@ -151,7 +143,7 @@ class ClientComponent extends Component {
                         // paypal_id:values.paypalId
                         paypalId: values.paypal_id
                     }
-                    this.props.actions.createClient(data)
+                    this.props.actions.createClient(data,this.props.history)
                     //     .then(result => {
                     //         this.setState({showLoader: false});
                     //         this.setState({ show: false });
@@ -282,7 +274,7 @@ class ClientComponent extends Component {
                                                 name="country"
                                                 showSearch
                                             >
-                                                {this.state.countrylist.map((item, index) => {
+                                                {this.props.countrylists.map((item, index) => {
                                                     return (<Option key={index} value={item.name}>{item.name}</Option>)
                                                 })}
 
@@ -365,7 +357,8 @@ class ClientComponent extends Component {
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
+                             {/* loading={this.state.showLoader} */}
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
                             </div>
                         </FormItem>
