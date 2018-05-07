@@ -690,7 +690,7 @@ class NewProject extends Component {
                                         : ""}
 
                                 </Row>
-                                {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
+                                {/* {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
                                     <Row>
                                         <div className="roleassign">
                                             <Col xs={24} sm={24} md={24} lg={24}>
@@ -699,7 +699,7 @@ class NewProject extends Component {
                                                         return <span><span className="usrnm" key={index} >{item.name}:</span><span className="role">{item.role} &nbsp;</span></span>
                                                     })}
 
-                                                    {/* <span className="usrnm">Owner:</span><span className="role">Johnn &nbsp;</span> */}
+                                                   
 
 
 
@@ -707,7 +707,10 @@ class NewProject extends Component {
                                             </Col>
                                         </div>
                                     </Row>
-                                    : ""}
+                                    : ""} */}
+                                    <Row>
+                                        <p><a href="#">Show Details</a></p>
+                                    </Row>
                                 <Row className="briefRequire">
                                     <Col xs={24} sm={24} md={24} lg={24}>
                                         <FormItem label="Brief Requirement">
