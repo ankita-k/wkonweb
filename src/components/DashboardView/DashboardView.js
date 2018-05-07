@@ -40,7 +40,9 @@ class DashboardView extends Component {
             projectinprogress: {},
             projectcompleted: {},
             show: true,  //loading-bar
-            loading: true
+            loading: true,
+            dashboardCustomerData: {},
+            dashboardProjectData: {}
         }
     }
 
@@ -51,35 +53,33 @@ class DashboardView extends Component {
     }
 
     componentWillReceiveProps(newprops) {
-        console.log('*****componnet will receive props*****',newprops,this.props)
         this.commonFunction(newprops);
-
     }
 
     // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
     commonFunction(newprops) {
         /*SHOW COUNTER FOR PROJECT DASHBOARD NUMBERS*/
-        if (this.props.dashboardProjectData) {
+        if (!Object.is(newprops.dashboardProjectData, this.props.dashboardProjectData)) {
             console.log('project dashboard')
-            if (this.props.dashboardProjectData.Total)
-                this.startCounter(this.props.dashboardProjectData.Total, 'projectTotal')
-            if (this.props.dashboardProjectData.Completed)
-                this.startCounter(this.props.dashboardProjectData.Completed, 'projectcompleted')
+            if (newprops.dashboardProjectData.Total)
+                this.startCounter(newprops.dashboardProjectData.Total, 'projectTotal')
+            if (newprops.dashboardProjectData.Completed)
+                this.startCounter(newprops.dashboardProjectData.Completed, 'projectcompleted')
 
-            if (this.props.dashboardProjectData.InProgess)
-                this.startCounter(this.props.dashboardProjectData.InProgess, 'projectinprogress')
+            if (newprops.dashboardProjectData.InProgess)
+                this.startCounter(newprops.dashboardProjectData.InProgess, 'projectinprogress')
         }
         /*SHOW COUNTER FOR PROJECT DASHBOARD NUMBER ENDS*/
 
         /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
-        if (this.props.dashboardCustomerData) {
+        if (!Object.is(newprops.dashboardCustomerData, this.props.dashboardCustomerData)) {
             console.log('customer dashboard')
-            if (this.props.dashboardCustomerData.Total)
-                this.startCounter(this.props.dashboardCustomerData.Total, 'clientTotal')
-            if (this.props.dashboardCustomerData.Pipeline)
-                this.startCounter(this.props.dashboardCustomerData.Pipeline, 'clientpipeline')
-            if (this.props.dashboardCustomerData.Committed)
-                this.startCounter(this.props.dashboardCustomerData.Committed, 'clientcommitted')
+            if (newprops.dashboardCustomerData.Total)
+                this.startCounter(newprops.dashboardCustomerData.Total, 'clientTotal')
+            if (newprops.dashboardCustomerData.Pipeline)
+                this.startCounter(newprops.dashboardCustomerData.Pipeline, 'clientpipeline')
+            if (newprops.dashboardCustomerData.Committed)
+                this.startCounter(newprops.dashboardCustomerData.Committed, 'clientcommitted')
         }
         /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
 
@@ -111,7 +111,6 @@ class DashboardView extends Component {
         let _base = this;
         switch (type) {
             case 'clientTotal':
-            console.log('cienttotal');
                 let clienttotal = Object.assign({}, this.state.clienttotal)
                 clienttotal.Total = 0;
                 setInterval(function () {
@@ -121,7 +120,7 @@ class DashboardView extends Component {
                     else {
                         clienttotal.Total = clienttotal.Total + 1;
                         _base.setState({ clienttotal })
-                        console.log(clienttotal)
+                        // console.log(clienttotal)
                     }
                 }, 40)
                 break;

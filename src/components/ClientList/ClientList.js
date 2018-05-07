@@ -161,6 +161,15 @@ class ClientList extends Component {
         dataIndex: 'status',
         key: 'status',
       }, {
+        title: 'Company',
+        dataIndex: 'company',
+        key: 'company',
+      }, {
+        title: 'Address',
+        dataIndex: 'address',
+        key: 'address',
+      },
+      {
         title: 'Action',
         key: 'action',
         render: (text, record) => (
@@ -181,7 +190,7 @@ class ClientList extends Component {
   }
 
   componentDidMount() {
-    console.log('component will mount');
+    console.log('++++++++++++++++component will mount++++++++++++++++',this.props);
     this.setState({ show: true });
     this.commonFunction();
   }
@@ -201,7 +210,7 @@ class ClientList extends Component {
     }
     this.handleChange((this.props.location.filterValue));
   }
-  
+
   //edit client
   editClient = (data) => {
     this.props.history.push({
@@ -213,30 +222,17 @@ class ClientList extends Component {
 
   }
 
-  //delete client
+  //**DELETE CLIENT ACTION CALLING  */
   deleteClient = () => {
     this.setState({ show: true })
-    this.props.deleteclient(this.state.selectedId._id).then(response => {
-      console.log(response)
-      this.setState({ show: false })
-      this.setState({ visible: false })
-      if (!response.error) {
-        this.props.opentoast('success', 'Client Deleted Successfully!');
-        this.getclients();
-      }
-      else {
-        this.props.opentoast('warning', response.message);
-      }
-    }, err => {
-      this.setState({ show: false });
-      this.props.opentoast('warning', 'Client  Not Deleted Successfully!');
-    })
+   this.props.actions.deleteclient(this.state.selectedId._id,sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),this.props.history);
+   this.setState({ visible: false })
 
   }
 
- 
 
-  
+
+
 
   // SEACRH CLIENT LIST ACCORDING TO INPUT 
   searchClient = (e) => {
@@ -298,7 +294,7 @@ class ClientList extends Component {
     return (
 
       <div className="clientListdiv">
-        {this.state.show == true ? <div className="loader">
+        {/* {this.state.show == true ? <div className="loader">
           <Loader className="ldr" fullPage loading />
         </div> : ""}
 
@@ -306,7 +302,7 @@ class ClientList extends Component {
           show={this.state.show}
           color="red"
           showSpinner={false}
-        />
+        /> */}
         <div className="projectListheader">
           <h1 className="clientList">Client List</h1>
           <Row>

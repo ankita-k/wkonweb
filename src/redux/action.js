@@ -111,7 +111,8 @@ function countryList(list) {
     }
 }
 
-// CREATE CLIENT APICALL
+
+/*CLIENT CREATION BY API CALL AND GET NEW CLIENT LIST IMMEDIATELY*/
 export function createClient(data, location) {
     return (dispatch) => {
         fetch(config.apiUrl + 'client', {
@@ -128,25 +129,27 @@ export function createClient(data, location) {
                 if (responseJSON.error) {
                     dispatch(toast('Warning', 'Client Creation failed!'));
                 } else {
+                    console.log(responseJSON)
                     let url = config.apiUrl + "client/clientlist?userId=" + data.userId;
 
                     fetch(url,
                         { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
                         .then((response) => response.json())
                         .then((responseJSON) => {
-                            dispatch(clientList(responseJSON.result))
                             dispatch(toast('success', 'Client Added Successfully!'));
+                            dispatch(clientList(responseJSON.result))
+
                             location.push("../dashboard/clientlist")
                         })
                         .catch((error) => {
-                            dispatch(clientList([]))
-                            dispatch(toast('warning', 'Client Added Successfully!'));
+                            dispatch(clientList([]));
+                            dispatch(toast('success', 'Client Added Successfully!'));
                         });
 
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'Client Creation failed!'));
+                dispatch(toast('success', 'Client Creation failed!'));
             });
     }
 }
@@ -405,81 +408,92 @@ export function createUser(data) {
         });
     }
 }
-//API call for client delete
-export function deleteclient(id) {
+/*DELETE CLIENT BY API CALL AND GET NEW CLIENT LIST IMMEDIATELY*/
+export function deleteclient(id, userid, location) {
     console.log(id)
 
     return (dispatch) => {
+        fetch(config.apiUrl + 'client/' + id,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
 
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+                },
+                method: 'DELETE'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'Client Deletion failed!'));
+                } else {
+                    console.log(responseJSON)
+                    let url = config.apiUrl + "client/clientlist?userId=" + userid;
 
+                    fetch(url,
+                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            dispatch(toast('success', 'Client Deleted Successfully!'));
+                            dispatch(clientList(responseJSON.result))
 
+                            location.push("../dashboard/clientlist")
+                        })
+                        .catch((error) => {
+                            dispatch(clientList([]));
+                            dispatch(toast('success', 'Client Deleted Successfully!'));
+                        });
 
-            fetch(config.apiUrl + 'client/' + id,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('Warning', 'Client Deletion failed!'));
+            });
 
-                    },
-                    method: 'DELETE'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-
-                    console.log('response');
-
-                    dispatch(deleteclientrow(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
     }
 }
 
-function deleteclientrow(list) {
-    return {
-        type: "DELETE_CLIENT",
-        list
 
-    }
-}
-
-//API edit client
-export function updateclient(data, id) {
+/*UPDATE CLIENT BY API CALL AND GET NEW CLIENT LIST IMMEDIATELY*/
+export function updateclient(data, id, userid, location) {
     console.log(data, id)
-
     return (dispatch) => {
+        fetch(config.apiUrl + 'client/' + id,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                method: 'PUT',
+                body: JSON.stringify(data)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
 
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'Client Updation failed!'));
+                } else {
+                    let url = config.apiUrl + "client/clientlist?userId=" + userid;
 
+                    fetch(url,
+                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            dispatch(toast('success', 'Client Updated Successfully!'));
+                            dispatch(clientList(responseJSON.result))
 
+                            location.push("../dashboard/clientlist")
+                        })
+                        .catch((error) => {
+                            dispatch(clientList([]));
+                            dispatch(toast('success', 'Client Updated Successfully!'));
+                        });
 
-            fetch(config.apiUrl + 'client/' + id,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    method: 'PUT',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-
-                    console.log('response');
-
-                    dispatch(updateclientlist(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('Warning', 'Client Updation failed!'));
+            });
     }
 }
 
@@ -524,13 +538,6 @@ export function editproject(data, id) {
 function editrow(list) {
     return {
         type: "EDIT_PROJECT",
-        list
-
-    }
-}
-function updateclientlist(list) {
-    return {
-        type: "UPDATE_CLIENT",
         list
 
     }
@@ -721,8 +728,8 @@ function edituser(list) {
 }
 
 
-// API CALL FOR BILL CREATION
-export function billCreate(billdata) {
+/*BILL CREATION BY API CALL AND GET NEW BILL LIST IMMEDIATELY*/
+export function billCreate(billdata, location) {
     return (dispatch) => {
         // return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'bill',
@@ -737,35 +744,38 @@ export function billCreate(billdata) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                dispatch(billcreate(responseJSON))
-                //resolve(responseJSON);
-                // console.log(responseJSON)
-                // if (responseJSON.error) {
-                //     dispatch(opentoast('warning', 'Bill Creation Failed!'))
-                // }
-                // else {
-                //   dispatch(push('/dashboard')) 
-                //     dispatch(billcreate(responseJSON.result))
-                //     dispatch(opentoast('success', 'Bill Created Successfully!'))
-                // }
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'Bill Creation failed!'));
+                }
+                else {
+                    let url = config.apiUrl + "bill?userId=" + billdata.userId;
 
+                    fetch(url,
+                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            dispatch(toast('success', 'Bill Created Successfully!'));
+                            dispatch(BillList(responseJSON.result))
 
+                            location.push("../dashboard/billlist")
+                        })
+                        .catch((error) => {
+                            dispatch(BillList([]))
+                            dispatch(toast('warning', 'Bill Created  Successfully!'));
+                        });
+
+                }
             })
             .catch((error) => {
-                // reject(error);
-                // dispatch(opentoast('error', 'Bill Creation Failed!'))
+                dispatch(opentoast('error', 'Bill Creation Failed!'))
             });
 
     }
 }
 
-function billcreate(response) {
-    return {
-        type: "BILL_CREATE_SUCCESS",
-        response
-    }
-}
-//Client list api 
+
+
+/* GET  BILL LIST BY API CALLING AND DISPATCHING ACTION*/ 
 export function billlist(userId) {
     console.log(userId)
     return (dispatch) => {
@@ -798,52 +808,56 @@ function BillList(list) {
 
     }
 }
-//API FOR EDIT BILL
-export function BillEdit(data, id) {
+
+/*BILL UPDATION BY API CALL AND GET NEW BILL LIST IMMEDIATELY*/
+export function BillEdit(data, id, location) {
     console.log('edit', data)
     console.log(id)
-
     return (dispatch) => {
+        fetch(config.apiUrl + 'bill?id=' + id,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'PUT',
+                body: JSON.stringify(data)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'Bill Updation failed!'));
+                }
+                else {
+                    let url = config.apiUrl + "bill?userId=" + data.userId;
 
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+                    fetch(url,
+                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            console.log(responseJSON.result)
+                            dispatch(toast('success', 'Bill Updated Successfully!'));
+                            dispatch(BillList(responseJSON.result))
 
+                            location.push("../dashboard/billlist")
+                        })
+                        .catch((error) => {
+                            dispatch(BillList([]))
+                            dispatch(toast('warning', 'Bill Updated  Successfully!'));
+                        });
 
+                }
+            })
 
-            fetch(config.apiUrl + 'bill?id=' + id,
-                {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'PUT',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
+            .catch((error) => {
 
-
-
-                    dispatch(editdataBill(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+            });
     }
 }
 
 
-function editdataBill(list) {
-    return {
-        type: "EDIT_BILL",
-        list
-
-    }
-}
-//API FOR GET VERTICAL LEAD
+//API FOR GET VERTICAL LEAD AND DISPACTHING ACTION
 export function tagsList(tags) {
     return (dispatch) => {
         fetch(config.apiUrl + 'user/findBytags?tags=' + tags,
