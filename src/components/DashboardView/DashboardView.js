@@ -45,22 +45,22 @@ class DashboardView extends Component {
     }
 
     componentDidMount() {
-        console.log('component did mount', this.props);
+        console.log('==========component did moun======t', this.props);
         // this.setState({show:true})
-        this.commonFunction();
+        // this.commonFunction();
     }
 
-    componentWillReceiveProps(props) {
-        console.log(props)
-        this.commonFunction();
-
+    componentWillReceiveProps(newprops) {
+        console.log('*****componnet will receive props*****',newprops,this.props)
+        this.commonFunction(newprops);
 
     }
 
     // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
-    commonFunction() {
+    commonFunction(newprops) {
         /*SHOW COUNTER FOR PROJECT DASHBOARD NUMBERS*/
         if (this.props.dashboardProjectData) {
+            console.log('project dashboard')
             if (this.props.dashboardProjectData.Total)
                 this.startCounter(this.props.dashboardProjectData.Total, 'projectTotal')
             if (this.props.dashboardProjectData.Completed)
@@ -73,6 +73,7 @@ class DashboardView extends Component {
 
         /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
         if (this.props.dashboardCustomerData) {
+            console.log('customer dashboard')
             if (this.props.dashboardCustomerData.Total)
                 this.startCounter(this.props.dashboardCustomerData.Total, 'clientTotal')
             if (this.props.dashboardCustomerData.Pipeline)
@@ -110,6 +111,7 @@ class DashboardView extends Component {
         let _base = this;
         switch (type) {
             case 'clientTotal':
+            console.log('cienttotal');
                 let clienttotal = Object.assign({}, this.state.clienttotal)
                 clienttotal.Total = 0;
                 setInterval(function () {
@@ -119,6 +121,7 @@ class DashboardView extends Component {
                     else {
                         clienttotal.Total = clienttotal.Total + 1;
                         _base.setState({ clienttotal })
+                        console.log(clienttotal)
                     }
                 }, 40)
                 break;
