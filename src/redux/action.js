@@ -128,40 +128,29 @@ export function createClient(data, location) {
                 if (responseJSON.error) {
                     dispatch(toast('Warning', 'Client Creation failed!'));
                 } else {
-                    console.log("Get client's list");
-                    fetch(config.apiUrl + 'client/clientlist?userId=' + sessionStorage.getItem('id') ? (sessionStorage.getItem('id')) : (localStorage.getItem('id')),
-                        {
-                            headers: {
-                                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                            },
-                            method: 'GET'
-                        })
+                    let url = config.apiUrl + "client/clientlist?userId=" + data.userId;
+
+                    fetch(url,
+                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
                         .then((response) => response.json())
                         .then((responseJSON) => {
-                            dispatch(clientcreate(responseJSON))
+                            dispatch(clientList(responseJSON.result))
                             dispatch(toast('success', 'Client Added Successfully!'));
                             location.push("../dashboard/clientlist")
                         })
                         .catch((error) => {
+                            dispatch(clientList([]))
                             dispatch(toast('warning', 'Client Added Successfully!'));
                         });
 
                 }
             })
             .catch((error) => {
-                dispatch(toast('Warning', 'Client Creation failed!'));
+                dispatch(toast('warning', 'Client Creation failed!'));
             });
     }
 }
 
-//Client create function
-function clientcreate(response) {
-    console.log(response);
-    return {
-        type: "CLIENT_CREATE_SUCCESS",
-        response
-    }
-}
 
 //GET COUNTRIES LIST 
 export function countrylist() {
@@ -236,7 +225,7 @@ function toast(type, message) {
         case "error":
             return { type: "TOAST", toastype: type, message }
             break;
-        default: return console.log('no notification')
+        default: { }
     }
 
 }
