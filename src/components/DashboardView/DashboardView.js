@@ -45,7 +45,8 @@ class DashboardView extends Component {
     }
 
     componentDidMount() {
-        console.log('component did mount', this.props)
+        console.log('component did mount', this.props);
+        // this.setState({show:true})
         this.commonFunction();
     }
 
@@ -80,6 +81,12 @@ class DashboardView extends Component {
                 this.startCounter(this.props.dashboardCustomerData.Committed, 'clientcommitted')
         }
         /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
+
+        /*HIDE FULL LOADER */
+        // if (this.props.fullloader == false) {
+        //     this.setState({ show: this.props.fullloader })
+        // }
+        /*HIDE FULL LOADER ENDS */
     }
 
 
@@ -220,9 +227,9 @@ class DashboardView extends Component {
             <div className="dashboardMain">
                 {/* {this.state.show == true ? <div className="loader">
                     <Loader className="ldr" fullPage loading />
-                </div> : ""} */}
+                </div> : ""}
 
-                {/* <Loading
+                <Loading
                     show={this.state.show}
                     color="red"
                     showSpinner={false}

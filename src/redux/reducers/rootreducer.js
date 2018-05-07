@@ -10,6 +10,10 @@ import {developerlist} from '../reducers/developerList'
 import {loggeduserDetails} from '../reducers/userDetails';
 import {dashboardProjectData} from '../reducers/dashboardProjectData';
 import {dashboardCustomerData} from '../reducers/dashboardCustomerData';
+import {clientCreate} from '../reducers/clientcreate';
+import {countrylists} from '../reducers/countrylist';
+import {fullloader} from '../reducers/loader';
+import {listByTags} from '../reducers/listByTags';
 // reducers list
 const rootReducer = combineReducers({
     loginReducer,                    //for user login
@@ -23,7 +27,10 @@ const rootReducer = combineReducers({
     loggeduserDetails,               // logged in user detail
     dashboardProjectData,                    // dashboard numbers for customer,project 
     dashboardCustomerData,     
-
+    clientCreate ,                   //create client
+    countrylists,                    // get countrylist
+    fullloader,
+    listByTags
 })
 
 

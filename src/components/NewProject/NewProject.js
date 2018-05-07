@@ -42,6 +42,8 @@ class NewProject extends Component {
             assign: '',
             assignRole: [],
             memeberId: '',
+            disabletag:true,
+            disableassign:false,
         }
 
     }
@@ -85,8 +87,21 @@ class NewProject extends Component {
                     }
                 })
                 console.log(newarray1)
+                console.log(newarray1)
+                
+                if(this.props.loggeduserDetails.role=='Sales'){
+                    this.state.rolearray=='VerticalLead'?this.setState({disableassign:true}):''
+                    
+                }
                 this.setState({ assignRole: newarray1 })
                 console.log(this.state.assignRole)
+         //
+                let index = newarray1.findIndex(x => x.role === "VerticalLead");
+                console.log(index); // 3
+    console.log(newarray1[index]);
+if(index>-1)    {
+    this.setState({disableassign:true})
+}
             }
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name1,
@@ -101,17 +116,24 @@ class NewProject extends Component {
             })
 
         }
-        // GET CLIENT LIST
-        this.setState({ clientlist: this.props.clientList });
-        this.getVerticalHeadList();
+        /** GET CLIENT LIST FROM PROPS*/
+        if (this.props.clientList) {
+            this.setState({ clientlist: this.props.clientList });
+        }
+        /** GET CLIENT LIST FROM PROPS*/
+
         //LOGGEDIN USER DETAILS
-        console.log(this.props.loggeduserDetails);
         if (this.props.loggeduserDetails) {
             console.log(this.props.loggeduserDetails.role)
             this.setState({ loggedInRole: this.props.loggeduserDetails.role })
         }
-    }
 
+        /** GET VERTICAL LEADS LIST*/
+        if (this.props.listByTags) {
+            this.setState({ verticalHeadrarray: this.props.listByTags });
+        }
+        /** GET VERTICAL LEADS LIST ENDS*/
+    }
 
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
@@ -361,18 +383,7 @@ class NewProject extends Component {
         }
 
     }
-    // GET VERTICAL LEAD FIND BY TAGS
-    getVerticalHeadList = () => {
-        this.props.verticalLeads('VerticalLead').then(response => {
-            // console.log('VERTICAL LEADS', response)
-            if (!response.error) {
-                this.setState({ verticalHeadrarray: response.result });
 
-            }
-            console.log('Vertical head....', this.state.verticalHeadrarray);
-        })
-
-    }
     // GET ROLE FOE PROJECT
     roleValue = (value) => {
         console.log('role', value)
@@ -390,18 +401,19 @@ class NewProject extends Component {
         // console.log(newarray[0].name)
         this.setState({ assign: newarray[0].name })
         // console.log(this.state.assign)
+       
 
     }
     // CLICK ON PLUS ICON
     plusIcon = () => {
         let data = {
             userId: this.state.memeberId,
-            role: this.state.role,
+            role:this.props.loggeduserDetails.role=='Sales'?'VerticalLead': this.state.role,
             name: this.state.assign
         }
         this.state.assignRole.push(data)
         console.log(this.state.assignRole)
-        // console.log(this.props.form)
+        this.getVerticalHeadList();
         this.props.form.setFieldsValue({    //for clear the field
             ['assign']: '',
             ['role']: '',
@@ -635,6 +647,7 @@ class NewProject extends Component {
                                                     <Select className="statuspipeline"
 
                                                         placeholder="Assign To"
+                                                        disabled={this.state.disableassign}
 
                                                         onSelect={this.assignValue}
 
@@ -652,25 +665,40 @@ class NewProject extends Component {
                                         : ''}
 
 
-                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole!='Sales') ?
                                         <Col xs={24} sm={24} md={24} lg={10}>
                                             <FormItem label="Role">
                                                 {getFieldDecorator('role', {
                                                     rules: [{ required: false, message: 'Please select ' }],
                                                 })(
                                                     <Select className="statuspipeline"
-                                                        // mode="multiple"
                                                         placeholder="Role"
-
-                                                        // filterOption={false}
                                                         onChange={this.roleValue}
                                                         showSearch
                                                     >
                                                         <Option value="Consultant1">Consultant1</Option>
                                                         <Option value="Consultant2">Consultant2</Option>
                                                         <Option value="Consultant3">Consultant3</Option>
-                                                        <Option value="Consultant4">Consultant4</Option>
+                                                        <Option value="Consultant4">Consultant4</Option>                                                        
+                                                    </Select>
+                                                )}
+                                            </FormItem>
+                                        </Col>
 
+                                        : ''}
+                                               {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole=='Sales') ?
+                                        <Col xs={24} sm={24} md={24} lg={10}>
+                                            <FormItem label="Role">
+                                                {getFieldDecorator('role', {
+                                                    rules: [{ required: false, message: 'Please select ' }],
+                                                })(
+                                                    <Select className="statuspipeline"
+                                                        onChange={this.roleValue}
+                                                        disabled={this.state.disabletag}
+                                                        placeholder="VerticalLead"
+                                                        
+                                                    >
+                                                        <Option value="VerticalLead">VerticalLead</Option>
                                                     </Select>
                                                 )}
                                             </FormItem>
