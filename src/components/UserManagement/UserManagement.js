@@ -5,7 +5,8 @@ import '../ClientComponent/ClientComponent.css';
 import * as actioncreators from '../../redux/action';
 import { bindActionCreators } from 'redux';
 import { connect } from "react-redux";
-import Loading from 'react-loading-bar'
+import Loading from 'react-loading-bar';
+import { Loader } from 'react-overlay-loader';
 import 'react-loading-bar/dist/index.css'
 
 const FormItem = Form.Item;
@@ -83,6 +84,11 @@ class UserManagement extends Component {
             this.setState({ developerarray: (this.props.developerlist) });
         }
 
+         /*HIDE FULL LOADER */
+        //  if (this.props.fullloader) {
+        //     this.setState({ show: newprops.fullloader })
+        // }
+        /*HIDE FULL LOADER ENDS */
     }
 
     // RENDER DROPDOWN OF SEARCHED ITEM
@@ -269,11 +275,6 @@ class UserManagement extends Component {
                 <Card className="innercardContent" bordered={false}>
                     {/* --UserManagement-- */}
                     <div className="newCustomerform">
-                        <Loading
-                            show={this.state.show}
-                            color="red"
-                            showSpinner={false}
-                        />
                         {(this.state.userEdit == true) ?
                             <h1 className="userManagementa">Edit User</h1> : <h1 className="userManagementa">Create User</h1>
                         }

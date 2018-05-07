@@ -147,7 +147,7 @@ class BillForm extends Component {
 
         this.props.form.setFieldsValue({
             ['clientName']: filteredValue[0].client.name,
-            ['email']: filteredValue[0].client.email,
+            ['email']: filteredValue[0].client.email
         })
         this.setState({ disableclient: true })
 

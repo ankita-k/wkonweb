@@ -104,11 +104,11 @@ class ProjectlistView extends Component {
               <Button className="edit" onClick={() => { this.editProject(record) }}>
                 <a href="javascript:;"><img className="fileIcon" src={editList} /></a></Button></Col>
             {/* <Col lg={{ span: 8 }}></Col> */}
-            
+
             <Col lg={8}>
               <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><img className="fileIcon" src={deleteList} /></a></Button>
             </Col>
-           
+
             {/* <Col lg={{ span: 8}}></Col> */}
             <Col lg={7}>
               <Button className="view" onClick={() => { this.detailProject(record) }}>
@@ -125,24 +125,23 @@ class ProjectlistView extends Component {
   componentDidMount() {
     this.setState({ show: true });
     this.commonFunction();
-
   }
 
   componentWillReceiveProps(props) {
     console.log(props);
     this.commonFunction();
   }
-  
-// COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
-  commonFunction() {
+
+  // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
+  commonFunction = () => {
     /*
     * FETCH PROJECT LIST FROM REDUCER
     */
-    if (this.props.projectList.length > 0) {
-      this.setState({ searchedList: (this.props.projectList) });
-      this.setState({ show: false });
-    }
-    this.handleChange((this.props.location.filterValue))
+    // if (this.props.projectList.length > 0) {
+    //   this.setState({ searchedList: this.props.projectList });
+    this.setState({ show: false });
+    // }
+    this.handleChange(this.props.location.filterValue);
   }
   // delete 
   deleteProject = () => {
@@ -152,21 +151,21 @@ class ProjectlistView extends Component {
     //   this.setState({ loading: false, visible: false });
     // }, 3000);
     this.setState({ show: true });
-    this.props.deleteproject(this.state.selectedId._id).then(response => {
-      console.log(response);
-      this.setState({ show: false });
-      this.setState({ visible: false })
-      if (!response.error) {
-        this.props.opentoast('success', 'Project Deleted Successfully!');
-        this.viewProject();
-      }
-      else {
-        this.props.opentoast('warning', response.message);
-      }
-    }, err => {
-      this.setState({ show: false });
-      this.props.opentoast('warning', 'Project Not Deleted Successfully!');
-    })
+    this.props.actions.deleteproject(this.state.userId, this.state.selectedId._id, this.props.history)
+    //   console.log(response);
+    this.setState({ show: false });
+    this.setState({ visible: false })
+    //   if (!response.error) {
+    //     this.props.opentoast('success', 'Project Deleted Successfully!');
+    //     this.viewProject();
+    //   }
+    //   else {
+    //     this.props.opentoast('warning', response.message);
+    //   }
+    // }, err => {
+    //   this.setState({ show: false });
+    //   this.props.opentoast('warning', 'Project Not Deleted Successfully!');
+    // })
   }
 
   // NAVIAGET TO EDIT PROJECT PAGE WITH DATA
@@ -204,11 +203,11 @@ class ProjectlistView extends Component {
       }
     }
     else {
+      console.log(this.props.projectList);
       this.setState({
         searchedList: this.props.projectList
       });
     }
-
 
   }
 

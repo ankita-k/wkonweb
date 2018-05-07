@@ -18,6 +18,9 @@ import BillList from '../billList/billList';
 import Userlist from '../Userlist/Userlist';
 import Files from '../files/files';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
+import Loading from 'react-loading-bar';
+import { Loader } from 'react-overlay-loader';
+import 'react-overlay-loader/styles.css';
 // const { SubMenu } = Menu;
 const SubMenu = Menu.SubMenu;
 const { Header, Content, Sider } = Layout;
@@ -155,14 +158,13 @@ class Dashboard extends Component {
 
   }
   componentWillReceiveProps(props) {
-    console.log('///////DASHBOARD PROPS',props)
+    console.log('jjjjjjjjjjjjjjjjjj', props)
     this.commonFunction();
   }
   // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
   commonFunction() {
     /* SHOWING LOGGEDIN USER NAME AFTER RECEIVING DATA FROM PROPS*/
     if (this.props.loggeduserDetails) {
-      console.log('*******************************************', this.props)
       this.setState({ username: this.props.loggeduserDetails.name });
       this.setState({ userrole: this.props.loggeduserDetails.role })
     }
@@ -183,6 +185,15 @@ class Dashboard extends Component {
               }}><Icon type="logout" />Log Out</Button></p>
             </Row>
           </Header>
+          {this.props.fullloader == true ? <div className="loader">
+            <Loader className="ldr" fullPage loading />
+          </div> : ""}
+
+          <Loading
+            show={this.props.fullloader}
+            color="red"
+            showSpinner={false}
+          />
           {/* Mobile navbar */}
           <div className="mobilenavbar" lg={0}>
             <div className="navbarHeader">

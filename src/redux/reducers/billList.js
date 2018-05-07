@@ -6,6 +6,7 @@ export function billList (state = [], action) {
     console.log(action)
     switch (action.type) {
         case 'BILL_LIST':
+      
              return action.list.map(function (item, index) {
             return {
                 BDE: item.BDE ? item.BDE.length>10?(item.BDE.slice(0,10)+'....'):item.BDE: "-",
@@ -25,7 +26,7 @@ export function billList (state = [], action) {
                 paypalBillNumber: item.paypalBillNumber ? item.paypalBillNumber.length>15?(item.paypalBillNumber.slice(0, 15) + '...') : item.paypalBillNumber: "-",
                 paypalBillNumber1: item.paypalBillNumber ? item.paypalBillNumber : "-",
                 projectCost: item.projectCost ? item.projectCost : "-",
-                projectName: item.projectName.name ? item.projectName.name : "-",
+                projectName: item.projectName && item.projectName!=null ? item.projectName.name : "-",
                 receivedAmount: item.receivedAmount ? item.receivedAmount : "-",
                 receivedDate: moment(item.receivedDate).format("ll") ? moment(item.receivedDate).format("ll") : "-",
                 status: item.status ? item.status : "-",
