@@ -115,20 +115,21 @@ class NewProject extends Component {
                 })
                 console.log(newarray1)
                 console.log(newarray1)
+               // for Sales
+                // if (this.props.loggeduserDetails.role == 'Sales') {
+                //     this.state.rolearray == 'VerticalLead' ? this.setState({ disableassign: true }) && this.setState({}) : ''
 
-                if (this.props.loggeduserDetails.role == 'Sales') {
-                    this.state.rolearray == 'VerticalLead' ? this.setState({ disableassign: true }) : ''
-
-                }
+                // }
                 this.setState({ assignRole: newarray1 })
                 console.log(this.state.assignRole)
-                //
+                // for search role==VerticalLead
                 let index = newarray1.findIndex(x => x.role === "VerticalLead");
-                console.log(index); // 3
+                console.log(index);
                 console.log(newarray1[index]);
                 if (index > -1) {
-                    this.setState({ disableassign: true })
+                    this.setState({ disableassign: true })                    
                 }
+                //
             }
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name1,
@@ -440,7 +441,6 @@ class NewProject extends Component {
         }
         this.state.assignRole.push(data)
         console.log(this.state.assignRole)
-        this.getVerticalHeadList();
         this.props.form.setFieldsValue({    //for clear the field
             ['assign']: '',
             ['role']: '',
@@ -737,8 +737,8 @@ class NewProject extends Component {
                                         <Col xs={24} sm={24} md={24} lg={2}>
                                             {(this.state.editClient == true) ?
 
-                                                <div className="addbtn">
-                                                    <Button onClick={this.plusIcon}>Add</Button>
+                                                <div className="addbtn"  >
+                                                    <Button onClick={this.plusIcon} disabled={this.state.disableassign}>Add</Button>
                                                 </div>
                                                 : ''}
                                         </Col>
