@@ -42,8 +42,8 @@ class NewProject extends Component {
             assign: '',
             assignRole: [],
             memeberId: '',
-            disabletag:true,
-            disableassign:false,
+            disabletag: true,
+            disableassign: false,
         }
 
     }
@@ -88,20 +88,21 @@ class NewProject extends Component {
                 })
                 console.log(newarray1)
                 console.log(newarray1)
-                
-                if(this.props.loggeduserDetails.role=='Sales'){
-                    this.state.rolearray=='VerticalLead'?this.setState({disableassign:true}):''
-                    
-                }
+               // for Sales
+                // if (this.props.loggeduserDetails.role == 'Sales') {
+                //     this.state.rolearray == 'VerticalLead' ? this.setState({ disableassign: true }) && this.setState({}) : ''
+
+                // }
                 this.setState({ assignRole: newarray1 })
                 console.log(this.state.assignRole)
-         //
+                // for search role==VerticalLead
                 let index = newarray1.findIndex(x => x.role === "VerticalLead");
-                console.log(index); // 3
-    console.log(newarray1[index]);
-if(index>-1)    {
-    this.setState({disableassign:true})
-}
+                console.log(index);
+                console.log(newarray1[index]);
+                if (index > -1) {
+                    this.setState({ disableassign: true })                    
+                }
+                //
             }
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name1,
@@ -401,19 +402,18 @@ if(index>-1)    {
         // console.log(newarray[0].name)
         this.setState({ assign: newarray[0].name })
         // console.log(this.state.assign)
-       
+
 
     }
     // CLICK ON PLUS ICON
     plusIcon = () => {
         let data = {
             userId: this.state.memeberId,
-            role:this.props.loggeduserDetails.role=='Sales'?'VerticalLead': this.state.role,
+            role: this.props.loggeduserDetails.role == 'Sales' ? 'VerticalLead' : this.state.role,
             name: this.state.assign
         }
         this.state.assignRole.push(data)
         console.log(this.state.assignRole)
-        this.getVerticalHeadList();
         this.props.form.setFieldsValue({    //for clear the field
             ['assign']: '',
             ['role']: '',
@@ -665,7 +665,7 @@ if(index>-1)    {
                                         : ''}
 
 
-                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole!='Sales') ?
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole != 'Sales') ?
                                         <Col xs={24} sm={24} md={24} lg={10}>
                                             <FormItem label="Role">
                                                 {getFieldDecorator('role', {
@@ -679,14 +679,14 @@ if(index>-1)    {
                                                         <Option value="Consultant1">Consultant1</Option>
                                                         <Option value="Consultant2">Consultant2</Option>
                                                         <Option value="Consultant3">Consultant3</Option>
-                                                        <Option value="Consultant4">Consultant4</Option>                                                        
+                                                        <Option value="Consultant4">Consultant4</Option>
                                                     </Select>
                                                 )}
                                             </FormItem>
                                         </Col>
 
                                         : ''}
-                                               {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole=='Sales') ?
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole == 'Sales') ?
                                         <Col xs={24} sm={24} md={24} lg={10}>
                                             <FormItem label="Role">
                                                 {getFieldDecorator('role', {
@@ -696,7 +696,7 @@ if(index>-1)    {
                                                         onChange={this.roleValue}
                                                         disabled={this.state.disabletag}
                                                         placeholder="VerticalLead"
-                                                        
+
                                                     >
                                                         <Option value="VerticalLead">VerticalLead</Option>
                                                     </Select>
@@ -710,8 +710,8 @@ if(index>-1)    {
                                         <Col xs={24} sm={24} md={24} lg={2}>
                                             {(this.state.editClient == true) ?
 
-                                                <div className="addbtn">
-                                                    <Button onClick={this.plusIcon}>Add</Button>
+                                                <div className="addbtn"  >
+                                                    <Button onClick={this.plusIcon} disabled={this.state.disableassign}>Add</Button>
                                                 </div>
                                                 : ''}
                                         </Col>
