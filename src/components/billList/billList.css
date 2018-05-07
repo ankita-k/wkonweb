@@ -200,14 +200,14 @@ button.ant-btn.delete i.anticon.anticon-delete {
         word-break: normal;
     }
     
-    .billlistheader {
+    /* .billlistheader {
         position: fixed;
         top: 0;
         z-index: 9;
         width: 82%;
         top: 9%;
         background: #f0f4f5;
-    }
+    } */
 
     @media (min-width: 320px) and (max-width: 767px) {
 

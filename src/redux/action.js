@@ -376,36 +376,196 @@ function deleterow(list) {
 
     }
 }
-// FOR USER MANAGEMENT
-function user(json) {
-    return {
-        type: "USER_CREATE",
-        json
+
+// CREATE USER APICALL WITH  GETTING USER LIST AND DISPATCHING ACTION
+export function createUser(data, location) {
+
+    return (dispatch) => {
+        fetch(config.apiUrl + 'user', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'User Creation failed!'));
+                } else {
+                    let url = config.apiUrl + "user/getAllUser";
+
+                    fetch(url,
+                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            dispatch(userlist(responseJSON.result))
+                            dispatch(toast('success', 'User Added Successfully!'));
+                            location.push("../dashboard/userlist")
+                        })
+                        .catch((error) => {
+                            dispatch(userlist([]))
+                            dispatch(toast('warning', 'User Added Successfully!'));
+                        });
+
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('warning', 'User Creation failed!'));
+            });
+    }
+}
+
+//FUNCTION FOR API CALL FOR GETTING USER LIST AND DISPATCHING ACTION
+export function userList() {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'user/getAllUser',
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+
+                console.log(responseJSON)
+                dispatch(userlist(responseJSON.result))
+
+
+
+            })
+            .catch((error) => {
+                dispatch(userlist([]))
+            });
 
     }
 }
-// CREATE USER APICALL
-export function createUser(data) {
+// FOR DISPATCHING ACTION TO REDUCER
+function userlist(list) {
+    return {
+        type: "USER_LIST",
+        list
+
+    }
+}
+//API FOR EDIT USER WITH GETTING USER LIST AND DISPATCHING ACTION
+export function editUser(data, id,location) {
+    console.log('edit', data)
+    console.log(id)
+
     return (dispatch) => {
-        return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'user', {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'POST',
-                body: JSON.stringify(data)
+        fetch(config.apiUrl + 'user/' + id, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'PUT',
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'User Updation failed!'));
+                } else {
+                    let url = config.apiUrl + "user/getAllUser";
+
+                    fetch(url,
+                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            dispatch(userlist(responseJSON.result))
+                            dispatch(toast('success', 'User Updated Successfully!'));
+                            location.push("../dashboard/userlist")
+                        })
+                        .catch((error) => {
+                            dispatch(userlist([]))
+                            dispatch(toast('warning', 'User Updated Successfully!'));
+                        });
+
+                }
             })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(user(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+            .catch((error) => {
+                dispatch(toast('warning', 'User Updation failed!'));
+            });
+    }
+}
+//API FOR DELETE USER WITH GETTING USER LIST AND DISPATCHING ACTION
+export function deleteUser(id,location) {
+    console.log(id)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'user/delete?id=' + id, {
+            headers: {
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'DELETE',
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'User Deleted failed!'));
+                } else {
+                    let url = config.apiUrl + "user/getAllUser"
+
+                    fetch(url,
+                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            dispatch(userlist(responseJSON.result))
+                            dispatch(toast('success', 'User Deleted Successfully!'));
+                            location.push("../dashboard/userlist")
+                        })
+                        .catch((error) => {
+                            dispatch(userlist([]))
+                            dispatch(toast('warning', 'User Deleted Successfully!'));
+                        });
+
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('warning', 'User Deleted failed!'));
+            });
+    }
+
+    // return (dispatch) => {
+
+
+    //     return new Promise((resolve, reject) => {
+
+
+
+    //         fetch(config.apiUrl + 'user/delete?id=' + id,
+
+    //             {
+    //                 headers: {
+    //                     'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
+
+    //                 },
+    //                 method: 'DELETE'
+    //             })
+    //             .then((response) => response.json())
+    //             .then((responseJSON) => {
+
+    //                 console.log('response');
+
+    //                 dispatch(deleteusers(responseJSON))
+    //                 resolve(responseJSON);
+    //             })
+    //             .catch((error) => {
+    //                 reject(error);
+    //             });
+    //     });
+    // }
+}
+
+function deleteusers(list) {
+    return {
+        type: "DELETE_USER",
+        list
+
     }
 }
 /*DELETE CLIENT BY API CALL AND GET NEW CLIENT LIST IMMEDIATELY*/
@@ -604,128 +764,10 @@ function developerlist(list) {
 
     }
 }
-//FUNCTION FOR API CALL FOR GETTING USER LIST AND DISPATCHING ACTION
-export function userList() {
-    return (dispatch) => {
-        fetch(config.apiUrl + 'user/getAllUser',
-            {
-                headers: {
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET'
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-
-                console.log(responseJSON)
-                dispatch(userlist(responseJSON.result))
 
 
 
-            })
-            .catch((error) => {
-                dispatch(userlist([]))
-            });
 
-    }
-}
-// FOR DISPATCHING ACTION TO REDUCER
-function userlist(list) {
-    return {
-        type: "USER_LIST",
-        list
-
-    }
-}
-//
-//API call for User delete
-export function deleteUser(id) {
-    console.log(id)
-
-    return (dispatch) => {
-
-
-        return new Promise((resolve, reject) => {
-
-
-
-            fetch(config.apiUrl + 'user/delete?id=' + id,
-
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
-
-                    },
-                    method: 'DELETE'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-
-                    console.log('response');
-
-                    dispatch(deleteusers(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-}
-
-function deleteusers(list) {
-    return {
-        type: "DELETE_USER",
-        list
-
-    }
-}
-
-//API FOR EDIT PROJECT
-export function editUser(data, id) {
-    console.log('edit', data)
-    console.log(id)
-
-    return (dispatch) => {
-
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
-
-
-
-            fetch(config.apiUrl + 'user/' + id,
-                {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'PUT',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-
-
-
-                    dispatch(edituser(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-}
-
-
-function edituser(list) {
-    return {
-        type: "EDIT_USER",
-        list
-
-    }
-}
 
 
 /*BILL CREATION BY API CALL AND GET NEW BILL LIST IMMEDIATELY*/

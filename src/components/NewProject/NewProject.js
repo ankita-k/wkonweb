@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Row, Spin, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
+import { Form, Icon, Input, Table, Modal, Button, Row, Spin, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
 import '../ClientComponent/ClientComponent.css';
 import './NewProject.css';
 import { Divider } from 'antd';
@@ -11,6 +11,23 @@ import Loading from 'react-loading-bar';
 
 import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
+const columns = [{
+    title: 'Assign To',
+    dataIndex: 'name',
+    width: 200,
+}, {
+    title: 'Role',
+    dataIndex: 'role',
+}];
+
+const data = [];
+for (let i = 0; i < 100; i++) {
+    data.push({
+        key: i,
+        name: `Priyanka ${i}`,
+        role: `Wkonweb ${i}`,
+    });
+}
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -18,6 +35,16 @@ const Option = Select.Option;
 const Option1 = AutoComplete.Option1;
 class NewProject extends Component {
 
+    state = {
+        modal1Visible: false,
+        modal2Visible: false,
+    }
+    setModal1Visible(modal1Visible) {
+        this.setState({ modal1Visible });
+    }
+    setModal2Visible(modal2Visible) {
+        this.setState({ modal2Visible });
+    }
     constructor(props) {
         // console.log(props);
         super(props);
@@ -42,8 +69,8 @@ class NewProject extends Component {
             assign: '',
             assignRole: [],
             memeberId: '',
-            disabletag:true,
-            disableassign:false,
+            disabletag: true,
+            disableassign: false,
         }
 
     }
@@ -88,20 +115,21 @@ class NewProject extends Component {
                 })
                 console.log(newarray1)
                 console.log(newarray1)
-                
-                if(this.props.loggeduserDetails.role=='Sales'){
-                    this.state.rolearray=='VerticalLead'?this.setState({disableassign:true}):''
-                    
-                }
+               // for Sales
+                // if (this.props.loggeduserDetails.role == 'Sales') {
+                //     this.state.rolearray == 'VerticalLead' ? this.setState({ disableassign: true }) && this.setState({}) : ''
+
+                // }
                 this.setState({ assignRole: newarray1 })
                 console.log(this.state.assignRole)
-         //
+                // for search role==VerticalLead
                 let index = newarray1.findIndex(x => x.role === "VerticalLead");
-                console.log(index); // 3
-    console.log(newarray1[index]);
-if(index>-1)    {
-    this.setState({disableassign:true})
-}
+                console.log(index);
+                console.log(newarray1[index]);
+                if (index > -1) {
+                    this.setState({ disableassign: true })                    
+                }
+                //
             }
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name1,
@@ -401,19 +429,18 @@ if(index>-1)    {
         // console.log(newarray[0].name)
         this.setState({ assign: newarray[0].name })
         // console.log(this.state.assign)
-       
+
 
     }
     // CLICK ON PLUS ICON
     plusIcon = () => {
         let data = {
             userId: this.state.memeberId,
-            role:this.props.loggeduserDetails.role=='Sales'?'VerticalLead': this.state.role,
+            role: this.props.loggeduserDetails.role == 'Sales' ? 'VerticalLead' : this.state.role,
             name: this.state.assign
         }
         this.state.assignRole.push(data)
         console.log(this.state.assignRole)
-        this.getVerticalHeadList();
         this.props.form.setFieldsValue({    //for clear the field
             ['assign']: '',
             ['role']: '',
@@ -640,7 +667,7 @@ if(index>-1)    {
                                 <Row>
                                     {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
                                         <Col xs={24} sm={24} md={24} lg={10}>
-                                            <FormItem label="Assign To">
+                                            <FormItem label="Assign To" className="roleAssign">
                                                 {getFieldDecorator('assign', {
                                                     rules: [{ required: false, message: 'Please select !' }],
                                                 })(
@@ -665,13 +692,13 @@ if(index>-1)    {
                                         : ''}
 
 
-                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole!='Sales') ?
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole != 'Sales') ?
                                         <Col xs={24} sm={24} md={24} lg={10}>
                                             <FormItem label="Role">
                                                 {getFieldDecorator('role', {
                                                     rules: [{ required: false, message: 'Please select ' }],
                                                 })(
-                                                    <Select className="statuspipeline"
+                                                    <Select className="statuspipeline roleAssign"
                                                         placeholder="Role"
                                                         onChange={this.roleValue}
                                                         showSearch
@@ -679,14 +706,14 @@ if(index>-1)    {
                                                         <Option value="Consultant1">Consultant1</Option>
                                                         <Option value="Consultant2">Consultant2</Option>
                                                         <Option value="Consultant3">Consultant3</Option>
-                                                        <Option value="Consultant4">Consultant4</Option>                                                        
+                                                        <Option value="Consultant4">Consultant4</Option>
                                                     </Select>
                                                 )}
                                             </FormItem>
                                         </Col>
 
                                         : ''}
-                                               {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole=='Sales') ?
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole == 'Sales') ?
                                         <Col xs={24} sm={24} md={24} lg={10}>
                                             <FormItem label="Role">
                                                 {getFieldDecorator('role', {
@@ -696,7 +723,7 @@ if(index>-1)    {
                                                         onChange={this.roleValue}
                                                         disabled={this.state.disabletag}
                                                         placeholder="VerticalLead"
-                                                        
+
                                                     >
                                                         <Option value="VerticalLead">VerticalLead</Option>
                                                     </Select>
@@ -710,15 +737,15 @@ if(index>-1)    {
                                         <Col xs={24} sm={24} md={24} lg={2}>
                                             {(this.state.editClient == true) ?
 
-                                                <div className="addbtn">
-                                                    <Button onClick={this.plusIcon}>Add</Button>
+                                                <div className="addbtn"  >
+                                                    <Button onClick={this.plusIcon} disabled={this.state.disableassign}>Add</Button>
                                                 </div>
                                                 : ''}
                                         </Col>
                                         : ""}
 
                                 </Row>
-                                {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
+                                {/* {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
                                     <Row>
                                         <div className="roleassign">
                                             <Col xs={24} sm={24} md={24} lg={24}>
@@ -727,7 +754,7 @@ if(index>-1)    {
                                                         return <span><span className="usrnm" key={index} >{item.name}:</span><span className="role">{item.role} &nbsp;</span></span>
                                                     })}
 
-                                                    {/* <span className="usrnm">Owner:</span><span className="role">Johnn &nbsp;</span> */}
+                                                   
 
 
 
@@ -735,7 +762,22 @@ if(index>-1)    {
                                             </Col>
                                         </div>
                                     </Row>
-                                    : ""}
+                                    : ""} */}
+                                {/* ShowDetails Modal */}
+                                <Row>
+                                    <p><a href="#" onClick={() => this.setModal2Visible(true)}>Show Details</a></p>
+                                    <Modal
+                                    className="showprojectModal"
+                                        title="Show Details"
+                                        wrapClassName="vertical-center-modal"
+                                        visible={this.state.modal2Visible}
+                                        onOk={() => this.setModal2Visible(false)}
+                                        onCancel={() => this.setModal2Visible(false)}
+                                    >
+                                        <Table columns={columns} dataSource={data} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
+                                    </Modal>
+                                </Row>
+                                {/* ShowDetails Modal */}
                                 <Row className="briefRequire">
                                     <Col xs={24} sm={24} md={24} lg={24}>
                                         <FormItem label="Brief Requirement">

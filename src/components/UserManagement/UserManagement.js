@@ -206,23 +206,23 @@ class UserManagement extends Component {
                     //    user.tags=values.tags  
                     // }
                     console.log(user)
-                    this.props.editUser(user, this.props.location.userData._id).then(response => {
-                        this.setState({ showLoader: false });
-                        this.setState({ show: false });
-                        console.log(response);
-                        if (!response.error) {
-                            this.props.opentoast('success', 'User Updated Successfully!');
-                            this.props.history.push('/dashboard/Userlist')
-                        }
-                        else {
-                            this.props.opentoast('success', response.message);
-                        }
-                    },
-                        err => {
-                            this.setState({ show: false });
-                            this.setState({ showLoader: false });
-                            this.props.opentoast('warning', 'User Not Updated Successfully!');
-                        })
+                    this.props.actions.editUser(user, this.props.location.userData._id,this.props.history)
+                    //     this.setState({ showLoader: false });
+                    //     this.setState({ show: false });
+                    //     console.log(response);
+                    //     if (!response.error) {
+                    //         this.props.opentoast('success', 'User Updated Successfully!');
+                    //         this.props.history.push('/dashboard/Userlist')
+                    //     }
+                    //     else {
+                    //         this.props.opentoast('success', response.message);
+                    //     }
+                    // },
+                    //     err => {
+                    //         this.setState({ show: false });
+                    //         this.setState({ showLoader: false });
+                    //         this.props.opentoast('warning', 'User Not Updated Successfully!');
+                    //     })
                 }
                 else {
                     let data = {
@@ -235,22 +235,23 @@ class UserManagement extends Component {
                         tags: values.tags.length != 0 ? values.tags : []
                     }
 
-                    this.props.createUser(data).then(result => {
-                        this.setState({ showLoader: false });
-                        this.setState({ show: false });
-                        console.log(result);
-                        if (!result.error) {
-                            this.props.opentoast('success', 'User Created  Successfully!');
-                            this.props.history.push('/dashboard/Userlist')
-                        }
-                        else {
-                            this.props.opentoast('warning', result.message);
-                        }
-                    }, err => {
-                        this.setState({ show: false });
-                        this.setState({ showLoader: false });
-                        this.props.opentoast('warning', 'UserNot  Created  Successfully!');
-                    })
+                    this.props.actions.createUser(data,this.props.history)
+                    // .then(result => {
+                    //     this.setState({ showLoader: false });
+                    //     this.setState({ show: false });
+                    //     console.log(result);
+                    //     if (!result.error) {
+                    //         this.props.opentoast('success', 'User Created  Successfully!');
+                    //         this.props.history.push('/dashboard/Userlist')
+                    //     }
+                    //     else {
+                    //         this.props.opentoast('warning', result.message);
+                    //     }
+                    // }, err => {
+                    //     this.setState({ show: false });
+                    //     this.setState({ showLoader: false });
+                    //     this.props.opentoast('warning', 'UserNot  Created  Successfully!');
+                    // })
                 }
 
             }
