@@ -156,6 +156,7 @@ class Dashboard extends Component {
 
   }
   componentWillReceiveProps(props) {
+    console.log('///////DASHBOARD PROPS',props)
     this.commonFunction();
   }
   // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS

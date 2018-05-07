@@ -37,8 +37,9 @@ class ClientComponent extends Component {
                 ['country']: this.props.location.data.data.country,
                 ['status']: this.props.location.data.data.status,
                 ['currency']: this.props.location.data.data.currency,
-                ['paypal_id']: this.props.location.data.data.paypalId
-
+                ['paypal_id']: this.props.location.data.data.paypal_id,
+                ['company']: this.props.location.data.data.company1 ? this.props.location.data.data.company1 : '',
+                ['address']: this.props.location.data.data.address1 ? this.props.location.data.data.address1 : ''
 
             });
             console.log(this.props.form)
@@ -46,7 +47,7 @@ class ClientComponent extends Component {
 
     }
     componentWillReceiveProps(props) {
-       console.log("componentwillrecieveprops")
+        console.log("componentwillrecieveprops")
 
     }
     // TAKE INPUT FIELD VALUE
@@ -74,7 +75,7 @@ class ClientComponent extends Component {
 
 
     handleSubmit = (e) => {
-        
+
         e.preventDefault();
         this.setState({ show: true });
         this.setState({ showLoader: true });
@@ -89,27 +90,14 @@ class ClientComponent extends Component {
                         phoneNumber: values.phone,
                         email: values.email,
                         name: values.name,
-
                         domain: values.domain,
                         currency: values.currency,
-                        paypalId: values.paypal_id
+                        paypalId: values.paypal_id,
+                        company: values.company,
+                        address: values.address
                         // paypal_id:values.paypalId
                     }
-                    console.log('edshgj')
-                    this.props.updateclient(data, this.props.location.data.data._id).then(data => {
-                        this.setState({ showLoader: false });
-                        console.log(data)
-                        if (!data.error) {
-                            this.props.opentoast('success', 'Client Updated Successfully!');
-                            this.props.history.push('/dashboard/clientlist')
-                        }
-                        else {
-                            this.props.opentoast('warning', data.message);
-                        }
-                    }, err => {
-                        this.setState({ show: false });
-                        this.props.opentoast('warning', 'Client Not Updated Successfully!');
-                    })
+                    this.props.actions.updateclient(data, this.props.location.data.data._id, sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'), this.props.history)
                 }
                 else {
                     let data = {
@@ -121,26 +109,11 @@ class ClientComponent extends Component {
                         userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
                         domain: values.domain,
                         currency: values.currency,
-                        // paypal_id:values.paypalId
-                        paypalId: values.paypal_id
+                        paypalId: values.paypal_id,
+                        company: values.company,
+                        address: values.address
                     }
-                    this.props.actions.createClient(data,this.props.history)
-                    //     .then(result => {
-                    //         this.setState({showLoader: false});
-                    //         this.setState({ show: false });
-                    //         console.log(result);
-                    //         if (!result.error) {
-                    //             this.props.opentoast('success', 'Client Added Successfully!');
-                    //             this.props.history.push('/dashboard/clientlist')
-                    //         }
-                    //         else{
-                    //             this.props.opentoast('warning', result.message);
-                    //         }
-                    //     }, err => {
-                    //         this.setState({ show: false });
-                    //         this.setState({showLoader: false});
-                    //         this.props.opentoast('warning', 'Client Not Added Successfully!');
-                    //     })
+                    this.props.actions.createClient(data, this.props.history)
                 }
 
 
@@ -176,7 +149,7 @@ class ClientComponent extends Component {
                                             <Input
                                                 maxLength="15"
                                                 placeholder="Name" name="name" />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                                 {/* </Row>
@@ -194,7 +167,7 @@ class ClientComponent extends Component {
                                             <Input
                                                 maxLength="200"
                                                 placeholder="Email" name="email" />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -205,9 +178,9 @@ class ClientComponent extends Component {
                                             rules: [{ required: true, message: 'Please input your Address!' }],
                                         })(
                                             <Input
-                                                maxLength="15"
+            
                                                 placeholder="Address" name="address" />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                                 {/* </Row>
@@ -219,9 +192,9 @@ class ClientComponent extends Component {
                                             rules: [{ required: true, message: 'Please input your Company!' }],
                                         })(
                                             <Input
-                                                maxLength="20"
+                                        
                                                 placeholder="Company" name="company" />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -236,9 +209,9 @@ class ClientComponent extends Component {
 
                                         })(
                                             <Input
-                                                maxLength="15"
+                    
                                                 placeholder="paypal_id" name="paypal_id" />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                                 {/* </Row>
@@ -260,7 +233,7 @@ class ClientComponent extends Component {
                                                 })}
 
                                             </Select>
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -274,7 +247,7 @@ class ClientComponent extends Component {
                                                 type="test"
                                                 maxLength="15"
                                                 placeholder="Phone No." name="phoneNumber" />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                                 {/* </Row>
@@ -287,7 +260,7 @@ class ClientComponent extends Component {
                                             rules: [{ required: true, message: 'Please input your Domain!' }],
                                         })(
                                             <Input placeholder="Domain" name="domain" />
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
@@ -307,7 +280,7 @@ class ClientComponent extends Component {
                                                 <Option value="Pipeline">Pipeline</Option>
                                                 <Option value="Committed">Committed</Option>
                                             </Select>
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                                 {/* </Row>
@@ -331,15 +304,15 @@ class ClientComponent extends Component {
                                                 <Option value="EUR">EUR</Option>
                                                 <Option value="AED">AED</Option>
                                             </Select>
-                                            )}
+                                        )}
                                     </FormItem>
                                 </Col>
                             </Row>
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                             {/* loading={this.state.showLoader} */}
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                                {/* loading={this.state.showLoader} */}
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
                             </div>
                         </FormItem>

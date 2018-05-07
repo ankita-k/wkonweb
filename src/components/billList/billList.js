@@ -165,6 +165,7 @@ class BillList extends Component {
 
     //edit bill
     editBill = (data) => {
+       
         this.props.history.push({
             pathname: '/dashboard/editbill',
             data: {
@@ -201,7 +202,7 @@ class BillList extends Component {
         return (
 
             <div className="clientListdiv">
-                {this.state.show == true ? <div className="loader">
+                {/* {this.state.show == true ? <div className="loader">
                     <Loader className="ldr" fullPage loading />
                 </div> : ""}
 
@@ -209,7 +210,7 @@ class BillList extends Component {
                     show={this.state.show}
                     color="red"
                     showSpinner={false}
-                />
+                /> */}
                 {/* <div className="billlistheader"> */}
                     <h1 className="clientList">Bill List</h1>
                     <Row>
