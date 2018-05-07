@@ -106,29 +106,28 @@ class NewProject extends Component {
 
             // for filter role,name,userId from members
             if (this.props.location.data.data.members != []) {
-                let newarray1 = this.props.location.data.data.members.map(function (item, index) {
-                    return {
-                        userId: item.userId._id,
-                        name: item.userId.name,
-                        role: item.role
-                    }
-                })
-                console.log(newarray1)
-                console.log(newarray1)
+                // let newarray1 = this.props.location.data.data.members.map(function (item, index) {
+                //     return {
+                //         userId: item.userId._id,
+                //         name: item.userId.name,
+                //         role: item.role
+                //     }
+                // })
+                // console.log(newarray1)
                // for Sales
                 // if (this.props.loggeduserDetails.role == 'Sales') {
                 //     this.state.rolearray == 'VerticalLead' ? this.setState({ disableassign: true }) && this.setState({}) : ''
 
                 // }
-                this.setState({ assignRole: newarray1 })
+                // this.setState({ assignRole: newarray1 })
                 console.log(this.state.assignRole)
                 // for search role==VerticalLead
-                let index = newarray1.findIndex(x => x.role === "VerticalLead");
-                console.log(index);
-                console.log(newarray1[index]);
-                if (index > -1) {
-                    this.setState({ disableassign: true })                    
-                }
+                // let index = newarray1.findIndex(x => x.role === "VerticalLead");
+                // console.log(index);
+                // console.log(newarray1[index]);
+                // if (index > -1) {
+                //     this.setState({ disableassign: true })                    
+                // }
                 //
             }
             this.props.form.setFieldsValue({
@@ -200,22 +199,22 @@ class NewProject extends Component {
                     }
                     console.log(data)
 
-                    this.props.editproject(data, this.props.location.data.data._id).then(response => {
-                        this.setState({ showLoader: false });
-                        this.setState({ show: false });
-                        console.log(response)
-                        if (!response.error) {
-                            this.props.opentoast('success', 'Project Updated Successfully!');
-                            this.props.history.push('/dashboard/projectlist')
-                        }
-                        else {
-                            this.props.opentoast('warning', response.message);
-                        }
-                    }, err => {
-                        this.setState({ show: false });
-                        this.setState({ showLoader: false });
-                        this.props.opentoast('warning', 'Project Not Updated Successfully!');
-                    })
+                    this.props.actions.editproject(data, this.props.location.data.data._id,this.props.history)
+                    //     this.setState({ showLoader: false });
+                    //     this.setState({ show: false });
+                    //     console.log(response)
+                    //     if (!response.error) {
+                    //         this.props.opentoast('success', 'Project Updated Successfully!');
+                    //         this.props.history.push('/dashboard/projectlist')
+                    //     }
+                    //     else {
+                    //         this.props.opentoast('warning', response.message);
+                    //     }
+                    // }, err => {
+                    //     this.setState({ show: false });
+                    //     this.setState({ showLoader: false });
+                    //     this.props.opentoast('warning', 'Project Not Updated Successfully!');
+                    // })
                 }
                 else {
 
@@ -239,20 +238,20 @@ class NewProject extends Component {
                     }
 
                     console.log(data)
-                    this.props.addProject(data).then(response => {
-                        this.setState({ show: false });
-                        console.log(response)
-                        if (!response.error) {
-                            this.props.opentoast('success', 'Project Added Successfully!');
-                            this.props.history.push('/dashboard/projectlist')
-                        }
-                        else {
-                            this.props.opentoast('warning', response.message);
-                        }
-                    }, err => {
-                        this.setState({ show: false });
-                        this.props.opentoast('warning', 'Project Not Added Successfully!');
-                    })
+                    this.props.actions.addProject(data,this.props.history)
+                    //     this.setState({ show: false });
+                    //     console.log(response)
+                    //     if (!response.error) {
+                    //         this.props.opentoast('success', 'Project Added Successfully!');
+                    //         this.props.history.push('/dashboard/projectlist')
+                    //     }
+                    //     else {
+                    //         this.props.opentoast('warning', response.message);
+                    //     }
+                    // }, err => {
+                    //     this.setState({ show: false });
+                    //     this.props.opentoast('warning', 'Project Not Added Successfully!');
+                    // })
                 }
 
             }
@@ -833,6 +832,10 @@ class NewProject extends Component {
 const mapStateToProps = (state) => {
     return state
 }
-
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(actioncreators, dispatch)
+    })
+}
 const WrappedNewProject = Form.create()(NewProject);
-export default connect(mapStateToProps, actioncreators)(WrappedNewProject);
+export default connect(mapStateToProps,mapDispatchToProps)(WrappedNewProject);

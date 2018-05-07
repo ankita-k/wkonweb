@@ -178,31 +178,6 @@ export function countrylist() {
 }
 
 
-// FUNCTION FOR APICALL OF PROJECT CREATION 
-export function addProject(data) {
-    return (dispatch) => {
-        return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'project', {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'POST',
-                body: JSON.stringify(data)
-            })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(receivePosts(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-}
-
 // DISPATCH TOAST VALUE
 export function opentoast(type, message) {
     return (dispatch) => {
@@ -229,37 +204,7 @@ function toast(type, message) {
     }
 
 }
-// PROJECTLIST  ACTION
-function Projectlist(list) {
-    return {
-        type: "PROJECT_LIST",
-        list
 
-    }
-}
-// FUNCTION FOR APICALL OF PROJECT LIST
-export function projectList(userId) {
-    return (dispatch) => {
-        fetch(config.apiUrl + 'project/projectlist?userId=' + userId, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-            },
-            method: 'GET'
-        })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                if (!responseJSON.error)
-                    dispatch(Projectlist(responseJSON.result))
-
-            })
-            .catch((error) => {
-                dispatch(Projectlist([]))
-            });
-
-    }
-}
 
 //Client list api 
 export function clientlist(userId) {
@@ -333,38 +278,6 @@ function user(list) {
 
     }
 }
-//API CALL FOR DELETE Project
-export function deleteproject(id) {
-    console.log(id)
-
-    return (dispatch) => {
-
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
-
-
-
-            fetch(config.apiUrl + 'project/' + id,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'DELETE'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-
-                    console.log('response');
-
-                    dispatch(deleterow(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-}
 
 function deleterow(list) {
     return {
@@ -373,6 +286,163 @@ function deleterow(list) {
 
     }
 }
+//....................... CRUD FOR PROJECT.........................................
+
+// CREATE PROJECT APICALL WITH  GETTING PROJECT LIST AND DISPATCHING ACTION
+export function addProject(data, location) {
+console.log(data)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'project', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'Project Creation failed!'));
+                } else {
+                    let url = config.apiUrl + 'project/projectlist?userId=' + data.userId ;
+
+                    fetch(url,
+                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            dispatch(Projectlist(responseJSON.result))
+                            dispatch(toast('success', 'Project Added Successfully!'));
+                            location.push("../dashboard/projectlist")
+                        })
+                        .catch((error) => {
+                            dispatch(Projectlist([]))
+                            dispatch(toast('warning', 'project Added Successfully!'));
+                        });
+
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('warning', 'Project Creation failed!'));
+            });
+    }
+}
+// PROJECTLIST  ACTION
+function Projectlist(list) {
+    return {
+        type: "PROJECT_LIST",
+        list
+
+    }
+}
+//FUNCTION FOR API CALL FOR GETTING PROJECT LIST AND DISPATCHING ACTION
+export function projectList(userId) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'project/projectlist?userId=' + userId, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'GET'
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error)
+                    dispatch(Projectlist(responseJSON.result))
+
+            })
+            .catch((error) => {
+                dispatch(Projectlist([]))
+            });
+
+    }
+}
+//API FOR EDIT PROJECT WITH GETTING PROJECT LIST AND DISPATCHING ACTION
+export function editproject(data, id,location) {
+    console.log('edit', data)
+    console.log(id)
+
+    return (dispatch) => {
+        fetch(config.apiUrl + 'project/' + id, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'PUT',
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'Project Updation failed!'));
+                } else {
+                    let url = config.apiUrl + 'project/projectlist?userId=' + data.userId ;
+
+                    fetch(url,
+                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            dispatch(Projectlist(responseJSON.result))
+                            dispatch(toast('success', 'Project Updated Successfully!'));
+                            location.push("../dashboard/projectlist")
+                        })
+                        .catch((error) => {
+                            dispatch(Projectlist([]))
+                            dispatch(toast('warning', 'Project Updated Successfully!'));
+                        });
+
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('warning', 'project Updation failed!'));
+            });
+    }
+}
+//API FOR DELETE PROJECT WITH GETTING PROJECT LIST AND DISPATCHING ACTION
+export function deleteproject(userId,id,location) {
+    console.log(id)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'project/'+id, {
+            headers: {
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'DELETE',
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.error) {
+                    dispatch(toast('Warning', 'Project Deleted failed!'));
+                } else {
+                    let url = config.apiUrl + 'project/projectlist?userId=' + userId ;
+
+                    fetch(url,
+                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            dispatch(Projectlist(responseJSON.result))
+                            dispatch(toast('success', 'Project Deleted Successfully!'));
+                            location.push("../dashboard/projectlist")
+                        })
+                        .catch((error) => {
+                            dispatch(Projectlist([]))
+                            dispatch(toast('warning', 'project Deleted Successfully!'));
+                        });
+
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('warning', 'Project Deleted failed!'));
+            });
+    }
+}
+
+ //.............................. END OF CRUD FOR PROJECT.....................................
+
+
+ //.....................CRUD FOR USER MANGEMENT.....................................
 
 // CREATE USER APICALL WITH  GETTING USER LIST AND DISPATCHING ACTION
 export function createUser(data, location) {
@@ -526,46 +596,9 @@ export function deleteUser(id,location) {
                 dispatch(toast('warning', 'User Deleted failed!'));
             });
     }
-
-    // return (dispatch) => {
-
-
-    //     return new Promise((resolve, reject) => {
-
-
-
-    //         fetch(config.apiUrl + 'user/delete?id=' + id,
-
-    //             {
-    //                 headers: {
-    //                     'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
-
-    //                 },
-    //                 method: 'DELETE'
-    //             })
-    //             .then((response) => response.json())
-    //             .then((responseJSON) => {
-
-    //                 console.log('response');
-
-    //                 dispatch(deleteusers(responseJSON))
-    //                 resolve(responseJSON);
-    //             })
-    //             .catch((error) => {
-    //                 reject(error);
-    //             });
-    //     });
-    // }
 }
 
-function deleteusers(list) {
-    return {
-        type: "DELETE_USER",
-        list
-
-    }
-}
-
+ //.............................. END OF CRUD FOR USER MANGEMENT.....................................
 
 //API call for client delete
 export function deleteclient(id) {
@@ -645,42 +678,6 @@ export function updateclient(data, id) {
     }
 }
 
-//API FOR EDIT PROJECT
-export function editproject(data, id) {
-    console.log('edit', data)
-    console.log(id)
-
-    return (dispatch) => {
-
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
-
-
-
-            fetch(config.apiUrl + 'project/' + id,
-                {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'PUT',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-
-
-
-                    dispatch(editrow(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-}
 
 
 function editrow(list) {
