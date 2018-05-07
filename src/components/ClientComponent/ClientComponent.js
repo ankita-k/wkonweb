@@ -48,26 +48,7 @@ class ClientComponent extends Component {
     componentWillReceiveProps(props) {
        console.log("componentwillrecieveprops")
 
-
-    //     // debugger;
-    //     // console.log(props)
-    //     // if (props.clientCreate) {
-    //     //     debugger;
-    //     //     this.setState({ showLoader: false });
-    //     //     this.setState({ show: false });
-
-    //     //     if (!props.clientCreate.error) {
-    //     //         this.props.actions.opentoast('success', 'Client Added Successfully!');
-    //     //         this.props.history.push('/dashboard/clientlist')
-    //     //     }
-    //     //     else {
-    //     //         this.props.actions.opentoast('warning', (props.clientCreate.message));
-    //     //     }
-
-    //     // }
-     }
-
-
+    }
     // TAKE INPUT FIELD VALUE
     inputValue = (e) => {
         this.setState({ [e.target.name]: e.target.value });
