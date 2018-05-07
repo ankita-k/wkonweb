@@ -535,6 +535,32 @@ export function deleteproject(userId,id,location) {
     }
 }
 
+//API FOR ADD MEMBER IN  PROJECT 
+export function addMember(data,id) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'project/addmember?id=' + id, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'PUT',
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error)
+                dispatch(toast('success', 'Member Added Sucessfully!'));  
+
+            })
+            .catch((error) => {
+                    dispatch(toast('Warning', 'Member Added  failed!'));
+            });
+
+    }
+}
+
  //.............................. END OF CRUD FOR PROJECT.....................................
 
 
@@ -697,6 +723,8 @@ export function deleteUser(id,location) {
 
 
  //.....................CRUD FOR Bill.....................................
+
+
 /*BILL CREATION BY API CALL AND GET NEW BILL LIST IMMEDIATELY*/
 export function billCreate(billdata, location) {
     return (dispatch) => {
@@ -822,14 +850,17 @@ export function BillEdit(data, id, location) {
     }
 }
 
+    //.............................. END OF CRUD FOR BILL.....................................
 
-function editrow(list) {
-    return {
-        type: "EDIT_PROJECT",
-        list
 
-    }
-}
+
+// function editrow(list) {
+//     return {
+//         type: "EDIT_PROJECT",
+//         list
+
+//     }
+// }
 
 
 // GET DASHBOARD DETAILS
@@ -997,42 +1028,7 @@ function dashboardcustomer(data) {
         data
     }
 }
-//API  FOR ADD MEMBER
-export function addMember(data, id) {
-    return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'project/addmember?id=' + id,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    method: 'PUT',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
 
-                    console.log('response');
-
-                    dispatch(member(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-}
-// ADD MEMBER
-function member(json) {
-    return {
-        type: "ADD_MEMBER",
-        json
-    }
-}
 
 // FULL PAGE LOADER
 export function loader(data) {
