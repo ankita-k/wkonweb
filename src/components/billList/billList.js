@@ -140,12 +140,14 @@ class BillList extends Component {
         }
     }
     componentDidMount() {
+     
         console.log(this.props);
         this.setState({ show: true })
         this.commonFunction();
 
     }
     componentWillReceiveProps(props) {
+     
         console.log('component will receive props');
         console.log(props)
         this.commonFunction();
@@ -157,6 +159,7 @@ class BillList extends Component {
     commonFunction() {
         /* CODE FOR GETTING BILLIST AND SHOWING IN TABLE USING PROPS  */
         if (this.props.billList.length > 0) {
+        
             this.setState({ show: false });
             this.setState({ searchedBill: this.props.billList });
         }

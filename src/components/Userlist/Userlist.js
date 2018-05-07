@@ -91,11 +91,12 @@ class Userlist extends Component {
         const { visible, loading } = this.state;
         return (
             <div className="userlist">
-                {this.state.show == true ? <div className="loader">
+                {this.props.fullloader== true ? <div className="loader">
                     <Loader className="ldr" fullPage loading />
                 </div> : ""}
+
                 <Loading
-                    show={this.state.show}
+                    show={this.props.fullloader}
                     color="red"
                     showSpinner={false}
                 />

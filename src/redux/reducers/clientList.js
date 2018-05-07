@@ -3,8 +3,6 @@ import * as actionCreators from '../action';
 
 // REDUCER FOR CLIENT LIST
 export function clientList(state = [], action) {
-    console.log("clientlist reducer")
-    console.log(action)
     switch (action.type) {
         case 'CLIENT_LIST':
             return action.list.map(function (item, index) {
