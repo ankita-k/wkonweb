@@ -18,7 +18,6 @@ import BillList from '../billList/billList';
 import Userlist from '../Userlist/Userlist';
 import Files from '../files/files';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
-
 // const { SubMenu } = Menu;
 const SubMenu = Menu.SubMenu;
 const { Header, Content, Sider } = Layout;
@@ -184,7 +183,6 @@ class Dashboard extends Component {
               }}><Icon type="logout" />Log Out</Button></p>
             </Row>
           </Header>
-
           {/* Mobile navbar */}
           <div className="mobilenavbar" lg={0}>
             <div className="navbarHeader">

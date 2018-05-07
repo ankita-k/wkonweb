@@ -54,6 +54,7 @@ class DashboardView extends Component {
 
     componentWillReceiveProps(newprops) {
         this.commonFunction(newprops);
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',newprops)
     }
 
     // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
@@ -84,9 +85,9 @@ class DashboardView extends Component {
         /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
 
         /*HIDE FULL LOADER */
-        // if (this.props.fullloader == false) {
-        //     this.setState({ show: this.props.fullloader })
-        // }
+        if (newprops.fullloader == false) {
+            this.setState({ show: newprops.fullloader })
+        }
         /*HIDE FULL LOADER ENDS */
     }
 
@@ -227,7 +228,7 @@ class DashboardView extends Component {
 
 
             <div className="dashboardMain">
-                {/* {this.state.show == true ? <div className="loader">
+                {this.state.show == true ? <div className="loader">
                     <Loader className="ldr" fullPage loading />
                 </div> : ""}
 
@@ -235,7 +236,7 @@ class DashboardView extends Component {
                     show={this.state.show}
                     color="red"
                     showSpinner={false}
-                /> */}
+                />
                 {/* dashboardviewcustomer */}
                 <div className="dashboardView">
                     <h1 className="customer">Clients</h1>

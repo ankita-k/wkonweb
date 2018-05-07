@@ -266,7 +266,6 @@ export function projectList(userId) {
 
 //Client list api 
 export function clientlist(userId) {
-    console.log("clientlist api call")
     return (dispatch) => {
 
         fetch(config.apiUrl + 'client/clientlist?userId=' + userId,
@@ -279,10 +278,11 @@ export function clientlist(userId) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
-                return dispatch(clientList(responseJSON.result))
+                dispatch(clientList(responseJSON.result))
+                
             })
             .catch((error) => {
-                return dispatch(clientList([]))
+                dispatch(clientList([]))
             });
 
     }
@@ -291,47 +291,6 @@ export function clientlist(userId) {
 function clientList(list) {
     return {
         type: "CLIENT_LIST",
-        list
-
-    }
-}
-//Api call for fetching loggedin user on header
-export function username(id) {
-
-    return (dispatch) => {
-
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
-
-
-
-            fetch(config.apiUrl + 'user/' + id,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-
-                    console.log('response');
-
-                    dispatch(user(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-}
-
-//function for loggedin username 
-//clientlist func
-function user(list) {
-    return {
-        type: "USER_NAME",
         list
 
     }
@@ -452,7 +411,7 @@ function userlist(list) {
     }
 }
 //API FOR EDIT USER WITH GETTING USER LIST AND DISPATCHING ACTION
-export function editUser(data, id,location) {
+export function editUser(data, id, location) {
     console.log('edit', data)
     console.log(id)
 
@@ -494,7 +453,7 @@ export function editUser(data, id,location) {
     }
 }
 //API FOR DELETE USER WITH GETTING USER LIST AND DISPATCHING ACTION
-export function deleteUser(id,location) {
+export function deleteUser(id, location) {
     console.log(id)
     return (dispatch) => {
         fetch(config.apiUrl + 'user/delete?id=' + id, {
@@ -817,7 +776,7 @@ export function billCreate(billdata, location) {
 
 
 
-/* GET  BILL LIST BY API CALLING AND DISPATCHING ACTION*/ 
+/* GET  BILL LIST BY API CALLING AND DISPATCHING ACTION*/
 export function billlist(userId) {
     console.log(userId)
     return (dispatch) => {
@@ -831,6 +790,7 @@ export function billlist(userId) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
+                console.log(responseJSON)
                 dispatch(BillList(responseJSON.result))
 
             })
@@ -954,7 +914,7 @@ export function dashboardProject(userId) {
             .then((responseJSON) => {
                 if (!responseJSON.error)
                     dispatch(dashboardproject(responseJSON.result));
-                // loader(false);
+                    dispatch(loaders(false))
             })
             .catch((error) => {
             });
@@ -1040,10 +1000,11 @@ function member(json) {
 }
 
 // FULL PAGE LOADER
-export function loader(data) {
+function loaders(data) {
     console.log(data)
     return (dispatch) => {
-        dispatch(loaders(data))
+        type: "FULL_PAGE_LOADER",
+            data
     }
 
 }
