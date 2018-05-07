@@ -36,6 +36,7 @@ class BillForm extends Component {
 
     componentDidMount() {
         console.log(this.props);
+        console.log(this.props.location)
         if (this.props.location.data) {
             console.log(this.props.location.data.data);
             this.setState({ disableclient: true });
@@ -44,23 +45,23 @@ class BillForm extends Component {
             this.props.form.setFieldsValue({
                 ['ProjectName']: this.props.location.data.data.projectName,
                 ['clientName']: this.props.location.data.data.client ? this.props.location.data.data.client : '',
-                ['CompanyName']: this.props.location.data.data.company,
+                ['CompanyName']: this.props.location.data.data.company1,
                 ['status']: this.props.location.data.data.status,
                 ['type']: this.props.location.data.data.type,
                 ['billingdate']: this.props.location.data.data.billingDate ? moment(this.props.location.data.data.billingDate) : '',
-                ['Paybillno']: this.props.location.data.data.paypalBillNumber,
-                ['billno']: this.props.location.data.data.billNumber,
-                ['bdename']: this.props.location.data.data.BDE,
+                ['Paybillno']: this.props.location.data.data.paypalBillNumber1,
+                ['billno']: this.props.location.data.data.billNumber1,
+                ['bdename']: this.props.location.data.data.BDE1,
                 ['email']: this.props.location.data.data.email,
                 ['projectcost']: this.props.location.data.data.projectCost,
-                ['paypalaccount']: this.props.location.data.data.paypalAccountName,
+                ['paypalaccount']: this.props.location.data.data.paypalAccountName1,
                 ['amountrecord']: this.props.location.data.data.receivedAmount,
                 ['balance']: this.props.location.data.data.balance,
                 ['receiveddate']: this.props.location.data.data.receivedDate ? moment(this.props.location.data.data.receivedDate) : '',
                 ['Currency']: this.props.location.data.data.currency,
             });
         }
-        
+
         /*GET PROJECT LIST FROM PROPS*/
         if (this.props.projectList.length > 0) {
             this.setState({ projectlist: this.props.projectList })
@@ -73,7 +74,6 @@ class BillForm extends Component {
     save = (e) => {
         e.preventDefault();
         this.setState({ showLoader: true });
-
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
 
@@ -103,22 +103,8 @@ class BillForm extends Component {
                     }
                     console.log(data);
 
-                    this.props.actions.BillEdit(data, this.props.location.data.data._id).then(data => {
-                        this.setState({ showLoader: false });
-                        this.setState({ show: false })
-                        console.log(data)
-                        if (!data.error) {
-                            this.props.actions.opentoast('success', 'Bill Updated Successfully!');
-                            this.props.history.push('/dashboard/billlist')
-                        }
-                        else {
-                            this.props.actions.opentoast('warning', data.message);
-                        }
-                    },
-                        err => {
-                            this.setState({ show: false });
-                            this.props.actions.opentoast('warning', 'Bill Not Updated Successfully!');
-                        })
+                    this.props.actions.BillEdit(data, this.props.location.data.data._id, this.props.history)
+                  
                 }
                 else {
                     let billdata = {
@@ -141,22 +127,8 @@ class BillForm extends Component {
                         status: values.status
                     }
                     console.log(billdata)
-                    this.props.actions.billCreate(billdata).then(response => {
-                        console.log('bill created data', response)
-                        this.setState({ show: false });
-                        this.setState({ showLoader: false });
-                        if (!response.error) {
-                            this.props.history.push('/dashboard/billlist');
-                            this.props.actions.opentoast('success', 'Bill Created Successfully!')
-                        }
-                        else {
-                            this.props.actions.opentoast('warning', 'Bill Creation Failed!')
-                        }
-                    }, err => {
-                        this.setState({ show: false });
-                        this.setState({ showLoader: false });
-                        this.props.actions.opentoast('warning', 'Bill Creation Failed!')
-                    })
+                    this.props.actions.billCreate(billdata, this.props.history);
+                   
                 }
 
             }
@@ -176,6 +148,7 @@ class BillForm extends Component {
         this.props.form.setFieldsValue({
             ['clientName']: filteredValue[0].client.name,
             ['email']: filteredValue[0].client.email,
+            ['CompanyName']: filteredValue[0].client.company?filteredValue[0].client.company:'',
         })
         this.setState({ disableclient: true })
 
@@ -262,7 +235,7 @@ class BillForm extends Component {
                                             rules: [{ required: true, message: 'Please provide Company Name !' }],
                                         })(
                                             // <Input placeholder="Brief Requirement" />
-                                            <Input maxLength="50" placeholder="Company Name" />
+                                            <Input  disabled={this.state.disableclient}  placeholder="Company Name" />
                                         )}
                                     </FormItem>
                                 </Col>
