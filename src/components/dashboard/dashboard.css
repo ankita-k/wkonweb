@@ -6,7 +6,7 @@
     float: left;
   }
   .ant-layout-content {
-    height: auto;
+    height: auto !important;
 }
 button.ant-btn.wkonlogout {
   float: right;

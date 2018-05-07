@@ -53,6 +53,12 @@ p.expecteDateclient {
 .ant-row.briefRequire {
     margin-bottom: 3em;
 }
+.inputForminfo .statuspipeline.ant-select.ant-select-disabled {
+    width: 91%;
+}
+.ant-modal.showprojectModal .ant-modal-footer {
+    display: none;
+}
 .clientHere.ant-select-auto-complete.ant-select .ant-input {
     height: 45px;
     width: 100%;
