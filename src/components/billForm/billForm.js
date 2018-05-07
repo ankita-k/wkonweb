@@ -147,7 +147,8 @@ class BillForm extends Component {
 
         this.props.form.setFieldsValue({
             ['clientName']: filteredValue[0].client.name,
-            ['email']: filteredValue[0].client.email
+            ['email']: filteredValue[0].client.email,
+            ['CompanyName']: filteredValue[0].client.company?filteredValue[0].client.company:'',
         })
         this.setState({ disableclient: true })
 
@@ -234,7 +235,7 @@ class BillForm extends Component {
                                             rules: [{ required: true, message: 'Please provide Company Name !' }],
                                         })(
                                             // <Input placeholder="Brief Requirement" />
-                                            <Input maxLength="50" placeholder="Company Name" />
+                                            <Input  disabled={this.state.disableclient}  placeholder="Company Name" />
                                         )}
                                     </FormItem>
                                 </Col>
