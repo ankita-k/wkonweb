@@ -39,16 +39,13 @@ class DashboardView extends Component {
             projecttotal: {},
             projectinprogress: {},
             projectcompleted: {},
-            show: true,  //loading-bar
-            loading: true,
             dashboardCustomerData: {},
             dashboardProjectData: {}
         }
     }
 
     componentDidMount() {
-        console.log('==========component did moun======t', this.props);
-        // this.setState({show:true})
+        console.log('==========component did mount=====', this.props);
         this.commonFunction(this.props);
     }
 
@@ -240,15 +237,6 @@ class DashboardView extends Component {
 
 
             <div className="dashboardMain">
-                {/* {this.props.fullloader== true ? <div className="loader">
-                    <Loader className="ldr" fullPage loading />
-                </div> : ""}
-
-                <Loading
-                    show={this.props.fullloader}
-                    color="red"
-                    showSpinner={false}
-                /> */}
                 {/* dashboardviewcustomer */}
                 <div className="dashboardView">
                     <h1 className="customer">Clients</h1>
