@@ -146,6 +146,7 @@ class BillForm extends Component {
             ['clientName']: filteredValue[0].client.name,
             ['email']: filteredValue[0].client.email,
             ['CompanyName']: filteredValue[0].client.company?filteredValue[0].client.company:'',
+            ['currency']:filteredValue[0].client.currency,
         })
         this.setState({ disableclient: true })
 
@@ -236,28 +237,26 @@ class BillForm extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
-
                                 <Col xs={24} sm={24} md={24} lg={12}>
-                                    <FormItem label="Bill Status">
-                                        {getFieldDecorator('status', {
-                                            rules: [{ required: true, message: 'Please select Biiling status!' }],
-                                        })(
-                                            <Select className="statuspipeline"
+                                        <FormItem label="Currency">
+                                            {getFieldDecorator('currency', {
+                                                rules: [{ required: true, message: 'Please choose currency !' }],
+                                            })(
+                                                <Select className="statuspipeline"
+                                                    placeholder="Select type"
 
-                                                placeholder="Status"
-                                                // onChange={this.handleSelectChange}
-                                                showSearch
-                                            >
-                                                <Option value="pending">Pending</Option>
-                                                <Option value="complete">Complete</Option>
-                                                <Option value="Cancelled">Cancelled</Option>
-                                                <Option value="Refunded">Refunded</Option>
+                                                >
+                                                    <Option value="USD">USD</Option>
+                                                    <Option value="GBP">GBP</Option>
+                                                    <Option value="AUD">AUD</Option>
+                                                    <Option value="INR">INR</Option>
+                                                    <Option value="EUR">EUR</Option>
+                                                    <Option value="AED">AED</Option>
 
-
-                                            </Select>
-                                        )}
-                                    </FormItem>
-                                </Col>
+                                                </Select>
+                                            )}
+                                        </FormItem>
+                                    </Col>
                             </Row>
                             <Row>
 
@@ -425,30 +424,28 @@ class BillForm extends Component {
                                             </FormItem>
                                         </div>
                                     </Col>
-                                    <Col xs={24} sm={24} md={24} lg={12}>
-                                        <FormItem label="Currency">
-                                            {getFieldDecorator('Currency', {
-                                                rules: [{ required: true, message: 'Please choose currency !' }],
-                                            })(
-                                                <Select className="statuspipeline"
-                                                    placeholder="Select type"
+                                  
+                                <Col xs={24} sm={24} md={24} lg={12}>
+                                    <FormItem label="Bill Status">
+                                        {getFieldDecorator('status', {
+                                            rules: [{ required: true, message: 'Please select Biiling status!' }],
+                                        })(
+                                            <Select className="statuspipeline"
 
-                                                >
-                                                    {/* {this.state.allCurrencyList.map((currencyData,keyy) => {
-                                                    // console.log(currencyData)
-                                                        return <Option key={keyy} value={currencyData}>{currencyData}</Option>
-                                                })} */}
-                                                    <Option value="USD">USD</Option>
-                                                    <Option value="GBP">GBP</Option>
-                                                    <Option value="AUD">AUD</Option>
-                                                    <Option value="INR">INR</Option>
-                                                    <Option value="EUR">EUR</Option>
-                                                    <Option value="AED">AED</Option>
+                                                placeholder="Status"
+                                                // onChange={this.handleSelectChange}
+                                                showSearch
+                                            >
+                                                <Option value="pending">Pending</Option>
+                                                <Option value="complete">Complete</Option>
+                                                <Option value="Cancelled">Cancelled</Option>
+                                                <Option value="Refunded">Refunded</Option>
 
-                                                </Select>
-                                            )}
-                                        </FormItem>
-                                    </Col>
+
+                                            </Select>
+                                        )}
+                                    </FormItem>
+                                </Col>
 
                                 </Row>
 

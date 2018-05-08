@@ -198,7 +198,7 @@ class ClientComponent extends Component {
                             </Row>
                             <Row>
                                 <Col xs={24} sm={24} md={11} lg={11}>
-                                    <FormItem label="paypal_id">
+                                    <FormItem label="Paypal Id (Email)">
                                         {getFieldDecorator('paypal_id', {
                                             rules: [{
                                                 type: 'email', message: 'The input is not valid paypal id!'

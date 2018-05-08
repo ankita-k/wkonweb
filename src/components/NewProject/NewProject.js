@@ -329,7 +329,6 @@ class NewProject extends Component {
 
     // RENDER DROPDOWN OF SEARCHED ITEM
     renderOption = (item) => {
-        // console.log(item);
         return (
             <Option key={item._id} value={item._id} text={item.name}>
                 {item.name}
@@ -471,7 +470,7 @@ class NewProject extends Component {
 
                                             )(
                                                 <Select className="statuspipeline"
-                                                    placeholder="Choose Role"
+                                                    placeholder="Choose Client"
                                                     onChange={this.selectStatus}
                                                     disabled={this.state.disableassign}
                                                 >
