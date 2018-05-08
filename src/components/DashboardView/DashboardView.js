@@ -49,12 +49,10 @@ class DashboardView extends Component {
     componentDidMount() {
         console.log('==========component did moun======t', this.props);
         // this.setState({show:true})
-        // this.commonFunction();
+        this.commonFunction(this.props);
     }
 
     componentWillReceiveProps(newprops) {
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', newprops.fullloader);
-        console.log('ppppppppppppppppppp', this.props.fullloader)
         this.commonFunction(newprops);
 
     }
@@ -72,6 +70,11 @@ class DashboardView extends Component {
             if (newprops.dashboardProjectData.InProgess)
                 this.startCounter(newprops.dashboardProjectData.InProgess, 'projectinprogress')
         }
+        else {
+            this.setState({ projecttotal: { Total: newprops.dashboardProjectData.Total } });
+            this.setState({ projectcompleted: { Completed: newprops.dashboardProjectData.Completed } });
+            this.setState({ projectinprogress: { InProgess: newprops.dashboardProjectData.InProgess } });
+        }
         /*SHOW COUNTER FOR PROJECT DASHBOARD NUMBER ENDS*/
 
         /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
@@ -84,6 +87,11 @@ class DashboardView extends Component {
             if (newprops.dashboardCustomerData.Committed)
                 this.startCounter(newprops.dashboardCustomerData.Committed, 'clientcommitted')
         }
+        else {
+            this.setState({ clienttotal :{ Total: newprops.dashboardCustomerData.Total } });
+            this.setState({ clientpipeline: { Pipeline: newprops.dashboardCustomerData.Pipeline} });
+            this.setState({ clientcommitted: { Committed: newprops.dashboardCustomerData.Committed } });
+        }   
         /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
 
         /*HIDE FULL LOADER */
@@ -246,7 +254,7 @@ class DashboardView extends Component {
                     <h1 className="customer">Clients</h1>
                     <Row>
                         <div className="addButton btnplace">
-                            <Button onClick={() => {  this.props.actions.openkey('client'); this.props.actions.menuKeys('create_client');this.props.history.push('/dashboard/clientcreate') }}>+</Button>
+                            <Button onClick={() => { this.props.actions.openkey('client'); this.props.actions.menuKeys('create_client'); this.props.history.push('/dashboard/clientcreate') }}>+</Button>
                         </div>
                     </Row>
                     <Row>

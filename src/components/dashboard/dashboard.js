@@ -73,30 +73,30 @@ class Dashboard extends Component {
   gotoDashboard = () => {
     this.props.actions.menuKeys('home');
     this.props.actions.openkey([]);
-   
+
   }
 
   handleClick = (nav) => {
     console.log(nav);
     this.props.actions.menuKeys(nav.key);
-    
+
     if (nav.key == 'home') {
       this.props.actions.openkey([])
     };
-   
+
   }
 
   openChange = (nav) => {
-   
+
     if (nav.length >= 1) {
 
       let key = nav[nav.length - 1];
-     
+
       this.props.actions.openkey(key);
-     
+
     } else {
       this.props.actions.openkey([])
-     
+
     }
   }
 
@@ -104,7 +104,7 @@ class Dashboard extends Component {
 
 
   componentDidMount() {
-    console.log(this.props);
+    console.log('#############################', this.props);
 
     /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA 
     */
@@ -139,9 +139,18 @@ class Dashboard extends Component {
 
     /*GET USER NAME AND ROLE*/
     this.commonFunction();
-    //***** */
+    
 
+    /**  INITIALLY HOME MENU TO BE SELECTED  */
+    this.props.actions.openkey([]);
+    this.props.actions.menuKeys('home');
+    /**  INITIALLY HOME MENU TO BE SELECTED  ENDS */
 
+    /** NAVIGATE TO DASHBOARD ON REFRESH */
+    if (this.props.location.pathname != '/dashboard') {
+      this.props.history.push('/dashboard');
+    }
+    /**NAVIGATE TO DASHBOARD ON REFRESH  ENDS*/
   }
 
   componentWillReceiveProps(props) {
@@ -149,6 +158,7 @@ class Dashboard extends Component {
 
     /*CHANGE THE COLOR OF SELECTED MENU ITEM  AFTER RECEVING DATA FROM PROPS*/
     if (props.menuselectedkey.length != 0) {
+
       this.setState({ selectedKey: props.menuselectedkey })
     }
     else {
@@ -157,6 +167,7 @@ class Dashboard extends Component {
 
     /**OPEN THE MENU ITEM  */
     if (props.openKey.length != 0) {
+
       this.setState({ openKeys: props.openKey })
     }
     else {
@@ -170,13 +181,13 @@ class Dashboard extends Component {
     /* SHOWING LOGGEDIN USER NAME AFTER RECEIVING DATA FROM PROPS*/
     if (this.props.loggeduserDetails) {
       this.setState({ username: this.props.loggeduserDetails.name });
-      this.setState({ userrole: this.props.loggeduserDetails.role })
+      this.setState({ userrole: this.props.loggeduserDetails.role });
     }
 
   }
 
   render() {
-
+    console.log('(((((((((((((())))))))))))render dashboard')
     return (
       <div>
         <Layout>
@@ -208,7 +219,7 @@ class Dashboard extends Component {
               </Button>
             </div>
             <Menu
-               defaultSelectedKeys={['1']}
+              defaultSelectedKeys={['1']}
               defaultOpenKeys={['sub1']}
 
               mode="inline"
@@ -282,7 +293,7 @@ class Dashboard extends Component {
                   <span>Home</span>
                   <NavLink to="../dashboard" activeClassName="active"></NavLink>
                 </Menu.Item>
-                {this.state.userrole ? this.state.userrole == "admin" || "Sales" ?
+                {this.state.userrole ? this.state.userrole == "admin" || "Sales" && this.state.userrole != 'Developer' ?
                   <SubMenu key="client" title={<span><Icon type="usergroup-add" />Clients</span>} subMenuCloseDelay={0.1}>
                     <Menu.Item key="create_client">
                       <span>Client Create</span>
@@ -317,7 +328,7 @@ class Dashboard extends Component {
                     </Menu.Item>
                   </SubMenu> : '' : ''}
 
-                {this.state.userrole ? this.state.userrole == "admin" || "Sales" ?
+                {this.state.userrole ? this.state.userrole == "admin" || "Sales" && this.state.userrole != 'Developer' ?
                   <SubMenu key="bill" title={<span><Icon type="solution" />Bill Managements</span>} subMenuCloseDelay={0.1}>
                     {
                       this.state.userrole == "Sales" ?
