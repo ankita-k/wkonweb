@@ -105,7 +105,10 @@ class NormalLoginForm extends React.Component {
                                     <Form onSubmit={this.handleSubmit} className="login-form" >
                                         <FormItem>
                                             {getFieldDecorator('email', {
-                                                rules: [{ required: true, message: 'Please input your username!' }],
+                                                rules: [{
+                                                    type: 'email', message: 'The input is not valid E-mail!'
+                                                },
+                                                { required: true, message: 'Please input your username!' }],
                                             })(
                                                 <Input placeholder="Username" />
                                             )}
@@ -114,7 +117,7 @@ class NormalLoginForm extends React.Component {
                                             {getFieldDecorator('password', {
                                                 rules: [{ required: true, message: 'Please input your Password!' }],
                                             })(
-                                                <Input type="password" placeholder="Password" />
+                                                <Input type="password" placeholder="Password" maxLength="8"/>
                                             )}
                                         </FormItem>
                                         <FormItem className="text-left">

@@ -19,7 +19,6 @@ class ClientComponent extends Component {
             countrylist: [],
             show: false,  //loading-bar
             clientEdit: false,
-            showLoader: false,
         }
     }
 
@@ -78,7 +77,6 @@ class ClientComponent extends Component {
 
         e.preventDefault();
         this.setState({ show: true });
-        this.setState({ showLoader: true });
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log(values)
@@ -179,7 +177,7 @@ class ClientComponent extends Component {
                                         })(
                                             <Input
             
-                                                placeholder="Address" name="address" />
+                                                placeholder="Address" name="address" maxLength="100"/>
                                         )}
                                     </FormItem>
                                 </Col>
@@ -246,7 +244,7 @@ class ClientComponent extends Component {
                                             <Input
                                                 type="test"
                                                 maxLength="15"
-                                                placeholder="Phone No." name="phoneNumber" />
+                                                placeholder="Phone No." name="phoneNumber" minlength="8" maxlength="15"/>
                                         )}
                                     </FormItem>
                                 </Col>
@@ -259,7 +257,7 @@ class ClientComponent extends Component {
                                         {getFieldDecorator('domain', {
                                             rules: [{ required: true, message: 'Please input your Domain!' }],
                                         })(
-                                            <Input placeholder="Domain" name="domain" />
+                                            <Input placeholder="Domain" name="domain" maxlength="50"/>
                                         )}
                                     </FormItem>
                                 </Col>
@@ -312,7 +310,7 @@ class ClientComponent extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 {/* loading={this.state.showLoader} */}
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
                             </div>
                         </FormItem>

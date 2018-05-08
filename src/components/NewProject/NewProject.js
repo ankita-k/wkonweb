@@ -53,7 +53,6 @@ class NewProject extends Component {
             clientlist: [],
             clientarray: [],
             show: false,//loading-bar,
-            showLoader: false,
             disabledate: true,
             disableclient: false,
             userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
@@ -171,7 +170,6 @@ class NewProject extends Component {
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.setState({ showLoader: true });
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
 
@@ -732,7 +730,7 @@ class NewProject extends Component {
 
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
                             </div>
                         </FormItem>

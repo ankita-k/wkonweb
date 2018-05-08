@@ -21,7 +21,6 @@ class BillForm extends Component {
         super(props);
         this.state = {
             show: false,   //FOR PROGRESS LOADING BAR
-            showLoader: false,
             userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
             projectlist: [],
             disableclient: false,
@@ -73,7 +72,6 @@ class BillForm extends Component {
     // FUNCTION CALLED ON SAVE BUTTON
     save = (e) => {
         e.preventDefault();
-        this.setState({ showLoader: true });
         this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
 
@@ -221,7 +219,7 @@ class BillForm extends Component {
                                                 rules: [{ required: true, message: 'Please input client name!' }],
                                             })(
 
-                                                <Input disabled={this.state.disableclient} placeholder="Client Name" />
+                                                <Input disabled={this.state.disableclient} placeholder="Client Name" maxlength="30"/>
                                             )}
                                         </FormItem>
 
@@ -235,7 +233,7 @@ class BillForm extends Component {
                                             rules: [{ required: true, message: 'Please provide Company Name !' }],
                                         })(
                                             // <Input placeholder="Brief Requirement" />
-                                            <Input  disabled={this.state.disableclient}  placeholder="Company Name" />
+                                            <Input  disabled={this.state.disableclient}  placeholder="Company Name" maxlength="50"/>
                                         )}
                                     </FormItem>
                                 </Col>
@@ -317,7 +315,7 @@ class BillForm extends Component {
                                                 rules: [{ required: true, message: 'Please input bill number !' }],
                                             })(
 
-                                                <Input placeholder="Bill" />
+                                                <Input placeholder="Bill" minlength=""/>
                                             )}
                                         </FormItem>
                                     </Col>
@@ -361,7 +359,7 @@ class BillForm extends Component {
                                                 rules: [{ required: true, message: 'Please input cost!' }],
                                             })(
 
-                                                <Input placeholder="Amount" />
+                                                <Input placeholder="Amount" maxlength="50" />
                                             )}
                                         </FormItem>
                                     </Col>
@@ -370,7 +368,7 @@ class BillForm extends Component {
                                             {getFieldDecorator('paypalaccount', {
                                                 rules: [{ required: true, message: 'Please input account!' }],
                                             })(
-                                                <Input placeholder="Account" />
+                                                <Input placeholder="Account" maxlength="40"/>
                                             )}
                                         </FormItem>
                                     </Col>
@@ -388,7 +386,7 @@ class BillForm extends Component {
                                                 rules: [{ required: true, message: 'Please input record!' }],
                                             })(
 
-                                                <Input placeholder="Amount" />
+                                                <Input placeholder="Amount" maxlength="30"/>
                                             )}
                                         </FormItem>
                                     </Col>
@@ -468,7 +466,7 @@ class BillForm extends Component {
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
                                 <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/billlist') }} >Cancel</Button>
                             </div>
                         </FormItem>
