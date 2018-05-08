@@ -416,7 +416,6 @@ export function projectList(userId) {
 export function editproject(data, userId, id, location) {
     console.log('edit', data)
     console.log(id)
-
     return (dispatch) => {
         dispatch(loaders(true))
         fetch(config.apiUrl + 'project/' + id, {
@@ -448,6 +447,7 @@ export function editproject(data, userId, id, location) {
                             location.push("../dashboard/projectlist")
                         })
                         .catch((error) => {
+                            console.log('........Error.......',error)
                             dispatch(Projectlist([]))
                             dispatch(toast('warning', 'Project Updation failed!'));
                             dispatch(loaders(false))
@@ -504,31 +504,57 @@ export function deleteproject(userId, id, location) {
     }
 }
 
-//API FOR ADD MEMBER IN  PROJECT 
+
+// API FOR STATUS CHANGED IN  PROJECT AND API FOR ADD MEMBER IN  PROJECT 
 export function addMember(data, id) {
+    console.log('edit', data);
+    console.log(id);
     return (dispatch) => {
-        fetch(config.apiUrl + 'project/addmember?id=' + id, {
+        fetch(config.apiUrl + 'project/' + id, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
             },
             method: 'PUT',
-            body: JSON.stringify(data)
+            body: JSON.stringify({status:"InProgress"})
         })
             .then((response) => response.json())
             .then((responseJSON) => {
-                console.log(responseJSON)
-                if (!responseJSON.error)
-                    dispatch(toast('success', 'Member Added Sucessfully!'));
+                if (responseJSON.error) {
+                } else {                                                    // API FOR ADD MEMBER IN  PROJECT 
+                    let url = config.apiUrl + 'project/addmember?id=' + id;
+                    console.log(data,id);
+                    fetch(url,
+                        { headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json', 
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                     },
+                         method: 'PUT',
+                        body: JSON.stringify(data) })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            console.log(responseJSON)
+                            dispatch(toast('success', 'Member Added Sucessfully!'));
 
+                        })
+                        .catch((error) => {
+                            console.log('........Error.......',error)
+                            dispatch(Projectlist([]))
+                            dispatch(toast('warning', 'Member Added  failed!'));
+                            dispatch(loaders(false))
+                        });
+
+                }
             })
             .catch((error) => {
-                dispatch(toast('Warning', 'Member Added  failed!'));
+                dispatch(toast('warning', 'Member Added  failed!'));
+                dispatch(loaders(false))
             });
-
     }
 }
+
 
 //.............................. END OF CRUD FOR PROJECT.....................................
 
