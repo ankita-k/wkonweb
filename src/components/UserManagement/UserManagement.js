@@ -21,7 +21,6 @@ class UserManagement extends Component {
             developerarray: [],
             developers: [],
             show: false, //loading-bar
-            showLoader: false,
             userEdit: false,
             tagArray: ['Vertical Lead', 'Manager'],
             tag: ['Vertical Lead', 'Manager'],
@@ -158,7 +157,6 @@ class UserManagement extends Component {
             });
             console.log(this.state.tagValue)
             this.setState({ tagArray: this.state.tag })
-            this.setState({ showLoader: false });
         }
 
     }
@@ -191,11 +189,10 @@ class UserManagement extends Component {
 
     //sending user values
     handleSubmit = (e) => {
-        this.setState({ show: true });
-        this.setState({ showLoader: true });
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                this.setState({ show: true });
                 console.log(values)
                 if (this.props.location.userData) {
                     let user = {
@@ -289,7 +286,7 @@ class UserManagement extends Component {
                                         {getFieldDecorator('name', {
                                             rules: [{ required: true, message: 'Please input your Name!' }],
                                         })(
-                                            <Input placeholder="Name" name="name" />
+                                            <Input placeholder="Name" name="name" maxlength="40"/>
                                         )}
                                     </FormItem>
                                 </Col>
@@ -315,7 +312,7 @@ class UserManagement extends Component {
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
                                         })(
                                             <Input placeholder="Phone No." name="phoneNumber"
-                                                maxLength="15" />
+                                                maxLength="15" minlength="8"/>
                                         )}
                                     </FormItem>
                                 </Col>
@@ -420,8 +417,8 @@ class UserManagement extends Component {
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/Userlist') }}>Cancel</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button" >Save</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('user_list');this.props.history.push('/dashboard/Userlist') }}>Cancel</Button>
                             </div>
                         </FormItem>
 

@@ -53,7 +53,6 @@ class NewProject extends Component {
             clientlist: [],
             clientarray: [],
             show: false,//loading-bar,
-            showLoader: false,
             disabledate: true,
             disableclient: false,
             userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
@@ -169,8 +168,8 @@ class NewProject extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-
             if (!err) {
+                this.setState({ show: true });
                 console.log('Received values of form: ', values);
 
                 if (this.props.location.data) {
@@ -729,8 +728,8 @@ class NewProject extends Component {
 
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('project_list');this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
                             </div>
                         </FormItem>
 

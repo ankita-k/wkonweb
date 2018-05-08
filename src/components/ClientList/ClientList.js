@@ -213,6 +213,7 @@ class ClientList extends Component {
 
   //edit client
   editClient = (data) => {
+    this.props.actions.menuKeys('create_client');
     this.props.history.push({
       pathname: '/dashboard/editclient',
       data: {
@@ -307,7 +308,7 @@ class ClientList extends Component {
           <h1 className="clientList">Client List</h1>
           <Row>
             <div className="addButton clientadd">
-              <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
+              <Button onClick={() => { this.props.actions.menuKeys('create_client');this.props.history.push('/dashboard/clientcreate') }}>+</Button>
             </div>
           </Row>
           <Row>
