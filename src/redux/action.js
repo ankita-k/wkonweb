@@ -417,7 +417,7 @@ export function projectList(userId) {
     }
 }
 //API FOR EDIT PROJECT WITH GETTING PROJECT LIST AND DISPATCHING ACTION
-export function editproject(data, id, location) {
+export function editproject(data, userId, id, location) {
     console.log('edit', data)
     console.log(id)
 
@@ -438,12 +438,14 @@ export function editproject(data, id, location) {
                     dispatch(toast('warning', 'Project Updation failed!'));
                     dispatch(loaders(false))
                 } else {
-                    let url = config.apiUrl + 'project/projectlist?userId=' + data.userId;
+                    console.log(userId)
+                    let url = config.apiUrl + 'project/projectlist?userId=' + userId;
 
                     fetch(url,
                         { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
                         .then((response) => response.json())
                         .then((responseJSON) => {
+                            console.log(responseJSON)
                             dispatch(Projectlist(responseJSON.result))
                             dispatch(toast('success', 'Project Updated Successfully!'));
                             dispatch(loaders(false));
