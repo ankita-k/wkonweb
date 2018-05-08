@@ -189,10 +189,10 @@ class UserManagement extends Component {
 
     //sending user values
     handleSubmit = (e) => {
-        this.setState({ show: true });
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                this.setState({ show: true });
                 console.log(values)
                 if (this.props.location.userData) {
                     let user = {

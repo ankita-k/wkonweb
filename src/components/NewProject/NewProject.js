@@ -56,8 +56,8 @@ class NewProject extends Component {
             disabledate: true,
             disableclient: false,
             userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
-            techArray: ['ReactJS', 'Php', 'ReactNative','IOT'],
-            techs: ['ReactJS', 'Php', 'ReactNative','IOT'],
+            techArray: ['ReactJS', 'Php', 'ReactNative', 'IOT'],
+            techs: ['ReactJS', 'Php', 'ReactNative', 'IOT'],
             techsValue: [],
             value: [],
             fetching: false,
@@ -71,8 +71,8 @@ class NewProject extends Component {
             memeberId: '',
             disabletag: true,
             disableassign: false,
-            addMember:[],
-            columns : [{
+            addMember: [],
+            columns: [{
                 title: 'Assign To',
                 dataIndex: 'name',
                 width: 200,
@@ -81,7 +81,7 @@ class NewProject extends Component {
                 dataIndex: 'role',
             }]
         }
-       
+
 
     }
 
@@ -92,9 +92,6 @@ class NewProject extends Component {
             this.setState({ editClient: true })
 
             console.log('members', this.props.location.data.data.members);
-
-            // this.setState({ assignRole: this.props.location.data.data.members })
-            // console.log(this.state.assignRole)
 
             console.log("projectId", this.props.location.data.data._id)
             this.setState({ projectId: this.props.location.data.data._id })
@@ -124,16 +121,16 @@ class NewProject extends Component {
                     }
                 })
                 console.log(newarray1)
-                this.setState({addMember:newarray1})
+                this.setState({ addMember: newarray1 })
                 // FOR SEARCH ROLE ==VerticalLead
 
                 let index = newarray1.findIndex(x => x.role === "VerticalLead");
                 console.log(index);
                 console.log(newarray1[index]);
                 if (index > -1) {
-                    this.setState({ disableassign: true })                    
+                    this.setState({ disableassign: true })
                 }
-                
+
             }
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name1,
@@ -170,14 +167,14 @@ class NewProject extends Component {
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
-
             if (!err) {
+                this.setState({ show: true });
                 console.log('Received values of form: ', values);
 
                 if (this.props.location.data) {
                     console.log('edit function')
+                    this.setState({ disableassign: true })
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
@@ -199,7 +196,7 @@ class NewProject extends Component {
                     }
                     console.log(data)
 
-                    this.props.actions.editproject(data,this.state.userId, this.props.location.data.data._id,this.props.history)
+                    this.props.actions.editproject(data, this.state.userId, this.props.location.data.data._id, this.props.history)  //UPDATE(EDIT) PROJECT
                 }
                 else {
 
@@ -223,7 +220,7 @@ class NewProject extends Component {
                     }
 
                     console.log(data)
-                    this.props.actions.addProject(data,this.props.history)
+                    this.props.actions.addProject(data, this.props.history)  //CREATE NEW PROJECT
                 }
 
             }
@@ -401,21 +398,23 @@ class NewProject extends Component {
 
     // CLICK ON PLUS ICON FOR ADDING MEMBER
     addMember = () => {
-        let data = {
-            userId: this.state.memeberId,
-            role: this.props.loggeduserDetails.role == 'Sales' ? 'VerticalLead' : this.state.role,
-            name: this.state.assign
+            let data = {
+                userId: this.state.memeberId,
+                role: this.props.loggeduserDetails.role == 'Sales' ? 'VerticalLead' : this.state.role,
+                name: this.state.assign
+            }
+            this.state.assignRole.push(data)
+            this.state.addMember.push(data)  // FOR DISPAY MEMBER NAME
+            console.log(this.state.assignRole)
+            console.log(this.state.assignRole[0].role)
+            this.state.assignRole[0].role == 'VerticalLead' ? this.setState({ disableassign: true }) : "";          //After Adding AssigneRole...Input/Button wiil disabled
+            this.props.form.setFieldsValue({    //For Clear the Input  Field
+                ['assign']: '',
+                ['role']: '',
+            })
+            this.props.actions.addMember(this.state.assignRole, this.state.projectId)
         }
-        this.state.assignRole.push(data)
-        this.state.addMember.push(data)  // FOR DISPAY MEMBER NAME
-        console.log(this.state.assignRole)
-        this.props.form.setFieldsValue({    //for clear the field
-            ['assign']: '',
-            ['role']: '',
-        })
-        this.props.actions.addMember(this.state.assignRole, this.state.projectId)
 
-    }
     render() {
         const columns = this.state.columns;
         const { getFieldDecorator } = this.props.form;
@@ -474,6 +473,7 @@ class NewProject extends Component {
                                                 <Select className="statuspipeline"
                                                     placeholder="Choose Role"
                                                     onChange={this.selectStatus}
+                                                    disabled={this.state.disableassign}
                                                 >
                                                     {this.state.clientlist.map((item, index) => {
                                                         return <Option key={index} value={item._id}>{item.name}</Option>
@@ -699,20 +699,20 @@ class NewProject extends Component {
                                 </Row>
                                 {/* ShowDetails Modal */}
                                 {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
-                                <Row>
-                                    <p><a href="#" onClick={() => this.setModal2Visible(true)}>Show Details</a></p>
-                                    <Modal
-                                    className="showprojectModal"
-                                        title="Show Details"
-                                        wrapClassName="vertical-center-modal"
-                                        visible={this.state.modal2Visible}
-                                        onOk={() => this.setModal2Visible(false)}
-                                        onCancel={() => this.setModal2Visible(false)}
-                                    >
-                                        <Table columns={columns} dataSource={this.state.addMember} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
-                                    </Modal>
-                                </Row>:
-                                ""}
+                                    <Row>
+                                        <p><a href="#" onClick={() => this.setModal2Visible(true)}>Show Details</a></p>
+                                        <Modal
+                                            className="showprojectModal"
+                                            title="Show Details"
+                                            wrapClassName="vertical-center-modal"
+                                            visible={this.state.modal2Visible}
+                                            onOk={() => this.setModal2Visible(false)}
+                                            onCancel={() => this.setModal2Visible(false)}
+                                        >
+                                            <Table columns={columns} dataSource={this.state.addMember} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
+                                        </Modal>
+                                    </Row> :
+                                    ""}
                                 {/* ShowDetails Modal */}
                                 <Row className="briefRequire">
                                     <Col xs={24} sm={24} md={24} lg={24}>
@@ -754,4 +754,4 @@ function mapDispatchToProps(dispatch, state) {
     })
 }
 const WrappedNewProject = Form.create()(NewProject);
-export default connect(mapStateToProps,mapDispatchToProps)(WrappedNewProject);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedNewProject);
