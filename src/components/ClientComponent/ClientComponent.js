@@ -76,9 +76,9 @@ class ClientComponent extends Component {
     handleSubmit = (e) => {
 
         e.preventDefault();
-        this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                this.setState({ show: true });
                 console.log(values)
 
                 if (this.props.location.data) {

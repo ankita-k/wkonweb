@@ -170,10 +170,9 @@ class NewProject extends Component {
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
-
             if (!err) {
+                this.setState({ show: true });
                 console.log('Received values of form: ', values);
 
                 if (this.props.location.data) {

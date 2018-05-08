@@ -72,10 +72,9 @@ class BillForm extends Component {
     // FUNCTION CALLED ON SAVE BUTTON
     save = (e) => {
         e.preventDefault();
-        this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
-
             if (!err) {
+                this.setState({ show: true });
                 console.log('Received values of form: ', values);
 
                 if (this.props.location.data && this.props.location.data.data) {
