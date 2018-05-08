@@ -174,6 +174,7 @@ class NewProject extends Component {
 
                 if (this.props.location.data) {
                     console.log('edit function')
+                    this.setState({ disableassign: true })
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
@@ -472,6 +473,7 @@ class NewProject extends Component {
                                                 <Select className="statuspipeline"
                                                     placeholder="Choose Role"
                                                     onChange={this.selectStatus}
+                                                    disabled={this.state.disableassign}
                                                 >
                                                     {this.state.clientlist.map((item, index) => {
                                                         return <Option key={index} value={item._id}>{item.name}</Option>
