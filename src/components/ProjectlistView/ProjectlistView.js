@@ -170,8 +170,7 @@ class ProjectlistView extends Component {
 
   // NAVIAGET TO EDIT PROJECT PAGE WITH DATA
   editProject = (data) => {
-    // console.log(data);
-    // console.log("hellllloo");
+    this.props.actions.menuKeys('create_project');
     this.props.history.push({
       pathname: '/dashboard/editProject',
       data: {
@@ -307,7 +306,7 @@ class ProjectlistView extends Component {
 
 
               <div className="addButton project">
-                <Button onClick={() => { this.props.history.push('/dashboard/newproject') }} >+</Button>
+                <Button onClick={() => {this.props.actions.menuKeys('create_project'); this.props.history.push('/dashboard/newproject') }} >+</Button>
               </div>
 
 

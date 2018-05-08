@@ -313,7 +313,7 @@ class ClientComponent extends Component {
                             <div className="savebutton">
                                 {/* loading={this.state.showLoader} */}
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('client_list');this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
                             </div>
                         </FormItem>
 

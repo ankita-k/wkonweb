@@ -53,10 +53,10 @@ class DashboardView extends Component {
     }
 
     componentWillReceiveProps(newprops) {
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',newprops.fullloader);
-        console.log('ppppppppppppppppppp',this.props.fullloader)
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', newprops.fullloader);
+        console.log('ppppppppppppppppppp', this.props.fullloader)
         this.commonFunction(newprops);
-      
+
     }
 
     // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
@@ -201,7 +201,8 @@ class DashboardView extends Component {
     }
 
     filterClient = (data) => {
-
+        this.props.actions.openkey('client')
+        this.props.actions.menuKeys('client_list');
         this.props.history.push({
             pathname: '/dashboard/clientlist',
             filterValue: data
@@ -213,7 +214,8 @@ class DashboardView extends Component {
     //function for project dashboard (passing data)
 
     filterProject = (data) => {
-
+        this.props.actions.openkey('projects')
+        this.props.actions.menuKeys('project_list');
         this.props.history.push({
             pathname: '/dashboard/projectlist',
             filterValue: data
@@ -244,7 +246,7 @@ class DashboardView extends Component {
                     <h1 className="customer">Clients</h1>
                     <Row>
                         <div className="addButton btnplace">
-                            <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
+                            <Button onClick={() => {  this.props.actions.openkey('client'); this.props.actions.menuKeys('create_client');this.props.history.push('/dashboard/clientcreate') }}>+</Button>
                         </div>
                     </Row>
                     <Row>
@@ -288,7 +290,7 @@ class DashboardView extends Component {
                     <h1 className="customer">Projects</h1>
                     <Row>
                         <div className="addButton btnplace">
-                            <Button onClick={() => { this.props.history.push('/dashboard/newproject') }}>+</Button>
+                            <Button onClick={() => { this.props.actions.openkey('projects'); this.props.actions.menuKeys('create_project'); this.props.history.push('/dashboard/newproject') }}>+</Button>
                         </div>
                     </Row>
                     <Row>

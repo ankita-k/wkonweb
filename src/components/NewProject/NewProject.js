@@ -790,7 +790,7 @@ class NewProject extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('project_list');this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
                             </div>
                         </FormItem>
 
