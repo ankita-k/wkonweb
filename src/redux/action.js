@@ -182,9 +182,10 @@ export function createClient(data, location) {
                         .then((response) => response.json())
                         .then((responseJSON) => {
                             dispatch(toast('success', 'Client Added Successfully!'));
-                            dispatch(clientList(responseJSON.result))
-                            dispatch(loaders(false))
-                            location.push("../dashboard/clientlist")
+                            dispatch(clientList(responseJSON.result));
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('client_list'));
+                            location.push("../dashboard/clientlist");
                         })
                         .catch((error) => {
                             dispatch(clientList([]));
@@ -264,7 +265,8 @@ export function updateclient(data, id, userid, location) {
                         .then((responseJSON) => {
                             dispatch(toast('success', 'Client Updated Successfully!'));
                             dispatch(clientList(responseJSON.result))
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('client_list'));
                             location.push("../dashboard/clientlist")
                         })
                         .catch((error) => {
@@ -310,7 +312,8 @@ export function deleteclient(id, userid, location) {
                         .then((responseJSON) => {
                             dispatch(toast('success', 'Client Deleted Successfully!'));
                             dispatch(clientList(responseJSON.result))
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('client_list'));
                             location.push("../dashboard/clientlist")
                         })
                         .catch((error) => {
@@ -362,7 +365,8 @@ export function addProject(data, location) {
                         .then((responseJSON) => {
                             dispatch(Projectlist(responseJSON.result))
                             dispatch(toast('success', 'Project Added Successfully!'));
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('project_list')); 
                             location.push("../dashboard/projectlist")
                         })
                         .catch((error) => {
@@ -444,7 +448,8 @@ export function editproject(data, userId, id, location) {
                             console.log(responseJSON)
                             dispatch(Projectlist(responseJSON.result))
                             dispatch(toast('success', 'Project Updated Successfully!'));
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('project_list'));
                             location.push("../dashboard/projectlist")
                         })
                         .catch((error) => {
@@ -486,7 +491,8 @@ export function deleteproject(userId, id, location) {
                         .then((responseJSON) => {
                             dispatch(Projectlist(responseJSON.result))
                             dispatch(toast('success', 'Project Deleted Successfully!'));
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('project_list'));
                             location.push("../dashboard/projectlist")
                         })
                         .catch((error) => {
@@ -563,7 +569,8 @@ export function createUser(data, location) {
                         .then((responseJSON) => {
                             dispatch(userlist(responseJSON.result))
                             dispatch(toast('success', 'User Added Successfully!'));
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('user_list'));
                             location.push("../dashboard/userlist")
                         })
                         .catch((error) => {
@@ -647,7 +654,8 @@ export function editUser(data, id, location) {
                         .then((responseJSON) => {
                             dispatch(userlist(responseJSON.result))
                             dispatch(toast('success', 'User Updated Successfully!'));
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('user_list'));
                             location.push("../dashboard/userlist")
                         })
                         .catch((error) => {
@@ -689,7 +697,8 @@ export function deleteUser(id, location) {
                         .then((responseJSON) => {
                             dispatch(userlist(responseJSON.result))
                             dispatch(toast('success', 'User Deleted Successfully!'));
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('user_list'));
                             location.push("../dashboard/userlist")
                         })
                         .catch((error) => {
@@ -739,7 +748,8 @@ export function billCreate(billdata, location) {
                         .then((responseJSON) => {
                             dispatch(toast('success', 'Bill Created Successfully!'));
                             dispatch(BillList(responseJSON.result))
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('bill_list'));
                             location.push("../dashboard/billlist")
                         })
                         .catch((error) => {
@@ -826,7 +836,8 @@ export function BillEdit(data, id, location) {
                             console.log(responseJSON.result)
                             dispatch(toast('success', 'Bill Updated Successfully!'));
                             dispatch(BillList(responseJSON.result))
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('bill_list'));
                             location.push("../dashboard/billlist")
                         })
                         .catch((error) => {
@@ -1026,4 +1037,30 @@ function userdetail(detail) {
 
     }
 }
+
+
+/**CHANGE COLOR OF SELECTED KEY OF MENU ITEM */
+export function menuKeys(data) {
+    return (dispatch) => {
+        dispatch(menuItem(data))
+    }
+}
+/* DISPATCHING ACTION FOR MENU ITEM SELECTED KEY*/
+function menuItem(data) {
+    return {
+        type: "MENU_SELECTED_KEY",
+        data
+    }
+}
+
+/**OPEN SELECTED KEY OF SELECTED KEY OF MENU ITEM */
+export function openkey(data) {
+    return (dispatch) => {
+        dispatch({
+            type: "OPEN_SELECTED_MENU_KEY",
+            data
+        })
+    }
+}
+
 

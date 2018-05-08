@@ -466,8 +466,8 @@ class BillForm extends Component {
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/billlist') }} >Cancel</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button" >Save</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('bill_list');this.props.history.push('/dashboard/billlist') }} >Cancel</Button>
                             </div>
                         </FormItem>
 
