@@ -108,7 +108,7 @@ export function countrylist() {
 
     return (dispatch) => {
         dispatch(loaders(true))
- // return new Promise(function (resolve, reject) {
+        // return new Promise(function (resolve, reject) {
         fetch('/assets/countrieslist.json', { method: 'GET' })
             .then((response) => {
 
@@ -216,11 +216,11 @@ export function clientlist(userId) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
-             dispatch(clientList(responseJSON.result))
+                dispatch(clientList(responseJSON.result))
                 dispatch(loaders(false))
             })
             .catch((error) => {
-         dispatch(clientList([]))
+                dispatch(clientList([]))
                 dispatch(loaders(false))
             });
 
@@ -276,7 +276,7 @@ export function updateclient(data, id, userid, location) {
                 }
             })
             .catch((error) => {
-                dispatch(toast('Warning', 'Client Updation failed!')); 
+                dispatch(toast('Warning', 'Client Updation failed!'));
                 dispatch(loaders(false))
             });
     }
@@ -403,7 +403,7 @@ export function projectList(userId) {
             .then((responseJSON) => {
                 if (!responseJSON.error)
                     dispatch(Projectlist(responseJSON.result))
-                    dispatch(loaders(false))
+                dispatch(loaders(false))
             })
             .catch((error) => {
                 dispatch(Projectlist([]))
@@ -413,7 +413,7 @@ export function projectList(userId) {
     }
 }
 //API FOR EDIT PROJECT WITH GETTING PROJECT LIST AND DISPATCHING ACTION
-export function editproject(data, id, location) {
+export function editproject(data, userId, id, location) {
     console.log('edit', data)
     console.log(id)
 
@@ -434,12 +434,14 @@ export function editproject(data, id, location) {
                     dispatch(toast('warning', 'Project Updation failed!'));
                     dispatch(loaders(false))
                 } else {
-                    let url = config.apiUrl + 'project/projectlist?userId=' + data.userId;
+                    console.log(userId)
+                    let url = config.apiUrl + 'project/projectlist?userId=' + userId;
 
                     fetch(url,
                         { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
                         .then((response) => response.json())
                         .then((responseJSON) => {
+                            console.log(responseJSON)
                             dispatch(Projectlist(responseJSON.result))
                             dispatch(toast('success', 'Project Updated Successfully!'));
                             dispatch(loaders(false))
@@ -503,7 +505,7 @@ export function deleteproject(userId, id, location) {
 }
 
 //API FOR ADD MEMBER IN  PROJECT 
-export function addMember(data,id) {
+export function addMember(data, id) {
     return (dispatch) => {
         fetch(config.apiUrl + 'project/addmember?id=' + id, {
             headers: {
@@ -518,17 +520,17 @@ export function addMember(data,id) {
             .then((responseJSON) => {
                 console.log(responseJSON)
                 if (!responseJSON.error)
-                dispatch(toast('success', 'Member Added Sucessfully!'));  
+                    dispatch(toast('success', 'Member Added Sucessfully!'));
 
             })
             .catch((error) => {
-                    dispatch(toast('Warning', 'Member Added  failed!'));
+                dispatch(toast('Warning', 'Member Added  failed!'));
             });
 
     }
 }
 
- //.............................. END OF CRUD FOR PROJECT.....................................
+//.............................. END OF CRUD FOR PROJECT.....................................
 
 
 //.....................CRUD FOR USER MANGEMENT.....................................
@@ -844,7 +846,7 @@ export function BillEdit(data, id, location) {
 }
 //.....................CRUD FOR Bill END.....................................
 
-    //.............................. END OF CRUD FOR BILL.....................................
+//.............................. END OF CRUD FOR BILL.....................................
 
 //User ROLE API
 export function findByRole(role) {

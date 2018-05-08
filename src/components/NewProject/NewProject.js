@@ -201,22 +201,7 @@ class NewProject extends Component {
                     }
                     console.log(data)
 
-                    this.props.actions.editproject(data, this.props.location.data.data._id,this.props.history)
-                    //     this.setState({ showLoader: false });
-                    //     this.setState({ show: false });
-                    //     console.log(response)
-                    //     if (!response.error) {
-                    //         this.props.opentoast('success', 'Project Updated Successfully!');
-                    //         this.props.history.push('/dashboard/projectlist')
-                    //     }
-                    //     else {
-                    //         this.props.opentoast('warning', response.message);
-                    //     }
-                    // }, err => {
-                    //     this.setState({ show: false });
-                    //     this.setState({ showLoader: false });
-                    //     this.props.opentoast('warning', 'Project Not Updated Successfully!');
-                    // })
+                    this.props.actions.editproject(data,this.state.userId, this.props.location.data.data._id,this.props.history)
                 }
                 else {
 
@@ -241,19 +226,6 @@ class NewProject extends Component {
 
                     console.log(data)
                     this.props.actions.addProject(data,this.props.history)
-                    //     this.setState({ show: false });
-                    //     console.log(response)
-                    //     if (!response.error) {
-                    //         this.props.opentoast('success', 'Project Added Successfully!');
-                    //         this.props.history.push('/dashboard/projectlist')
-                    //     }
-                    //     else {
-                    //         this.props.opentoast('warning', response.message);
-                    //     }
-                    // }, err => {
-                    //     this.setState({ show: false });
-                    //     this.props.opentoast('warning', 'Project Not Added Successfully!');
-                    // })
                 }
 
             }
@@ -261,9 +233,9 @@ class NewProject extends Component {
     }
 
     componentWillReceiveProps(props) {
-        // console.log(props)
-        // this.setState({ clientlist: props.clientList });
+
     }
+
     // VALIADTE EXPECTED START DATE AND END DATE
     validatetoexpecstart = (rule, value, callback) => {
         const form = this.props.form;
@@ -426,13 +398,9 @@ class NewProject extends Component {
         let newarray = this.state.verticalHeadrarray.filter(item => {
             return (item._id.toLowerCase().indexOf(value.toLowerCase()) > -1)
         });
-        // console.log(newarray)
-        // console.log(newarray[0].name)
         this.setState({ assign: newarray[0].name })
-        // console.log(this.state.assign)
-
-
     }
+
     // CLICK ON PLUS ICON FOR ADDING MEMBER
     addMember = () => {
         let data = {
@@ -512,8 +480,6 @@ class NewProject extends Component {
                                                     {this.state.clientlist.map((item, index) => {
                                                         return <Option key={index} value={item._id}>{item.name}</Option>
                                                     })}
-                                                    {/* <Option value="Sales">Client1</Option>
-                                                    <Option value="Developer">Client2</Option> */}
                                                 </Select>
                                             )}
                                         </FormItem>
@@ -560,8 +526,6 @@ class NewProject extends Component {
                                         })(
                                             <Select
                                                 mode="multiple"
-                                                // labelInValue
-                                                // value={value}
                                                 placeholder="Select users"
                                                 notFoundContent={fetching ? <Spin size="small" /> : null}
                                                 filterOption={false}
@@ -758,32 +722,11 @@ class NewProject extends Component {
                                             {getFieldDecorator('textRequirement', {
                                                 rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
                                             })(
-                                                // <Input placeholder="Brief Requirement" />
                                                 <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
                                             )}
                                         </FormItem>
                                     </Col>
                                 </Row>
-                                {/* <Row>
-                                    <Col xs={24} sm={24} md={24} lg={24}>
-                                        <p className="expecteDateclient">Choose Client :</p>
-                                        <FormItem>
-                                            {getFieldDecorator('client', {
-                                                rules: [{ required: true, message: 'Please select a client!' },]
-                                            })(
-                                                <AutoComplete
-                                                    className="clientHere"
-                                                    onSearch={this.handleSearch}
-                                                    placeholder="Choose Client"
-                                                    dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
-                                                    onSelect={this.onSelect}
-                                                >
-
-                                                </AutoComplete>
-                                            )}
-                                        </FormItem>
-                                    </Col>
-                                </Row> */}
                             </div>
                         </div>
 
