@@ -138,14 +138,15 @@ class NewProject extends Component {
                 console.log(newarray1)
                 this.setState({ addMember: newarray1 })
                 // FOR SEARCH ROLE ==VerticalLead
+                if (this.props.loggeduserDetails.role == 'Sales') {
+                    let index = newarray1.findIndex(x => x.role === "VerticalLead");
+                    console.log(index);
+                    console.log(newarray1[index]);
+                    if (index > -1) {
+                        this.setState({ disableassign: true })
+                    }
 
-                let index = newarray1.findIndex(x => x.role === "VerticalLead");
-                console.log(index);
-                console.log(newarray1[index]);
-                if (index > -1) {
-                    this.setState({ disableassign: true })
                 }
-
             }
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name1,
@@ -182,12 +183,14 @@ class NewProject extends Component {
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
+        console.log(this.props.location);
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 this.setState({ show: true });
                 console.log('Received values of form: ', values);
 
                 if (this.props.location.data) {
+                    console.log(this.props.location.data);
                     console.log('edit function')
                     this.setState({ disableassign: true })
                     let data = {
@@ -210,9 +213,9 @@ class NewProject extends Component {
                         data.actualEndDate = values.actualend._d
                     }
                     console.log(data)
-
                     this.props.actions.editproject(data, this.state.userId, this.props.location.data.data._id, this.props.history)  //UPDATE(EDIT) PROJECT
                 }
+
                 else {
 
                     let data = {
@@ -235,7 +238,7 @@ class NewProject extends Component {
                     }
 
                     console.log(data)
-                    this.props.actions.addProject(data, this.props.history)  //CREATE NEW PROJECT
+                    this.props.actions.addProject(data,this.props.history)  //CREATE NEW PROJECT
                 }
 
             }
@@ -412,22 +415,44 @@ class NewProject extends Component {
 
     // CLICK ON PLUS ICON FOR ADDING MEMBER
     addMember = () => {
-            let data = {
-                userId: this.state.memeberId,
-                role: this.props.loggeduserDetails.role == 'Sales' ? 'VerticalLead' : this.state.role,
-                name: this.state.assign
-            }
-            this.state.assignRole.push(data)
-            this.state.addMember.push(data)  // FOR DISPAY MEMBER NAME
-            console.log(this.state.assignRole)
-            console.log(this.state.assignRole[0].role)
+        let data = {
+            userId: this.state.memeberId,
+            role: this.props.loggeduserDetails.role == 'Sales' ? 'VerticalLead' : this.state.role,
+            name: this.state.assign
+        }
+        this.state.assignRole.push(data)
+        this.state.addMember.push(data)  // FOR DISPAY MEMBER NAME
+        console.log(this.state.assignRole)
+        console.log(this.state.assignRole[0].role) 
+        // VALIDFATION DURING MEMBER ADDED
+        if (this.state.role == "" && this.state.assign == "") {
+            this.props.actions.opentoast('warning', 'please Select Input!');
+        }
+
+        else if (this.props.loggeduserDetails.role == 'Sales' ? '' : this.state.role == "" && this.state.assign != "") {
+            this.props.actions.opentoast('warning', 'please Select Role!');
+        }
+        else if (this.state.role != "" && this.state.assign == "") {
+            this.props.actions.opentoast('warning', 'please Select Assign!');
+
+        }
+        else {
             this.state.assignRole[0].role == 'VerticalLead' ? this.setState({ disableassign: true }) : "";          //After Adding AssigneRole...Input/Button wiil disabled
             this.props.form.setFieldsValue({    //For Clear the Input  Field
                 ['assign']: '',
                 ['role']: '',
             })
+            this.setState({ assign: '' })
+            this.setState({ role: '' })
+            // console.log(this.state.role)
+
+            // console.log(this.state.assign)
+
             this.props.actions.addMember(this.state.assignRole, this.state.projectId)
         }
+
+
+    }
 
     render() {
         const columns = this.state.columns;
@@ -745,7 +770,7 @@ class NewProject extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('project_list');this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('project_list'); this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
                             </div>
                         </FormItem>
 

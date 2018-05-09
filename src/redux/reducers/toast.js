@@ -9,7 +9,7 @@ export function toasts(state ={}, action) {
         case 'TOAST':
         notification[action.toastype]({
             message: action.message,
-            duration: 2,
+            duration: 1.5,
           });
           return state
           break;
