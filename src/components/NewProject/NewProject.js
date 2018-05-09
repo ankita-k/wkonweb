@@ -18,7 +18,15 @@ const columns = [{
 }, {
     title: 'Role',
     dataIndex: 'role',
-}];
+},
+{
+    title: 'Action',
+    key: 'operation',
+    fixed: 'right',
+    width: 100,
+    render: () => <a href="javascript:;"><Icon className="crossButtondetails" type="close-circle-o" /></a>,
+  },
+];
 
 const data = [];
 for (let i = 0; i < 100; i++) {
