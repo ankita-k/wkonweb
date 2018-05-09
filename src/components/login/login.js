@@ -19,70 +19,45 @@ class NormalLoginForm extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            show: false, //loading-bar
-            x: '', //For ChECKBOX VALUE
-        }
+        this.state = {}
         this.handleSubmit = this.handleSubmit.bind(this);
         var id = sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id');
-       
+
         if (id) {
             this.props.history.push('/dashboard');
         }
     }
 
+
+
     // LOGIN FUNCTION
     handleSubmit = (e) => {
-        e.preventDefault()      
+        e.preventDefault()
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                this.setState({ show: true });
-                this.props.actions.login(values.email, values.password).then((response) => {
-                
-                    console.log(response,this.props);
-                    this.setState({ show: false });
-             
-                    if (response.error) {
-                        this.props.actions.opentoast('error', 'No Such User Exists!');
-                        return;
-                    }
-                    else {
-                        if (response.result && response.result.lastLogin) {
-                            if (this.state.x == true) {
-                                console.log('local Storage')
-                                localStorage.setItem('id', response.result._id);
-                                this.props.history.push('/dashboard');
-                            }
-                            else {
-                                console.log('session Storage')
-                                sessionStorage.setItem('id', response.result._id);
-                                this.props.history.push('/dashboard');
-                            }
-                        }
-                        else if (response.result && !response.result.lastLogin) {
-                            if (this.state.x == true) {
-                                localStorage.setItem('id', response.result._id);
-                                this.props.history.push('/passwordchange');
-                            }
-                            else {
-                                sessionStorage.setItem('id', response.result._id)
-                                this.props.history.push('/passwordchange');
-                            }
-                        }
-                    }
-
-                }, err => {
-                    this.setState({ show: false });
-                    this.props.actions.opentoast('error', 'No Such User Exists!');
-                });
+                console.log(values)
+                let data = {
+                    password: values.password,
+                    email: values.email,
+                    checkbox: values.remember
+                }
+                this.props.actions.login(data, this.props.history);
             }
         });
     }
 
-    // FOR CHECKBOX 
-    onChange = (e) => {
-        console.log(`checked = ${e.target.checked}`);
-        this.setState({ x: e.target.checked })
+    // VALIDATE PASSWORD LENGTH
+    validatepassword = (rule, value, callback) => {
+        const form = this.props.form;
+        if (value && form.getFieldValue('password')) {
+            if (value.length < 8)
+                callback('Password length too short!');
+            else {
+                callback();
+            }
+        } else {
+            callback();
+        }
     }
 
     render() {
@@ -91,7 +66,7 @@ class NormalLoginForm extends React.Component {
             <div className="login">
                 <div className="loginmainForm">
                     <Loading
-                        show={this.state.show}
+                        show={this.props.fullloader}
                         color="red"
                         showSpinner={false}
                     />
@@ -114,17 +89,19 @@ class NormalLoginForm extends React.Component {
                                         </FormItem>
                                         <FormItem>
                                             {getFieldDecorator('password', {
-                                                rules: [{ required: true, message: 'Please input your Password!' }],
+                                                rules: [{ required: true, message: 'Please input your Password!' },
+                                                { validator: this.validatepassword }],
                                             })(
-                                                <Input type="password" placeholder="Password" maxLength="8"/>
+                                                <Input type="password" placeholder="Password" minLength="8" />
                                             )}
                                         </FormItem>
                                         <FormItem className="text-left">
                                             {getFieldDecorator('remember', {
+                                                rules: [{ required: false }],
                                                 valuePropName: 'checked',
                                                 initialValue: false,
                                             })(
-                                                <Checkbox onChange={this.onChange}  >Remember me</Checkbox>
+                                                <Checkbox>Remember me</Checkbox>
                                             )}
                                             {/* <a className="loginFormforgot" href="">Forgot password?</a> */}
 
@@ -200,14 +177,14 @@ class NormalLoginForm extends React.Component {
     }
 }
 const mapStateToProps = (state) => {
-    console.log('login screen info',state)
- return  state
-    
+    console.log('login screen info', state)
+    return state
+
 }
 
 function mapDispatchToProps(dispatch, state) {
     return ({
-        actions:  bindActionCreators(loginAction, dispatch)
+        actions: bindActionCreators(loginAction, dispatch)
     })
 }
 const WrappedNormalLoginForm = Form.create()(NormalLoginForm);

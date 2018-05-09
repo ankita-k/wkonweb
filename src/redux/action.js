@@ -5,17 +5,6 @@ import { developerList } from './reducers/developerList';
 let conf = config.headers;
 
 
-//function for login 
-function loginApi(json) {
-
-    return {
-        type: "USER_LOGIN_SUCCESS",
-        json
-
-    }
-}
-
-
 
 //function for change pwd
 function changepwd(json) {
@@ -29,28 +18,57 @@ function changepwd(json) {
 
 
 // API call for login
-export function login(username, password) {
-
+export function login(logindata, location) {
     return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
+        dispatch(loaders(true))
+        fetch(config.apiUrl + 'user/login?username=' + logindata.email + '&password=' + logindata.password,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET'
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.error) {
+                    dispatch(loaders(false));
+                    dispatch(toast('error', 'No Such User Exist'));
+                   
+                }
+                else {
+                    dispatch(loaders(false));
+                    if (responseJSON.result && responseJSON.result.lastLogin) {
+                        if (logindata.checkbox == true) {
+                            console.log('local Storage')
+                            localStorage.setItem('id', responseJSON.result._id);
+                            location.push('/dashboard');
+                        }
+                        else {
+                            console.log('session Storage')
+                            sessionStorage.setItem('id', responseJSON.result._id);
+                            location.push('/dashboard');
+                        }
+                    }
+                    else if (responseJSON.result && !responseJSON.result.lastLogin) {
+                        if (logindata.checkbox == true) {
+                            localStorage.setItem('id', responseJSON.result._id);
+                            location.push('/passwordchange');
+                        }
+                        else {
+                            sessionStorage.setItem('id', responseJSON.result._id)
+                            location.push('/passwordchange');
+                        }
+                    }
+                }
 
-            fetch(config.apiUrl + 'user/login?username=' + username + '&password=' + password,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'GET'
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    dispatch(loginApi(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+
+            })
+            .catch((error) => {
+                dispatch(loaders(false));
+                dispatch(toast('error', 'No Such User Exist'))
+               
+            });
+
     }
 }
 
@@ -847,7 +865,7 @@ export function billCreate(billdata, location) {
                 }
             })
             .catch((error) => {
-                dispatch(opentoast('warning', 'Bill Creation Failed!'));
+                dispatch(toast('warning', 'Bill Creation Failed!'));
                 dispatch(loaders(false))
             });
 
