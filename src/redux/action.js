@@ -626,7 +626,7 @@ export function createUser(data, location) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (responseJSON.error) {
-                    dispatch(toast('warning', 'User Creation failed!'));
+                    dispatch(toast('warning', responseJSON.message));
                     dispatch(loaders(false))
                 } else {
                     let url = config.apiUrl + "user/getAllUser";
