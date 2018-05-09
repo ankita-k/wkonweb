@@ -33,7 +33,7 @@ export function login(logindata, location) {
                 if (responseJSON.error) {
                     dispatch(loaders(false));
                     dispatch(toast('error', 'No Such User Exist'));
-                   
+
                 }
                 else {
                     dispatch(loaders(false));
@@ -66,7 +66,7 @@ export function login(logindata, location) {
             .catch((error) => {
                 dispatch(loaders(false));
                 dispatch(toast('error', 'No Such User Exist'))
-               
+
             });
 
     }
@@ -619,7 +619,7 @@ export function addMember(data, id) {
                         })
                         .then((response) => response.json())
                         .then((responseJSON) => {
-                            console.log('member Added',responseJSON)
+                            console.log('member Added', responseJSON)
                             dispatch(toast('success', 'Member Added Sucessfully!'));
 
                         })
@@ -636,6 +636,43 @@ export function addMember(data, id) {
                 dispatch(toast('warning', 'Member Added  failed!'));
                 dispatch(loaders(false))
             });
+    }
+}
+//API FOR REMOVE MEMBER FROM PROJECT AND UPDATE
+export function removeMember(data, projectId) {
+    console.log('member Removed',data, projectId)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'project/deletemember?id=' + projectId,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'PUT',
+                body: JSON.stringify({userId:data})
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+console.log(responseJSON.members)
+                console.log('Member Deleted',responseJSON)
+                dispatch(toast('success', 'Member Deleted!'));
+                dispatch(member(responseJSON.result.members));
+
+            })
+            .catch((error) => {
+                dispatch(toast('warning', 'Member Deleted  failed!'));
+            });
+
+    }
+
+}
+// MEMBER REMOVE ACTION
+function member(list) {
+    return {
+        type: "MEMBER_REMOVE",
+        list
+
     }
 }
 

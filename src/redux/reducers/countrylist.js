@@ -3,8 +3,8 @@ import * as actionCreators from '../action';
 
 //REDUCER FOR COUNTRYLIST
 export function countrylists(state = [], action) {
-    console.log("welcome to reducer")
-    console.log(action)
+    // console.log("welcome to reducer")
+    // console.log(action)
   
     switch (action.type) {
 

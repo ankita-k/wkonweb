@@ -14,6 +14,8 @@ import {fullloader} from '../reducers/loader';
 import {listByTags} from '../reducers/listByTags';
 import {menuselectedkey} from '../reducers/menukey';
 import {openKey} from '../reducers/openkey';
+import {ProjectMember} from '../reducers/member';
+
 // reducers list
 const rootReducer = combineReducers({
     toasts,                          // to show toast
@@ -30,7 +32,8 @@ const rootReducer = combineReducers({
     fullloader,
     listByTags,
     menuselectedkey,
-    openKey
+    openKey,
+    ProjectMember
 })
 
 

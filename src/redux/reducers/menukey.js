@@ -4,7 +4,7 @@ import * as actionCreators from '../action';
 
 // REDUCER FOR CHANGING MENU ITEM SELECTED KEY
 export function menuselectedkey(state = [], action) {
-    console.log('full loader reducer', action)
+    // console.log('full loader reducer', action)
 
     switch (action.type) {
         case 'MENU_SELECTED_KEY':

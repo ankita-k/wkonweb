@@ -3,7 +3,7 @@ import * as actionCreators from '../action';
 import moment from 'moment'
 // REDUCER FOR BILL CREATION
 export function billList (state = [], action) {
-    console.log(action)
+    // console.log(action)
     switch (action.type) {
         case 'BILL_LIST':
       

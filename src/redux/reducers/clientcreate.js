@@ -3,7 +3,7 @@ import * as actionCreators from '../action';
 
 // REDUCER FOR  CLIENT CREATION
 export function clientCreate (state = {}, action) {
-    console.log("reducerssssssssssssss")
+    // console.log("reducerssssssssssssss")
  
     switch (action.type) {
         
