@@ -13,16 +13,15 @@
     width: 8em !important;
     height: auto !important;
 }
-.upload{
+.upload {
     width: 100%;
     height: auto;
-    border-width: 2px;
-    border-color: rgb(102, 102, 102);
-    border-style: dashed;
+   
     border-radius: 5px;
+    border: 0.5px solid hsla(0, 2%, 21%, 0.29);
 }
 .dropzone {
-    padding: 1em;
+    padding: 5em;
 }
 .uploadFile aside h2 {
     padding-bottom: 1em;
@@ -30,7 +29,7 @@
 .uploadFile {
     text-align: center;
     background: #fff;
-    margin: 0 14em 0 14em;
+    margin: 2em 2em 1em 2em;
 }
 .upload button.ant-btn {
     width: 13vw;
@@ -42,7 +41,7 @@
     margin-bottom: 4em;
     margin-top: 1em;
 }
-.psd {
+/* .psd {
     margin-left: 1em;
     margin-bottom: 1em;
     background: rgba(145, 11, 150, 0.678);
@@ -53,19 +52,19 @@
     color: #fff;
     -ms-flex-line-pack: center;
     align-content: center;
-}
+} */
 .uploadinfo h1 {
     font-family: 'Lato', sans-serif;
     text-align: left;
     padding: 0;
+    font-size: 15px;
 }
 .uploadinfo p {
     text-align: right;
     margin-right: 1em;
 }
-.psd h2 {
-    padding-top: 12px;
-    color: #fff;
+.psd img {
+   width: 60%;
 }
 /* .crossbtn{
     height: 10px;
@@ -75,10 +74,11 @@
     color: black;
 } */
 .crossbtn img {
-    width: 40%;
+    margin-right: 2em;
+    width: 25%;
 }
 .uploadedfile {
-    margin-bottom: 1em;
+    padding-bottom: 1em;
 }
 .uploadinfo .ant-progress-success-bg, .ant-progress-bg{
     background: #299e2e;

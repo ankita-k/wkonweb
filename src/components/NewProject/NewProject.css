@@ -22,6 +22,11 @@
 .informationProject .ant-row.ant-form-item {
     margin-bottom: 10px !important;
 }
+i.anticon.anticon-close-circle-o.crossButtondetails {
+    color: #e01e1e;
+    width: 37px;
+    font-size: 17px;
+}
 .innercardContent.cardProject h1.NewCustomer{
     margin: 10px 0 10px 27px;
 }

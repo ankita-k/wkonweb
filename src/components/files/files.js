@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import uploadfile from '../../Images/cloud.svg';
+
+import fileicon3 from '../../Images/fileicon3.svg';
+import fileicon4 from '../../Images/fileicon4.svg';
 import cross from '../../Images/cross.svg';
 import './files.css';
 import { Card, Table, Button, Icon, Row, Input, Col, Modal, Progress } from 'antd';
@@ -65,11 +68,12 @@ class Files extends Component {
 
                         <div className="uploadedfile">
                             <Row>
-                                <Col lg={4}>
-                                    <div className="psd"><h2>PSD</h2></div>
+                                <Col lg={1}></Col>
+                                <Col lg={2}>
+                                    <div className="psd"><img src={fileicon3}/></div>
 
                                 </Col>
-                                <Col lg={20}>
+                                <Col lg={21}>
                                     <div className="uploadinfo">
                                         <Row>
                                             <Col lg={12}>
@@ -79,23 +83,28 @@ class Files extends Component {
                                                 <p>2.4 Mb</p>
                                             </Col>
                                             <Col lg={2}>
-                                            <div>
-                                            <a className="crossbtn"><img src={cross}/></a></div>
+                                                <div>
+                                                    <a className="crossbtn"><img src={cross} /></a></div>
                                             </Col>
                                         </Row>
                                     </div>
-                                    <Row><Progress percent={90} status="active" /></Row>
+                                    <Row>
+                                        <Col lg={22}>
+                                            <Progress percent={90} status="active" showInfo={false} />
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
 
                         </div>
                         <div className="uploadedfile">
                             <Row>
-                                <Col lg={4}>
-                                    <div className="psd"><h2>JPG</h2></div>
+                                <Col lg={1}></Col>
+                                <Col lg={2}>
+                                    <div className="psd"><img src={fileicon3}/></div>
 
                                 </Col>
-                                <Col lg={20}>
+                                <Col lg={21}>
                                     <div className="uploadinfo">
                                         <Row>
                                             <Col lg={12}>
@@ -105,23 +114,28 @@ class Files extends Component {
                                                 <p>247Kb</p>
                                             </Col>
                                             <Col lg={2}>
-                                            <div>
-                                            <a className="crossbtn"><img src={cross}/></a></div>
+                                                <div>
+                                                    <a className="crossbtn"><img src={cross} /></a></div>
                                             </Col>
                                         </Row>
                                     </div>
-                                    <Row><Progress percent={30} status="active" /></Row>
+                                    <Row>
+                                        <Col lg={22}>
+                                            <Progress percent={30} status="active" showInfo={false} />
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
 
                         </div>
                         <div className="uploadedfile">
                             <Row>
-                                <Col lg={4}>
-                                    <div className="psd"><h2>PDF</h2></div>
+                                <Col lg={1}></Col>
+                                <Col lg={2}>
+                                    <div className="psd"><img src={fileicon3}/></div>
 
                                 </Col>
-                                <Col lg={20}>
+                                <Col lg={21}>
                                     <div className="uploadinfo">
                                         <Row>
                                             <Col lg={12}>
@@ -131,23 +145,28 @@ class Files extends Component {
                                                 <p>2.4 Mb</p>
                                             </Col>
                                             <Col lg={2}>
-                                            <div>
-                                            <a className="crossbtn"><img src={cross}/></a></div>
+                                                <div>
+                                                    <a className="crossbtn"><img src={cross} /></a></div>
                                             </Col>
                                         </Row>
                                     </div>
-                                    <Row><Progress percent={45} status="active" /></Row>
+                                    <Row>
+                                        <Col lg={22}>
+                                            <Progress percent={45} status="active" showInfo={false} />
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
 
                         </div>
                         <div className="uploadedfile">
                             <Row>
-                                <Col lg={4}>
-                                    <div className="psd"><h2>PSD</h2></div>
+                                <Col lg={1}></Col>
+                                <Col lg={2}>
+                                    <div className="psd"><img src={fileicon4}/></div>
 
                                 </Col>
-                                <Col lg={20}>
+                                <Col lg={21}>
                                     <div className="uploadinfo">
                                         <Row>
                                             <Col lg={12}>
@@ -157,12 +176,16 @@ class Files extends Component {
                                                 <p>2.4 Mb</p>
                                             </Col>
                                             <Col lg={2}>
-                                            <div>
-                                            <a className="crossbtn"><img src={cross}/></a></div>
+                                                <div>
+                                                    <a className="crossbtn"><img src={cross} /></a></div>
                                             </Col>
                                         </Row>
                                     </div>
-                                    <Row><Progress percent={70} status="active" /></Row>
+                                    <Row>
+                                        <Col lg={22}>
+                                            <Progress percent={70} showInfo={false} />
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
 
