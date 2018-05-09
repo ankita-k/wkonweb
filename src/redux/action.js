@@ -1145,3 +1145,284 @@ export function emailService(data) {
     }
 }
 /** APICALL FOR SENDING EMAIL TO USER ENDS */
+
+/* ***************PROJECT MODULES  CRUD ***************/
+/* Add Module*/
+export function addModule(data) {
+    console.log(data)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'Module Added Successfully'))
+                }
+                else {
+                    dispatch(toast('error', 'Module Addition Failed'))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', ' Module Addition Failed'))
+            });
+    }
+}
+
+/*DELETE MODULE*/
+
+export function deleteModule(id) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'DELETE',
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'Module Deleted Successfully'))
+                }
+                else {
+                    dispatch(toast('error', 'Module Deletion Failed'))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', ' Module Deletion Failed'))
+            });
+    }
+}
+
+/* ***************PROJECT MODULES  CRUD  ENDS***************/
+
+
+
+
+
+/* ***************PROJECT SUB MODULES  CRUD ***************/
+/* Add Sub Module*/
+export function addSubModule(data) {
+    console.log(data)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'SubModule Added Successfully'))
+                }
+                else {
+                    dispatch(toast('error', 'SubModule Addition Failed'))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', ' SubModule Addition Failed'))
+            });
+    }
+}
+
+/*DELETE  SUB MODULE*/
+
+export function deleteSubModule(id) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'DELETE',
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'SubModule Deleted Successfully'))
+                }
+                else {
+                    dispatch(toast('error', 'SubModule Deletion Failed'))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', 'Sub Module Deletion Failed'))
+            });
+    }
+}
+
+/* ***************PROJECT SUB MODULES  CRUD  ENDS***************/
+
+
+
+/* ***************PROJECT TASK  CRUD ***************/
+/* ADD TASK*/
+export function addTask(data) {
+    console.log(data)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'Task Added Successfully'))
+                }
+                else {
+                    dispatch(toast('error', 'Task Addition Failed'))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', ' Task Addition Failed'))
+            });
+    }
+}
+
+/*DELETE  TASK MODULE*/
+
+export function deleteTask(id) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'DELETE',
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'Task Deleted Successfully'))
+                }
+                else {
+                    dispatch(toast('error', 'Task Deletion Failed'))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', 'Task Deletion Failed'))
+            });
+    }
+}
+/*ASSIGN TASK TO DEVELOPERS FOR SUBMODULE OF MODULE*/
+export function assignDevelopers(data) {
+    console.log(data)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'Task Assigned Successfully'))
+                }
+                else {
+                    dispatch(toast('error', 'Task Assignment Failed'))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', ' Task Assignment Failed'))
+            });
+    }
+}
+/*FETCHING STARTED DATE OF TASK*/
+export function taskStarted(data) {
+    console.log(data)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'PUT',
+                body: JSON.stringify(data)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'Task  Started'))
+                }
+                else {
+                    dispatch(toast('error', 'Task not started '))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', ' Task not started'))
+            });
+    }
+}
+
+
+/*FETCHING END DATE OF TASK*/
+export function taskEnded(data) {
+    console.log(data)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'PUT',
+                body: JSON.stringify(data)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'Task Ended'))
+                }
+                else {
+                    dispatch(toast('error', 'Task not Ended '))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', ' Task not Ended'))
+            });
+    }
+}
+
+/* ***************PROJECT SUB TASK CRUD  ENDS***************/
