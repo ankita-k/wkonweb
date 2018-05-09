@@ -1059,7 +1059,7 @@ function loaders(data) {
 }
 
 
-// API CALL FOR FETCHING LOGGED USER DETAILS AND DISPATCHING ACTION
+/** API CALL FOR FETCHING LOGGED USER DETAILS AND DISPATCHING ACTION**/
 export function userdetails(id) {
     return (dispatch) => {
         fetch(config.apiUrl + 'user/' + id,
@@ -1089,7 +1089,7 @@ function userdetail(detail) {
 
     }
 }
-
+/** API CALL FOR FETCHING LOGGED USER DETAILS AND DISPATCHING ACTION ENDS**/
 
 /**CHANGE COLOR OF SELECTED KEY OF MENU ITEM */
 export function menuKeys(data) {
@@ -1115,4 +1115,33 @@ export function openkey(data) {
     }
 }
 
-
+/** APICALL FOR SENDING EMAIL TO USER */
+export function emailService(data) {
+    console.log(data)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'Mail Sent Successfully'))
+                }
+                else {
+                    dispatch(toast('error', 'Mail Sending Failed'))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', 'Mail Sending Failed'))
+            });
+    }
+}
+/** APICALL FOR SENDING EMAIL TO USER ENDS */
