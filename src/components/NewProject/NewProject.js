@@ -11,22 +11,22 @@ import Loading from 'react-loading-bar';
 
 import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
-const columns = [{
-    title: 'Assign To',
-    dataIndex: 'name',
-    width: 200,
-}, {
-    title: 'Role',
-    dataIndex: 'role',
-},
-{
-    title: 'Action',
-    key: 'operation',
-    fixed: 'right',
-    width: 100,
-    render: () => <a href="javascript:;"><Icon className="crossButtondetails" type="close-circle-o" /></a>,
-  },
-];
+// const columns = [{
+//     title: 'Assign To',
+//     dataIndex: 'name',
+//     width: 200,
+// }, {
+//     title: 'Role',
+//     dataIndex: 'role',
+// },
+// {
+//     title: 'Action',
+//     key: 'operation',
+//     fixed: 'right',
+//     width: 100,
+//     render: () => <a href="javascript:;"><Icon className="crossButtondetails" type="close-circle-o" /></a>,
+//   },
+// ];
 
 const data = [];
 for (let i = 0; i < 100; i++) {
@@ -87,7 +87,14 @@ class NewProject extends Component {
             }, {
                 title: 'Role',
                 dataIndex: 'role',
-            }]
+            },
+            {
+                title: 'Action',
+                key: 'operation',
+                fixed: 'right',
+                width: 100,
+                render: () => <a href="javascript:;"><Icon className="crossButtondetails" type="close-circle-o" /></a>,
+              },]
         }
 
 
