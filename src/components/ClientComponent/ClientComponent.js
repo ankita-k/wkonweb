@@ -3,6 +3,8 @@ import { Form, Input, Button, Row, Col, Card, Select } from 'antd';
 import './ClientComponent.css';
 import { Divider } from 'antd';
 import * as actioncreators from '../../redux/action';
+import { bindActionCreators } from 'redux';
+import * as ClientCreate from '../../redux/action';
 import { connect } from "react-redux";
 import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
@@ -16,7 +18,7 @@ class ClientComponent extends Component {
         this.state = {
             countrylist: [],
             show: false,  //loading-bar
-            clientEdit: false
+            clientEdit: false,
         }
     }
 
@@ -32,24 +34,21 @@ class ClientComponent extends Component {
                 ['phone']: this.props.location.data.data.phoneNumber,
                 ['domain']: this.props.location.data.data.domain,
                 ['country']: this.props.location.data.data.country,
-                ['status']: this.props.location.data.data.status
+                ['status']: this.props.location.data.data.status,
+                ['currency']: this.props.location.data.data.currency,
+                ['paypal_id']: this.props.location.data.data.paypal_id,
+                ['company']: this.props.location.data.data.company1 ? this.props.location.data.data.company1 : '',
+                ['address']: this.props.location.data.data.address1 ? this.props.location.data.data.address1 : ''
+
             });
             console.log(this.props.form)
         }
 
-        // GET COUNTRY LIST
-
-        console.log('component will didmount')
-        this.props.countrylist().then((data) => {
-            // this.setState({ show: false });
-            this.setState({ countrylist: data });
-            console.log(this.state.countrylist)
-        }, err => {
-
-        })
     }
+    componentWillReceiveProps(props) {
+        console.log("componentwillrecieveprops")
 
-
+    }
     // TAKE INPUT FIELD VALUE
     inputValue = (e) => {
         this.setState({ [e.target.name]: e.target.value });
@@ -67,12 +66,19 @@ class ClientComponent extends Component {
         this.setState({ country: e });
         console.log(e)
     }
+    //Currency SELECTED
+    selectCurrency = (e) => {
+        this.setState({ currency: e });
+        console.log(e)
+    }
+
 
     handleSubmit = (e) => {
+
         e.preventDefault();
-        this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                this.setState({ show: true });
                 console.log(values)
 
                 if (this.props.location.data) {
@@ -82,23 +88,14 @@ class ClientComponent extends Component {
                         phoneNumber: values.phone,
                         email: values.email,
                         name: values.name,
-
-                        domain: values.domain
+                        domain: values.domain,
+                        currency: values.currency,
+                        paypalId: values.paypal_id,
+                        company: values.company,
+                        address: values.address
+                        // paypal_id:values.paypalId
                     }
-                    console.log('edshgj')
-                    this.props.updateclient(data, this.props.location.data.data._id).then(data => {
-                        console.log(data)
-                        if (!data.error) {
-                            this.props.opentoast('success', 'Client Updated Successfully!');
-                            this.props.history.push('/dashboard/clientlist')
-                        }
-                        else{
-                            this.props.opentoast('warning', data.message);
-                        }
-                    }, err => {
-                        this.setState({ show: false });
-                        this.props.opentoast('warning', 'Client Not Updated Successfully!');
-                    })
+                    this.props.actions.updateclient(data, this.props.location.data.data._id, sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'), this.props.history)
                 }
                 else {
                     let data = {
@@ -108,22 +105,13 @@ class ClientComponent extends Component {
                         email: values.email,
                         name: values.name,
                         userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
-                        domain: values.domain
+                        domain: values.domain,
+                        currency: values.currency,
+                        paypalId: values.paypal_id,
+                        company: values.company,
+                        address: values.address
                     }
-                    this.props.createClient(data).then(result => {
-                        this.setState({ show: false });
-                        console.log(result);
-                        if (!result.error) {
-                            this.props.opentoast('success', 'Client Added Successfully!');
-                            this.props.history.push('/dashboard/clientlist')
-                        }
-                        else{
-                            this.props.opentoast('warning', result.message);
-                        }
-                    }, err => {
-                        this.setState({ show: false });
-                        this.props.opentoast('warning', 'Client Not Added Successfully!');
-                    })
+                    this.props.actions.createClient(data, this.props.history)
                 }
 
 
@@ -139,32 +127,19 @@ class ClientComponent extends Component {
                     color="red"
                     showSpinner={false}
                 />
+                <div>
+                    {/* <h1 className="NewCustomer">New Client</h1> */}
+                    {(this.state.clientEdit == true) ?
+                        <h1 className="NewCustomer">Edit Client</h1> : <h1 className="NewCustomer">New Client</h1>
+                    }
+                </div>
                 <Card className="innercardContent" bordered={false}>
                     {/* --new customer details-- */}
-                    <div className="newCustomerform">
-                        {/* <h1 className="NewCustomer">New Client</h1> */}
-                        {(this.state.clientEdit == true) ?
-                            <h1 className="NewCustomer">Edit Client</h1> : <h1 className="NewCustomer">New Client</h1>
-                        }
-                        {/* <Divider dashed className="underLine" /> */}
-                        {/* <div className="headingLine">
-                            <Row className="formcustomer">
-                                <Col xs={24} sm={24} md={12} lg={24}>
-                                <Row>
-                                <Col xs={24} sm={24} md={6} lg={4} className="linea"></Col>
-                                <Col xs={24} sm={24} md={6} lg={4} className="lineb"></Col>
-                                <Col xs={24} sm={24} md={6} lg={4} className="lineb"></Col>
-                                <Col xs={24} sm={24} md={6} lg={4} className="lineb"></Col>
-                                </Row>
-                                
-                                </Col>
-                            </Row>
-                        </div> */}
-                    </div>
+
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="inputForminfo">
                             <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Name">
                                         {getFieldDecorator('name', {
                                             rules: [{ required: true, message: 'Please input your Name!' }],
@@ -175,9 +150,10 @@ class ClientComponent extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                {/* </Row>
+                            <Row> */}
+                                <Col md={2} lg={2}></Col>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Email">
                                         {getFieldDecorator('email', {
                                             rules: [{
@@ -194,46 +170,52 @@ class ClientComponent extends Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                            <FormItem label="Address">
+                                <Col xs={24} sm={24} md={11} lg={11}>
+                                    <FormItem label="Address">
                                         {getFieldDecorator('address', {
                                             rules: [{ required: true, message: 'Please input your Address!' }],
                                         })(
                                             <Input
-                                                maxLength="15"
-                                                placeholder="Address" name="address" />
+            
+                                                placeholder="Address" name="address" maxLength="100"/>
                                         )}
                                     </FormItem>
-                                    </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                </Col>
+                                {/* </Row>
+                            <Row> */}
+                                <Col md={2} lg={2}></Col>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Company">
                                         {getFieldDecorator('company', {
                                             rules: [{ required: true, message: 'Please input your Company!' }],
                                         })(
                                             <Input
-                                                maxLength="20"
+                                        
                                                 placeholder="Company" name="company" />
                                         )}
                                     </FormItem>
-                                    </Col>
+                                </Col>
                             </Row>
                             <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                    <FormItem label="paypal_id">
+                                <Col xs={24} sm={24} md={11} lg={11}>
+                                    <FormItem label="Paypal Id (Email)">
                                         {getFieldDecorator('paypal_id', {
-                                            rules: [{ required: true, message: 'Please input your paypal_id!' }],
+                                            rules: [{
+                                                type: 'email', message: 'The input is not valid paypal id!'
+                                            },
+                                            { required: true, message: 'Please input your Paypal id!' }],
+
                                         })(
                                             <Input
-                                                maxLength="15"
+                    
                                                 placeholder="paypal_id" name="paypal_id" />
                                         )}
                                     </FormItem>
-                                    </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                </Col>
+                                {/* </Row>
+                            <Row> */}
+                                <Col md={2} lg={2}></Col>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Country">
                                         {getFieldDecorator('country', {
                                             rules: [{ required: true, message: 'Please select your Country!' }],
@@ -244,7 +226,7 @@ class ClientComponent extends Component {
                                                 name="country"
                                                 showSearch
                                             >
-                                                {this.state.countrylist.map((item, index) => {
+                                                {this.props.countrylists.map((item, index) => {
                                                     return (<Option key={index} value={item.name}>{item.name}</Option>)
                                                 })}
 
@@ -254,7 +236,7 @@ class ClientComponent extends Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Phone No.">
                                         {getFieldDecorator('phone', {
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
@@ -262,25 +244,26 @@ class ClientComponent extends Component {
                                             <Input
                                                 type="test"
                                                 maxLength="15"
-                                                placeholder="Phone No." name="phoneNumber" />
+                                                placeholder="Phone No." name="phoneNumber" minlength="8" maxlength="15"/>
                                         )}
                                     </FormItem>
                                 </Col>
-                            </Row>
+                                {/* </Row>
 
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                            <Row> */}
+                                <Col md={2} lg={2}></Col>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Domain">
                                         {getFieldDecorator('domain', {
                                             rules: [{ required: true, message: 'Please input your Domain!' }],
                                         })(
-                                            <Input placeholder="Domain" name="domain" />
+                                            <Input placeholder="Domain" name="domain" maxlength="50"/>
                                         )}
                                     </FormItem>
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
+                                <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Status">
                                         {getFieldDecorator('status', {
                                             rules: [{ required: true, message: 'Please select your status!' }],
@@ -298,31 +281,37 @@ class ClientComponent extends Component {
                                         )}
                                     </FormItem>
                                 </Col>
-                            </Row>
-                            <Row>
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                            <FormItem label="Currency">
+                                {/* </Row>
+                            <Row> */}
+                                <Col md={2} lg={2}></Col>
+                                <Col xs={24} sm={24} md={11} lg={11}>
+                                    <FormItem label="Currency">
                                         {getFieldDecorator('currency', {
                                             rules: [{ required: true, message: 'Please select your Currency!' }],
                                         })(
                                             <Select className="statuspipeline"
                                                 placeholder="Currency"
-                                                onChange={this.selectStatus}
+                                                onChange={this.selectCurrency}
                                                 showSearch
 
                                             >
-                                                <Option value="India">INR</Option>
-                                                <Option value="Us">UNR</Option>
+                                                <Option value="USD">USD</Option>
+                                                <Option value="GBP">GBP</Option>
+                                                <Option value="AUD">AUD</Option>
+                                                <Option value="INR">INR</Option>
+                                                <Option value="EUR">EUR</Option>
+                                                <Option value="AED">AED</Option>
                                             </Select>
                                         )}
                                     </FormItem>
-                                    </Col>
+                                </Col>
                             </Row>
                         </div>
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button" >Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
+                                {/* loading={this.state.showLoader} */}
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('client_list');this.props.history.push('/dashboard/clientlist') }}>Cancel</Button>
                             </div>
                         </FormItem>
 
@@ -337,8 +326,14 @@ class ClientComponent extends Component {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state)
     return state
+}
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(ClientCreate, dispatch)
+    })
 }
 
 const WrappedClientComponent = Form.create()(ClientComponent);
-export default connect(mapStateToProps, actioncreators)(WrappedClientComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedClientComponent);

@@ -3,15 +3,20 @@ import { Card, Table, Button, Icon, Row, Input, Modal, Col } from 'antd';
 import '../NewProject/NewProject.css';
 import './billList.css';
 import { connect } from "react-redux";
-import * as actioncreators from '../../redux/action';
+import * as billlistAction from '../../redux/action';
+import { bindActionCreators } from 'redux';
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import { Select } from 'antd';
 import warning from '../../Images/war.png';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
+import moment from 'moment';
+import editList from '../../Images/file.svg';
+import deleteList from '../../Images/garbage.svg';
 const Search = Input.Search;
 const Option = Select.Option;
+
 
 
 
@@ -39,11 +44,11 @@ class BillList extends Component {
         this.setState({ visible: false });
     }
 
-   
+
     constructor(props) {
         super(props);
         this.state = {
-            clientlist: [],
+            billerlist: [],
             show: true, //loading-bar        
             selectedId: '',  //FOR SELECT CLIENT ROW ID
             searchedBill: [],
@@ -56,63 +61,63 @@ class BillList extends Component {
                 key: 'BDE',
 
             }, {
-                title: 'balance',
+                title: 'Balance',
                 dataIndex: 'balance',
                 key: 'balance',
             }, {
-                title: 'billNumber',
+                title: 'BillNumber',
                 dataIndex: 'billNumber',
                 key: 'billNumber',
             }, {
-                title: 'billingDate',
+                title: 'BillingDate',
                 dataIndex: 'billingDate',
                 key: 'billingDate',
             }, {
-                title: 'client',
+                title: 'Client',
                 dataIndex: 'client',
                 key: 'client',
             }, {
-                title: 'company',
+                title: 'Company',
                 dataIndex: 'company',
                 key: 'company',
             }, {
-                title: 'currency',
+                title: 'Currency',
                 dataIndex: 'currency',
                 key: 'currency',
             }, {
-                title: 'email',
+                title: 'Email',
                 dataIndex: 'email',
                 key: 'email',
             }, {
-                title: 'paypalAccountName',
+                title: 'PaypalAccountName',
                 dataIndex: 'paypalAccountName',
                 key: 'paypalAccountName',
             }, {
-                title: 'paypalBillNumber',
+                title: 'PaypalBillNumber',
                 dataIndex: 'paypalBillNumber',
                 key: 'paypalBillNumber',
             }, {
-                title: 'projectCost',
+                title: 'ProjectCost',
                 dataIndex: 'projectCost',
                 key: 'projectCost',
             }, {
-                title: 'projectName',
+                title: 'ProjectName',
                 dataIndex: 'projectName',
                 key: 'projectName',
             }, {
-                title: 'receivedAmount',
+                title: 'ReceivedAmount',
                 dataIndex: 'receivedAmount',
                 key: 'receivedAmount',
             }, {
-                title: 'receivedDate',
+                title: 'ReceivedDate',
                 dataIndex: 'receivedDate',
                 key: 'receivedDate',
             }, {
-                title: 'status',
+                title: 'Status',
                 dataIndex: 'status',
                 key: 'status',
             }, {
-                title: 'type',
+                title: 'Type',
                 dataIndex: 'type',
                 key: 'type',
             }, {
@@ -122,7 +127,7 @@ class BillList extends Component {
                     <Row>
                         <Col lg={{ span: 10 }}>
                             <Button className="edit" onClick={() => { this.editBill(record) }}>
-                                <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
+                                <a href="javascript:;"><img className="fileIcon" src={editList} /></a></Button></Col>
                         <Col lg={{ span: 8 }}></Col>
                         {/* <Col lg={{ span: 10 }}>
                             <Button className="delete" onClick={this.showModal}><a href="javascript:;"><Icon type="delete" /></a></Button>
@@ -135,54 +140,35 @@ class BillList extends Component {
         }
     }
     componentDidMount() {
-        this.getBills();
+     
+        console.log(this.props);
+        this.setState({ show: true })
+        this.commonFunction();
+
+    }
+    componentWillReceiveProps(props) {
+     
+        console.log('component will receive props');
+        console.log(props)
+        this.commonFunction();
 
     }
 
+    // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
 
-    // get billlist
-    getBills = () => {
-        this.setState({show:true})
-        this.props.billlist(this.state.userId).then((result) => {
-            this.setState({show:false})
-            console.log(result);
-            if (!result.error) {
-                this.setState({ bills: result.result })
-                console.log(this.state.bills);
-                var data = result.result;
-                data.map(function (item, index) {
-                    return data[index] = {
-                        BDE: item.BDE,
-                        balance: item.balance,
-                        billNumber: item.billNumber,
-                        billingDate: item.billingDate,
-                        client: item.client,
-                        company: item.company,
-                        currency: item.currency,
-                        email: item.email,
-                        paypalAccountName: item.paypalAccountName,
-                        paypalBillNumber: item.paypalBillNumber,
-                        projectCost: item.projectCost,
-                        projectName: item.projectName,
-                        receivedAmount: item.receivedAmount,
-                        receivedDate: item.receivedDate,
-                        status: item.status,
-                        type: item.type,
-                        key: Math.random() * 1000000000000000000,
-                        _id: item._id
-                    }
-
-                })
-                this.setState({ searchedBill: data });
-
-            }
-
-        }, err => {
-
-        })
+    commonFunction() {
+        /* CODE FOR GETTING BILLIST AND SHOWING IN TABLE USING PROPS  */
+        if (this.props.billList.length > 0) {
+        
+            this.setState({ show: false });
+            this.setState({ searchedBill: this.props.billList });
+        }
+        /*   CODE FOR GETTING BILLIST AND SHOWING IN TABLE USING PROPS ENDS   */
     }
+
     //edit bill
     editBill = (data) => {
+       this.props.actions.menuKeys('create_bill');
         this.props.history.push({
             pathname: '/dashboard/editbill',
             data: {
@@ -196,14 +182,14 @@ class BillList extends Component {
         console.log('target value', e)
         this.setState({ searchinput: e })
         if (e == '') {
-            this.setState({ searchedBill: this.state.bills })
+            this.setState({ searchedBill: this.props.billList })
         }
     }
 
-    // // SEACRH BILL LIST ACCORDING TO INPUT(EMAIL) 
-    searchEmail = (e) => {
-        let newarray = this.state.bills.filter(item => {
-            return item.email.toLowerCase().indexOf(e.toLowerCase()) > -1
+    // // SEACRH BILL LIST ACCORDING TO INPUT
+    searchFilter = (e) => {
+        let newarray = this.props.billList.filter(item => {
+            return (item.email.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.BDE.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.company.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.paypalAccountName.toLowerCase().indexOf(e.toLowerCase()) > -1) || (item.status.toLowerCase().indexOf(e.toLowerCase()) > -1)
 
         });
         console.log(newarray);
@@ -220,47 +206,48 @@ class BillList extends Component {
 
             <div className="clientListdiv">
                 {/* {this.state.show == true ? <div className="loader">
-          <Loader className="ldr" fullPage loading />
-        </div> : ""} */}
+                    <Loader className="ldr" fullPage loading />
+                </div> : ""}
 
-                {/* <Loading
-          show={this.state.show}
-          color="red"
-          showSpinner={false}
-        /> */}
-                <h1 className="clientList">BILL LIST</h1>
-                <Row>
-                    <div className="addButton clientadd">
-                        <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
-                    </div>
-                </Row>
-                <Row>
-                    <div className="AllProjects">
-                        <Search className="SearchValue"
-                            placeholder="input search text"
-                            onSearch={(value) => { this.searchEmail(value) }}
-                            style={{ width: 200 }}
-                            onChange={(e) => { this.showallList(e.target.value) }}
-                            enterButton
+                <Loading
+                    show={this.state.show}
+                    color="red"
+                    showSpinner={false}
+                /> */}
+                {/* <div className="billlistheader"> */}
+                    <h1 className="clientList">Bill List</h1>
+                    <Row>
+                        <div className="addButton billeradd">
+                            <Button onClick={() => {this.props.actions.menuKeys('create_bill'); this.props.history.push('/dashboard/bill') }}>+</Button>
+                        </div>
+                        {/* </Row>
+                <Row> */}
+                        <div className="AllProjects">
+                            <Search className="SearchValue"
+                                placeholder="input search text"
+                                onSearch={(value) => { this.searchFilter(value) }}
+                                style={{ width: 200 }}
+                                onChange={(e) => { this.showallList(e.target.value) }}
+                                enterButton
                             // value={this.state.searchinput}
 
-                        />
+                            />
 
-                        {/* <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+                            {/* <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
                             <Option value="All">All</Option>
                             <Option value="Interested">Pending</Option>
                             <Option value="Pipeline">Completed</Option>
                         </Select> */}
 
-                        {/* <Button className="allprojectbtn" onClick={() => {
+                            {/* <Button className="allprojectbtn" onClick={() => {
                             this.setState({ searchedclient: this.state.clientlist });
                             this.setState({ statussearch: this.state.c });
                             this.setState({ searchinput: '' })
                         }}>Show All</Button> */}
 
-                    </div>
-                </Row>
-
+                        </div>
+                    </Row>
+                {/* </div> */}
                 {/* billlist */}
                 <Card className="innercardContenta" bordered={false}>
                     <Table
@@ -271,6 +258,7 @@ class BillList extends Component {
                         }}
                         columns={columns} dataSource={this.state.searchedBill} />
                 </Card>
+
                 {/* clientlist */}
                 <div className="deletemodal">
 
@@ -304,8 +292,13 @@ class BillList extends Component {
     }
 }
 const mapStateToProps = (state) => {
-    // console.log(state);
+    console.log('bill list', state);
     return state
 }
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(billlistAction, dispatch)
+    })
+}
 //export default ClientList;
-export default connect(mapStateToProps, actioncreators)(BillList);
+export default connect(mapStateToProps, mapDispatchToProps)(BillList);

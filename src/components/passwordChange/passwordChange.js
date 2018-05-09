@@ -17,7 +17,6 @@ class ChangePasswordForm extends Component {
         super(props);
         this.state = {
             formLayout: 'horizontal',
-            show: true  //loading-bar
         };
         this.handleSubmit = this.handleSubmit.bind(this);
 
@@ -43,71 +42,29 @@ class ChangePasswordForm extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                // this.setState({ show: true });
                 console.log('Received values of form: ', values);
-                let conf = config.headers;
                 let data = {
-                    id: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
+                    id: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
                     password: values.oldPassword,
                     newPassword: values.password
 
                 }
-                this.props.password(data)
-                    .then((response) => {
-                        this.setState({ show: false });
-                        console.log(response);
-                        if (!response.error) {
-                            this.props.opentoast('success', 'Password Changed Successfully!');
-                            this.props.history.push('/dashboard');
-                        }
-                        else {
-                            this.props.opentoast('error', 'Wrong Password !');
-                        }
-                    }, err => {
-                        this.setState({ show: false });
-                    })
+                this.props.password(data, this.props.history);
             }
         });
     }
 
+
     render() {
         const { getFieldDecorator } = this.props.form;
-
         return (
             <div>
                 <Loading
-                    show={this.state.show}
+                    show={this.props.fullloader}
                     color="red"
                     showSpinner={false}
                 />
-                {/* <Form onSubmit={this.handleSubmit}>
-                    <FormItem label="Old Password">
-                        {getFieldDecorator('oldPassword', {
-                            rules: [{ required: true, message: 'Please input your old Password!' }],
-                        })(
-                            <Input type="password" placeholder="Old Password" />)}
-                    </FormItem>
-                    <FormItem label="New Password">
-                        {getFieldDecorator('password', {
-                            rules: [{ required: true, message: 'Please input your Password!' }, {
-                                validator: this.validateToNextPassword,
-                              }],
-                        })(
-                            <Input type="password" placeholder="New Password" />
-                        )}
-                    </FormItem>
-                    <FormItem label="Confirm New Password">
-                        {getFieldDecorator('confirm', {
-                            rules: [{ required: true, message: 'Please confirm your new Password!' },{
-                                validator: this.compareToFirstPassword,
-                              }],
-                        })(
-                            <Input type="password" placeholder="Confirm New Password" />
-                        )}
-                    </FormItem>
-                    <FormItem>
-                        <Button type="primary" htmlType="submit">Submit</Button>
-                    </FormItem>
-                </Form> */}
                 <div className="login">
                     <div className="loginmainForm">
                         <div className="loginCard">

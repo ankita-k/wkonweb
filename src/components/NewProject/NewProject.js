@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Row, Spin, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
+import { Form, Icon, Input, Table, Modal, Button, Row, Spin, Col, Card, Select, DatePicker, AutoComplete } from 'antd';
 import '../ClientComponent/ClientComponent.css';
 import './NewProject.css';
 import { Divider } from 'antd';
 import moment from 'moment'
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
-import Loading from 'react-loading-bar'
+import { bindActionCreators } from 'redux';
+import Loading from 'react-loading-bar';
+
 import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
+
+const data = [];
+for (let i = 0; i < 100; i++) {
+    data.push({
+        key: i,
+        name: `Priyanka ${i}`,
+        role: `Wkonweb ${i}`,
+    });
+}
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -16,8 +27,19 @@ const Option = Select.Option;
 const Option1 = AutoComplete.Option1;
 class NewProject extends Component {
 
+    state = {
+        modal1Visible: false,
+        modal2Visible: false,
+    }
+    setModal1Visible(modal1Visible) {
+        this.setState({ modal1Visible });
+    }
+    setModal2Visible(modal2Visible) {
+        this.setState({ modal2Visible });
+        console.log(this.state.assignRole)
+    }
     constructor(props) {
-        console.log(props);
+        // console.log(props);
         super(props);
         this.state = {
             clientlist: [],
@@ -25,26 +47,91 @@ class NewProject extends Component {
             show: false,//loading-bar,
             disabledate: true,
             disableclient: false,
-            userId:sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
-            techArray: ['ReactJS', 'Php', 'ReactNative'],
-            techs: ['ReactJS', 'Php', 'ReactNative'],
+            userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
+            techArray: ['ReactJS', 'Php', 'ReactNative', 'IOT'],
+            techs: ['ReactJS', 'Php', 'ReactNative', 'IOT'],
             techsValue: [],
             value: [],
             fetching: false,
-           
+            verticalHeadrarray: [],
+            verticalHead: '',
+            editClient: false,
+            projectId: '',
+            role: '',
+            assign: '',
+            assignRole: [],
+            memeberId: '',
+            disabletag: true,
+            disableassign: false,
+            addMember: [],
+            columns: [{
+                title: 'Assign To',
+                dataIndex: 'name',
+                width: 200,
+            }, {
+                title: 'Role',
+                dataIndex: 'role',
+            },
+            {
+                title: 'Action',
+                key: 'operation',
+                fixed: 'right',
+                width: 100,
+                render: (text, record, index) => <Button className="delete" onClick={() => { console.log(record, index), this.removeMember(record.userId, index) }} ><a href="javascript:;"><Icon className="crossButtondetails" type="close-circle-o" /></a></Button>,
+            },]
         }
-    
+
+
     }
 
     componentDidMount() {
-        console.log("component Did Mount");
-        console.log(this.props.location);
-        console.log(this.props.form)
-        console.log(this.props.location.data)
         if (this.props.location.data) {
             this.setState({ disabledate: false })
             this.setState({ disableclient: true })
             this.setState({ editClient: true })
+
+            console.log('members', this.props.location.data.data.members);
+
+            console.log("projectId", this.props.location.data.data._id)
+            this.setState({ projectId: this.props.location.data.data._id })
+            console.log(this.state.projectId)
+
+            // For Status Checking
+            if (this.props.location.data.data.status == "InProgress" || this.props.location.data.data.status == "InProgess") {
+                this.setState((prevState) => {
+                    return { verticalHead: 'InProgress' }
+                });
+                this.setState({ verticalHeadrarray: [] });
+            }
+            else {
+                this.setState({ verticalHeadrarray: [] });
+                this.setState((prevState) => {
+                    return { verticalHead: '' }
+                });
+            }
+
+            // for filter role,name,userId from members
+            if (this.props.location.data.data.members != []) {
+                let newarray1 = this.props.location.data.data.members.map(function (item, index) {
+                    return {
+                        userId: item.userId._id,
+                        name: item.userId.name,
+                        role: item.role
+                    }
+                })
+                console.log(newarray1)
+                this.setState({ addMember: newarray1 })
+                // FOR SEARCH ROLE ==VerticalLead
+                if (this.props.loggeduserDetails.role == 'Sales') {
+                    let index = newarray1.findIndex(x => x.role === "VerticalLead");
+                    console.log(index);
+                    console.log(newarray1[index]);
+                    if (index > -1) {
+                        this.setState({ disableassign: true })
+                    }
+
+                }
+            }
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name1,
                 ['textRequirement']: this.props.location.data.data.requirement1,
@@ -58,40 +145,44 @@ class NewProject extends Component {
             })
 
         }
-        // GET CLIENT LIST
-        this.props.clientlist(this.state.userId).then((data) => {
-            // this.setState({ show: false });
-            console.log(data);
-            this.setState({ clientlist: data.result });
-            console.log(this.state.clientlist);
-        }, err => {
+        /** GET CLIENT LIST FROM PROPS*/
+        if (this.props.clientList) {
+            this.setState({ clientlist: this.props.clientList });
+        }
+        /** GET CLIENT LIST FROM PROPS*/
 
-        })
+        //LOGGEDIN USER DETAILS
+        if (this.props.loggeduserDetails) {
+            console.log(this.props.loggeduserDetails.role)
+            this.setState({ loggedInRole: this.props.loggeduserDetails.role })
+        }
+
+        /** GET VERTICAL LEADS LIST*/
+        if (this.props.listByTags) {
+            this.setState({ verticalHeadrarray: this.props.listByTags });
+        }
+        /** GET VERTICAL LEADS LIST ENDS*/
     }
+
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.setState({ show: true });
+        console.log(this.props.location);
         this.props.form.validateFields((err, values) => {
-
             if (!err) {
+                this.setState({ show: true });
                 console.log('Received values of form: ', values);
 
                 if (this.props.location.data) {
+                    console.log(this.props.location.data);
                     console.log('edit function')
-
-
+                    this.setState({ disableassign: true })
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
                         technology: (values.technology).toString(),
-                        // expectedStartDate: values.expecstart ? values.expecstart._d : '',
-                        // actualStartDate: values.actualstart ? values.actualstart._d : '',
-                        // expectedEndDate: values.expecend ? values.expecend._d : '',
-                        // actualEndDate: values.actualend ? values.actualend._d : '',
                         name: values.name,
-                        client: this.props.location.data.data.client._id
-
+                        client: this.props.location.data.data.client._id,
                     }
                     if (values.expecstart) {
                         data.expectedStartDate = values.expecstart._d
@@ -106,35 +197,18 @@ class NewProject extends Component {
                         data.actualEndDate = values.actualend._d
                     }
                     console.log(data)
-
-                    this.props.editproject(data, this.props.location.data.data._id).then(response => {
-                        this.setState({ show: false });
-                        console.log(response)
-                        if (!response.error) {
-                            this.props.opentoast('success', 'Project Updated Successfully!');
-                            this.props.history.push('/dashboard/projectlist')
-                        }
-                        else{
-                            this.props.opentoast('warning', response.message);
-                        }
-                    }, err => {
-                        this.setState({ show: false });
-                        this.props.opentoast('warning', 'Project Not Updated Successfully!');
-                    })
+                    this.props.actions.editproject(data, this.state.userId, this.props.location.data.data._id, this.props.history)  //UPDATE(EDIT) PROJECT
                 }
+
                 else {
 
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
-                        technology:(values.technology).toString(),
-                        // expectedStartDate: values.expecstart ? values.expecstart._d : '',
-                        // actualStartDate: values.actualstart ? values.actualstart._d : '',
-                        // expectedEndDate: values.expecend ? values.expecend._d : '',
-                        // actualEndDate: values.actualend ? values.actualend._d : '',
+                        technology: (values.technology).toString(),
                         name: values.name,
-                        userId: sessionStorage.getItem('id')?sessionStorage.getItem('id'):localStorage.getItem('id'),
-                        client: values.client
+                        userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
+                        client: values.client,
 
                     }
                     if (values.actualstart) {
@@ -148,26 +222,17 @@ class NewProject extends Component {
                     }
 
                     console.log(data)
-                    this.props.addProject(data).then(response => {
-                        this.setState({ show: false });
-                        console.log(response)
-                        if (!response.error) {
-                            this.props.opentoast('success', 'Project Added Successfully!');
-                            this.props.history.push('/dashboard/projectlist')
-                        }
-                        else{
-                            this.props.opentoast('warning', response.message);
-                        }
-                    }, err => {
-                        this.setState({ show: false });
-                        this.props.opentoast('warning', 'Project Not Added Successfully!');
-                    })
+                    this.props.actions.addProject(data, this.props.history)  //CREATE NEW PROJECT
                 }
 
             }
         });
     }
 
+    componentWillReceiveProps(props) {
+        console.log(props);
+
+    }
 
     // VALIADTE EXPECTED START DATE AND END DATE
     validatetoexpecstart = (rule, value, callback) => {
@@ -267,7 +332,6 @@ class NewProject extends Component {
 
     // RENDER DROPDOWN OF SEARCHED ITEM
     renderOption = (item) => {
-        // console.log(item);
         return (
             <Option key={item._id} value={item._id} text={item.name}>
                 {item.name}
@@ -279,22 +343,22 @@ class NewProject extends Component {
     searchTechnology = (value) => {
 
         console.log('fetching user', value);
-        this.setState({ techArray:[],fetching: true });
+        this.setState({ techArray: [], fetching: true });
 
-        let techArray ;
-        
-            this.setState({ data: [], fetching: true });
-            techArray = this.state.techs.filter(d => {
+        let techArray;
 
-                return d.toLowerCase().indexOf(value.toLowerCase()) > -1
-            });
-            this.setState({ techArray, fetching: false });
-      
+        this.setState({ data: [], fetching: true });
+        techArray = this.state.techs.filter(d => {
+
+            return d.toLowerCase().indexOf(value.toLowerCase()) > -1
+        });
+        this.setState({ techArray, fetching: false });
+
     }
 
     // SELECTED TECHNOLOGY VALUE
     handleChange = (value) => {
-     
+
         if (value.length > 0) {
             this.setState({ techsValue: value })
             this.setState({
@@ -302,16 +366,87 @@ class NewProject extends Component {
                 fetching: false,
             });
             console.log(this.state.techsValue)
-            this.setState({techArray:this.state.techs})
+            this.setState({ techArray: this.state.techs })
         }
 
     }
+    //FOR STATUS VALUE
+    handleSelectChange = (value) => {
+        console.log(value);
+        if (value == 'InProgress') {
+            this.setState({ verticalHead: value })
+        }
+        else {
+            this.setState({ verticalHead: '' })
+        }
+
+    }
+
+    // GET ROLE FOE PROJECT
+    roleValue = (value) => {
+        console.log('role', value)
+        this.setState({ role: value })
+        // console.log(this.state.role)
+    }
+    //GET ASSIGN VALUR FOR PROJECT
+    assignValue = (value) => {
+        console.log('assign', value)
+        this.setState({ memeberId: value })
+        let newarray = this.state.verticalHeadrarray.filter(item => {
+            return (item._id.toLowerCase().indexOf(value.toLowerCase()) > -1)
+        });
+        // console.log(newarray)
+        this.setState({ assign: newarray[0].name })
+    }
+
+    // CLICK ON PLUS ICON FOR ADDING MEMBER
+    addMember = () => {
+        let data = {
+            userId: this.state.memeberId,
+            role: this.props.loggeduserDetails.role == 'Sales' ? 'VerticalLead' : this.state.role,
+            name: this.state.assign
+        }
+        this.state.assignRole.push(data)
+        this.state.addMember.push(data)  // FOR DISPAY MEMBER NAME
+        console.log(this.state.assignRole)
+        console.log(this.state.assignRole[0].role)
+
+        // VALIDFATION DURING MEMBER ADDED 
+
+        if (this.state.role == "" && this.state.assign == "") {
+            this.props.actions.opentoast('warning', 'please Select Input!');
+        }
+
+        else if (this.props.loggeduserDetails.role == 'Sales' ? '' : this.state.role == "" && this.state.assign != "") {
+            this.props.actions.opentoast('warning', 'please Select Role!');
+        }
+        else if (this.state.role != "" && this.state.assign == "") {
+            this.props.actions.opentoast('warning', 'please Select Assign!');
+
+        }
+
+        else {
+            this.state.assignRole[0].role == 'VerticalLead' ? this.setState({ disableassign: true }) : "";          //After Adding AssigneRole...Input/Button wiil disabled
+            this.props.form.setFieldsValue({    //For Clear the Input  Field
+                ['assign']: '',
+                ['role']: '',
+            })
+            this.setState({ assign: '' })
+            this.setState({ role: '' })
+            this.props.actions.addMember(this.state.assignRole, this.state.projectId)
+        }
+
+
+    }
+    // REMOVE MEMBER FROM PROJECT
+    removeMember = (data, index) => {
+        console.log(data, index)    // SELECTED MEMBER USERID
+        this.props.actions.removeMember(data, this.state.projectId)
+        this.state.addMember.splice(index,1)   //REMOVE MEMBER FROM LIST AFTER DELETING
+    }
+
     render() {
-        // const { clientarray } = this.state;
-        // console.log(this.state.clientarray)
-        // const children = clientarray.map((list) => {
-        //     return <Option1 key={list._id}>{list.name}</Option1>;
-        // });
+        const columns = this.state.columns;
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -338,17 +473,20 @@ class NewProject extends Component {
                     color="red"
                     showSpinner={false}
                 />
+                <div className="">
 
+                    {(this.state.editClient == true) ?
+                        <h1 className="NewCustomer">Edit Project</h1> : <h1 className="NewCustomer">New Project</h1>
+                    }
+                    {/* {(this.state.editClient == true) ?
+                           
+                        } */}
+
+                    {/* <Divider dashed className="underLine" /> */}
+                </div>
                 <Card className="innercardContent cardProject" bordered={false}>
                     {/* --NewProject details-- */}
-                    <div className="newCustomerform">
 
-                        {(this.state.editClient == true) ?
-                            <h1 className="NewCustomer">Edit Project</h1> : <h1 className="NewCustomer">New Project</h1>
-                        }
-
-                        {/* <Divider dashed className="underLine" /> */}
-                    </div>
                     <Form onSubmit={this.handleSubmit} className="login-form">
                         <div className="inputForminfo informationProject">
                             <div className="spaceLess">
@@ -363,14 +501,13 @@ class NewProject extends Component {
 
                                             )(
                                                 <Select className="statuspipeline"
-                                                    placeholder="Choose Role"
+                                                    placeholder="Choose Client"
                                                     onChange={this.selectStatus}
+                                                    disabled={this.state.disableassign}
                                                 >
-                                                  {this.state.clientlist.map((item, index) => {
-                                                return <Option key={index} value={item._id}>{item.name}</Option>
-                                            })}
-                                                    {/* <Option value="Sales">Client1</Option>
-                                                    <Option value="Developer">Client2</Option> */}
+                                                    {this.state.clientlist.map((item, index) => {
+                                                        return <Option key={index} value={item._id}>{item.name}</Option>
+                                                    })}
                                                 </Select>
                                             )}
                                         </FormItem>
@@ -384,43 +521,10 @@ class NewProject extends Component {
                                                 <Input maxLength="50" placeholder="Name" />
                                             )}
                                         </FormItem>
-                                        {/* <FormItem label="Brief Requirement">
-                                        {getFieldDecorator('requirement', {
-                                            rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
-                                        })(
-                                            <Input placeholder="Brief Requirement" />
-                                        )}
-                                    </FormItem> */}
-                                        {/* <FormItem label="Client List">
-                                        {getFieldDecorator('client', {
-                                            rules: [{ required: true, message: 'Please select your client!' }],
-                                        })(
-                                            <Select className="statuspipeline"
-                                                placeholder="Choose Client"
-                                                onChange={this.handleSelectChange}
-                                            >
-                                                <Option value="Client1">Client1</Option>
-                                                <Option value="Client2">Client2</Option>
-                                                <Option value="Client3">Client3</Option>
-                                            </Select>
-                                        )}
-                                    </FormItem> */}
-
                                     </Col>
                                 </Row>
                             </div>
-                            <Row className="briefRequire">
-                                <Col xs={24} sm={24} md={24} lg={24}>
-                                    <FormItem label="Brief Requirement">
-                                        {getFieldDecorator('textRequirement', {
-                                            rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
-                                        })(
-                                            // <Input placeholder="Brief Requirement" />
-                                            <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                            </Row>
+
                             <Row>
                                 <Col xs={24} sm={24} md={24} lg={12}>
                                     <FormItem label="Status">
@@ -436,7 +540,7 @@ class NewProject extends Component {
                                                 <Option value="New">New</Option>
                                                 <Option value="InDiscussion">InDiscussion</Option>
                                                 <Option value="Scoping">Scoping</Option>
-                                                <Option value="InProgess">InProgess</Option>
+                                                {(this.state.editClient == true) ? <Option value="InProgress">InProgress</Option> : ''}
                                                 <Option value="Stalled">Stalled</Option>
                                                 <Option value="Completed">Completed</Option>
                                             </Select>
@@ -450,8 +554,6 @@ class NewProject extends Component {
                                         })(
                                             <Select
                                                 mode="multiple"
-                                                // labelInValue
-                                                // value={value}
                                                 placeholder="Select users"
                                                 notFoundContent={fetching ? <Spin size="small" /> : null}
                                                 filterOption={false}
@@ -460,8 +562,8 @@ class NewProject extends Component {
                                                 style={{ width: '100%' }}
 
                                             >
-                                                {techArray.map(d =>
-                                                    <Option value={d}>{d}</Option>
+                                                {techArray.map((d, index) =>
+                                                    <Option key={index} value={d}>{d}</Option>
                                                 )}
 
                                             </Select>
@@ -541,34 +643,129 @@ class NewProject extends Component {
                                         </div>
                                     </Col>
                                 </Row>
-                                {/* <Row>
-                                    <Col xs={24} sm={24} md={24} lg={24}>
-                                        <p className="expecteDateclient">Choose Client :</p>
-                                        <FormItem>
-                                            {getFieldDecorator('client', {
-                                                rules: [{ required: true, message: 'Please select a client!' },]
-                                            })(
-                                                <AutoComplete
-                                                    className="clientHere"
-                                                    onSearch={this.handleSearch}
-                                                    placeholder="Choose Client"
-                                                    dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
-                                                    onSelect={this.onSelect}
-                                                >
 
-                                                </AutoComplete>
+
+
+                                <Row>
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
+                                        <Col xs={24} sm={24} md={24} lg={10}>
+                                            <FormItem label="Assign To" className="roleAssign">
+                                                {getFieldDecorator('assign', {
+                                                    rules: [{ required: false, message: 'Please select !' }],
+                                                })(
+                                                    <Select className="statuspipeline"
+
+                                                        placeholder="Assign To"
+                                                        disabled={this.state.disableassign}
+
+                                                        onSelect={this.assignValue}
+
+                                                        showSearch
+                                                    >
+                                                        {this.state.verticalHeadrarray.map((item, index) => {
+                                                            return <Option key={index} value={item._id}>{item.name}</Option>
+                                                        })}
+
+                                                    </Select>
+                                                )}
+                                            </FormItem>
+                                        </Col>
+
+                                        : ''}
+
+
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole != 'Sales') ?
+                                        <Col xs={24} sm={24} md={24} lg={10}>
+                                            <FormItem label="Role">
+                                                {getFieldDecorator('role', {
+                                                    rules: [{ required: false, message: 'Please select ' }],
+                                                })(
+                                                    <Select className="statuspipeline roleAssign"
+                                                        placeholder="Role"
+                                                        onChange={this.roleValue}
+                                                        showSearch
+                                                    >
+                                                        <Option value="Consultant1">Consultant1</Option>
+                                                        <Option value="Consultant2">Consultant2</Option>
+                                                        <Option value="Consultant3">Consultant3</Option>
+                                                        <Option value="Consultant4">Consultant4</Option>
+                                                    </Select>
+                                                )}
+                                            </FormItem>
+                                        </Col>
+
+                                        : ''}
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress' && this.state.loggedInRole == 'Sales') ?
+                                        <Col xs={24} sm={24} md={24} lg={10}>
+                                            <FormItem label="Role">
+                                                {getFieldDecorator('role', {
+                                                    rules: [{ required: false, message: 'Please select ' }],
+                                                })(
+                                                    <Select className="statuspipeline"
+                                                        onChange={this.roleValue}
+                                                        disabled={this.state.disabletag}
+                                                        placeholder="VerticalLead"
+
+                                                    >
+                                                        <Option value="VerticalLead">VerticalLead</Option>
+                                                    </Select>
+                                                )}
+                                            </FormItem>
+                                        </Col>
+
+                                        : ''}
+
+                                    {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
+                                        <Col xs={24} sm={24} md={24} lg={2}>
+                                            {(this.state.editClient == true) ?
+
+                                                <div className="addbtn"  >
+                                                    <Button onClick={this.addMember} disabled={this.state.disableassign}>Add</Button>
+                                                </div>
+                                                : ''}
+                                        </Col>
+                                        : ""}
+
+                                </Row>
+                                {/* ShowDetails Modal */}
+                                {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
+                                    <Row>
+                                        <p><a href="#" onClick={() => this.setModal2Visible(true)}>Show Members</a></p>
+                                        <Modal
+                                            className="showprojectModal"
+                                            title="Show Details"
+                                            wrapClassName="vertical-center-modal"
+                                            visible={this.state.modal2Visible}
+                                            onOk={() => this.setModal2Visible(false)}
+                                            onCancel={() => this.setModal2Visible(false)}
+                                        >
+                                            <Table
+                                                columns={columns} dataSource={this.state.addMember} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
+                                        </Modal>
+                                    </Row> :
+                                    ""}
+                                {/* ShowDetails Modal */}
+                                <Row className="briefRequire">
+                                    <Col xs={24} sm={24} md={24} lg={24}>
+                                        <FormItem label="Brief Requirement">
+                                            {getFieldDecorator('textRequirement', {
+                                                rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
+                                            })(
+                                                <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
                                             )}
                                         </FormItem>
                                     </Col>
-                                </Row> */}
+                                </Row>
                             </div>
                         </div>
+
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('project_list'); this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
                             </div>
                         </FormItem>
+
 
                     </Form>
 
@@ -582,6 +779,10 @@ class NewProject extends Component {
 const mapStateToProps = (state) => {
     return state
 }
-
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(actioncreators, dispatch)
+    })
+}
 const WrappedNewProject = Form.create()(NewProject);
-export default connect(mapStateToProps, actioncreators)(WrappedNewProject);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedNewProject);

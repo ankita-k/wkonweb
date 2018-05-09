@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import * as actioncreators from '../../redux/action';
+import * as userlistActions from '../../redux/action';
 import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 import './Userlist.css';
 import Loading from 'react-loading-bar'
 
@@ -19,7 +20,7 @@ class Userlist extends Component {
     constructor(props) {
         console.log(props);
         super(props);
-        
+
         this.state = {
             userList: [],
             show: true,  //loading-bar
@@ -30,26 +31,34 @@ class Userlist extends Component {
 
     }
 
-    componentDidMount(){
-        this.getUser();
+    componentDidMount() {
+        console.log(this.props)
+        this.setState({ show: true });
+        this.commonFunction();
     }
-    // get user list
-    getUser = () => {
-        this.setState({ show: true })
-        this.props.userlist().then(result => {
-            console.log(result);
-            this.setState({ show: false });
 
-            this.setState({ userList: result.result });
-            console.log(this.state.userList)
-        }, err => {
+    componentWillReceiveProps() {
+        this.commonFunction();
+    }
+
+    // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
+    commonFunction() {
+        /** FETCH USER LIST FROM REDUCEr */
+        if (this.props.userList.length > 0) {
+            this.setState({ userList: (this.props.userList) });
             this.setState({ show: false });
-        })
+        }
+
+        /*HIDE FULL LOADER */
+        // if (this.props.fullloader == false) {
+        //     this.setState({ show: this.props.fullloader })
+        // }
+        /*HIDE FULL LOADER ENDS */
     }
 
     //edit client
     editUser = (data) => {
-        console.log(data);
+        this.props.actions.menuKeys('create_user');
         this.props.history.push({
             pathname: '/dashboard/edituser',
             userData: data
@@ -61,32 +70,30 @@ class Userlist extends Component {
     deleteUser = (id) => {
         console.log(id);
         this.setState({ show: true });
-        this.props.deleteUser(id).then(response => {
-            console.log(response);
-            this.setState({ show: false });
-            this.setState({ visible: false })
-            if (!response.error) {
-                this.props.opentoast('success', 'User Deleted Successfully!');
-                this.getUser();
-            }
-            else {
-                this.props.opentoast('warning', response.messsage);
-            }
-        }, err => {
-            this.setState({ show: false });
-            this.props.opentoast('success', 'User Not  Deleted Successfully!');
-        })
+        this.props.actions.deleteUser(id, this.props.history)
+    }
+
+    //  APICALL FOR SENDING MAIL TO USER
+    SendEmail = (user) => {
+        console.log(user);
+        let data = {
+            name: user.name,
+            email: user.email,
+            subject: 'Please Login To Your Account'
+        }
+        this.props.actions.emailService(data)
     }
 
     render() {
         const { visible, loading } = this.state;
         return (
             <div className="userlist">
-                {this.state.show == true ? <div className="loader">
+                {this.props.fullloader == true ? <div className="loader">
                     <Loader className="ldr" fullPage loading />
                 </div> : ""}
+
                 <Loading
-                    show={this.state.show}
+                    show={this.props.fullloader}
                     color="red"
                     showSpinner={false}
                 />
@@ -107,7 +114,9 @@ class Userlist extends Component {
                                         <Col lg={2}>
                                             <Button className="delete" onClick={() => { this.deleteUser(item._id) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
                                         </Col>
-
+                                        <Col lg={2}>
+                                            <Button className="email" onClick={() => { this.SendEmail(item) }}>
+                                                <a href="javascript:;"><Icon type="mail" /></a></Button></Col>
                                     </Row>
                                     <Row className="padng20">
                                         <Col lg={4} className="resalign">
@@ -127,7 +136,19 @@ class Userlist extends Component {
 
                                                 <p><span className="span1">Roles </span>: {item.role}</p>
                                             </Col>
-                                            <Row><p><span className="span1">Reporting Manager </span>: {item.manager ? item.manager.name : ""}</p></Row></Col>
+                                            <Row><p><span className="span1">Reporting Manager </span>: {item.manager ? item.manager.name : ""}</p></Row>
+                                            <Row>
+                                                {item.tags.length != 0 ?
+                                                    <p><span className="span1">Tag:</span>{item.tags.map(((tag, index) => {
+
+                                                        return index < item.tags.length - 1 ? tag + ',' : tag
+                                                    }))} </p>
+                                                    : ''
+                                                }
+
+                                            </Row>
+                                        </Col>
+
                                     </Row>
 
 
@@ -244,6 +265,10 @@ class Userlist extends Component {
 const mapStateToProps = (state) => {
     return state
 }
-
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(userlistActions, dispatch)
+    })
+}
 // const  Userlist= Form.create()(NewProject);
-export default connect(mapStateToProps, actioncreators)(Userlist)
+export default connect(mapStateToProps, mapDispatchToProps)(Userlist)

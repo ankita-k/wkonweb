@@ -12,6 +12,7 @@ import mantwo from '../../Images/wkon-2-22.png';
 import ProjectlistView from '../ProjectlistView/ProjectlistView';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
 import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-dom';
 import Loading from 'react-loading-bar';
 import { Loader } from 'react-overlay-loader';
@@ -38,102 +39,64 @@ class DashboardView extends Component {
             projecttotal: {},
             projectinprogress: {},
             projectcompleted: {},
-            show: true,  //loading-bar
-            loading: true
+            dashboardCustomerData: {},
+            dashboardProjectData: {}
         }
     }
 
     componentDidMount() {
+        console.log('==========component did mount=====', this.props);
+        this.commonFunction(this.props);
+    
+    }
 
-        console.log('component did mount')
-        this.getdashboarddata();
-        this.dashboardCustomer();
+    componentWillReceiveProps(newprops) {
+        this.commonFunction(newprops);
 
     }
 
-    //GET DASHBOARD PROJECT COUNT  DATA
-    getdashboarddata = () => {
-        this.setState({ show: true })
-        if (sessionStorage.getItem("id")) {
-            this.props.dashboardData(sessionStorage.getItem('id')).then(response => {
+    // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
+    commonFunction(newprops) {
+        /*SHOW COUNTER FOR PROJECT DASHBOARD NUMBERS*/
+        if (!Object.is(newprops.dashboardProjectData, this.props.dashboardProjectData)) {
+            console.log('project dashboard')
+            if (newprops.dashboardProjectData.Total)
+                this.startCounter(newprops.dashboardProjectData.Total, 'projectTotal')
+            if (newprops.dashboardProjectData.Completed)
+                this.startCounter(newprops.dashboardProjectData.Completed, 'projectcompleted')
 
-                console.log('dashboardview', response)
-                this.setState({ loading: false });
-                if (!response.error) {
-                    this.setState({ show: false });
-                    if (response.result && response.result.Total)
-                        this.startCounter(response.result.Total, 'projectTotal')
-                    if (response.result && response.result.Completed)
-                        this.startCounter(response.result.Completed, 'projectcompleted')
-
-                    if (response.result && response.result.InProgess)
-                        this.startCounter(response.result.InProgess, 'projectinprogress')
-                }
-                // console.log(this.state.count);
-            }, err => {
-                this.setState({ show: false });
-            })
+            if (newprops.dashboardProjectData.InProgess)
+                this.startCounter(newprops.dashboardProjectData.InProgess, 'projectinprogress')
         }
         else {
-            if (localStorage.getItem('id')) {
-                this.props.dashboardData(localStorage.getItem('id')).then((response) => {
-                    console.log('dashboardview', response);
-                    this.setState({ show: false });
-                    if (!response.error) {
-                        if (response.result && response.result.Total)
-                            this.startCounter(response.result.Total, 'projectTotal')
-                        if (response.result && response.result.Completed)
-                            this.startCounter(response.result.Completed, 'projectcompleted')
+            this.setState({ projecttotal: { Total: newprops.dashboardProjectData.Total } });
+            this.setState({ projectcompleted: { Completed: newprops.dashboardProjectData.Completed } });
+            this.setState({ projectinprogress: { InProgess: newprops.dashboardProjectData.InProgess } });
+        }
+        /*SHOW COUNTER FOR PROJECT DASHBOARD NUMBER ENDS*/
 
-                        if (response.result && response.result.InProgess)
-                            this.startCounter(response.result.InProgess, 'projectinprogress')
-                    }
-                    // console.log(this.state.count);
-                }, err => {
-                    // console.log(this.state.count);
-                    this.setState({ show: false });
-                })
-            }
+        /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
+        if (!Object.is(newprops.dashboardCustomerData, this.props.dashboardCustomerData)) {
+            console.log('customer dashboard')
+            if (newprops.dashboardCustomerData.Total)
+                this.startCounter(newprops.dashboardCustomerData.Total, 'clientTotal')
+            if (newprops.dashboardCustomerData.Pipeline)
+                this.startCounter(newprops.dashboardCustomerData.Pipeline, 'clientpipeline')
+            if (newprops.dashboardCustomerData.Committed)
+                this.startCounter(newprops.dashboardCustomerData.Committed, 'clientcommitted')
+        }
+        else {
+            this.setState({ clienttotal :{ Total: newprops.dashboardCustomerData.Total } });
+            this.setState({ clientpipeline: { Pipeline: newprops.dashboardCustomerData.Pipeline} });
+            this.setState({ clientcommitted: { Committed: newprops.dashboardCustomerData.Committed } });
+        }   
+        /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
 
+        /*HIDE FULL LOADER */
+        if (newprops.fullloader) {
+            this.setState({ show: newprops.fullloader })
         }
-    }
-    //GET DASHBOARD CUSTOERS COUNT DATA
-    dashboardCustomer = () => {
-        this.setState({ show: true });
-        if (sessionStorage.getItem("id")) {
-            console.log('data')
-            this.props.dashboardCustomer(sessionStorage.getItem('id')).then((response) => {
-                console.log('customerview', response);
-                if (!response.error) {
-                    this.setState({ show: false });
-                    if (response.result && response.result.Total)
-                        this.startCounter(response.result.Total, 'clientTotal')
-                    if (response.result && response.result.Pipeline)
-                        this.startCounter(response.result.Pipeline, 'clientpipeline')
-                    if (response.result && response.result.Committed)
-                        this.startCounter(response.result.Committed, 'clientcommitted')
-                }
-            }, err => {
-                this.setState({ show: false });
-            })
-        }
-        else if (localStorage.getItem('id')) {
-            this.props.dashboardCustomer(localStorage.getItem('id')).then(response => {
-                console.log('data...')
-                console.log('customerview', response)
-                if (!response.error) {
-                    this.setState({ show: false });
-                    if (response.result && response.result.Total)
-                        this.startCounter(response.result.Total, 'clientTotal')
-                    if (response.result && response.result.Pipeline)
-                        this.startCounter(response.result.Pipeline, 'clientpipeline')
-                    if (response.result && response.result.Committed)
-                        this.startCounter(response.result.Committed, 'clientcommitted')
-                }
-            }, err => {
-                this.setState({ show: false });
-            })
-        }
+        /*HIDE FULL LOADER ENDS */
     }
 
 
@@ -166,8 +129,7 @@ class DashboardView extends Component {
                     else {
                         clienttotal.Total = clienttotal.Total + 1;
                         _base.setState({ clienttotal })
-                        console.log(clienttotal)
-
+                        // console.log(clienttotal)
                     }
                 }, 40)
                 break;
@@ -183,8 +145,6 @@ class DashboardView extends Component {
                     else {
                         clientcommitted.Committed = clientcommitted.Committed + 1;
                         _base.setState({ clientcommitted })
-                        console.log(clientcommitted)
-
                     }
                 }, 40)
                 break;
@@ -198,8 +158,6 @@ class DashboardView extends Component {
                     else {
                         clientpipeline.Pipeline = clientpipeline.Pipeline + 1;
                         _base.setState({ clientpipeline })
-                        console.log(clientpipeline)
-
                     }
                 }, 40)
                 break;
@@ -213,8 +171,6 @@ class DashboardView extends Component {
                     else {
                         projectinprogress.InProgess = projectinprogress.InProgess + 1;
                         _base.setState({ projectinprogress })
-                        console.log(projectinprogress)
-
                     }
                 }, 40)
                 break;
@@ -228,8 +184,6 @@ class DashboardView extends Component {
                     else {
                         projecttotal.Total = projecttotal.Total + 1;
                         _base.setState({ projecttotal })
-                        console.log(projecttotal)
-
                     }
                 }, 40)
                 break;
@@ -243,8 +197,6 @@ class DashboardView extends Component {
                     else {
                         projectcompleted.Completed = projectcompleted.Completed + 1;
                         _base.setState({ projectcompleted })
-                        console.log(projectcompleted)
-
                     }
                 }, 40)
                 break;
@@ -255,7 +207,8 @@ class DashboardView extends Component {
     }
 
     filterClient = (data) => {
-
+        this.props.actions.openkey('client')
+        this.props.actions.menuKeys('client_list');
         this.props.history.push({
             pathname: '/dashboard/clientlist',
             filterValue: data
@@ -267,7 +220,8 @@ class DashboardView extends Component {
     //function for project dashboard (passing data)
 
     filterProject = (data) => {
-
+        this.props.actions.openkey('projects')
+        this.props.actions.menuKeys('project_list');
         this.props.history.push({
             pathname: '/dashboard/projectlist',
             filterValue: data
@@ -284,65 +238,60 @@ class DashboardView extends Component {
 
 
             <div className="dashboardMain">
-                {this.state.show == true ? <div className="loader">
-                    <Loader className="ldr" fullPage loading />
-                </div> : ""}
-
-                <Loading
-                    show={this.state.show}
-                    color="red"
-                    showSpinner={false}
-                />
                 {/* dashboardviewcustomer */}
-                <div className="dashboardView">
-                    <h1 className="customer">CLIENTS</h1>
-                    <Row>
-                        <div className="addButton btnplace">
-                            <Button onClick={() => { this.props.history.push('/dashboard/clientcreate') }}>+</Button>
-                        </div>
-                    </Row>
-                    <Row>
-                        <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal" onClick={() => { this.filterClient('All') }}>
+                {this.props.loggeduserDetails.role=='Sales'||'admin'&& this.props.loggeduserDetails.role!='Developer'?
+                 <div className="dashboardView">
+                 <h1 className="customer">Clients</h1>
+                 <Row>
+                     <div className="addButton btnplace">
+                         <Button onClick={() => { this.props.actions.openkey('client'); this.props.actions.menuKeys('create_client'); this.props.history.push('/dashboard/clientcreate') }}>+</Button>
+                     </div>
+                 </Row>
+                 <Row>
+                     <Col xs={24} sm={24} md={8} lg={8}>
+                         <div className="cusTotal" onClick={() => { this.filterClient('All') }}>
 
-                                <p>
-                                    <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
-
-
-                                </p>
-                                <h1 className="totalNumber">{this.state.clienttotal.Total ? this.state.clienttotal.Total : 0}</h1>
-
-                            </div>
-
-                        </Col>
-                        <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal" onClick={() => { this.filterClient('Committed') }}>
-                                <p>
-                                    <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Committed</span>
-                                    {/*<NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>*/}
-                                </p>
-                                <h1 className="totalNumber">{this.state.clientcommitted.Committed ? this.state.clientcommitted.Committed : 0}</h1>
-                            </div>
+                             <p>
+                                 <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
 
 
-                        </Col>
-                        <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal" onClick={() => { this.filterClient('Pipeline') }}>
-                                <p>
-                                    <img src={pipeline} className="totalImg" alt="Pipeline" /><span className="totalContent">Pipeline</span>
-                                </p>
-                                <h1 className="totalNumber">{this.state.clientpipeline.Pipeline ? this.state.clientpipeline.Pipeline : 0}</h1>
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
+                             </p>
+                             <h1 className="totalNumber">{this.state.clienttotal.Total ? this.state.clienttotal.Total : 0}</h1>
+
+                         </div>
+
+                     </Col>
+                     <Col xs={24} sm={24} md={8} lg={8}>
+                         <div className="cusTotal" onClick={() => { this.filterClient('Committed') }}>
+                             <p>
+                                 <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Committed</span>
+                                 {/*<NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>*/}
+                             </p>
+                             <h1 className="totalNumber">{this.state.clientcommitted.Committed ? this.state.clientcommitted.Committed : 0}</h1>
+                         </div>
+
+
+                     </Col>
+                     <Col xs={24} sm={24} md={8} lg={8}>
+                         <div className="cusTotal" onClick={() => { this.filterClient('Pipeline') }}>
+                             <p>
+                                 <img src={pipeline} className="totalImg" alt="Pipeline" /><span className="totalContent">Pipeline</span>
+                             </p>
+                             <h1 className="totalNumber">{this.state.clientpipeline.Pipeline ? this.state.clientpipeline.Pipeline : 0}</h1>
+                         </div>
+                     </Col>
+                 </Row>
+             </div>:''
+                }
+               
                 {/* dashboardviewcustomer */}
                 {/* Project section start */}
+                {this.props.loggeduserDetails.role=='Developer'||'admin' ||'Sales'?
                 <div className="dashboardView">
-                    <h1 className="customer">PROJECTS</h1>
+                    <h1 className="customer">Projects</h1>
                     <Row>
                         <div className="addButton btnplace">
-                            <Button onClick={() => { this.props.history.push('/dashboard/newproject') }}>+</Button>
+                            <Button onClick={() => { this.props.actions.openkey('projects'); this.props.actions.menuKeys('create_project'); this.props.history.push('/dashboard/newproject') }}>+</Button>
                         </div>
                     </Row>
                     <Row>
@@ -373,15 +322,15 @@ class DashboardView extends Component {
                             </div>
                         </Col>
                     </Row>
-                </div>
+                </div>:''}
                 {/* Project section end */}
                 {/* Recentactivity start*/}
                 <div className="recentactivity">
-                    <h1>RECENT ACTIVITY</h1>
+                    <h1>Recent Activity</h1>
 
                     <div className="firstman1">
                         <Row>
-                            <Col lg={11} className="firstman">
+                            <Col lg={7} className="firstman">
                                 <Row className="padng20">
                                     <Col lg={4} className="resalign">
                                         <img src={man} />
@@ -395,8 +344,21 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
-                            <Col lg={11} className="firstman">
+
+                            <Col lg={7} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey R.Eshelman our recently converted customer.</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                            <Col lg={7} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
                                         <img src={man} /></Col>
@@ -412,9 +374,10 @@ class DashboardView extends Component {
                         </Row>
 
                     </div>
+
                     <div className="firstman1">
                         <Row>
-                            <Col lg={11} className="firstman">
+                            <Col lg={7} className="firstman">
                                 <Row className="padng20">
                                     <Col lg={4} className="resalign">
                                         <img src={man} />
@@ -428,8 +391,21 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
-                            <Col lg={11} className="firstman">
+
+                            <Col lg={7} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey R.Eshelman our recently converted customer.</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
+                            <Col lg={7} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
                                         <img src={man} /></Col>
@@ -451,8 +427,8 @@ class DashboardView extends Component {
                 </div>
                 {/* Recentactivity end*/}
                 {/* payment area start*/}
-                <div className="recentactivity">
-                    <h1>PAYMENT</h1>
+                <div className="recentactivity recentPaymentactivity">
+                    <h1>Payment</h1>
 
                     <div className="firstman1">
                         <Row>
@@ -470,7 +446,20 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
+
+                            <Col lg={11} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey successfully paided</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
                             <Col lg={11} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
@@ -503,7 +492,20 @@ class DashboardView extends Component {
                                 </Row>
 
                             </Col>
-                            <Col lg={1}></Col>
+
+                            <Col lg={11} className="firstman">
+                                <Row>
+                                    <Col lg={4} className="resalign">
+                                        <img src={man} /></Col>
+                                    <Col lg={20}>
+                                        <p>Mr. Stacey successfully paided</p></Col>
+
+                                </Row>
+                                <Row>
+                                    <Col lg={22}><p className="date">09.04.2018</p></Col>
+                                </Row>
+
+                            </Col>
                             <Col lg={11} className="firstman">
                                 <Row>
                                     <Col lg={4} className="resalign">
@@ -531,12 +533,14 @@ class DashboardView extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log('dashboard view state data', state)
-    // this.state.count.total=this.state.count.total+1;
     return state
 }
 
-
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(actioncreators, dispatch)
+    })
+}
 
 const WrappedDashboardView = Form.create()(DashboardView);
-export default connect(mapStateToProps, actioncreators)(WrappedDashboardView);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedDashboardView);
