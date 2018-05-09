@@ -108,7 +108,7 @@ export function countrylist() {
 
     return (dispatch) => {
         dispatch(loaders(true))
- // return new Promise(function (resolve, reject) {
+        // return new Promise(function (resolve, reject) {
         fetch('/assets/countrieslist.json', { method: 'GET' })
             .then((response) => {
 
@@ -182,9 +182,25 @@ export function createClient(data, location) {
                         .then((response) => response.json())
                         .then((responseJSON) => {
                             dispatch(toast('success', 'Client Added Successfully!'));
-                            dispatch(clientList(responseJSON.result))
-                            dispatch(loaders(false))
-                            location.push("../dashboard/clientlist")
+                            /** FETCH DASHBOARD CUSTOMER DATA*/
+                            let newurl = config.apiUrl + 'user/clientDashboardDetails?id=' + data.userId;
+                            fetch(newurl,
+                                { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                                .then((response) => response.json())
+                                .then((responseJSON) => {
+                                    dispatch(dashboardcustomer(responseJSON.result));
+
+                                })
+                                .catch((error) => {
+                                    dispatch(dashboardcustomer({}));
+
+                                });
+                            /*FETCH DASHBOARD CUSTOMER DATA ENDS*/
+
+                            dispatch(clientList(responseJSON.result));
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('client_list'));
+                            location.push("../dashboard/clientlist");
                         })
                         .catch((error) => {
                             dispatch(clientList([]));
@@ -216,11 +232,11 @@ export function clientlist(userId) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
-             dispatch(clientList(responseJSON.result))
+                dispatch(clientList(responseJSON.result))
                 dispatch(loaders(false))
             })
             .catch((error) => {
-         dispatch(clientList([]))
+                dispatch(clientList([]))
                 dispatch(loaders(false))
             });
 
@@ -264,7 +280,8 @@ export function updateclient(data, id, userid, location) {
                         .then((responseJSON) => {
                             dispatch(toast('success', 'Client Updated Successfully!'));
                             dispatch(clientList(responseJSON.result))
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('client_list'));
                             location.push("../dashboard/clientlist")
                         })
                         .catch((error) => {
@@ -276,7 +293,7 @@ export function updateclient(data, id, userid, location) {
                 }
             })
             .catch((error) => {
-                dispatch(toast('Warning', 'Client Updation failed!')); 
+                dispatch(toast('Warning', 'Client Updation failed!'));
                 dispatch(loaders(false))
             });
     }
@@ -310,7 +327,21 @@ export function deleteclient(id, userid, location) {
                         .then((responseJSON) => {
                             dispatch(toast('success', 'Client Deleted Successfully!'));
                             dispatch(clientList(responseJSON.result))
-                            dispatch(loaders(false))
+                            /** FETCH DASHBOARD CUSTOMER DATA*/
+                            let newurl = config.apiUrl + 'user/clientDashboardDetails?id=' + userid;
+                            fetch(newurl,
+                                { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                                .then((response) => response.json())
+                                .then((responseJSON) => {
+                                    dispatch(dashboardcustomer(responseJSON.result));
+                                })
+                                .catch((error) => {
+                                    dispatch(dashboardcustomer({}))
+                                });
+                            /*FETCH DASHBOARD CUSTOMER DATA ENDS*/
+
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('client_list'));
                             location.push("../dashboard/clientlist")
                         })
                         .catch((error) => {
@@ -362,8 +393,25 @@ export function addProject(data, location) {
                         .then((responseJSON) => {
                             dispatch(Projectlist(responseJSON.result))
                             dispatch(toast('success', 'Project Added Successfully!'));
-                            dispatch(loaders(false))
+                            /** FETCH DASHBOARD PROJECT DATA*/
+                            let newurl = config.apiUrl + 'user/dashboardDetails?id=' + data.userId;
+                            console.log(data.userId)
+                            fetch(newurl,
+                                { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                                .then((response) => response.json())
+                                .then((responseJSON) => {
+                                    dispatch(dashboardproject(responseJSON.result));
+                                    dispatch(loaders(false));
+                                })
+                                .catch((error) => {
+                                    dispatch(dashboardproject({}))
+                                    dispatch(loaders(false))
+                                });
+                            /*FETCH DASHBOARD PROJECT DATA ENDS*/
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('project_list'));
                             location.push("../dashboard/projectlist")
+
                         })
                         .catch((error) => {
                             dispatch(Projectlist([]))
@@ -403,7 +451,7 @@ export function projectList(userId) {
             .then((responseJSON) => {
                 if (!responseJSON.error)
                     dispatch(Projectlist(responseJSON.result))
-                    dispatch(loaders(false))
+                dispatch(loaders(false))
             })
             .catch((error) => {
                 dispatch(Projectlist([]))
@@ -413,10 +461,9 @@ export function projectList(userId) {
     }
 }
 //API FOR EDIT PROJECT WITH GETTING PROJECT LIST AND DISPATCHING ACTION
-export function editproject(data, id, location) {
+export function editproject(data, userId, id, location) {
     console.log('edit', data)
     console.log(id)
-
     return (dispatch) => {
         dispatch(loaders(true))
         fetch(config.apiUrl + 'project/' + id, {
@@ -434,18 +481,22 @@ export function editproject(data, id, location) {
                     dispatch(toast('warning', 'Project Updation failed!'));
                     dispatch(loaders(false))
                 } else {
-                    let url = config.apiUrl + 'project/projectlist?userId=' + data.userId;
+                    console.log(userId)
+                    let url = config.apiUrl + 'project/projectlist?userId=' + userId;
 
                     fetch(url,
                         { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
                         .then((response) => response.json())
                         .then((responseJSON) => {
+                            console.log(responseJSON)
                             dispatch(Projectlist(responseJSON.result))
                             dispatch(toast('success', 'Project Updated Successfully!'));
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('project_list'));
                             location.push("../dashboard/projectlist")
                         })
                         .catch((error) => {
+                            console.log('........Error.......', error)
                             dispatch(Projectlist([]))
                             dispatch(toast('warning', 'Project Updation failed!'));
                             dispatch(loaders(false))
@@ -484,7 +535,22 @@ export function deleteproject(userId, id, location) {
                         .then((responseJSON) => {
                             dispatch(Projectlist(responseJSON.result))
                             dispatch(toast('success', 'Project Deleted Successfully!'));
-                            dispatch(loaders(false))
+                            /** FETCH DASHBOARD PROJECT DATA*/
+                            let newurl = config.apiUrl + 'user/dashboardDetails?id=' + userId;
+                            fetch(newurl,
+                                { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
+                                .then((response) => response.json())
+                                .then((responseJSON) => {
+                                    dispatch(dashboardproject(responseJSON.result));
+
+                                })
+                                .catch((error) => {
+                                    dispatch(dashboardproject({}))
+
+                                });
+                            /*FETCH DASHBOARD PROJECT DATA ENDS*/
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('project_list'));
                             location.push("../dashboard/projectlist")
                         })
                         .catch((error) => {
@@ -501,6 +567,60 @@ export function deleteproject(userId, id, location) {
             });
     }
 }
+
+
+// API FOR STATUS CHANGED IN  PROJECT AND API FOR ADD MEMBER IN  PROJECT 
+export function addMember(data, id) {
+    console.log('edit', data);
+    console.log(id);
+    return (dispatch) => {
+        fetch(config.apiUrl + 'project/' + id, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'PUT',
+            body: JSON.stringify({ status: "InProgress" })
+        })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                if (responseJSON.error) {
+                } else {                                                    // API FOR ADD MEMBER IN  PROJECT 
+                    let url = config.apiUrl + 'project/addmember?id=' + id;
+                    console.log(data, id);
+                    fetch(url,
+                        {
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                            },
+                            method: 'PUT',
+                            body: JSON.stringify(data)
+                        })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            console.log(responseJSON)
+                            dispatch(toast('success', 'Member Added Sucessfully!'));
+
+                        })
+                        .catch((error) => {
+                            console.log('........Error.......', error)
+                            dispatch(Projectlist([]))
+                            dispatch(toast('warning', 'Member Added  failed!'));
+                            dispatch(loaders(false))
+                        });
+
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('warning', 'Member Added  failed!'));
+                dispatch(loaders(false))
+            });
+    }
+}
+
 
 //.............................. END OF CRUD FOR PROJECT.....................................
 
@@ -535,7 +655,8 @@ export function createUser(data, location) {
                         .then((responseJSON) => {
                             dispatch(userlist(responseJSON.result))
                             dispatch(toast('success', 'User Added Successfully!'));
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('user_list'));
                             location.push("../dashboard/userlist")
                         })
                         .catch((error) => {
@@ -619,7 +740,8 @@ export function editUser(data, id, location) {
                         .then((responseJSON) => {
                             dispatch(userlist(responseJSON.result))
                             dispatch(toast('success', 'User Updated Successfully!'));
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('user_list'));
                             location.push("../dashboard/userlist")
                         })
                         .catch((error) => {
@@ -661,7 +783,8 @@ export function deleteUser(id, location) {
                         .then((responseJSON) => {
                             dispatch(userlist(responseJSON.result))
                             dispatch(toast('success', 'User Deleted Successfully!'));
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('user_list'));
                             location.push("../dashboard/userlist")
                         })
                         .catch((error) => {
@@ -711,7 +834,8 @@ export function billCreate(billdata, location) {
                         .then((responseJSON) => {
                             dispatch(toast('success', 'Bill Created Successfully!'));
                             dispatch(BillList(responseJSON.result))
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('bill_list'));
                             location.push("../dashboard/billlist")
                         })
                         .catch((error) => {
@@ -798,7 +922,8 @@ export function BillEdit(data, id, location) {
                             console.log(responseJSON.result)
                             dispatch(toast('success', 'Bill Updated Successfully!'));
                             dispatch(BillList(responseJSON.result))
-                            dispatch(loaders(false))
+                            dispatch(loaders(false));
+                            dispatch(menuKeys('bill_list'));
                             location.push("../dashboard/billlist")
                         })
                         .catch((error) => {
@@ -818,6 +943,7 @@ export function BillEdit(data, id, location) {
 }
 //.....................CRUD FOR Bill END.....................................
 
+//.............................. END OF CRUD FOR BILL.....................................
 
 //User ROLE API
 export function findByRole(role) {
@@ -893,7 +1019,6 @@ function RoleWithTags(list) {
 export function dashboardProject(userId) {
 
     return (dispatch) => {
-        console.log(config.apiUrl)
         dispatch(loaders(true))
         fetch(config.apiUrl + 'user/dashboardDetails?id=' + userId,
             {
@@ -904,8 +1029,7 @@ export function dashboardProject(userId) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                if (!responseJSON.error)
-                    dispatch(dashboardproject(responseJSON.result));
+                dispatch(dashboardproject(responseJSON.result));
                 dispatch(loaders(false));
             })
             .catch((error) => {
@@ -957,46 +1081,6 @@ function dashboardcustomer(data) {
         data
     }
 }
-
-
-
-//API  FOR ADD MEMBER
-export function addMember(data, id) {
-    return (dispatch) => {
-        console.log(config.apiUrl)
-        return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'project/addmember?id=' + id,
-                {
-                    headers: {
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=',
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    method: 'PUT',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-
-                    console.log('response');
-
-                    dispatch(member(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
-    }
-}
-// ADD MEMBER
-function member(json) {
-    return {
-        type: "ADD_MEMBER",
-        json
-    }
-}
-
 // FULL PAGE LOADER ACTION DISPACTHED
 function loaders(data) {
     return {
@@ -1037,4 +1121,30 @@ function userdetail(detail) {
 
     }
 }
+
+
+/**CHANGE COLOR OF SELECTED KEY OF MENU ITEM */
+export function menuKeys(data) {
+    return (dispatch) => {
+        dispatch(menuItem(data))
+    }
+}
+/* DISPATCHING ACTION FOR MENU ITEM SELECTED KEY*/
+function menuItem(data) {
+    return {
+        type: "MENU_SELECTED_KEY",
+        data
+    }
+}
+
+/**OPEN SELECTED KEY OF SELECTED KEY OF MENU ITEM */
+export function openkey(data) {
+    return (dispatch) => {
+        dispatch({
+            type: "OPEN_SELECTED_MENU_KEY",
+            data
+        })
+    }
+}
+
 

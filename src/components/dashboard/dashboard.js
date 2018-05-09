@@ -71,52 +71,40 @@ class Dashboard extends Component {
   }
 
   gotoDashboard = () => {
-    this.setState({
-      selectedKey: ['home'],
-      openKeys: []
-    });
+    this.props.actions.menuKeys('home');
+    this.props.actions.openkey([]);
+
   }
 
   handleClick = (nav) => {
-    let navArr = [];
-    navArr.push(nav.key);
-    this.setState({
-      selectedKey: navArr
-    });
+    console.log(nav);
+    this.props.actions.menuKeys(nav.key);
+
     if (nav.key == 'home') {
-      this.setState({
-        openKeys: []
-      });
-    }
+      this.props.actions.openkey([])
+    };
+
   }
 
   openChange = (nav) => {
+
     if (nav.length >= 1) {
+
       let key = nav[nav.length - 1];
-      let keys = [];
-      keys.push(key);
-      this.setState({
-        openKeys: keys
-      });
+
+      this.props.actions.openkey(key);
+
     } else {
-      this.setState({
-        openKeys: []
-      });
+      this.props.actions.openkey([])
+
     }
   }
 
-  renderSidemenuSelection = () => {
-    this.setState({
-      selectedKey: ['client_list']
-    });
-    if (this.props.location.pathname != '/dashboard') {
-      this.props.history.push('/dashboard');
-    }
-  }
+
 
 
   componentDidMount() {
-    console.log(this.props);
+    console.log('#############################', this.props);
 
     /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA 
     */
@@ -147,31 +135,59 @@ class Dashboard extends Component {
       this.props.actions.tagsList('VerticalLead');
       this.props.actions.countrylist();
     }
-    /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA  ENDS
-       */
+    /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA  ENDS */
 
     /*GET USER NAME AND ROLE*/
     this.commonFunction();
-    //***** */
+    
 
-    this.renderSidemenuSelection();
+    /**  INITIALLY HOME MENU TO BE SELECTED  */
+    this.props.actions.openkey([]);
+    this.props.actions.menuKeys('home');
+    /**  INITIALLY HOME MENU TO BE SELECTED  ENDS */
 
+    /** NAVIGATE TO DASHBOARD ON REFRESH */
+    if (this.props.location.pathname != '/dashboard') {
+      this.props.history.push('/dashboard');
+    }
+    /**NAVIGATE TO DASHBOARD ON REFRESH  ENDS*/
   }
+
   componentWillReceiveProps(props) {
-    console.log('jjjjjjjjjjjjjjjjjj', props)
+    console.log('jjjjjjjjjjjjjjjjjj', props, this.props);
+
+    /*CHANGE THE COLOR OF SELECTED MENU ITEM  AFTER RECEVING DATA FROM PROPS*/
+    if (props.menuselectedkey.length != 0) {
+
+      this.setState({ selectedKey: props.menuselectedkey })
+    }
+    else {
+      this.setState({ selectedKey: ['home'] })
+    }
+
+    /**OPEN THE MENU ITEM  */
+    if (props.openKey.length != 0) {
+
+      this.setState({ openKeys: props.openKey })
+    }
+    else {
+      this.setState({ openKeys: [] })
+    }
     this.commonFunction();
   }
+
   // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
   commonFunction() {
     /* SHOWING LOGGEDIN USER NAME AFTER RECEIVING DATA FROM PROPS*/
     if (this.props.loggeduserDetails) {
       this.setState({ username: this.props.loggeduserDetails.name });
-      this.setState({ userrole: this.props.loggeduserDetails.role })
+      this.setState({ userrole: this.props.loggeduserDetails.role });
     }
+
   }
 
   render() {
-
+    console.log('(((((((((((((())))))))))))render dashboard')
     return (
       <div>
         <Layout>
@@ -266,8 +282,8 @@ class Dashboard extends Component {
                 onOpenChange={this.openChange}
                 onClick={this.handleClick}
                 mode="inline"
-                // selectedKeys={this.state.selectedKey}
-                defaultSelectedKeys={this.state.selectedKey}
+                selectedKeys={this.state.selectedKey}
+                // defaultSelectedKeys={this.state.selectedKey}
                 defaultOpenKeys={this.state.selectedKey}
                 style={{ height: '100%', borderRight: 0 }}
                 openKeys={this.state.openKeys}
@@ -277,7 +293,7 @@ class Dashboard extends Component {
                   <span>Home</span>
                   <NavLink to="../dashboard" activeClassName="active"></NavLink>
                 </Menu.Item>
-                {this.state.userrole ? this.state.userrole == "admin" || "Sales" ?
+                {this.state.userrole ? this.state.userrole == "admin" || "Sales" && this.state.userrole != 'Developer' ?
                   <SubMenu key="client" title={<span><Icon type="usergroup-add" />Clients</span>} subMenuCloseDelay={0.1}>
                     <Menu.Item key="create_client">
                       <span>Client Create</span>
@@ -312,7 +328,7 @@ class Dashboard extends Component {
                     </Menu.Item>
                   </SubMenu> : '' : ''}
 
-                {this.state.userrole ? this.state.userrole == "admin" || "Sales" ?
+                {this.state.userrole ? this.state.userrole == "admin" || "Sales" && this.state.userrole != 'Developer' ?
                   <SubMenu key="bill" title={<span><Icon type="solution" />Bill Managements</span>} subMenuCloseDelay={0.1}>
                     {
                       this.state.userrole == "Sales" ?

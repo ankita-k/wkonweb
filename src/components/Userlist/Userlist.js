@@ -58,7 +58,7 @@ class Userlist extends Component {
 
     //edit client
     editUser = (data) => {
-        console.log(data);
+        this.props.actions.menuKeys('create_user');
         this.props.history.push({
             pathname: '/dashboard/edituser',
             userData: data

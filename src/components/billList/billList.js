@@ -168,7 +168,7 @@ class BillList extends Component {
 
     //edit bill
     editBill = (data) => {
-       
+       this.props.actions.menuKeys('create_bill');
         this.props.history.push({
             pathname: '/dashboard/editbill',
             data: {
@@ -218,7 +218,7 @@ class BillList extends Component {
                     <h1 className="clientList">Bill List</h1>
                     <Row>
                         <div className="addButton billeradd">
-                            <Button onClick={() => { this.props.history.push('/dashboard/bill') }}>+</Button>
+                            <Button onClick={() => {this.props.actions.menuKeys('create_bill'); this.props.history.push('/dashboard/bill') }}>+</Button>
                         </div>
                         {/* </Row>
                 <Row> */}

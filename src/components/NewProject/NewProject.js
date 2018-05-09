@@ -52,6 +52,7 @@ class NewProject extends Component {
     }
     setModal2Visible(modal2Visible) {
         this.setState({ modal2Visible });
+        console.log(this.state.assignRole)
     }
     constructor(props) {
         // console.log(props);
@@ -60,12 +61,11 @@ class NewProject extends Component {
             clientlist: [],
             clientarray: [],
             show: false,//loading-bar,
-            showLoader: false,
             disabledate: true,
             disableclient: false,
             userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
-            techArray: ['ReactJS', 'Php', 'ReactNative'],
-            techs: ['ReactJS', 'Php', 'ReactNative'],
+            techArray: ['ReactJS', 'Php', 'ReactNative', 'IOT'],
+            techs: ['ReactJS', 'Php', 'ReactNative', 'IOT'],
             techsValue: [],
             value: [],
             fetching: false,
@@ -79,7 +79,17 @@ class NewProject extends Component {
             memeberId: '',
             disabletag: true,
             disableassign: false,
+            addMember: [],
+            columns: [{
+                title: 'Assign To',
+                dataIndex: 'name',
+                width: 200,
+            }, {
+                title: 'Role',
+                dataIndex: 'role',
+            }]
         }
+
 
     }
 
@@ -90,9 +100,6 @@ class NewProject extends Component {
             this.setState({ editClient: true })
 
             console.log('members', this.props.location.data.data.members);
-
-            this.setState({ assignRole: this.props.location.data.data.members })
-            console.log(this.state.assignRole)
 
             console.log("projectId", this.props.location.data.data._id)
             this.setState({ projectId: this.props.location.data.data._id })
@@ -114,29 +121,24 @@ class NewProject extends Component {
 
             // for filter role,name,userId from members
             if (this.props.location.data.data.members != []) {
-                // let newarray1 = this.props.location.data.data.members.map(function (item, index) {
-                //     return {
-                //         userId: item.userId._id,
-                //         name: item.userId.name,
-                //         role: item.role
-                //     }
-                // })
-                // console.log(newarray1)
-               // for Sales
-                // if (this.props.loggeduserDetails.role == 'Sales') {
-                //     this.state.rolearray == 'VerticalLead' ? this.setState({ disableassign: true }) && this.setState({}) : ''
+                let newarray1 = this.props.location.data.data.members.map(function (item, index) {
+                    return {
+                        userId: item.userId._id,
+                        name: item.userId.name,
+                        role: item.role
+                    }
+                })
+                console.log(newarray1)
+                this.setState({ addMember: newarray1 })
+                // FOR SEARCH ROLE ==VerticalLead
 
-                // }
-                // this.setState({ assignRole: newarray1 })
-                console.log(this.state.assignRole)
-                // for search role==VerticalLead
-                // let index = newarray1.findIndex(x => x.role === "VerticalLead");
-                // console.log(index);
-                // console.log(newarray1[index]);
-                // if (index > -1) {
-                //     this.setState({ disableassign: true })                    
-                // }
-                //
+                let index = newarray1.findIndex(x => x.role === "VerticalLead");
+                console.log(index);
+                console.log(newarray1[index]);
+                if (index > -1) {
+                    this.setState({ disableassign: true })
+                }
+
             }
             this.props.form.setFieldsValue({
                 ['name']: this.props.location.data.data.name1,
@@ -173,25 +175,20 @@ class NewProject extends Component {
     // ADD PROJECT FUNCTION 
     handleSubmit = (e) => {
         e.preventDefault();
-        this.setState({ showLoader: true });
-        this.setState({ show: true });
         this.props.form.validateFields((err, values) => {
-
             if (!err) {
+                this.setState({ show: true });
                 console.log('Received values of form: ', values);
 
                 if (this.props.location.data) {
                     console.log('edit function')
-                    this.addMember();
-
-
+                    this.setState({ disableassign: true })
                     let data = {
                         requirement: values.textRequirement,
                         status: values.status,
                         technology: (values.technology).toString(),
                         name: values.name,
                         client: this.props.location.data.data.client._id,
-
                     }
                     if (values.expecstart) {
                         data.expectedStartDate = values.expecstart._d
@@ -207,22 +204,7 @@ class NewProject extends Component {
                     }
                     console.log(data)
 
-                    this.props.actions.editproject(data, this.props.location.data.data._id,this.props.history)
-                    //     this.setState({ showLoader: false });
-                    //     this.setState({ show: false });
-                    //     console.log(response)
-                    //     if (!response.error) {
-                    //         this.props.opentoast('success', 'Project Updated Successfully!');
-                    //         this.props.history.push('/dashboard/projectlist')
-                    //     }
-                    //     else {
-                    //         this.props.opentoast('warning', response.message);
-                    //     }
-                    // }, err => {
-                    //     this.setState({ show: false });
-                    //     this.setState({ showLoader: false });
-                    //     this.props.opentoast('warning', 'Project Not Updated Successfully!');
-                    // })
+                    this.props.actions.editproject(data, this.state.userId, this.props.location.data.data._id, this.props.history)  //UPDATE(EDIT) PROJECT
                 }
                 else {
 
@@ -246,20 +228,7 @@ class NewProject extends Component {
                     }
 
                     console.log(data)
-                    this.props.actions.addProject(data,this.props.history)
-                    //     this.setState({ show: false });
-                    //     console.log(response)
-                    //     if (!response.error) {
-                    //         this.props.opentoast('success', 'Project Added Successfully!');
-                    //         this.props.history.push('/dashboard/projectlist')
-                    //     }
-                    //     else {
-                    //         this.props.opentoast('warning', response.message);
-                    //     }
-                    // }, err => {
-                    //     this.setState({ show: false });
-                    //     this.props.opentoast('warning', 'Project Not Added Successfully!');
-                    // })
+                    this.props.actions.addProject(data, this.props.history)  //CREATE NEW PROJECT
                 }
 
             }
@@ -267,9 +236,9 @@ class NewProject extends Component {
     }
 
     componentWillReceiveProps(props) {
-        // console.log(props)
-        // this.setState({ clientlist: props.clientList });
+
     }
+
     // VALIADTE EXPECTED START DATE AND END DATE
     validatetoexpecstart = (rule, value, callback) => {
         const form = this.props.form;
@@ -368,7 +337,6 @@ class NewProject extends Component {
 
     // RENDER DROPDOWN OF SEARCHED ITEM
     renderOption = (item) => {
-        // console.log(item);
         return (
             <Option key={item._id} value={item._id} text={item.name}>
                 {item.name}
@@ -432,43 +400,30 @@ class NewProject extends Component {
         let newarray = this.state.verticalHeadrarray.filter(item => {
             return (item._id.toLowerCase().indexOf(value.toLowerCase()) > -1)
         });
-        // console.log(newarray)
-        // console.log(newarray[0].name)
         this.setState({ assign: newarray[0].name })
-        // console.log(this.state.assign)
-
-
     }
-    // CLICK ON PLUS ICON
-    plusIcon = () => {
-        let data = {
-            userId: this.state.memeberId,
-            role: this.props.loggeduserDetails.role == 'Sales' ? 'VerticalLead' : this.state.role,
-            name: this.state.assign
-        }
-        this.state.assignRole.push(data)
-        console.log(this.state.assignRole)
-        this.props.form.setFieldsValue({    //for clear the field
-            ['assign']: '',
-            ['role']: '',
-        })
 
-    }
-    //ADD MEMBER
+    // CLICK ON PLUS ICON FOR ADDING MEMBER
     addMember = () => {
-        this.props.addMember(this.state.assignRole, this.state.projectId).then(response => {
-            console.log('memeber', response);
-            console.log('add member....', response.result)
-            if (!response.error) {
+            let data = {
+                userId: this.state.memeberId,
+                role: this.props.loggeduserDetails.role == 'Sales' ? 'VerticalLead' : this.state.role,
+                name: this.state.assign
             }
-        })
-    }
+            this.state.assignRole.push(data)
+            this.state.addMember.push(data)  // FOR DISPAY MEMBER NAME
+            console.log(this.state.assignRole)
+            console.log(this.state.assignRole[0].role)
+            this.state.assignRole[0].role == 'VerticalLead' ? this.setState({ disableassign: true }) : "";          //After Adding AssigneRole...Input/Button wiil disabled
+            this.props.form.setFieldsValue({    //For Clear the Input  Field
+                ['assign']: '',
+                ['role']: '',
+            })
+            this.props.actions.addMember(this.state.assignRole, this.state.projectId)
+        }
+
     render() {
-        // const { clientarray } = this.state;
-        // console.log(this.state.clientarray)
-        // const children = clientarray.map((list) => {
-        //     return <Option1 key={list._id}>{list.name}</Option1>;
-        // });
+        const columns = this.state.columns;
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
@@ -523,14 +478,13 @@ class NewProject extends Component {
 
                                             )(
                                                 <Select className="statuspipeline"
-                                                    placeholder="Choose Role"
+                                                    placeholder="Choose Client"
                                                     onChange={this.selectStatus}
+                                                    disabled={this.state.disableassign}
                                                 >
                                                     {this.state.clientlist.map((item, index) => {
                                                         return <Option key={index} value={item._id}>{item.name}</Option>
                                                     })}
-                                                    {/* <Option value="Sales">Client1</Option>
-                                                    <Option value="Developer">Client2</Option> */}
                                                 </Select>
                                             )}
                                         </FormItem>
@@ -577,8 +531,6 @@ class NewProject extends Component {
                                         })(
                                             <Select
                                                 mode="multiple"
-                                                // labelInValue
-                                                // value={value}
                                                 placeholder="Select users"
                                                 notFoundContent={fetching ? <Spin size="small" /> : null}
                                                 filterOption={false}
@@ -745,45 +697,29 @@ class NewProject extends Component {
                                             {(this.state.editClient == true) ?
 
                                                 <div className="addbtn"  >
-                                                    <Button onClick={this.plusIcon} disabled={this.state.disableassign}>Add</Button>
+                                                    <Button onClick={this.addMember} disabled={this.state.disableassign}>Add</Button>
                                                 </div>
                                                 : ''}
                                         </Col>
                                         : ""}
 
                                 </Row>
-                                {/* {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
-                                    <Row>
-                                        <div className="roleassign">
-                                            <Col xs={24} sm={24} md={24} lg={24}>
-                                                <span className="rolelist">
-                                                    {this.state.assignRole.map((item, index) => {
-                                                        return <span><span className="usrnm" key={index} >{item.name}:</span><span className="role">{item.role} &nbsp;</span></span>
-                                                    })}
-
-                                                   
-
-
-
-                                                </span>
-                                            </Col>
-                                        </div>
-                                    </Row>
-                                    : ""} */}
                                 {/* ShowDetails Modal */}
-                                <Row>
-                                    <p><a href="#" onClick={() => this.setModal2Visible(true)}>Show Details</a></p>
-                                    <Modal
-                                    className="showprojectModal"
-                                        title="Show Details"
-                                        wrapClassName="vertical-center-modal"
-                                        visible={this.state.modal2Visible}
-                                        onOk={() => this.setModal2Visible(false)}
-                                        onCancel={() => this.setModal2Visible(false)}
-                                    >
-                                        <Table columns={columns} dataSource={data} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
-                                    </Modal>
-                                </Row>
+                                {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
+                                    <Row>
+                                        <p><a href="#" onClick={() => this.setModal2Visible(true)}>Show Details</a></p>
+                                        <Modal
+                                            className="showprojectModal"
+                                            title="Show Details"
+                                            wrapClassName="vertical-center-modal"
+                                            visible={this.state.modal2Visible}
+                                            onOk={() => this.setModal2Visible(false)}
+                                            onCancel={() => this.setModal2Visible(false)}
+                                        >
+                                            <Table columns={columns} dataSource={this.state.addMember} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
+                                        </Modal>
+                                    </Row> :
+                                    ""}
                                 {/* ShowDetails Modal */}
                                 <Row className="briefRequire">
                                     <Col xs={24} sm={24} md={24} lg={24}>
@@ -791,39 +727,18 @@ class NewProject extends Component {
                                             {getFieldDecorator('textRequirement', {
                                                 rules: [{ required: true, message: 'Please input your Brief Requirement!' }],
                                             })(
-                                                // <Input placeholder="Brief Requirement" />
                                                 <TextArea maxLength="250" rows={4} className="textRequirement" placeholder="Brief Requirement" />
                                             )}
                                         </FormItem>
                                     </Col>
                                 </Row>
-                                {/* <Row>
-                                    <Col xs={24} sm={24} md={24} lg={24}>
-                                        <p className="expecteDateclient">Choose Client :</p>
-                                        <FormItem>
-                                            {getFieldDecorator('client', {
-                                                rules: [{ required: true, message: 'Please select a client!' },]
-                                            })(
-                                                <AutoComplete
-                                                    className="clientHere"
-                                                    onSearch={this.handleSearch}
-                                                    placeholder="Choose Client"
-                                                    dataSource={this.state.clientarray.map((item) => { return this.renderOption(item) })}
-                                                    onSelect={this.onSelect}
-                                                >
-
-                                                </AutoComplete>
-                                            )}
-                                        </FormItem>
-                                    </Col>
-                                </Row> */}
                             </div>
                         </div>
 
                         <FormItem>
                             <div className="savebutton">
-                                <Button htmlType="submit" className="cardbuttonSave login-form-button" loading={this.state.showLoader}>Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
+                                <Button htmlType="submit" className="cardbuttonSave login-form-button">Save</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('project_list');this.props.history.push('/dashboard/projectlist') }} >Cancel</Button>
                             </div>
                         </FormItem>
 
@@ -846,4 +761,4 @@ function mapDispatchToProps(dispatch, state) {
     })
 }
 const WrappedNewProject = Form.create()(NewProject);
-export default connect(mapStateToProps,mapDispatchToProps)(WrappedNewProject);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedNewProject);

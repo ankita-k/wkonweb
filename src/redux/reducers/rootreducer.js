@@ -13,7 +13,8 @@ import {dashboardCustomerData} from '../reducers/dashboardCustomerData';
 import {countrylists} from '../reducers/countrylist';
 import {fullloader} from '../reducers/loader';
 import {listByTags} from '../reducers/listByTags';
-;
+import {menuselectedkey} from '../reducers/menukey';
+import {openKey} from '../reducers/openkey';
 // reducers list
 const rootReducer = combineReducers({
     loginReducer,                    //for user login
@@ -30,6 +31,8 @@ const rootReducer = combineReducers({
     countrylists,                    // get countrylist
     fullloader,
     listByTags,
+    menuselectedkey,
+    openKey
 })
 
 

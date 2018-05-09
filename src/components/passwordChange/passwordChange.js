@@ -43,6 +43,7 @@ class ChangePasswordForm extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
+                this.setState({ show: true });
                 console.log('Received values of form: ', values);
                 let conf = config.headers;
                 let data = {
