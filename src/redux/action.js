@@ -541,7 +541,7 @@ export function addMember(data, id) {
                         body: JSON.stringify(data) })
                         .then((response) => response.json())
                         .then((responseJSON) => {
-                            console.log(responseJSON)
+                            console.log('member Added',responseJSON)
                             dispatch(toast('success', 'Member Added Sucessfully!'));
 
                         })
