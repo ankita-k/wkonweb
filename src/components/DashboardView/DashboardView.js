@@ -286,7 +286,7 @@ class DashboardView extends Component {
                
                 {/* dashboardviewcustomer */}
                 {/* Project section start */}
-                {this.props.loggeduserDetails.role=='Developer'||'admin' && this.props.loggeduserDetails.role!='Sales'?
+                {this.props.loggeduserDetails.role=='Developer'||'admin' ||'Sales'?
                 <div className="dashboardView">
                     <h1 className="customer">Projects</h1>
                     <Row>

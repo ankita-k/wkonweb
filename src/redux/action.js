@@ -5,19 +5,7 @@ import { developerList } from './reducers/developerList';
 let conf = config.headers;
 
 
-
-//function for change pwd
-function changepwd(json) {
-
-    return {
-        type: "RECEIVE_PWD",
-        json
-
-    }
-}
-
-
-// API call for login
+/**API CALL FOR LOGIN  AND STORING USERID IN SESSION STORAGE IF REMEMBER ME IS FALSE OTHERWISE STORE IN LOCALSTORAG IF TRUE */
 export function login(logindata, location) {
     return (dispatch) => {
         dispatch(loaders(true))
@@ -33,18 +21,16 @@ export function login(logindata, location) {
                 if (responseJSON.error) {
                     dispatch(loaders(false));
                     dispatch(toast('error', 'No Such User Exist'));
-                   
+
                 }
                 else {
                     dispatch(loaders(false));
                     if (responseJSON.result && responseJSON.result.lastLogin) {
                         if (logindata.checkbox == true) {
-                            console.log('local Storage')
                             localStorage.setItem('id', responseJSON.result._id);
                             location.push('/dashboard');
                         }
                         else {
-                            console.log('session Storage')
                             sessionStorage.setItem('id', responseJSON.result._id);
                             location.push('/dashboard');
                         }
@@ -66,70 +52,56 @@ export function login(logindata, location) {
             .catch((error) => {
                 dispatch(loaders(false));
                 dispatch(toast('error', 'No Such User Exist'))
-               
+
             });
 
     }
 }
+/**********************LOGIN API CALL ENDS **************************/
 
-
-
-
-
-// Password api call
-export function password(data) {
-    console.log(data);
+/**************PASSWORD CHANGE API CALL*************************** */
+export function password(data, location) {
     return (dispatch) => {
-        return new Promise((resolve, reject) => {
+        dispatch(loaders(true));
+        fetch(config.apiUrl + 'user/resetPassword',
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'PUT',
+                body: JSON.stringify(data)
 
-            fetch(config.apiUrl + 'user/resetPassword',
-                {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'PUT',
-                    body: JSON.stringify(data)
-
-                })
-                .then((response) =>
-                    response.json())
-                .then((responseJSON) => {
-                    dispatch(changepwd(responseJSON))
-                    resolve(responseJSON);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+            })
+            .then((response) =>
+                response.json())
+            .then((responseJSON) => {
+                if (!responseJSON.error) {
+                    dispatch(loaders(false));
+                    dispatch(toast('success', 'Password Changed Successfully!'));
+                    location.push('/dashboard');
+                }
+                else {
+                    dispatch(loaders(false));
+                    dispatch(toast('error', 'Wrong Password !'));
+                }
+            })
+            .catch((error) => {
+                dispatch(loaders(false));
+                dispatch(toast('error', 'Wrong Password !'));
+            });
     }
 }
+/**************PASSWORD CHANGE API CALL ENDS************** */
 
 
-// COUNTRY LIST ACTION DISPATCHED
-
-function countryList(list) {
-    console.log("action dispatched")
-    return {
-        type: "COUNTRY_LIST",
-        list
-
-    }
-}
-
-
-
-
-//GET COUNTRIES LIST 
+/**************GET COUNTRY LIST************** */
 export function countrylist() {
-
     return (dispatch) => {
         dispatch(loaders(true))
-        // return new Promise(function (resolve, reject) {
         fetch('/assets/countrieslist.json', { method: 'GET' })
             .then((response) => {
-
                 response.json()
                     .then(function (myJson) {
                         dispatch(countryList(myJson))
@@ -143,6 +115,17 @@ export function countrylist() {
     }
 }
 
+function countryList(list) {   // ACTION DISPATCHED
+    return {
+        type: "COUNTRY_LIST",
+        list
+
+    }
+}
+
+/**************GET COUNTRY LIST ENDS************** ******************************/
+
+/******************************* OPEN TOAST MESSAGES************** **************/
 
 // DISPATCH TOAST VALUE
 export function opentoast(type, message) {
@@ -170,6 +153,7 @@ function toast(type, message) {
     }
 
 }
+/************* OPEN TOAST MESSAGES ENDS************** ***********/
 
 //....................... CRUD FOR CLIENT.........................................
 
@@ -192,7 +176,6 @@ export function createClient(data, location) {
                     dispatch(toast('Warning', 'Client Creation failed!'));
                     dispatch(loaders(false))
                 } else {
-                    console.log(responseJSON)
                     let url = config.apiUrl + "client/clientlist?userId=" + data.userId;
 
                     fetch(url,
@@ -237,7 +220,6 @@ export function createClient(data, location) {
 
 //FUNCTION FOR API CALL FOR GETTING CLIENT LIST AND DISPATCHING ACTION
 export function clientlist(userId) {
-    console.log("clientlist api call")
     return (dispatch) => {
         dispatch(loaders(true))
         fetch(config.apiUrl + 'client/clientlist?userId=' + userId,
@@ -249,7 +231,6 @@ export function clientlist(userId) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                console.log(responseJSON)
                 dispatch(clientList(responseJSON.result))
                 dispatch(loaders(false))
             })
@@ -270,7 +251,6 @@ function clientList(list) {
 }
 /*UPDATE CLIENT BY API CALL AND GET NEW CLIENT LIST IMMEDIATELY*/
 export function updateclient(data, id, userid, location) {
-    console.log(data, id)
     return (dispatch) => {
         dispatch(loaders(true));
         fetch(config.apiUrl + 'client/' + id,
@@ -318,8 +298,6 @@ export function updateclient(data, id, userid, location) {
 }
 /*DELETE CLIENT BY API CALL AND GET NEW CLIENT LIST IMMEDIATELY*/
 export function deleteclient(id, userid, location) {
-    console.log(id)
-
     return (dispatch) => {
         dispatch(loaders(true))
         fetch(config.apiUrl + 'client/' + id,
@@ -336,7 +314,6 @@ export function deleteclient(id, userid, location) {
                     dispatch(toast('Warning', 'Client Deletion failed!'));
                     dispatch(loaders(false))
                 } else {
-                    console.log(responseJSON)
                     let url = config.apiUrl + "client/clientlist?userId=" + userid;
 
                     fetch(url,
@@ -385,7 +362,6 @@ export function deleteclient(id, userid, location) {
 
 // CREATE PROJECT APICALL WITH  GETTING PROJECT LIST AND DISPATCHING ACTION
 export function addProject(data, location) {
-    console.log(data)
     return (dispatch) => {
         dispatch(loaders(true))
         fetch(config.apiUrl + 'project', {
@@ -413,7 +389,6 @@ export function addProject(data, location) {
                             dispatch(toast('success', 'Project Added Successfully!'));
                             /** FETCH DASHBOARD PROJECT DATA*/
                             let newurl = config.apiUrl + 'user/dashboardDetails?id=' + data.userId;
-                            console.log(data.userId)
                             fetch(newurl,
                                 { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
                                 .then((response) => response.json())
@@ -480,8 +455,6 @@ export function projectList(userId) {
 }
 //API FOR EDIT PROJECT WITH GETTING PROJECT LIST AND DISPATCHING ACTION
 export function editproject(data, userId, id, location) {
-    console.log('edit', data)
-    console.log(id)
     return (dispatch) => {
         dispatch(loaders(true))
         fetch(config.apiUrl + 'project/' + id, {
@@ -499,14 +472,12 @@ export function editproject(data, userId, id, location) {
                     dispatch(toast('warning', 'Project Updation failed!'));
                     dispatch(loaders(false))
                 } else {
-                    console.log(userId)
                     let url = config.apiUrl + 'project/projectlist?userId=' + userId;
 
                     fetch(url,
                         { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
                         .then((response) => response.json())
                         .then((responseJSON) => {
-                            console.log(responseJSON)
                             dispatch(Projectlist(responseJSON.result))
                             dispatch(toast('success', 'Project Updated Successfully!'));
                             dispatch(loaders(false));
@@ -514,7 +485,6 @@ export function editproject(data, userId, id, location) {
                             location.push("../dashboard/projectlist")
                         })
                         .catch((error) => {
-                            console.log('........Error.......', error)
                             dispatch(Projectlist([]))
                             dispatch(toast('warning', 'Project Updation failed!'));
                             dispatch(loaders(false))
@@ -530,7 +500,6 @@ export function editproject(data, userId, id, location) {
 }
 //API FOR DELETE PROJECT WITH GETTING PROJECT LIST AND DISPATCHING ACTION
 export function deleteproject(userId, id, location) {
-    console.log(id)
     return (dispatch) => {
         dispatch(loaders(true))
         fetch(config.apiUrl + 'project/' + id, {
@@ -589,8 +558,6 @@ export function deleteproject(userId, id, location) {
 
 // API FOR STATUS CHANGED IN  PROJECT AND API FOR ADD MEMBER IN  PROJECT 
 export function addMember(data, id) {
-    console.log('edit', data);
-    console.log(id);
     return (dispatch) => {
         fetch(config.apiUrl + 'project/' + id, {
             headers: {
@@ -606,7 +573,6 @@ export function addMember(data, id) {
                 if (responseJSON.error) {
                 } else {                                                    // API FOR ADD MEMBER IN  PROJECT 
                     let url = config.apiUrl + 'project/addmember?id=' + id;
-                    console.log(data, id);
                     fetch(url,
                         {
                             headers: {
@@ -619,12 +585,10 @@ export function addMember(data, id) {
                         })
                         .then((response) => response.json())
                         .then((responseJSON) => {
-                            console.log(responseJSON)
                             dispatch(toast('success', 'Member Added Sucessfully!'));
 
                         })
                         .catch((error) => {
-                            console.log('........Error.......', error)
                             dispatch(Projectlist([]))
                             dispatch(toast('warning', 'Member Added  failed!'));
                             dispatch(loaders(false))
@@ -705,8 +669,6 @@ export function userList() {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-
-                console.log(responseJSON)
                 dispatch(userlist(responseJSON.result))
                 dispatch(loaders(false))
 
@@ -730,9 +692,6 @@ function userlist(list) {
 }
 //API FOR EDIT USER WITH GETTING USER LIST AND DISPATCHING ACTION
 export function editUser(data, id, location) {
-    console.log('edit', data)
-    console.log(id)
-
     return (dispatch) => {
         dispatch(loaders(true))
         fetch(config.apiUrl + 'user/' + id, {
@@ -778,7 +737,6 @@ export function editUser(data, id, location) {
 }
 //API FOR DELETE USER WITH GETTING USER LIST AND DISPATCHING ACTION
 export function deleteUser(id, location) {
-    console.log(id)
     return (dispatch) => {
         dispatch(loaders(true))
         fetch(config.apiUrl + 'user/delete?id=' + id, {
@@ -887,7 +845,6 @@ export function billlist(userId) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                console.log(responseJSON);
                 dispatch(BillList(responseJSON.result));
                 dispatch(loaders(false))
             })
@@ -901,7 +858,6 @@ export function billlist(userId) {
 
 //billlist func
 function BillList(list) {
-    console.log(list)
     return {
         type: "BILL_LIST",
         list
@@ -910,8 +866,6 @@ function BillList(list) {
 }
 /*BILL UPDATION BY API CALL AND GET NEW BILL LIST IMMEDIATELY*/
 export function BillEdit(data, id, location) {
-    console.log('edit', data)
-    console.log(id)
     return (dispatch) => {
         dispatch(loaders(true))
         fetch(config.apiUrl + 'bill?id=' + id,
@@ -937,7 +891,6 @@ export function BillEdit(data, id, location) {
                         { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
                         .then((response) => response.json())
                         .then((responseJSON) => {
-                            console.log(responseJSON.result)
                             dispatch(toast('success', 'Bill Updated Successfully!'));
                             dispatch(BillList(responseJSON.result))
                             dispatch(loaders(false));
@@ -966,7 +919,6 @@ export function BillEdit(data, id, location) {
 //User ROLE API
 export function findByRole(role) {
     return (dispatch) => {
-        console.log(config.apiUrl)
         dispatch(loaders(true))
 
         fetch(config.apiUrl + 'user/findByRole?role=' + role,
@@ -990,7 +942,6 @@ export function findByRole(role) {
 }
 
 function developerlist(list) {
-    console.log(list)
     return {
         type: "DEVELOPER_LIST",
         list
@@ -1111,7 +1062,6 @@ function loaders(data) {
 // API CALL FOR FETCHING LOGGED USER DETAILS AND DISPATCHING ACTION
 export function userdetails(id) {
     return (dispatch) => {
-        console.log(config.apiUrl)
         fetch(config.apiUrl + 'user/' + id,
             {
                 headers: {
