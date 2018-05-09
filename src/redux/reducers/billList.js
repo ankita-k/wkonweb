@@ -3,11 +3,10 @@ import * as actionCreators from '../action';
 import moment from 'moment'
 // REDUCER FOR BILL CREATION
 export function billList (state = [], action) {
-    console.log(action)
+   
     switch (action.type) {
         case 'BILL_LIST':
-      
-             return action.list.map(function (item, index) {
+       return action.list.map(function (item, index) {
             return {
                 BDE: item.BDE ? item.BDE.length>10?(item.BDE.slice(0,10)+'....'):item.BDE: "-",
                 BDE1:item.BDE ? item.BDE : "-",
