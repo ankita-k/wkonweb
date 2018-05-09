@@ -70,28 +70,25 @@ class Userlist extends Component {
     deleteUser = (id) => {
         console.log(id);
         this.setState({ show: true });
-        this.props.actions.deleteUser(id,this.props.history)
-        //     console.log(response);
-        //     this.setState({ show: false });
-        //     this.setState({ visible: false })
-        //     if (!response.error) {
-        //         this.props.opentoast('success', 'User Deleted Successfully!');
-        //         this.getUser();
-        //     }
-        //     else {
-        //         this.props.opentoast('warning', response.messsage);
-        //     }
-        // }, err => {
-        //     this.setState({ show: false });
-        //     this.props.opentoast('success', 'User Not  Deleted Successfully!');
-        // })
+        this.props.actions.deleteUser(id, this.props.history)
+    }
+
+    //  APICALL FOR SENDING MAIL TO USER
+    SendEmail = (user) => {
+        console.log(user);
+        let data = {
+            name: user.name,
+            email: user.email,
+            subject: 'Please Login To Your Account'
+        }
+        this.props.actions.emailService(data)
     }
 
     render() {
         const { visible, loading } = this.state;
         return (
             <div className="userlist">
-                {this.props.fullloader== true ? <div className="loader">
+                {this.props.fullloader == true ? <div className="loader">
                     <Loader className="ldr" fullPage loading />
                 </div> : ""}
 
@@ -117,7 +114,9 @@ class Userlist extends Component {
                                         <Col lg={2}>
                                             <Button className="delete" onClick={() => { this.deleteUser(item._id) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
                                         </Col>
-
+                                        <Col lg={2}>
+                                            <Button className="email" onClick={() => { this.SendEmail(item) }}>
+                                                <a href="javascript:;"><Icon type="mail" /></a></Button></Col>
                                     </Row>
                                     <Row className="padng20">
                                         <Col lg={4} className="resalign">

@@ -83,7 +83,7 @@ class UserManagement extends Component {
             this.setState({ developerarray: (this.props.developerlist) });
         }
 
-         /*HIDE FULL LOADER */
+        /*HIDE FULL LOADER */
         //  if (this.props.fullloader) {
         //     this.setState({ show: newprops.fullloader })
         // }
@@ -209,7 +209,7 @@ class UserManagement extends Component {
                     //    user.tags=values.tags  
                     // }
                     console.log(user)
-                    this.props.actions.editUser(user, this.props.location.userData._id,this.props.history)
+                    this.props.actions.editUser(user, this.props.location.userData._id, this.props.history)
                     //     this.setState({ showLoader: false });
                     //     this.setState({ show: false });
                     //     console.log(response);
@@ -238,7 +238,7 @@ class UserManagement extends Component {
                         tags: values.tags.length != 0 ? values.tags : []
                     }
 
-                    this.props.actions.createUser(data,this.props.history)
+                    this.props.actions.createUser(data, this.props.history)
                     // .then(result => {
                     //     this.setState({ showLoader: false });
                     //     this.setState({ show: false });
@@ -261,6 +261,21 @@ class UserManagement extends Component {
         });
     }
 
+    
+     // VALIDATE PASSWORD LENGTH
+     validatepassword = (rule, value, callback) => {
+        const form = this.props.form;
+        if (value && form.getFieldValue('password')) {
+            if (value.length < 8)
+                callback('Password length too short!');
+            else {
+                callback();
+            }
+        } else {
+            callback();
+        }
+    }
+    
     render() {
         const { result } = this.state;
 
@@ -286,7 +301,7 @@ class UserManagement extends Component {
                                         {getFieldDecorator('name', {
                                             rules: [{ required: true, message: 'Please input your Name!' }],
                                         })(
-                                            <Input placeholder="Name" name="name" maxlength="40"/>
+                                            <Input placeholder="Name" name="name" maxlength="40" />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -312,7 +327,7 @@ class UserManagement extends Component {
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
                                         })(
                                             <Input placeholder="Phone No." name="phoneNumber"
-                                                maxLength="15" minlength="8"/>
+                                                maxLength="15" minlength="8" />
                                         )}
                                     </FormItem>
                                 </Col>
@@ -322,7 +337,7 @@ class UserManagement extends Component {
                                     <FormItem label="Password">
                                         {getFieldDecorator('password', {
                                             rules: [{ required: true, message: 'Please input your Password!' },
-                                            ],
+                                            {validator: this.validatepassword }],
                                         })(
                                             <Input type="password" placeholder="Password" name="password" minLength="8"
 
@@ -418,7 +433,7 @@ class UserManagement extends Component {
                         <FormItem>
                             <div className="savebutton">
                                 <Button htmlType="submit" className="cardbuttonSave login-form-button" >Save</Button>
-                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('user_list');this.props.history.push('/dashboard/Userlist') }}>Cancel</Button>
+                                <Button className="cardbuttonCancel login-form-button" onClick={() => { this.props.actions.menuKeys('user_list'); this.props.history.push('/dashboard/Userlist') }}>Cancel</Button>
                             </div>
                         </FormItem>
 
