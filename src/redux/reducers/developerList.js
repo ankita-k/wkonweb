@@ -3,7 +3,7 @@ import * as actionCreators from '../action';
 
 //REDUCER FOR DEVELOPERLIST
 export function developerlist(state = [], action) {
-    console.log(action)
+    // console.log(action)
   
     switch (action.type) {
 

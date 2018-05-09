@@ -602,6 +602,43 @@ export function addMember(data, id) {
             });
     }
 }
+//API FOR REMOVE MEMBER FROM PROJECT AND UPDATE
+export function removeMember(data, projectId) {
+    console.log('member Removed',data, projectId)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'project/deletemember?id=' + projectId,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'PUT',
+                body: JSON.stringify({userId:data})
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+console.log(responseJSON.members)
+                console.log('Member Deleted',responseJSON)
+                dispatch(toast('success', 'Member Deleted!'));
+                dispatch(member(responseJSON.result.members));
+
+            })
+            .catch((error) => {
+                dispatch(toast('warning', 'Member Deleted  failed!'));
+            });
+
+    }
+
+}
+// MEMBER REMOVE ACTION
+function member(list) {
+    return {
+        type: "MEMBER_REMOVE",
+        list
+
+    }
+}
 
 
 //.............................. END OF CRUD FOR PROJECT.....................................
