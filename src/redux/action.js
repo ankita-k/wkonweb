@@ -1147,6 +1147,7 @@ export function emailService(data) {
 /** APICALL FOR SENDING EMAIL TO USER ENDS */
 
 /* ***************PROJECT MODULES  CRUD ***************/
+
 /* Add Module*/
 export function addModule(data) {
     console.log(data)
@@ -1178,7 +1179,6 @@ export function addModule(data) {
 }
 
 /*DELETE MODULE*/
-
 export function deleteModule(id) {
     return (dispatch) => {
         fetch(config.apiUrl + 'email',
@@ -1206,6 +1206,26 @@ export function deleteModule(id) {
     }
 }
 
+/***********GET PROJECT MODULES LIST*********/
+export function getProjectModule(id) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET',
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                //code to dispatch action for storing module list 
+            })
+            .catch((error) => {
+                // code to handle error
+            });
+    }
+}
 /* ***************PROJECT MODULES  CRUD  ENDS***************/
 
 
@@ -1272,6 +1292,26 @@ export function deleteSubModule(id) {
     }
 }
 
+/***********GET SUB MODULES OF MODULE OF PARTICULAR LIST*********/
+export function getSubModuleList(id) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET',
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                //code to dispatch action for storing module list 
+            })
+            .catch((error) => {
+                // code to handle error
+            });
+    }
+}
 /* ***************PROJECT SUB MODULES  CRUD  ENDS***************/
 
 
@@ -1425,4 +1465,24 @@ export function taskEnded(data) {
     }
 }
 
+/***********GET SUB MODULES OF MODULE OF PARTICULAR LIST*********/
+export function getTask(id) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'email',
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET',
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                //code to dispatch action for storing module list 
+            })
+            .catch((error) => {
+                // code to handle error
+            });
+    }
+}
 /* ***************PROJECT SUB TASK CRUD  ENDS***************/
