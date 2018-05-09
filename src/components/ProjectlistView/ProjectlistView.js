@@ -98,9 +98,9 @@ class ProjectlistView extends Component {
             <Col lg={8}>
               <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><img className="fileIcon" src={deleteList} /></a></Button>
             </Col>
-            {/* <Col lg={7}>
+            <Col lg={7}>
               <Button className="view" onClick={() => { this.detailProject(record) }}>
-                <a href="javascript:;"><Icon type="eye-o" /></a></Button></Col> */}
+                <a href="javascript:;"><Icon type="eye-o" /></a></Button></Col>
           </Row>
         ),
       }
@@ -205,7 +205,7 @@ class ProjectlistView extends Component {
   // NAVIGATE TO PROJECT DETAIL PAGE
   detailProject = (record) => {
 
-    this.props.history.push(`/dashboard/project/:${record.name}`, { id: record._id })
+    this.props.history.push('/dashboard/singleproject')
   }
 
 

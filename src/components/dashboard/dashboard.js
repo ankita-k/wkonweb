@@ -21,6 +21,7 @@ import { BrowserRouter, Route, Switch, Redirect, NavLink } from 'react-router-do
 import Loading from 'react-loading-bar';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
+import ProjectManagement from '../projectManagement/projectManagement';
 // const { SubMenu } = Menu;
 const SubMenu = Menu.SubMenu;
 const { Header, Content, Sider } = Layout;
@@ -371,6 +372,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/editbill`} component={BillForm} />
                 <Route exact path={`${this.props.match.url}/billlist`} component={BillList} />
                 <Route exact path={`${this.props.match.url}/project/:projectname`} component={Files} />
+                <Route exact path={`${this.props.match.url}/singleproject`}  component={ProjectManagement}/>
                 {/* <DashboardView></DashboardView> */}
                 {/* <NewInformation></NewInformation> */}
 
