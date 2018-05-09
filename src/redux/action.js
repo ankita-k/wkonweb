@@ -1152,7 +1152,7 @@ export function emailService(data) {
 export function addModule(data) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'module',
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1181,7 +1181,7 @@ export function addModule(data) {
 /*DELETE MODULE*/
 export function deleteModule(id) {
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'module/' + id,
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1209,7 +1209,28 @@ export function deleteModule(id) {
 /***********GET PROJECT MODULES LIST*********/
 export function getProjectModule(id) {
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'module/getbyprojectid?id=' + id,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET',
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                //code to dispatch action for storing module list 
+            })
+            .catch((error) => {
+                // code to handle error
+            });
+    }
+}
+
+/***********GET PARTICULAR MODULES DATA*********/
+export function getModuleInfo(id) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'module/' + id,
             {
                 headers: {
                     'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
@@ -1237,7 +1258,7 @@ export function getProjectModule(id) {
 export function addSubModule(data) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'submodule',
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1267,7 +1288,7 @@ export function addSubModule(data) {
 
 export function deleteSubModule(id) {
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'submodule/' + id,
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1295,7 +1316,7 @@ export function deleteSubModule(id) {
 /***********GET SUB MODULES OF MODULE OF PARTICULAR LIST*********/
 export function getSubModuleList(id) {
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'submodule/getbymoduleid?id=' + id,
             {
                 headers: {
                     'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
@@ -1312,6 +1333,28 @@ export function getSubModuleList(id) {
             });
     }
 }
+/***********GET SUB MODULESD ATA********/
+export function getSubModuleInfo(id) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'submodule/' + id,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET',
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                //code to dispatch action for storing module list 
+            })
+            .catch((error) => {
+                // code to handle error
+            });
+    }
+}
+
+
 /* ***************PROJECT SUB MODULES  CRUD  ENDS***************/
 
 
@@ -1321,7 +1364,7 @@ export function getSubModuleList(id) {
 export function addTask(data) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'task',
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1351,7 +1394,7 @@ export function addTask(data) {
 
 export function deleteTask(id) {
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'task/' + id,
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1405,10 +1448,10 @@ export function assignDevelopers(data) {
     }
 }
 /*FETCHING STARTED DATE OF TASK*/
-export function taskStarted(data) {
+export function taskStarted(data, id) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'task/' + id,
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1436,10 +1479,10 @@ export function taskStarted(data) {
 
 
 /*FETCHING END DATE OF TASK*/
-export function taskEnded(data) {
+export function taskEnded(data, id) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'task/' + id,
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1465,10 +1508,10 @@ export function taskEnded(data) {
     }
 }
 
-/***********GET SUB MODULES OF MODULE OF PARTICULAR LIST*********/
-export function getTask(id) {
+/***********GET TASK DATA*********/
+export function getTaskInfo(id) {
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'task/' + id,
             {
                 headers: {
                     'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
