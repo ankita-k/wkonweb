@@ -3,9 +3,7 @@ import * as actionCreators from '../action';
 
 //REDUCER FOR USERLIST
 export function userList(state = [], action) {
-    console.log(action)
-  
-    switch (action.type) {
+     switch (action.type) {
 
         case 'USER_LIST':
             return action.list

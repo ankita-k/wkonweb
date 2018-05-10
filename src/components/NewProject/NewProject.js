@@ -11,22 +11,6 @@ import Loading from 'react-loading-bar';
 
 import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
-// const columns = [{
-//     title: 'Assign To',
-//     dataIndex: 'name',
-//     width: 200,
-// }, {
-//     title: 'Role',
-//     dataIndex: 'role',
-// },
-// {
-//     title: 'Action',
-//     key: 'operation',
-//     fixed: 'right',
-//     width: 100,
-//     render: () => <a href="javascript:;"><Icon className="crossButtondetails" type="close-circle-o" /></a>,
-//   },
-// ];
 
 const data = [];
 for (let i = 0; i < 100; i++) {
@@ -93,8 +77,8 @@ class NewProject extends Component {
                 key: 'operation',
                 fixed: 'right',
                 width: 100,
-                render: () => <a href="javascript:;"><Icon className="crossButtondetails" type="close-circle-o" /></a>,
-              },]
+                render: (text, record, index) => <Button className="delete" onClick={() => { console.log(record, index), this.removeMember(record.userId, index) }} ><a href="javascript:;"><Icon className="crossButtondetails" type="close-circle-o" /></a></Button>,
+            },]
         }
 
 
@@ -238,7 +222,7 @@ class NewProject extends Component {
                     }
 
                     console.log(data)
-                    this.props.actions.addProject(data,this.props.history)  //CREATE NEW PROJECT
+                    this.props.actions.addProject(data, this.props.history)  //CREATE NEW PROJECT
                 }
 
             }
@@ -246,6 +230,7 @@ class NewProject extends Component {
     }
 
     componentWillReceiveProps(props) {
+        console.log(props);
 
     }
 
@@ -410,6 +395,7 @@ class NewProject extends Component {
         let newarray = this.state.verticalHeadrarray.filter(item => {
             return (item._id.toLowerCase().indexOf(value.toLowerCase()) > -1)
         });
+        // console.log(newarray)
         this.setState({ assign: newarray[0].name })
     }
 
@@ -423,8 +409,10 @@ class NewProject extends Component {
         this.state.assignRole.push(data)
         this.state.addMember.push(data)  // FOR DISPAY MEMBER NAME
         console.log(this.state.assignRole)
-        console.log(this.state.assignRole[0].role) 
-        // VALIDFATION DURING MEMBER ADDED
+        console.log(this.state.assignRole[0].role)
+
+        // VALIDFATION DURING MEMBER ADDED 
+
         if (this.state.role == "" && this.state.assign == "") {
             this.props.actions.opentoast('warning', 'please Select Input!');
         }
@@ -436,6 +424,7 @@ class NewProject extends Component {
             this.props.actions.opentoast('warning', 'please Select Assign!');
 
         }
+
         else {
             this.state.assignRole[0].role == 'VerticalLead' ? this.setState({ disableassign: true }) : "";          //After Adding AssigneRole...Input/Button wiil disabled
             this.props.form.setFieldsValue({    //For Clear the Input  Field
@@ -444,14 +433,16 @@ class NewProject extends Component {
             })
             this.setState({ assign: '' })
             this.setState({ role: '' })
-            // console.log(this.state.role)
-
-            // console.log(this.state.assign)
-
             this.props.actions.addMember(this.state.assignRole, this.state.projectId)
         }
 
 
+    }
+    // REMOVE MEMBER FROM PROJECT
+    removeMember = (data, index) => {
+        console.log(data, index)    // SELECTED MEMBER USERID
+        this.props.actions.removeMember(data, this.state.projectId)
+        this.state.addMember.splice(index,1)   //REMOVE MEMBER FROM LIST AFTER DELETING
     }
 
     render() {
@@ -739,7 +730,7 @@ class NewProject extends Component {
                                 {/* ShowDetails Modal */}
                                 {(this.state.editClient == true && this.state.verticalHead == 'InProgress') ?
                                     <Row>
-                                        <p><a href="#" onClick={() => this.setModal2Visible(true)}>Show Details</a></p>
+                                        <p><a href="#" onClick={() => this.setModal2Visible(true)}>Show Members</a></p>
                                         <Modal
                                             className="showprojectModal"
                                             title="Show Details"
@@ -748,7 +739,8 @@ class NewProject extends Component {
                                             onOk={() => this.setModal2Visible(false)}
                                             onCancel={() => this.setModal2Visible(false)}
                                         >
-                                            <Table columns={columns} dataSource={this.state.addMember} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
+                                            <Table
+                                                columns={columns} dataSource={this.state.addMember} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
                                         </Modal>
                                     </Row> :
                                     ""}
