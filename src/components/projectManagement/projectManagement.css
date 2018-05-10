@@ -1,0 +1,17 @@
+/* projectmanagement css */
+.wkonList {
+    border-right: 1px solid #e8e8e8;
+    background: #fff;
+    height: 100vh;
+}
+.listView {
+    background: #f4f8fb;
+    padding: 10px;
+}
+.wkonList .ant-list-item {
+    padding-left: 10px;
+}
+.projectManagementpanda {
+    margin: -1em;
+}
+/* projectmanagement css */

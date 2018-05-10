@@ -284,7 +284,7 @@ class Dashboard extends Component {
                 onClick={this.handleClick}
                 mode="inline"
                 selectedKeys={this.state.selectedKey}
-                // defaultSelectedKeys={this.state.selectedKey}
+          
                 defaultOpenKeys={this.state.selectedKey}
                 style={{ height: '100%', borderRight: 0 }}
                 openKeys={this.state.openKeys}
@@ -344,15 +344,7 @@ class Dashboard extends Component {
                     </Menu.Item>
                   </SubMenu>
                   : '' : ''}
-                {/* <Menu.Item key="8"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item>
-                <Menu.Item key="9"><NavLink to="../dashboard/userlist">User List</NavLink></Menu.Item> */}
-
-
-                {/* <SubMenu key="sub1" title={<span><Icon type="home" />Home</span>}> */}
-                {/* <Menu.Item key="1">Clients<NavLink to="../dashboard/clientlist" activeClassName="active">Clients</NavLink></Menu.Item>
-                  <Menu.Item key="2"><NavLink to="../dashboard/projectlist">Projects</NavLink></Menu.Item>
-                  <Menu.Item key="3"><NavLink to="../dashboard/usermanagement">User Management</NavLink></Menu.Item> */}
-
+   
               </Menu>
             </Sider>
             <Layout style={{ padding: '0 0px 0px' }}>
@@ -373,8 +365,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/billlist`} component={BillList} />
                 <Route exact path={`${this.props.match.url}/project/:projectname`} component={Files} />
                 <Route exact path={`${this.props.match.url}/singleproject`}  component={ProjectManagement}/>
-                {/* <DashboardView></DashboardView> */}
-                {/* <NewInformation></NewInformation> */}
+     
 
               </Content>
             </Layout>
