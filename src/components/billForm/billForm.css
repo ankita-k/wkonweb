@@ -95,6 +95,31 @@ textarea#textRequirement {
 .startDate span.ant-calendar-picker {
     width: 85%;
 }
+input#Paybillno {
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+input#billno {
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+input#projectcost{
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+input#amountrecord{
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+input#balance{
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+}
 /* newProject css */
 /* ResponsiveNewProject  */
 @media (min-width: 320px) and (max-width: 767px) {

@@ -12,6 +12,7 @@ import 'react-loading-bar/dist/index.css'
 const FormItem = Form.Item;
 const Option = Select.Option;
 const Option1 = AutoComplete.Option1;
+var NumberFormat = require('react-number-format');
 
 class UserManagement extends Component {
     constructor(props) {
@@ -326,7 +327,7 @@ class UserManagement extends Component {
                                         {getFieldDecorator('phone', {
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
                                         })(
-                                            <Input placeholder="Phone No." name="phoneNumber"
+                                            <NumberFormat format="#### #### #### ####" placeholder="Phone No." name="phoneNumber"
                                                 maxLength="15" minlength="8" />
                                         )}
                                     </FormItem>

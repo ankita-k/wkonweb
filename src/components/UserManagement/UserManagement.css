@@ -20,4 +20,9 @@ h1.userManagementa {
 .newCustomerform {
     border-bottom: 1px dashed #e8e8e8;
 }
+input#phone{
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+}
 /* userManagement css */
