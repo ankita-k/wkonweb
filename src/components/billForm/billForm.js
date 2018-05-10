@@ -10,9 +10,11 @@ import 'react-loading-bar/dist/index.css';
 import debounce from 'lodash/debounce';
 import moment from 'moment'
 import * as actioncreators from '../../redux/action';
+
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const Option = Select.Option;
+var NumberFormat = require('react-number-format');
 
 class BillForm extends Component {
 
@@ -298,12 +300,13 @@ class BillForm extends Component {
                                 <Row>
 
                                     <Col xs={24} sm={24} md={24} lg={12}>
+                                    {/* <NumberFormat format="#### #### #### ####" /> */}
                                         <FormItem label="Pay Bill No">
                                             {getFieldDecorator('Paybillno', {
                                                 rules: [{ required: true, message: 'Please input pay bill no!' }],
                                             })(
 
-                                                <Input maxLength="50" placeholder="Bill Number" />
+                                                <NumberFormat format="#### #### #### ####"  placeholder="Bill Number" />
                                             )}
                                         </FormItem>
                                     </Col>
@@ -313,7 +316,7 @@ class BillForm extends Component {
                                                 rules: [{ required: true, message: 'Please input bill number !' }],
                                             })(
 
-                                                <Input placeholder="Bill" minlength=""/>
+                                                <NumberFormat format="#### #### #### ####" placeholder="Bill" />
                                             )}
                                         </FormItem>
                                     </Col>
@@ -357,7 +360,7 @@ class BillForm extends Component {
                                                 rules: [{ required: true, message: 'Please input cost!' }],
                                             })(
 
-                                                <Input placeholder="Amount" maxlength="50" />
+                                                <NumberFormat format="#### #### #### ####" placeholder="Amount"  />
                                             )}
                                         </FormItem>
                                     </Col>
@@ -384,7 +387,7 @@ class BillForm extends Component {
                                                 rules: [{ required: true, message: 'Please input record!' }],
                                             })(
 
-                                                <Input placeholder="Amount" maxlength="30"/>
+                                                <NumberFormat format="#### #### #### ####" placeholder="Amount"/>
                                             )}
                                         </FormItem>
                                     </Col>
@@ -393,7 +396,7 @@ class BillForm extends Component {
                                             {getFieldDecorator('balance', {
                                                 rules: [{ required: true, message: 'Please input !' }],
                                             })(
-                                                <Input placeholder="Amount" />
+                                                <NumberFormat format="#### #### #### ####" placeholder="Amount" />
                                             )}
                                         </FormItem>
                                     </Col>

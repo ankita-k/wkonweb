@@ -10,6 +10,7 @@ import Loading from 'react-loading-bar'
 import 'react-loading-bar/dist/index.css'
 const FormItem = Form.Item;
 const Option = Select.Option;
+var NumberFormat = require('react-number-format');
 
 class ClientComponent extends Component {
 
@@ -241,7 +242,7 @@ class ClientComponent extends Component {
                                         {getFieldDecorator('phone', {
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
                                         })(
-                                            <Input
+                                            <NumberFormat format="#### #### #### ####"
                                                 type="test"
                                                 maxLength="15"
                                                 placeholder="Phone No." name="phoneNumber" minlength="8" maxlength="15"/>
