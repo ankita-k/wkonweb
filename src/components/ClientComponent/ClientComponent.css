@@ -93,6 +93,7 @@ input#phone{
     border: 1px solid #d9d9d9;
     border-radius: 5px;
     padding-left: 10px;
+    width: 100%
 }
 /* card css */
 

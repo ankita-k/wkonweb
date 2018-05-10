@@ -370,7 +370,7 @@ class UserManagement extends Component {
                                 <Col xs={24} sm={24} md={24} lg={24}>
                                     <FormItem label="Reporting Manager:">
                                         {getFieldDecorator('managers', {
-                                            rules: [{ required: true, message: 'Please select project manager!' }],
+                                            rules: [{ required: false, message: 'Please select project manager!' }],
                                         })(
                                             <Select className="statuspipeline"
                                                 placeholder="Choose Role"
