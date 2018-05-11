@@ -23,7 +23,6 @@ class ProjectManagement extends Component {
 
         this.state = {
             projectId: '',
-            visible: false,
             moduleList: [],
             moduleId: '',
             modal2Visible: false,
@@ -78,11 +77,15 @@ class ProjectManagement extends Component {
                     ['name']: '',
                     ['description']: '',
                 })
-                this.setState({ visible: false });
+                this.setState({ modal2Visible: false });
                 console.log('Received values of form: ', values);
             }
         })
 
+    }
+    // CLOSE MODULE ON CANCEL
+    closeModule=()=>{
+        this.setState({modal2Visible:false})
     }
     addSubModule = () => {
         this.props.form.validateFields((err, values) => {
@@ -242,8 +245,8 @@ class ProjectManagement extends Component {
                             <TextArea rows={4} />
                         </div>
                         <div className="savebtn modalbtn">
-                            <Button>Save</Button>
-                            <Button className="cancelbtn">Cancel</Button>
+                            <Button onClick={this.handleSubmit}>Save</Button>
+                            <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
                         </div>
                     </Modal>
                     </div>
