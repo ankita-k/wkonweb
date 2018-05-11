@@ -59,7 +59,7 @@ class BillForm extends Component {
                 ['amountrecord']: this.props.location.data.data.receivedAmount,
                 ['balance']: this.props.location.data.data.balance,
                 ['receiveddate']: this.props.location.data.data.receivedDate ? moment(this.props.location.data.data.receivedDate) : '',
-                ['Currency']: this.props.location.data.data.currency,
+                ['currency']: this.props.location.data.data.currency,
             });
         }
 
@@ -96,7 +96,7 @@ class BillForm extends Component {
                         projectCost: parseInt(values.projectcost),
                         receivedAmount: parseInt(values.amountrecord),
                         balance: parseInt(values.balance),
-                        currency: values.Currency,
+                        currency: values.currency,
                         receivedDate: values.receiveddate ? values.receiveddate._d : '',
                         status: values.status,
                     }
@@ -121,7 +121,7 @@ class BillForm extends Component {
                         projectCost: parseInt(values.projectcost),
                         receivedAmount: parseInt(values.amountrecord),
                         balance: parseInt(values.balance),
-                        currency: values.Currency,
+                        currency: values.currency,
                         receivedDate: values.receiveddate._d,
                         status: values.status
                     }
