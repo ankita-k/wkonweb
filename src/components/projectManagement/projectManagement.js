@@ -2,101 +2,40 @@ import React, { Component } from 'react';
 import './projectManagement.css';
 import modulelogo from '../../Images/module.svg';
 import modulesidebarlogo from '../../Images/module2.svg';
+import * as actioncreators from '../../redux/action';
+import { connect } from "react-redux";
+import { getProjectModule } from '../../redux/action';
+import { bindActionCreators } from 'redux';
 import { Layout, Modal, Input, Menu, Row, Col, List, Avatar, Form, Select, Dropdown, Button, Icon, Breadcrumb } from 'antd';
 import backbtn from '../../Images/backbtn.svg';
 import addbtn from '../../Images/addbtn.svg';
 const Option = Select.Option;
 const Search = Input.Search;
 const FormItem = Form.Item;
+const FormItem2 = Form.Item;
 const { TextArea } = Input;
-const data = [
-    
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-    {
-        title: 'Lorem Ipsum',
-    },
-];
-
-
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
-
-function handleChange(value) {
-    console.log(`selected ${value}`);
-}
-
-function handleBlur() {
-    console.log('blur');
-}
-
-function handleFocus() {
-    console.log('focus');
-}
-
 class ProjectManagement extends Component {
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
+    }
+    constructor(props) {
+        super(props);
 
-    constructor() {
-        super();
         this.state = {
+            projectId: '',
+            visible: false,
+            moduleList: [],
+            moduleId: '',
             modal2Visible: false,
-            menu:(
+            menu: (
                 <Menu>
                     <Menu.Item>
                         <a onClick={() => this.setModal2Visible(true)}>Module</a>
@@ -112,7 +51,105 @@ class ProjectManagement extends Component {
         }
     }
 
+    componentDidMount() {
+        if (this.props.location.data) {
+            console.log(this.props.location.data.record);
 
+            console.log(this.props.location.data.record._id);
+
+            this.setState({
+                projectId: this.props.location.data.record._id
+            }, function () {
+                this.fetchModules();
+            });
+        }
+    }
+    componentWillReceiveProps(props) {
+        // console.log(props);
+
+    }
+    //CREATE MODULE AGAINST PROJECT
+    handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(this.props.location);
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                let data = {
+                    name: values.name,
+                    description: values.description,
+                    projectId: this.state.projectId
+                }
+                console.log(data);
+                this.props.actions.addModule(data)
+                this.fetchModules();
+                this.props.form.setFieldsValue({    //For Clear the Input  Field
+                    ['name']: '',
+                    ['description']: '',
+                })
+                this.setState({ visible: false });
+                console.log('Received values of form: ', values);
+            }
+        })
+
+    }
+    handleReset = () => {
+        this.props.form.resetFields();
+    }
+    addSubModule = () => {
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                let data = {
+                    name: values.name,
+                    description: values.description,
+                    moduleId: this.state.moduleId
+                }
+                console.log(data);
+                this.props.actions.addSubModule(data)
+                this.fetchModules();
+                this.props.form.setFieldsValue({    //For Clear the Input  Field
+                    ['name']: '',
+                    ['description']: '',
+                })
+                this.setState({ visible: false });
+                console.log('Received values of form: ', values);
+            }
+        })
+    }
+    // FETCH ALL THE MODULES AGAINST PROJECT,uSING PROJECTID
+    fetchModules = () => {
+        getProjectModule(this.state.projectId).then((success) => {
+            console.log(success)
+            this.setState({ moduleList: success.result })
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    // fetch submodules against a module , using module id
+    fetchSubModules = () => {
+
+    }
+
+    //fetch Task , using sub-modules id
+    fetchTasks = () => {
+
+    }
+    deleteModule = () => {
+
+    }
+
+
+    handleChange = (value) => {
+        console.log(`selected ${value}`);
+    }
+
+    handleBlur = () => {
+        console.log('blur');
+    }
+
+    handleFocus = () => {
+        console.log('focus');
+    }
 
     setModal2Visible = (modal2Visible) => {
         this.setState({ modal2Visible });
@@ -126,6 +163,7 @@ class ProjectManagement extends Component {
     render() {
         const { size } = this.props;
         const state = this.state;
+        const { getFieldDecorator } = this.props.form;
 
         return (
             /* list section */
@@ -166,12 +204,14 @@ class ProjectManagement extends Component {
                                 </Row>
                                 <List
                                     itemLayout="horizontal"
-                                    dataSource={data}
-                                    renderItem={item => (
+                                    dataSource={this.state.moduleList}
+                                    renderItem={moduleList => (
                                         <List.Item>
                                             <List.Item.Meta
                                                 avatar={<Avatar src={modulesidebarlogo} />}
-                                                title={<a href="#">{item.title}</a>}
+                                                title={<a href="#">{moduleList.name}</a>}
+                                                description={moduleList.description}
+
                                             // description="17 points | 7 comments | 16 hours ago by Suganth S"
                                             />
                                         </List.Item>
@@ -179,7 +219,6 @@ class ProjectManagement extends Component {
                                 />
                             </div>
                         </Col>
-
                         <Col lg={12}>
                             <div className="wkonList detailView">
                                 <div className="projectname">
@@ -204,23 +243,44 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal2Visible(false)}
                         onCancel={() => this.setModal2Visible(false)}
                     >
-                      <div className="projectname">
-                                    <p>Name :</p>
-                                    <Input placeholder="" />
 
-                                </div>
-                                <div className="projectdata">
-                                    <p>Details :</p>
-                                    <TextArea rows={4} />
-                                </div>
+                        <Form onSubmit={this.handleSubmit}>
+                            <p>Name :</p>
+                            <FormItem>
+                                {getFieldDecorator('name', {
+                                    rules: [{ required: true, message: 'Please input your note!' }],
+                                })(
+                                    <Input placeholder="name" />
+                                )}
+                            </FormItem>
+                            <FormItem>
+
+                                <p>Descriptions :</p>
+                                {getFieldDecorator('note', {
+                                    rules: [{ required: true, message: 'Please input your note!' }],
+                                })(
+                                    <TextArea rows={4} className="note" placeholder="description" />
+                                )}
+
+
+                            </FormItem>
+
+                            <FormItem
+                                wrapperCol={{ span: 12, offset: 5 }}
+                            >
+
                                 <div className="savebtn modalbtn">
-                                    <Button>Save</Button>
-                                    <Button className="cancelbtn">Cancel</Button>
+                                    <Button htmlType="submit">
+                                        Save
+                                    </Button>
+                                    <Button className="cancelbtn" onClick={this.handleReset}>Cancel</Button>
                                 </div>
+                            </FormItem>
+                        </Form>
                     </Modal>
                     </div>
 
-                    
+
                     <div className="modal"><Modal
                         title="New Sub module"
                         wrapClassName="New Sub module"
@@ -228,21 +288,41 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal3Visible(false)}
                         onCancel={() => this.setModal3Visible(false)}
                     >
-                       <div className="projectname">
-                                    <p>Name :</p>
-                                    <Input placeholder="" />
+                         <Form onSubmit={this.handleSubmit}>
+                            <p>Name :</p>
+                            <FormItem>
+                                {getFieldDecorator('name', {
+                                    rules: [{ required: true, message: 'Please input your note!' }],
+                                })(
+                                    <Input placeholder="name" />
+                                )}
+                            </FormItem>
+                            <FormItem>
 
-                                </div>
-                                <div className="projectdata">
-                                    <p>Descriptions :</p>
-                                    <TextArea rows={4} />
-                                </div>
+                                <p>Descriptions :</p>
+                                {getFieldDecorator('note', {
+                                    rules: [{ required: true, message: 'Please input your note!' }],
+                                })(
+                                    <TextArea rows={4} className="note" placeholder="description" />
+                                )}
+
+
+                            </FormItem>
+
+                            <FormItem
+                                wrapperCol={{ span: 12, offset: 5 }}
+                            >
+
                                 <div className="savebtn modalbtn">
-                                    <Button>Save</Button>
-                                    <Button className="cancelbtn">Cancel</Button>
+                                    <Button htmlType="submit">
+                                        Save
+                                    </Button>
+                                    <Button className="cancelbtn" onClick={this.handleReset}>Cancel</Button>
                                 </div>
-                        
+                            </FormItem>
+                        </Form>
                     </Modal>
+                    
                     </div>
                     <div className="modal"><Modal
                         title="Task"
@@ -251,20 +331,39 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal4Visible(false)}
                         onCancel={() => this.setModal4Visible(false)}
                     >
-                        <div className="projectname">
-                                    <p>Name :</p>
-                                    <Input placeholder="" />
+                         <Form onSubmit={this.handleSubmit}>
+                            <p>Name :</p>
+                            <FormItem>
+                                {getFieldDecorator('name', {
+                                    rules: [{ required: true, message: 'Please input your note!' }],
+                                })(
+                                    <Input placeholder="name" />
+                                )}
+                            </FormItem>
+                            <FormItem>
 
-                                </div>
-                                <div className="projectdata">
-                                    <p>Descriptions :</p>
-                                    <TextArea rows={4} />
-                                </div>
+                                <p>Descriptions :</p>
+                                {getFieldDecorator('note', {
+                                    rules: [{ required: true, message: 'Please input your note!' }],
+                                })(
+                                    <TextArea rows={4} className="note" placeholder="description" />
+                                )}
+
+
+                            </FormItem>
+
+                            <FormItem
+                                wrapperCol={{ span: 12, offset: 5 }}
+                            >
+
                                 <div className="savebtn modalbtn">
-                                    <Button>Save</Button>
-                                    <Button className="cancelbtn">Cancel</Button>
+                                    <Button htmlType="submit">
+                                        Save
+                                    </Button>
+                                    <Button className="cancelbtn" onClick={this.handleReset}>Cancel</Button>
                                 </div>
-                        
+                            </FormItem>
+                        </Form>
                     </Modal>
                     </div>
 
@@ -273,5 +372,15 @@ class ProjectManagement extends Component {
             /* list section */
         )
     }
+} const mapStateToProps = (state) => {
+    return state
 }
-export default ProjectManagement
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(actioncreators, dispatch)
+    })
+}
+const WrappedProjectManagement = Form.create()(ProjectManagement);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedProjectManagement);
+
+// export default ProjectManagement
