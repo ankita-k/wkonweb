@@ -1186,7 +1186,7 @@ export function emailService(data) {
 /* ***************PROJECT MODULES  CRUD ***************/
 
 /* Add Module*/
-export function addModule(data) {
+export function moduleCreate(data) {
     console.log(data)
     return (dispatch) => {
         fetch(config.apiUrl + 'module',
@@ -1201,16 +1201,16 @@ export function addModule(data) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                console.log('module added', responseJSON)
-                if (responseJSON.error) {
-                    dispatch(toast('warning', 'Module Addition Failed!'));
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'Module Created Successfully'))
                 }
-              else{
-                    dispatch(toast('warning', 'Module Added Sucessfully!'));
-              }
+                else {
+                    dispatch(toast('error', 'Module Creation Failed'))
+                }
             })
             .catch((error) => {
-                dispatch(toast('error', ' Module Addition Failed'))
+                dispatch(toast('error', ' Module Creation Failed'))
             });
     }
 }
@@ -1294,7 +1294,6 @@ export function getModuleInfo(id) {
     }
 }
 /* ***************PROJECT MODULES  CRUD  ENDS***************/
-
 
 
 
@@ -1575,3 +1574,4 @@ export function getTaskInfo(id) {
     }
 }
 /* ***************PROJECT SUB TASK CRUD  ENDS***************/
+

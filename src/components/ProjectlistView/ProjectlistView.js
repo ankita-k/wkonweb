@@ -102,6 +102,7 @@ class ProjectlistView extends Component {
               <Button className="view" onClick={() => { this.detailProject(record) }}>
                 <a href="javascript:;"><Icon type="eye-o" /></a></Button></Col>
           </Row>
+                        
         ),
       }
       ]
@@ -144,6 +145,18 @@ class ProjectlistView extends Component {
     })
 
   }
+
+    // NAVIAGE TO EDIT PROJECT PAGE WITH DATA
+    sendProjectData = (data) => {
+      // this.props.actions.menuKeys('create_project');    // FOR CHANGING SELECTED KEY IN MENU ITEM
+      this.props.history.push({
+        pathname: '/dashboard/singleproject',
+        data: {
+          data
+        }
+      })
+  
+    }
 
 
 

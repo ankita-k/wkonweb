@@ -24,6 +24,7 @@ class ProjectManagement extends Component {
         this.state = {
             projectId: '',
             moduleList: [],
+            subModuleList:[],
             moduleId: '',
             modal2Visible: false,
             menu: (
@@ -52,12 +53,12 @@ class ProjectManagement extends Component {
                 projectId: this.props.location.data.record._id
             }, function () {
                 this.fetchModules();
+                this.getModules();
             });
         }
     }
     componentWillReceiveProps(props) {
-        // console.log(props);
-
+        console.log(this.props);
     }
     //CREATE MODULE AGAINST PROJECT
     handleSubmit = (e) => {
@@ -84,8 +85,8 @@ class ProjectManagement extends Component {
 
     }
     // CLOSE MODULE ON CANCEL
-    closeModule=()=>{
-        this.setState({modal2Visible:false})
+    closeModule = () => {
+        this.setState({ modal2Visible: false })
     }
     addSubModule = () => {
         this.props.form.validateFields((err, values) => {
@@ -152,6 +153,89 @@ class ProjectManagement extends Component {
     setModal4Visible = (modal4Visible) => {
         this.setState({ modal4Visible });
     }
+
+    handleSubmitmodal = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+                this.createModule(values);
+            }
+
+        });
+    }
+
+    // CREATE MODULES
+    createModule = (res) => {
+        console.log(res);
+        let data = {
+            name: res.projectname,
+            description: res.projectdetails,
+            projectId: this.state.projectId
+        }
+        console.log(data);
+        this.props.actions.moduleCreate(data)
+        this.getModules();
+        this.props.form.setFieldsValue({    //For Clear the Input  Field
+            ['projectname']: '',
+            ['projectdetails']: '',
+        })
+        this.setState({ modal2Visible: false });
+    }
+
+    // FETCH ALL THE MODULES 
+    getModules = () => {
+        getProjectModule(this.state.projectId).then((success) => {
+            console.log(success)
+            this.setState({ moduleList: success.result })
+        }, function (error) {
+            console.log(error);
+        });
+    }
+
+    handleSubmitmodal2 = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+                // this.createSubModule(values);
+            }
+
+        });
+    }
+
+    // CREATE SUBMODULES
+    createSubModule = () => {
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                let data = {
+                    name: values.name,
+                    description: values.description,
+                    moduleId: this.state.moduleId
+                }
+                console.log(data);
+                this.props.actions.addSubModule(data)
+                this.fetchModules();
+                this.props.form.setFieldsValue({    //For Clear the Input  Field
+                    ['name']: '',
+                    ['description']: '',
+                })
+                this.setState({ visible: false });
+                console.log('Received values of form: ', values);
+            }
+        })
+    }
+
+      // FETCH ALL THE SUBMODULES 
+      getSubModules = () => {
+        getProjectModule(this.state.moduleId).then((success) => {
+            console.log(success)
+            this.setState({ subModuleList: success.result })
+        }, function (error) {
+            console.log(error);
+        });
+    }
+    
     render() {
         const { size } = this.props;
         const state = this.state;
@@ -235,17 +319,30 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal2Visible(false)}
                         onCancel={() => this.setModal2Visible(false)}
                     >
-                        <div className="projectname">
-                            <p>Name :</p>
-                            <Input placeholder="" />
-
-                        </div>
-                        <div className="projectdata">
-                            <p>Details :</p>
-                            <TextArea rows={4} />
-                        </div>
+                        <Form>
+                            <div className="projectname">
+                                <p>Name :</p>
+                                <FormItem>
+                                    {getFieldDecorator('projectname', {
+                                        rules: [{ required: true, message: 'Please input your ProjectName!' }],
+                                    })(
+                                        <Input placeholder="" />
+                                    )}
+                                </FormItem>
+                            </div>
+                            <div className="projectdata">
+                                <p>Details :</p>
+                                <FormItem>
+                                    {getFieldDecorator('projectdetails', {
+                                        rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
+                                    })(
+                                        <TextArea rows={4} />
+                                    )}
+                                </FormItem>
+                            </div>
+                        </Form>
                         <div className="savebtn modalbtn">
-                            <Button onClick={this.handleSubmit}>Save</Button>
+                            <Button onClick={this.handleSubmitmodal}>Save</Button>
                             <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
                         </div>
                     </Modal>
