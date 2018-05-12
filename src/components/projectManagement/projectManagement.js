@@ -31,7 +31,6 @@ class ProjectManagement extends Component {
 
         this.state = {
             projectId: '',
-            visible: false,
             moduleList: [],
             moduleId: '',
             modal2Visible: false,
@@ -86,14 +85,20 @@ class ProjectManagement extends Component {
                     ['name']: '',
                     ['description']: '',
                 })
-                this.setState({ visible: false });
+                this.setState({ modal2Visible: false });
                 console.log('Received values of form: ', values);
             }
         })
 
     }
+<<<<<<< HEAD
     handleReset = () => {
         this.props.form.resetFields();
+=======
+    // CLOSE MODULE ON CANCEL
+    closeModule=()=>{
+        this.setState({modal2Visible:false})
+>>>>>>> ef5ce90a658fecf0cddaf4bcdf15b437c1cf69c7
     }
     addSubModule = () => {
         this.props.form.validateFields((err, values) => {
@@ -246,6 +251,7 @@ class ProjectManagement extends Component {
 
                         <Form onSubmit={this.handleSubmit}>
                             <p>Name :</p>
+<<<<<<< HEAD
                             <FormItem>
                                 {getFieldDecorator('name', {
                                     rules: [{ required: true, message: 'Please input your note!' }],
@@ -277,6 +283,19 @@ class ProjectManagement extends Component {
                                 </div>
                             </FormItem>
                         </Form>
+=======
+                            <Input placeholder="" />
+
+                        </div>
+                        <div className="projectdata">
+                            <p>Details :</p>
+                            <TextArea rows={4} />
+                        </div>
+                        <div className="savebtn modalbtn">
+                            <Button onClick={this.handleSubmit}>Save</Button>
+                            <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
+                        </div>
+>>>>>>> ef5ce90a658fecf0cddaf4bcdf15b437c1cf69c7
                     </Modal>
                     </div>
 
