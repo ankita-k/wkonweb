@@ -1187,7 +1187,9 @@ export function getProjectModule(projectId) {
 
 /***********GET PARTICULAR MODULES DATA*********/
 export function getModuleInfo(id) {
+    console.log(id)
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'module/' + id,
             {
                 headers: {
@@ -1198,12 +1200,15 @@ export function getModuleInfo(id) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
                 //code to dispatch action for storing module list 
             })
             .catch((error) => {
+                reject(error)
                 // code to handle error
             });
-    }
+    })
+}
 }
 /* ***************PROJECT MODULES  CRUD  ENDS***************/
 
@@ -1273,6 +1278,7 @@ export function deleteSubModule(id) {
 /***********GET SUB MODULES OF MODULE OF PARTICULAR LIST*********/
 export function getSubModuleList(id) {
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'submodule/getbymoduleid?id=' + id,
             {
                 headers: {
@@ -1282,17 +1288,22 @@ export function getSubModuleList(id) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                console.log(responseJSON)
+                console.log(responseJSON);
+                resolve(responseJSON);
                 //code to dispatch action for storing module list 
             })
             .catch((error) => {
                 // code to handle error
+                reject(error);
             });
+        });
     }
 }
 /***********GET SUB MODULESD ATA********/
 export function getSubModuleInfo(id) {
+    console.log(id)
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'submodule/' + id,
             {
                 headers: {
@@ -1303,11 +1314,14 @@ export function getSubModuleInfo(id) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON);
                 //code to dispatch action for storing module list 
             })
             .catch((error) => {
+                reject(error);
                 // code to handle error
             });
+        })
     }
 }
 
@@ -1468,6 +1482,7 @@ export function taskEnded(data, id) {
 /***********GET TASK DATA*********/
 export function getTaskInfo(id) {
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'task/' + id,
             {
                 headers: {
@@ -1478,11 +1493,40 @@ export function getTaskInfo(id) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
+                //code to dispatch action for storing module list 
+            })
+            .catch((error) => {
+                reject(error)
+                // code to handle error
+            });
+        });
+    }
+}
+
+
+/***********GET TASK LIST OF SUBMODULE  *********/
+export function getTaskList(id) {
+    return (dispatch) => {
+        return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'task/getbysubmoduleid?id=' + id,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET',
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON);
+                resolve(responseJSON);
                 //code to dispatch action for storing module list 
             })
             .catch((error) => {
                 // code to handle error
+                reject(error);
             });
+        });
     }
 }
 /* ***************PROJECT SUB TASK CRUD  ENDS***************/
