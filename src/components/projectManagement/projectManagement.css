@@ -248,3 +248,15 @@
     font-size: 18px;
     letter-spacing: 0px;
 }
+.detailView textarea{
+    overflow: auto;
+    resize: vertical;
+    width: 100%;
+    color: #bfbfbf;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    padding-left: 10px;
+}
+textarea#taskdescription::placeholder {
+    color: #bfbfbf;
+}

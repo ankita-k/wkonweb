@@ -340,7 +340,7 @@ class ProjectManagement extends Component {
                                         {getFieldDecorator('taskdescription', {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
-                                            <Input placeholder="Task Description" />
+                                            <textarea placeholder="Task Description" />
                                         )}
                                     </FormItem>
                                     <FormItem label="Status">
