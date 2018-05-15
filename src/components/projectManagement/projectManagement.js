@@ -212,37 +212,37 @@ class ProjectManagement extends Component {
         });
     }
 
-    // CREATE SUBMODULES
-    createSubModule = () => {
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                let data = {
-                    name: values.name,
-                    description: values.description,
-                    moduleId: this.state.moduleId
-                }
-                console.log(data);
-                this.props.actions.addSubModule(data)
-                this.fetchModules();
-                this.props.form.setFieldsValue({    //For Clear the Input  Field
-                    ['name']: '',
-                    ['description']: '',
-                })
-                this.setState({ visible: false });
-                console.log('Received values of form: ', values);
-            }
-        })
-    }
+    // // CREATE SUBMODULES
+    // createSubModule = () => {
+    //     this.props.form.validateFields((err, values) => {
+    //         if (!err) {
+    //             let data = {
+    //                 name: values.name,
+    //                 description: values.description,
+    //                 moduleId: this.state.moduleId
+    //             }
+    //             console.log(data);
+    //             this.props.actions.addSubModule(data)
+    //             this.fetchModules();
+    //             this.props.form.setFieldsValue({    //For Clear the Input  Field
+    //                 ['name']: '',
+    //                 ['description']: '',
+    //             })
+    //             this.setState({ visible: false });
+    //             console.log('Received values of form: ', values);
+    //         }
+    //     })
+    // }
 
-      // FETCH ALL THE SUBMODULES 
-      getSubModules = () => {
-        getProjectModule(this.state.moduleId).then((success) => {
-            console.log(success)
-            this.setState({ subModuleList: success.result })
-        }, function (error) {
-            console.log(error);
-        });
-    }
+    //   // FETCH ALL THE SUBMODULES 
+    //   getSubModules = () => {
+    //     getProjectModule(this.state.moduleId).then((success) => {
+    //         console.log(success)
+    //         this.setState({ subModuleList: success.result })
+    //     }, function (error) {
+    //         console.log(error);
+    //     });
+    // }
     
     render() {
         const { size } = this.props;
@@ -364,23 +364,19 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal3Visible(false)}
                         onCancel={() => this.setModal3Visible(false)}
                     >
-                         <Form onSubmit={this.handleSubmit}>
+                         <Form>
                             <p>Name :</p>
                             <FormItem>
-                                {getFieldDecorator('name', {
-                                    rules: [{ required: true, message: 'Please input your note!' }],
-                                })(
+                               
                                     <Input placeholder="name" />
-                                )}
+                            
                             </FormItem>
                             <FormItem>
 
                                 <p>Descriptions :</p>
-                                {getFieldDecorator('note', {
-                                    rules: [{ required: true, message: 'Please input your note!' }],
-                                })(
+                              
                                     <TextArea rows={4} className="note" placeholder="description" />
-                                )}
+                             
 
 
                             </FormItem>
@@ -407,23 +403,19 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal4Visible(false)}
                         onCancel={() => this.setModal4Visible(false)}
                     >
-                         <Form onSubmit={this.handleSubmit}>
+                         <Form >
                             <p>Name :</p>
                             <FormItem>
-                                {getFieldDecorator('name', {
-                                    rules: [{ required: true, message: 'Please input your note!' }],
-                                })(
+                             
                                     <Input placeholder="name" />
-                                )}
+                           
                             </FormItem>
                             <FormItem>
 
                                 <p>Descriptions :</p>
-                                {getFieldDecorator('note', {
-                                    rules: [{ required: true, message: 'Please input your note!' }],
-                                })(
+                                
                                     <TextArea rows={4} className="note" placeholder="description" />
-                                )}
+                             
 
 
                             </FormItem>
