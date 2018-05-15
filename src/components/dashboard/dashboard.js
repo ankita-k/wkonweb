@@ -22,6 +22,9 @@ import Loading from 'react-loading-bar';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
 import ProjectManagement from '../projectManagement/projectManagement';
+import io from 'socket.io-client';
+const socket = io('http://mitapi.memeinfotech.com:5088/');
+
 // const { SubMenu } = Menu;
 const SubMenu = Menu.SubMenu;
 const { Header, Content, Sider } = Layout;
@@ -50,8 +53,29 @@ class Dashboard extends Component {
     }
 
     this.showConfirm = this.showConfirm.bind(this);
-
   }
+
+
+  connectSocket = () => {
+    socket.on('clientCreated', (interval) => {
+      if (sessionStorage.getItem('id')) {
+        this.props.actions.clientlist(sessionStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
+        this.props.actions.dashboardProject(sessionStorage.getItem('id'));
+      }
+      else if (localStorage.getItem('id')) {
+        this.props.actions.clientlist(localStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(localStorage.getItem('id'));
+        this.props.actions.dashboardProject(localStorage.getItem('id'));
+      }
+    });
+  }
+
+  disconnectSocket = () => {
+    socket.off('clientCreated', function () { });
+  }
+
+
   showConfirm() {
     let _base = this;
     confirm({
@@ -106,11 +130,11 @@ class Dashboard extends Component {
 
   componentDidMount() {
     console.log('#############################', this.props);
+    this.connectSocket();
 
     /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA 
     */
     if (sessionStorage.getItem('id')) {
-
       this.props.actions.clientlist(sessionStorage.getItem('id'));
       this.props.actions.billlist(sessionStorage.getItem('id'));
       this.props.actions.projectList(sessionStorage.getItem('id'));
@@ -121,10 +145,8 @@ class Dashboard extends Component {
       this.props.actions.dashboardProject(sessionStorage.getItem('id'));
       this.props.actions.tagsList('VerticalLead');
       this.props.actions.countrylist();
-
     }
     else if (localStorage.getItem('id')) {
-
       this.props.actions.clientlist(localStorage.getItem('id'));
       this.props.actions.billlist(localStorage.getItem('id'));
       this.props.actions.projectList(localStorage.getItem('id'));
@@ -138,9 +160,10 @@ class Dashboard extends Component {
     }
     /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA  ENDS */
 
+
     /*GET USER NAME AND ROLE*/
     this.commonFunction();
-    
+
 
     /**  INITIALLY HOME MENU TO BE SELECTED  */
     this.props.actions.openkey([]);
@@ -284,7 +307,7 @@ class Dashboard extends Component {
                 onClick={this.handleClick}
                 mode="inline"
                 selectedKeys={this.state.selectedKey}
-          
+
                 defaultOpenKeys={this.state.selectedKey}
                 style={{ height: '100%', borderRight: 0 }}
                 openKeys={this.state.openKeys}
@@ -344,7 +367,7 @@ class Dashboard extends Component {
                     </Menu.Item>
                   </SubMenu>
                   : '' : ''}
-   
+
               </Menu>
             </Sider>
             <Layout style={{ padding: '0 0px 0px' }}>
@@ -364,8 +387,8 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/editbill`} component={BillForm} />
                 <Route exact path={`${this.props.match.url}/billlist`} component={BillList} />
                 <Route exact path={`${this.props.match.url}/project/:projectname`} component={Files} />
-                <Route exact path={`${this.props.match.url}/singleproject`}  component={ProjectManagement}/>
-     
+                <Route exact path={`${this.props.match.url}/singleproject`} component={ProjectManagement} />
+
 
               </Content>
             </Layout>

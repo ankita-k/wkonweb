@@ -1,0 +1,2259 @@
+@import url(https://fonts.googleapis.com/css?family=Lato);@import url(https://fonts.googleapis.com/css?family=Roboto:900);@import url(https://fonts.googleapis.com/css?family=Lato|Roboto);@import url(https://fonts.googleapis.com/css?family=Lato|Roboto);@import url(https://fonts.googleapis.com/css?family=Lato|Roboto);@import url(https://fonts.googleapis.com/css?family=Lato);body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+
+/* #components-layout-demo-top .logo {
+    width: 120px;
+    height: 31px;
+    background: rgba(255,255,255,.2);  
+    margin: 16px 24px 16px 0;
+    float: left;
+  } */
+  
+  .loginmainForm{
+      background: #f7f7f7;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .loginCard{
+      background: white;
+      box-shadow: 0px 0px 10px 2px rgba(0, 0, 0,.1);
+      width: 70%;
+   
+  }
+  .login-formsec{
+      padding: 30px 50px 30px 30px;
+      position: relative;
+      z-index: 999;
+  }
+  .loginHead{
+      font-size: 32px;
+      text-align: left;
+      margin-bottom: 3px;
+      color: #434343;
+      font-family: 'Lato', sans-serif;
+  }
+  p.loginSubhead {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.8);
+      text-align: left;
+      font-family: 'Lato', sans-serif;
+      margin-bottom: 3em;
+  }
+  p.loginSubhead span a {
+      color: rgb(73, 174, 209);
+  }
+  .login-form .ant-input{
+      height:45px;
+      border-radius: 8px;
+  border:2px solid #d4d4d4;
+  }
+  .ant-input:focus{
+      border-color:#d4d4d4;
+      box-shadow: none;
+  }
+  .login-formforgot{
+      float: right;
+      color: rgba(0, 0, 0, 0.6);
+      font-weight: 500;
+      text-decoration: none;
+  }
+  .login-formforgot:active, .login-formforgot:hover{
+      color: #8d3dd9;
+  }
+  .login-form .ant-checkbox + span{
+      color: rgba(0, 0, 0, 0.6);
+      font-weight: 500;
+  }
+  .text-left
+  {
+      text-align: left;
+  }
+  .LoginBtn{
+    text-align: center;
+  }
+  .login-form .ant-btn-primary {
+      color: #fff;
+      background-color: rgb(73, 174, 209);
+      border-color: rgb(73, 174, 209);
+      /* float: right; */
+      padding: 0 35px;
+      border-radius: 30px;
+      font-weight: 500;
+      height: 35px;
+  }
+  .login-form .ant-btn-primary:hover{
+    background-color: rgb(50, 141, 173);
+  }
+  .login-form .ant-checkbox-checked .ant-checkbox-inner, .login-form .ant-checkbox-indeterminate .ant-checkbox-inner {
+      background-color: white;
+      border-color: #d4d4d4;
+  }
+  
+  .login-form .ant-checkbox-checked .ant-checkbox-inner:after{
+      -webkit-transform: rotate(0) scale(1);
+              transform: rotate(0) scale(1);
+      position: absolute;
+      display: table;
+      border: 2px solid rgb(73, 174, 209);
+      border-top: 0;
+      background: rgb(73, 174, 209);
+  }
+  .login-form .ant-checkbox-inner{
+      border-radius: 0;
+  }
+  .login-form .ant-checkbox:hover .ant-checkbox-inner{
+      border-color:#d4d4d4;
+  }
+  .login-form .ant-checkbox-inner:after{
+      left: 3px;
+      top: 2px;
+      width: 8px;
+  }
+  span.fbicon {
+      background: #476898;
+      padding: 2px 25px 7px;
+      border-radius: 30px;
+      vertical-align: middle;
+  }
+  .socialIconsec{
+      margin-top: 3em;
+  }
+  .socialIconsec p{
+      margin-top: 5px;
+  }
+
+.imgsec img {
+    width: 25%;
+    height: 100%;
+}
+  .imgsec{
+    
+    height: 343px;
+    width: 610px;
+    
+    position: absolute;
+    right: 9px;
+    z-index: 0;
+      right: 0;
+      z-index: 0;
+
+      /*background: 
+      linear-gradient(  rgba(143, 34, 217, 0.9),        
+      rgba(137, 62, 225, 0.8),          
+      rgba(74, 147, 188, 0.9)  72%    ),         
+       url(../../Images/triangle.jpg);*/
+           /*background: linear-gradient( to right, rgb(10, 28, 37),rgba(63, 81, 181, 0.6784313725490196),rgba(63, 81, 181, 0.07058823529411765) ),  url(/static/media/triangle.67f70852.jpg);*/
+
+           /* background: linear-gradient( to right, rgb(52, 86, 144), rgb(211, 225, 229), rgba(32, 50, 80, 0.93) 72% ),
+            url(/static/media/triangle.67f70852.jpg); */
+            background: linear-gradient( to right, rgb(255, 255, 255), rgba(63, 130, 243, 0.58), rgba(32, 50, 80, 0.93) 72% ),
+             url(/media/stone.jpg);
+      background-repeat: no-repeat;
+      background-size:cover;
+  }
+  .loginFormsec {
+    padding: 1em 10em 1em 1em;
+    margin-left: 2em;
+}
+.imgsec:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-bottom: 343px solid white;
+    /* border-right: 509px solid transparent; */
+    border-right: 611px solid transparent;
+}
+  .imgsec p{
+      text-align: right;
+      width: 44%;
+      padding: 15px 25px 30px 0;
+      float: right;
+      font-weight: 600;
+      font-family: lato;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+  }
+  .imgsec span {
+      font-size: 50px;
+      float: right;
+      text-align: right;
+      font-weight: 800;
+      color: white;
+      line-height: 65px;
+      margin-top: 30px;
+      padding-right: 20px;
+      font-family: 'Roboto', sans-serif;
+  }
+  
+  .fbicon img{
+      width:14px;
+      height: 14px;
+  }
+  .twitlogo img{
+      width:14px;
+      height: 14px;
+  }
+  span.twitlogo{
+      background: rgb(26, 163, 243);
+      border:1px solid rgb(73, 174, 209);
+      padding: 2px 25px 7px;
+      border-radius: 30px;
+      vertical-align: middle;
+      margin-left: 10px;
+  }
+  
+  
+  @media only screen 
+  and (min-width: 768px) 
+  and (max-width: 1024px) {
+
+    .loginFormsec {
+      padding: 1em 2em 1em 1em;
+      margin-left: 1em;
+  }
+
+
+  }
+  @media only screen 
+  and (min-width: 320px) 
+  and (max-width: 767px) {
+      .login-formsec {
+          padding: 30px 10px 30px 10px;
+      }
+      .imgsec {
+          padding-top: 11em;
+          width: 100%;
+          display:none;
+      }
+      .loginmainForm {
+          height: auto;
+      }
+      .imgsec span {
+          float: none;
+      }
+      .imgsec p {
+          text-align: center;
+          width: 100%;
+          padding: 15px 15px 30px 15px;
+      }
+      .imgsec:before {
+        display: none;
+      }
+      .loginCard{
+          width: 95%;
+       box-shadow: none;
+
+       display: flex;
+       height: 100vh;
+       justify-content: center;
+       align-items: center;
+      }
+
+      .loginFormsec {
+        padding: 1em 1em 1em 1em;
+        margin-left: 0em;
+      } 
+      .LoginBtn{
+          text-align: center;
+      }  
+      .login-form .ant-btn-primary{
+          float:none;
+      }
+  }
+
+  @media only screen and (min-width: 768px) and (max-width:1024px){
+      .login-formsec {
+          padding:30px 60px 30px 15px;
+      }
+      .loginFormsec {
+        padding: 1em 2em 1em 1em;
+        margin-left: 1em;
+    }
+      .imgsec {
+          width: 490px;
+          height:492px;
+          display:none;
+      }
+    
+      .loginCard{
+          width: 90%;
+      }
+   
+  
+    
+    .loginFormsec {
+      padding: 1em 2em 1em 1em;
+      margin-left: 1em;
+  }
+  }
+  @media only screen 
+  and (height: 1025px) 
+  and (width: 1366px) {
+      .imgsec:before {
+          left: -2px;  
+          border-bottom: 493px solid white;
+      }
+  
+  }
+  @media only screen 
+  and (width: 1920px)  {
+   
+      .imgsec {
+          width: 800px;
+          height:471px;
+      }
+      .imgsec:before {
+          left: -2px;  
+          border-right: 801px solid transparent;
+      }
+  }
+  .Loading__loading___1m_fZ {
+  pointer-events: none;
+  transition: 400ms linear all;
+}
+
+.Loading__bar___21yOt {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10002;
+  display: none;
+  width: 100%;
+  height: 2px;
+  background: #29d;
+  border-radius: 0 1px 1px 0;
+  transition: width 350ms;
+}
+
+.Loading__peg___3Y_28 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 70px;
+  height: 2px;
+  border-radius: 50%;
+  opacity: .45;
+  box-shadow: #29d 1px 0 6px 1px;
+}
+
+.Loading__spinner___11Pm4 {
+  position: fixed;
+  top: 5px;
+  left: 5px;
+  z-index: 10002;
+  pointer-events: none;
+  transition: 350ms linear all;
+}
+
+.Loading__icon___3OOyu {
+  width: 14px;
+  height: 14px;
+  border: solid #29d;
+  border-width: 0 2px 2px 0;
+  border-radius: 50%;
+  -webkit-animation: Loading__loading-bar-spinner___1hKY9 400ms linear infinite;
+          animation: Loading__loading-bar-spinner___1hKY9 400ms linear infinite;
+}
+
+@-webkit-keyframes Loading__loading-bar-spinner___1hKY9 {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes Loading__loading-bar-spinner___1hKY9 {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+/* card css */
+.innercardContent {
+    margin: 0 auto !important;
+    width: 70% !important;
+}
+.inputForminfo .ant-row {
+    margin-bottom: 2em;
+}
+
+.underLine {
+    margin: 0px 0 12px 0;
+}
+.inputForminfo .ant-row.ant-form-item {
+    height: 29px;
+    margin-bottom: 3em;
+}
+.inputForminfo .ant-select-selection--single {
+    height: 43px;
+}
+.inputForminfo .ant-input {
+    height: 45px;
+    border-radius: 5px;
+    border: 1px solid #d4d4d4;
+}
+
+.inputForminfo .ant-select-selection:hover {
+    border-color: #d4d4d4;
+}
+.inputForminfo .ant-select-selection:focus {
+    border-color: #d4d4d4;
+}
+.innercardContent .ant-card-body {
+    padding: 0;
+}
+.innercardContent h1.NewCustomer{
+    margin: 10px 0 10px 27px;
+}
+.inputForminfo {
+    padding: 1em 4em 0 4em;
+}
+.inputForminfo .ant-form-item-label label {
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-left: 5px;
+}
+.inputForminfo .ant-form-item-required:before {
+    display: none;
+}
+.inputForminfo .ant-select-selection__rendered {
+    line-height: 40px;
+}
+.savebutton {
+    padding-bottom:1em;
+    text-align: center;
+}
+.linea {
+    border-top: 5px solid rgb(66, 138, 254);
+}
+.lineb {
+    border-top: 5px solid rgb(158, 158, 158);
+    margin-left: 10px;
+    border-radius: 0px;
+}
+.formcustomer {
+    width: 50%;
+}
+button.ant-btn.cardbuttonCancel.login-form-button {
+    border: 1px solid #428afe;
+    border-radius: 5px;
+    color: #428afe;
+    margin-top: 2em;
+    line-height: 0;
+    height: 38px;
+    background: border-box;
+    width: 98px;
+    font-size: 16px;
+    margin-left: 1em;
+}
+button.ant-btn.cardbuttonSave.login-form-button {
+    border: 1px solid #428afe;
+    color: #ffffff;
+    border-radius: 5px;
+    margin-top: 2em;
+    line-height: 0;
+    height: 38px;
+    background: #428afe;
+    width: 98px;
+    font-size: 16px;
+}
+
+input#phone{
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+    width: 100%
+}
+/* card css */
+
+/* ResponsiveNewInformation  */
+@media (min-width: 320px) and (max-width: 767px) {
+    .innercardContent {
+        width: 100% !important;
+    }
+    .inputForminfo {
+        padding: 1em 1em 0 1em;
+    }
+}
+/* ResponsiveNewInformation  *//* newProject css */
+.inputForminfo.informationProject input {
+    width: 85%;
+}
+.inputForminfo.informationProject  .ant-select-selection--single {
+    height: 43px;
+    width: 100%;
+}
+.innercardContent.cardProject .ant-card-body {
+    padding: 0;
+}
+.clientHere.clieHere.ant-select-show-search.ant-select-auto-complete.ant-select.ant-select-combobox.ant-select-enabled {
+    width: 85% !important;
+}
+.inputForminfo.informationProject {
+    padding: 1em 0 0 4em;
+}
+.inputForminfo.informationProject .statuspipeline.ant-select.ant-select-enabled {
+    width: 85%;
+    /* margin-top: 7px; */
+}
+.informationProject .ant-row.ant-form-item {
+    margin-bottom: 10px !important;
+}
+i.anticon.anticon-close-circle-o.crossButtondetails {
+    color: #e01e1e;
+    width: 37px;
+    font-size: 17px;
+}
+.innercardContent.cardProject h1.NewCustomer{
+    margin: 10px 0 10px 27px;
+}
+p.expecteDate {
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+p.expecteDate4 {
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-top: 10px;
+}
+p.expecteDateclient { 
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-bottom: 9px;
+    margin-top: 9px;
+    margin-left: 5px;
+}
+
+.ant-row.briefRequire {
+    margin-bottom: 3em;
+}
+.inputForminfo .statuspipeline.ant-select.ant-select-disabled {
+    width: 91%;
+}
+.ant-modal.showprojectModal .ant-modal-footer {
+    display: none;
+}
+.clientHere.ant-select-auto-complete.ant-select .ant-input {
+    height: 45px;
+    width: 100%;
+}
+textarea#textRequirement {
+    width: 93%;
+    height: 60px;
+}
+.clientHere {
+    width: 93% !important;
+}
+.clientHere .ant-select-selection.ant-select-selection--single {
+    width: 100% !important;
+}
+.startDate input.ant-calendar-picker-input.ant-input {
+    width: 100%;
+}
+.startDate span.ant-calendar-picker:focus {
+    border: 1px solid #d4d4d4;
+}
+.spaceLess .ant-row {
+    margin-bottom: 0;
+}
+.startDate span.ant-calendar-picker {
+    width: 85%;
+}
+/* newProject css */
+/* ResponsiveNewProject  */
+@media (min-width: 320px) and (max-width: 767px) {
+    .inputForminfo.informationProject {
+        padding: 0 2em;
+    }
+    .inputForminfo.informationProject input {
+        width: 100%;
+    }
+    .inputForminfo.informationProject .ant-select-selection--single {
+        width: 100%;
+    }
+    .startDate span.ant-calendar-picker {
+        width: 100%;
+    }
+    .inputForminfo .ant-row {
+        margin-bottom: 0em;
+    }
+    .spaceLess .ant-row {
+        margin-bottom: 0 !important;
+    }
+    .inputForminfo .ant-row.ant-form-item {
+        margin-top: 1em;
+    }
+}
+.tech .ant-select.ant-select-enabled {
+    width: 85% !important;
+}
+@media (min-width: 600px) and (max-width: 1024px) {
+    .innercardContent {
+        width: 90% !important;
+    }
+}
+@media (min-width: 767px) and (max-width: 1024px) and (orientation:portrait) {
+    .inputForminfo.informationProject {
+        padding: 0 2em;
+    }
+    .inputForminfo.informationProject input {
+        width: 100%;
+    }
+    .inputForminfo.informationProject .ant-select-selection--single {
+        width: 100%;
+    }
+    .startDate span.ant-calendar-picker {
+        width: 100% !important;
+    }
+    .spaceLess {
+        margin-top: 18px;
+    }
+    p.expecteDate {
+        margin-top: 0;
+    }
+    .inputForminfo .ant-row {
+        margin-bottom: 0em;
+    }
+    .spaceLess .ant-row {
+        margin-bottom: 0 !important;
+    }
+    .inputForminfo .ant-row.ant-form-item {
+        margin-top: 1em;
+    }
+}
+/* ResponsiveNewProject  */
+
+.ant-row .addbtn button{
+    width: 91px;
+    background: #428afe;
+    color: #ffffff;
+}
+
+.addbtn {
+    margin-top: 3em;
+}
+.roleassign {
+    margin: 1em 4em 1em 5px;
+    font-size: 18px;
+    color: rgba(68, 68, 68, 0.68);
+    font-weight: 500;
+    word-break: break-all;
+}
+span.usrnm {
+    color: #428afe;
+}#components-layout-demo-top-side-2 .logo {
+    width: 120px;
+    height: 31px;
+    background: rgba(255,255,255,.2);  
+    margin: 16px 28px 16px 0;
+    float: left;
+  }
+  .ant-layout-content {
+    height: auto !important;
+}
+button.ant-btn.wkonlogout {
+  float: right;
+  margin-top: 17px;
+  font-weight: 500;
+  background: transparent;
+  color: #fff;
+  padding-bottom: 3px;
+  border:none !important;
+}
+#client1{
+  color:red;
+
+}
+  .header img{
+    width: 85px !important;
+}
+.ant-layout.ant-layout-has-sider {
+  flex-direction: row;
+  height: 43em;
+}
+.username{
+  color: rgb(255, 255, 255);
+  font-family: 'Lato', sans-serif;
+  font-size: 17px;
+  text-transform: capitalize;
+  margin-left: 11em;
+}
+p.welcomeUser {
+  margin-top: 2em;
+  padding-left: 2em;
+}
+.logouser {
+  width: 20px;
+  margin-right: 4px;
+  vertical-align: text-top;
+  height: 20px;
+}
+.header {
+  padding: 0 50px 0 25px;
+  z-index: 99;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+    /* --Responsive css-- */
+    @media only screen and (min-width: 320px) and (max-width: 767px) {
+      .navbarHeader button {
+        float: right;
+        background: transparent;
+        border: none;
+        box-shadow:none;
+        outline:none;
+        color: #fff !important;
+        font-size: 20px;
+    }
+    .logo {
+      width: 120px;
+      height: auto;
+      background: none;
+      margin: 0;
+      float: left;
+  }
+  .header {
+    display:none;
+   }
+      nav.memeadminnav {
+        /* background: transparent; */
+        padding: 0;
+    }
+    .mobilenavbar   ul.ant-menu.ant-menu-.ant-menu-root.ant-menu-inline {
+      display: none;
+  }
+  .mobilenavbar ul.ant-menu.ant-menu-.ant-menu-inline-collapsed.ant-menu-root.ant-menu-vertical {
+    width: 100%;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    border-radius: 0 0 5px 5px;
+}
+    .mobilenavbar {
+      position: absolute;
+      z-index: 99;
+      height: auto;
+      width: 100%;
+      /* background: rgba(0, 0, 0, 0.47); */
+    }
+    .mobilenavbar ul.ant-menu.ant-menu-dark.ant-menu-root.ant-menu-inline {
+      width: 100%;
+  }
+  .siderDisplay.ant-layout-sider {
+    display: none;
+}
+  .navbarHeader {
+    padding: 1em 0 3em 2em;
+    background: rgb(0, 21, 41);
+}
+.mobilenavbar .ant-menu-vertical .ant-menu-item:after, .ant-menu-vertical-left .ant-menu-item:after, .ant-menu-vertical-right .ant-menu-item:after, .ant-menu-inline .ant-menu-item:after {
+  border-right: none;
+}
+.mobilenavbar .ant-btn-primary:hover, .ant-btn-primary:focus {
+  color: #fff;
+  background-color: transparent;
+  border-color: transparent;
+}
+.mobilenavbar .ant-btn:hover, .ant-btn:focus, .ant-btn:active, .ant-btn.active {
+  background: transparent;
+}
+.mobilenavbar .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  color: #ffffff;
+  background-color: rgba(0, 21, 41, 0.35);
+}
+
+#root .mobilenavbar {
+  display: block;
+}
+}
+.mobilenavbar {
+  display: none;
+}
+      /* --Responsive css-- */
+
+      .loader {
+        background-color: #5b6b5b99;
+        height: 100vh;
+        
+    }
+    .loader .react-overlay-loader-spinner:before{
+        border-top-color: #2e373e;
+        
+    }
+    .loader span {
+        color: #fff !important;
+    }/* clientlist css*/
+ .clientListdiv .ant-table-pagination.ant-pagination {
+    margin: 16px 17px;
+}
+.projectListdiv .ant-table-pagination.ant-pagination {
+    margin: 16px 17px;
+}
+button.ant-btn.edit {
+    background: transparent;
+    color: #81d2ff;
+    border: none;
+ margin-right:1em;
+}
+button.ant-btn.delete {
+    background: transparent;
+    color: #ff8181;
+    border: none;
+    margin-left: 0;
+    
+}
+.innercardContenta .ant-card-body {
+    padding: 0;
+}
+h1.clientList {
+    font-family: 'Lato', sans-serif;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+.AllProjects input.ant-input {
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    border: none;
+}
+/* .projectListdiv .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    width: auto !important;
+    font-size: 13px;
+    padding: 16px 10px;
+} */
+.projectListdiv .ant-table-thead > tr , .ant-table-tbody > tr > td {
+    width: auto !important;
+    font-size: 13px;
+    padding: 16px 10px;
+}
+.clientListdiv .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    width: auto;
+}
+.AllProjects {
+    margin-bottom: 2em !important;
+}
+.scoping.ant-select.ant-select-enabled {
+    margin-left: 1em;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    color: rgba(158, 158, 158, 0.8);
+    border: none;
+    border-radius: 5px;
+}
+button.ant-btn.allprojectbtn {
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    color: rgba(158, 158, 158, 0.8);
+    border: none;
+    margin-left: 1em;
+}
+.innercardContenta {
+    margin: 15px auto !important;
+}
+/* .innercardContenta table{
+    margin-top: 8em !important;
+} */
+button.ant-btn.edita i.anticon.anticon-edit {
+    font-size: 16px;
+}
+button.ant-btn.delete i.anticon.anticon-delete {
+    font-size: 16px;
+}
+img.fileIcon {
+    height: 12px;
+    width: 12px;
+}
+button.ant-btn.edita {
+    background: transparent;
+    color: #81d2ff;
+    border: none;
+    padding: 0;
+    margin-right:4em;
+}
+.addButton.clientadd {
+    position: absolute;
+    top: 0em;
+    right: 0;
+    z-index: 9;
+}
+ /* clientlist css*/
+ /* delete modal start */
+ .deletemodal{
+     vertical-align: middle;
+ }
+ .vertical-center-modal {
+    text-align: center;
+    white-space: nowrap;
+  }
+  
+  .vertical-center-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+  }
+  
+  .vertical-center-modal .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: left;
+  }
+  .delmodal .ant-modal-header {
+    padding: 16px 24px;
+    border-radius: 4px 4px 0 0;
+    background: rgb(217, 0, 34);
+    color: #fff !important;
+    border-bottom: none;
+}
+.delmodal .ant-modal-title {
+    margin: 0;
+    font-size: 22px;
+    line-height: 22px;
+    color: white;
+    font-weight: 600;
+}
+.delmodal .ant-btn-primary{
+    color: #fff;
+    background-color: rgb(217, 0, 34);
+    border: none;
+}
+.delmodal .ant-btn-primary:active{
+    color: #fff;
+    background-color: rgb(217, 0, 34);
+    border: none;
+}
+.delmodal .ant-btn-primary:hover {
+    color: #fff;
+    background-color: rgb(217, 0, 34);
+    border: none;
+}
+.delmodal .ant-btn-primary:focus {
+    color: #fff;
+    background-color: rgb(217, 0, 34);
+    border: none;
+}
+.delmodal .ant-btn-primary:active, .ant-btn-primary.selected {
+    color: #fff;
+    background-color: rgb(217, 0, 34);
+    border: none;
+}
+
+.delmodal .ant-modal-footer {
+    border: none;
+    padding: 0 64px 35px 0;
+    text-align: right;
+    border-radius: 0 0 4px 4px;
+}
+.delmodal .ant-modal-footer button + button {
+    
+        margin-left: 12px;
+        margin-bottom: 0;
+        width: 100px;
+        height: 40px;
+        font-size: 19px;
+        font-weight: 500;
+    
+    
+}
+.nobtn {
+    height: 40px;
+    width: 65px;
+    color:rgb(63, 58, 58);
+    font-size: 19px;
+        font-weight: 500;
+}
+.delmodal .ant-modal-close-x{
+    color: #fff;
+}
+.nobtn:hover{
+    color:rgb(63, 58, 58);
+    border-color: rgb(63, 58, 58);
+}
+.deletemodal p {
+    margin-top: 17px;
+    font-family: lato;
+    font-size: 16px;
+    line-height: 7px;
+}
+.modaltxt{   
+     margin-top: 17px;    
+     font-family: lato;   
+      font-size: 16px;    
+      line-height: 7px;
+    }
+    .loader {
+        background-color: #5b6b5b99;
+        height: 100vh;
+        
+    }
+    .loader .react-overlay-loader-spinner:before{
+        border-top-color: #2e373e;
+        
+    }
+    .loader span {
+        color: #fff !important;
+    }
+
+    @media (min-width: 320px) and (max-width: 767px) {
+
+
+
+        .AllProjects button.ant-btn.allprojectbtn {
+           
+            margin-left: 0em;
+            margin-top: 1em;
+        }
+        .clientadd.addButton button {
+            float: left;
+            position: absolute;
+            right: 0;
+            top: 4em;
+        }
+    }
+.innercardContenta .ant-table-body{
+    /* width: 1300px !important; */
+  }
+button.ant-btn.edit {
+    background: transparent;
+    color: #81d2ff;
+    border: none;
+    padding: 0;
+}
+.btns .ant-col-lg-8 {
+    width: auto;
+}
+button.ant-btn.delete {
+    background: transparent;
+    color: #ff8181;
+    border: none;
+    padding-left: 0px;
+    width: 10px;
+}
+
+
+button.ant-btn.view {
+    background: transparent;
+    border: none;
+    line-height: 40px;
+    font-size: 16px;
+   
+}
+.btns a:hover{
+    color:rgba(0, 0, 0, 0.45) !important;
+}
+.scoping .ant-select-selection__rendered {
+    color: rgb(58, 56, 56);
+}
+button.ant-btn.allprojectbtn {
+    color: rgba(62, 61, 61, 0.8);
+}
+.deletemodal{
+    vertical-align: middle;
+}
+.vertical-center-modal {
+   text-align: center;
+   white-space: nowrap;
+ }
+ .addButton.clientadd .ant-btn {
+    margin-right: 0 !important;
+}
+ .vertical-center-modal:before {
+   content: '';
+   display: inline-block;
+   height: 100%;
+   vertical-align: middle;
+   width: 0;
+ }
+ /* .innercardContenta table {
+    margin-top: 6em;
+} */
+ /* .projectListheader {
+    position: fixed;
+    top: 0;
+    z-index: 9;
+    width: 82%;
+    top: 9%;
+    background: #f0f4f5;
+} */
+ 
+ .vertical-center-modal .ant-modal {
+   display: inline-block;
+   vertical-align: middle;
+   top: 0;
+   text-align: left;
+ }
+ .delmodal .ant-modal-header {
+   padding: 16px 24px;
+   border-radius: 4px 4px 0 0;
+   background: rgb(217, 0, 34);
+   color: #fff !important;
+   border-bottom: none;
+}
+.delmodal .ant-modal-title {
+   margin: 0;
+   font-size: 22px;
+   line-height: 22px;
+   color: white;
+   font-weight: 600;
+}
+.delmodal .ant-btn-primary{
+   color: #fff;
+   background-color: rgb(217, 0, 34);
+   border: none;
+}
+.delmodal .ant-btn-primary:active{
+   color: #fff;
+   background-color: rgb(217, 0, 34);
+   border: none;
+}
+.delmodal .ant-btn-primary:hover {
+   color: #fff;
+   background-color:rgb(217, 0, 34);
+   border: none;
+}
+.delmodal .ant-btn-primary:focus {
+   color: #fff;
+   background-color:rgb(217, 0, 34);
+   border: none;
+}
+.delmodal .ant-btn-primary:active, .ant-btn-primary.selected {
+   color: #fff;
+   background-color: rgb(217, 0, 34)36;
+   border: none;
+}
+
+.delmodal .ant-modal-footer {
+   border: none;
+   padding: 0 64px 35px 0;
+   text-align: right;
+   border-radius: 0 0 4px 4px;
+}
+.delmodal .ant-modal-footer button + button {
+   
+       margin-left: 12px;
+       margin-bottom: 0;
+       width: 100px;
+       height: 40px;
+       font-size: 19px;
+       font-weight: 500;
+   
+   
+}
+.nobtn {
+   height: 40px;
+   width: 65px;
+   color:rgb(63, 58, 58);
+   font-size: 19px;
+       font-weight: 500;
+}
+.delmodal .ant-modal-close-x{
+   color: #fff;
+}
+.nobtn:hover{
+   color:rgb(63, 58, 58);
+   border-color: rgb(63, 58, 58);
+}
+.deletemodal p {
+    margin-top: 17px;
+    font-family: lato;
+    font-size: 16px;
+    line-height: 7px;
+}
+.modaltxt{   
+    margin-top: 17px;    
+    font-family: lato;   
+     font-size: 16px;    
+     line-height: 7px;
+   }
+   .loader {
+    background-color: #5b6b5b99;
+    height: 100vh;
+    
+}
+.loader .react-overlay-loader-spinner:before{
+    border-top-color: #2e373e;
+    
+}
+.loader span {
+    color: #fff !important;
+}
+
+
+@media only screen and (min-width: 320px) and (max-width: 767px) {
+.project.addButton button {
+    
+    margin-right: 0;
+    position: absolute;
+    right: 0;
+    top: 4em;
+}
+}
+
+@-webkit-keyframes react-overlay-loader-spinner {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes react-overlay-loader-spinner {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+.react-overlay-loader-spinner:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin-top: -30px;
+  margin-left: -20px;
+  border-radius: 50%;
+  border: 3px solid #eee;
+  border-top-color: #07d;
+  -webkit-animation: react-overlay-loader-spinner 0.8s linear infinite;
+          animation: react-overlay-loader-spinner 0.8s linear infinite;
+}
+/* dashboardviewcustomer */
+.cusTotal {
+    background: #fff;
+    width: 96%;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    margin-bottom:1em;
+    transition: 1.6s ease;
+}
+h1.customer {
+    margin-bottom: 1em;
+    color:#565656;
+}
+span.totalContent {
+    font-size: 24px;
+    color: rgb(86,86,86);
+    font-weight: 400;
+    margin: 0 12px;
+    font-family: 'Lato', sans-serif;
+}
+img.totalImg {
+    margin-right: 1em;
+    vertical-align: bottom;
+    height: 35px;
+    width: auto;
+}
+.recentactivity.recentPaymentactivity {
+    margin-bottom: 4em;
+}
+.cusTotal:hover {
+    transition: 0.3s ease-in;
+    box-shadow: 0 10px 45px -10px rgba(0,0,0,0.25), 0 -1px 22px -10px rgba(0,0,0,0.22);
+}
+h1.totalNumber {
+    color: rgb(66, 138, 254);
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    font-size: 35px;
+    margin-bottom:0;
+}
+.dashboardView {
+    margin-bottom: 3em;
+    position: relative;
+}
+.addButton button:hover {
+    box-shadow: 0 10px 45px -10px rgba(0,0,0,0.25), 0 -1px 22px -10px rgba(0,0,0,0.22);
+    color: rgb(158, 158, 158);
+}
+.addButton button:focus {
+    box-shadow: 0 10px 45px -10px rgba(0,0,0,0.25), 0 -1px 22px -10px rgba(0,0,0,0.22);
+    color: rgb(158, 158, 158);
+}
+.addButton button span {
+    font-size: 25px;
+    padding-right: 9px;
+}
+.addButton.btnplace {
+    position: absolute;
+    top: -70px;
+    right: 0;
+    margin-right: 2em;
+    z-index: 9;
+}
+.addButton.project {
+    position: absolute;
+    top: 0em;
+    right: 0;
+   
+}
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item{
+    background: none;
+}
+.ant-menu-item:active, .ant-menu-submenu-title:active{
+    background: none;
+}
+.scoping .ant-select-selection__rendered {
+    color: rgb(58, 56, 56);
+}
+.addButton button {
+    float: right;
+    margin-right: 0em;
+    margin-bottom: 1em;
+    border-radius: 50%;
+    padding: 0px 0 8px 8px;
+    color: rgb(255, 255, 255);
+    height: 42px;
+    width: 42px;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    border: none;
+    font-size: 14px;
+    font-weight: 900;
+    background: #479ef0e5;
+}
+.addButton button:hover{
+    background: #2c72b4e5;
+    color: rgb(255, 255, 255);
+}
+button.ant-btn.allprojectbtn {
+    color: rgba(62, 61, 61, 0.8);
+}
+/* dashboardviewcustomer */
+
+/* Responsivedashboardviewcustomer */
+@media (min-width: 320px) and (max-width: 767px) {
+    .addButton button {
+        float: left;
+        margin-right: -2em;
+    }
+    .cusTotal {
+        width: 100%;
+        text-align:center;
+    }
+    .dashboardMain {
+        margin-top: 3em;
+    }
+    img.totalImg {
+        margin-right: 0em;
+    }
+    span.totalContent{
+        font-size: 16px;  
+    }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+    span.totalContent{
+        font-size: 16px;  
+    }
+    .cusTotal {
+        text-align: center;
+    }
+}
+@media (min-width: 600px) and (max-width: 1024px) {
+    img.totalImg {
+        margin-right: 0em;
+    }
+    span.totalContent{
+        font-size: 16px;  
+    }
+}
+/* Responsivedashboardviewcustomer */
+/* recent activity css start  */
+
+.firstman {
+    width:32%;
+    margin-right:1em;
+    margin-bottom:0em;
+    margin-top: 11px;
+    background: #fff;
+    border-radius: 12px;
+}
+.recentactivity h1 {
+    margin-top: 3em;
+    color:#565656;
+}
+.firstman p {
+    padding-top: 12px;
+    font-weight: 500;
+    text-align: left;
+    font-size: 16px;
+    margin-left: 1em;
+    margin-top: 29px;
+    margin-bottom: 1em;
+    padding: 0 10px;
+    color: rgba(68, 68, 68, 0.91);
+}
+.firstman img {
+    padding-top: 23px;
+    padding-left: 15px;
+}
+.date{
+    font-size: 19px;
+    color: rgb(149, 152, 154);
+    text-align: right;
+}
+.date {
+    padding-top: 2em !important;
+    padding-left: 4em;
+}
+.secondman p {
+    padding-top: 2px;
+    font-weight: 500;
+    text-align: left;
+    font-size: 19px;
+    margin-top: 29px;
+    margin-bottom: 1em;
+}
+.secondman img {
+    margin-bottom: 20px;
+    padding-top: 29px;
+    padding-left: 68px;
+}
+.secondman{
+    margin-top: 35px;
+    background: #fff;
+    border-radius: 12px;
+}
+p.date {
+    margin-top: -30px;
+    text-align: right;
+    font-size: 14px;
+    padding-right: 0;
+    color: rgba(68, 68, 68, 0.84);
+}
+/*responsive start*/
+@media only screen and (min-width: 320px) and (max-width:1024px){
+
+
+    .firstman p {
+    /* padding-top: 12px; */
+    font-weight: 500;
+   
+    margin-top: 29px;
+    font-family: 'Lato',sans-serif;
+    text-align: left;
+    font-size: 14px;
+    /* margin-bottom: 1em; */
+}
+.firstman img {
+    padding-top: 23px;
+    padding-left: 15px;
+}
+.recentactivity h1 {
+    color: #444;
+    text-align: center;
+    margin-top: 20px;
+}
+
+    .secondman p {
+    /* padding-top: 12px; */
+    font-weight: 500;
+    text-align: left;
+    font-size: 14px;
+    margin-top: 29px;
+    /* margin-bottom: 1em; */
+}
+.secondman img {
+    padding-top: 23px;
+    padding-left: 100px;
+}
+.resalign{
+    text-align: center;
+}
+.recentactivity h1 {
+    text-align: left;
+    margin-top: 20px;
+}
+p.date {
+    margin-top: -30px !important;
+    text-align: right !important;
+    padding-right: 2em;
+}
+}
+/* 
+recent activity css end */
+
+.loader {
+    background-color: #5b6b5b99;
+    height: 100vh;
+    
+}
+.loader .react-overlay-loader-spinner:before{
+    border-top-color: #2e373e;
+    
+}
+.loader span {
+    color: #fff !important;
+}/* password reset css */
+.imgsec.borderBottom:before {
+    border-bottom: 408px solid white;
+}
+.imgsec.borderBottom{
+    height: 408px;
+}
+.SubmitBtn{
+    text-align: center;
+}
+/* password reset css *//* userManagement css */
+h1.userManagementa {
+    padding: 10px 0 10px 27px;
+    /* background: #428afe; */
+    /* color: #fff; */
+    margin-bottom: 0;
+}
+.userManagement .clientHere .ant-select-selection__placeholder {
+    margin-top: -4px;
+}
+.userManagement .inputForminfo {
+    padding: 1em 4em 0 4em;
+}
+.userManagement .ant-card.innercardContent.ant-card-wider-padding {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.userManagement .clientHere {
+    width: 100% !important;
+}
+.newCustomerform {
+    border-bottom: 1px dashed #e8e8e8;
+}
+input#phone{
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+    width: 100%
+}
+/* userManagement css *//* newProject css */
+.inputForminfo.informationProject input {
+    width: 85%;
+}
+.inputForminfo.informationProject  .ant-select-selection--single {
+    height: 43px;
+    width: 100%;
+}
+.ant-layout-content {
+    padding: 15px !important;
+}
+.innercardContent.cardProject .ant-card-body {
+    padding: 0;
+}
+.clientHere.clieHere.ant-select-show-search.ant-select-auto-complete.ant-select.ant-select-combobox.ant-select-enabled {
+    width: 85% !important;
+}
+.inputForminfo.informationProject {
+    padding: 1em 0 0 4em;
+}
+.inputForminfo.informationProject .statuspipeline.ant-select.ant-select-enabled {
+    width: 85%;
+    /* margin-top: 7px; */
+}
+.innercardContent{
+    width:100% !important;
+}
+.innercardContent.cardProject h1.NewCustomer{
+    margin: 10px 0 10px 27px;
+}
+inputForminfo .ant-row.ant-form-item {
+    height: auto;
+    margin-bottom: 0;
+}
+.ant-row.briefRequire {
+    margin-bottom: 0 !important;
+}
+.inputForminfo .ant-row {
+    margin-bottom: 0;
+}
+.inputForminfo .ant-row.ant-form-item {
+    height: auto;
+    margin-bottom: 0;
+}
+p.expecteDate {
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+p.expecteDate4 {
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+p.expecteDateclient { 
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-bottom: 9px;
+    margin-top: 9px;
+    margin-left: 5px;
+}
+
+.ant-row.briefRequire {
+    margin-bottom: 3em;
+}
+.clientHere.ant-select-auto-complete.ant-select .ant-input {
+    height: 45px;
+    width: 100%;
+}
+textarea#textRequirement {
+    width: 93%;
+    height: 60px;
+}
+.clientHere {
+    width: 93% !important;
+}
+.clientHere .ant-select-selection.ant-select-selection--single {
+    width: 100% !important;
+}
+.startDate input.ant-calendar-picker-input.ant-input {
+    width: 100%;
+}
+.startDate span.ant-calendar-picker:focus {
+    border: 1px solid #d4d4d4;
+}
+.spaceLess .ant-row {
+    margin-bottom: 0;
+}
+.startDate span.ant-calendar-picker {
+    width: 85%;
+}
+input#Paybillno {
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+input#billno {
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+input#projectcost{
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+input#amountrecord{
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+input#balance{
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding-left: 10px;
+}
+/* newProject css */
+/* ResponsiveNewProject  */
+@media (min-width: 320px) and (max-width: 767px) {
+    .inputForminfo.informationProject {
+        padding: 0 2em;
+    }
+    .inputForminfo.informationProject input {
+        width: 100%;
+    }
+    .inputForminfo.informationProject .ant-select-selection--single {
+        width: 116%;
+    }
+    .startDate span.ant-calendar-picker {
+        width: 100%;
+    }
+    .inputForminfo .ant-row {
+        margin-bottom: 0em;
+    }
+    .spaceLess .ant-row {
+        margin-bottom: 0 !important;
+    }
+    .inputForminfo .ant-row.ant-form-item {
+        margin-top: 1em;
+    }
+    .newCustomerform {
+        border-bottom: 1px dashed #e8e8e8;
+        margin-top: 3em;
+    } 
+}
+.tech .ant-select.ant-select-enabled {
+    width: 85% !important;
+}
+@media (min-width: 600px) and (max-width: 1024px) {
+    .innercardContent {
+        width: 90% !important;
+    }
+}
+@media (min-width: 767px) and (max-width: 1024px) and (orientation:portrait) {
+    .inputForminfo.informationProject {
+        padding: 0 2em;
+    }
+    .inputForminfo.informationProject input {
+        width: 100%;
+    }
+    .inputForminfo.informationProject .ant-select-selection--single {
+        width: 100%;
+    }
+    .startDate span.ant-calendar-picker {
+        width: 100% !important;
+    }
+    .spaceLess {
+        margin-top: 18px;
+    }
+    p.expecteDate {
+        margin-top: 0;
+    }
+    .inputForminfo .ant-row {
+        margin-bottom: 0em;
+    }
+    .spaceLess .ant-row {
+        margin-bottom: 0 !important;
+    }
+    .inputForminfo .ant-row.ant-form-item {
+        margin-top: 1em;
+    }
+}
+/* ResponsiveNewProject  *//* clientlist css*/
+ .billerListdiv .ant-table-pagination.ant-pagination {
+    margin: 16px 17px;
+}
+.projectListdiv .ant-table-pagination.ant-pagination {
+    margin: 16px 17px;
+}
+button.ant-btn.edit {
+    background: transparent;
+    color: #81d2ff;
+    border: none;
+    padding: 0;
+}
+button.ant-btn.delete {
+    background: transparent;
+    color: #ff8181;
+    border: none;
+    margin-left: 0;
+    
+}
+.innercardContenta .ant-card-body {
+    padding: 0;
+}
+h1.clientList {
+    font-family: 'Lato', sans-serif;
+    margin-bottom: 1em;
+}
+.AllProjects input.ant-input {
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    border: none;
+}
+.projectListdiv .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    width: auto !important;
+    font-size: 13px;
+    padding: 16px 10px;
+}
+.clientListdiv .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    width: auto;
+}
+.AllProjects {
+    margin-bottom: 1em;
+}
+.scoping.ant-select.ant-select-enabled {
+    margin-left: 1em;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    color: rgba(158, 158, 158, 0.8);
+    border: none;
+    border-radius: 5px;
+}
+button.ant-btn.allprojectbtn {
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    color: rgba(158, 158, 158, 0.8);
+    border: none;
+    margin-left: 1em;
+}
+.innercardContenta {
+    margin: 15px auto !important;
+}
+button.ant-btn.edit i.anticon.anticon-edit {
+    font-size: 16px;
+}
+button.ant-btn.delete i.anticon.anticon-delete {
+    font-size: 16px;
+}
+.addButton.clientadd {
+    position: absolute;
+    top: 0em;
+    right: 0;
+    z-index: 9;
+}
+ /* clientlist css*/
+ /* delete modal start */
+ .deletemodal{
+     vertical-align: middle;
+ }
+ .vertical-center-modal {
+    text-align: center;
+    white-space: nowrap;
+  }
+  
+  .vertical-center-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+  }
+  
+  .vertical-center-modal .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: left;
+  }
+  .delmodal .ant-modal-header {
+    padding: 16px 24px;
+    border-radius: 4px 4px 0 0;
+    background: rgb(217, 0, 34);
+    color: #fff !important;
+    border-bottom: none;
+}
+.delmodal .ant-modal-title {
+    margin: 0;
+    font-size: 22px;
+    line-height: 22px;
+    color: white;
+    font-weight: 600;
+}
+.delmodal .ant-btn-primary{
+    color: #fff;
+    background-color: rgb(217, 0, 34);
+    border: none;
+}
+.delmodal .ant-btn-primary:active{
+    color: #fff;
+    background-color: rgb(217, 0, 34);
+    border: none;
+}
+.delmodal .ant-btn-primary:hover {
+    color: #fff;
+    background-color: rgb(217, 0, 34);
+    border: none;
+}
+.delmodal .ant-btn-primary:focus {
+    color: #fff;
+    background-color: rgb(217, 0, 34);
+    border: none;
+}
+.delmodal .ant-btn-primary:active, .ant-btn-primary.selected {
+    color: #fff;
+    background-color: rgb(217, 0, 34);
+    border: none;
+}
+
+.delmodal .ant-modal-footer {
+    border: none;
+    padding: 0 64px 35px 0;
+    text-align: right;
+    border-radius: 0 0 4px 4px;
+}
+.delmodal .ant-modal-footer button + button {
+    
+        margin-left: 12px;
+        margin-bottom: 0;
+        width: 100px;
+        height: 40px;
+        font-size: 19px;
+        font-weight: 500;
+    
+    
+}
+.nobtn {
+    height: 40px;
+    width: 65px;
+    color:rgb(63, 58, 58);
+    font-size: 19px;
+        font-weight: 500;
+}
+.delmodal .ant-modal-close-x{
+    color: #fff;
+}
+.nobtn:hover{
+    color:rgb(63, 58, 58);
+    border-color: rgb(63, 58, 58);
+}
+.deletemodal p {
+    margin-top: 17px;
+    font-family: lato;
+    font-size: 16px;
+    line-height: 7px;
+}
+.modaltxt{   
+     margin-top: 17px;    
+     font-family: lato;   
+      font-size: 16px;    
+      line-height: 7px;
+    }
+    .loader {
+        background-color: #5b6b5b99;
+        height: 100vh;
+        
+    }
+    .loader .react-overlay-loader-spinner:before{
+        border-top-color: #2e373e;
+        
+    }
+    .loader span {
+        color: #fff !important;
+    }
+/* table css 27april by ak */
+    .innercardContenta .ant-table {
+        overflow-x: scroll;
+    }
+    .innercardContenta .ant-table-body{
+       /* width: 2200px; */
+    }
+    .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+        padding: 16px 16px;
+        word-break: normal;
+    }
+    
+    /* .billlistheader {
+        position: fixed;
+        top: 0;
+        z-index: 9;
+        width: 82%;
+        top: 9%;
+        background: #f0f4f5;
+    } */
+
+    @media (min-width: 320px) and (max-width: 767px) {
+
+    .billeradd button.ant-btn {
+        position: absolute;
+        right: 2em;
+    }
+    }
+
+
+#components-layout-demo-top-side-2 .logo {
+    width: 120px;
+    height: 31px;
+    background: rgba(255,255,255,.2);  
+    margin: 16px 28px 16px 0;
+    float: left;
+  }
+  .ant-layout-content {
+    height: 100vh;
+}
+button.ant-btn.wkonlogout {
+  float: right;
+  margin-top: 17px;
+  font-weight: 500;
+  background: transparent;
+  color: #fff;
+  padding-bottom: 3px;
+  border: 2px solid #fff;
+  border-radius: 50px;
+}
+.header img{
+  width: 140px;
+}
+.username{
+  color: rgb(255, 255, 255);
+  font-family: 'Lato', sans-serif;
+  font-size: 17px;
+  text-transform: capitalize;
+}
+.user1 p{
+    margin-top: 0px !important;
+    font-size: 13px;
+}
+.span1{
+    font-weight: 700;
+}
+.firstuser {
+    padding-top: 10px;
+    margin-top: 11px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 1em 2em 2em 4em;
+    margin-left: 1em;
+}
+.padng20 img {
+    border-radius: 50%;
+}
+.firstuser button.ant-btn.edit {
+    background: transparent;
+    color: rgb(161, 218, 232);
+    border: none;
+  
+    margin-bottom: 17px;
+    margin-left: 17px;
+}
+
+.btndltedt {
+    border-radius: 0 0 0 85%;
+    margin-right: -11px;
+    margin-top: -5px;
+    margin-left: 3px;
+}
+.firstuser button.ant-btn.delete {
+    background: transparent;
+    color: rgb(161, 218, 232);
+    border: none;
+   
+    margin: 0 0 0 13px;
+    padding: 0;
+}
+.loader {
+    background-color: #5b6b5b99;
+    height: 100vh;
+    
+}
+.loader .react-overlay-loader-spinner:before{
+    border-top-color: #2e373e;
+    
+}
+.loader span {
+    color: #fff !important;
+}.uploadFile h1 {
+    font-family: 'Lato', sans-serif;
+    padding-left: 1em;
+    color: #565656;
+}
+.uploadFile {
+    text-align: center;
+}
+.dropzone img.fileIcon {
+    margin-top: 4em;
+    
+    width: 8em !important;
+    height: auto !important;
+}
+.upload {
+    width: 100%;
+    height: auto;
+   
+    border-radius: 5px;
+    border: 0.5px solid hsla(0, 2%, 21%, 0.29);
+}
+.dropzone {
+    padding: 5em;
+}
+.uploadFile aside h2 {
+    padding-bottom: 1em;
+}
+.uploadFile {
+    text-align: center;
+    background: #fff;
+    margin: 2em 2em 1em 2em;
+}
+.upload button.ant-btn {
+    width: 13vw;
+    border: none;
+    background: #448aff;
+    color: #fff;
+    font-size: 20px;
+    height: 3em;
+    margin-bottom: 4em;
+    margin-top: 1em;
+}
+/* .psd {
+    margin-left: 1em;
+    margin-bottom: 1em;
+    background: rgba(145, 11, 150, 0.678);
+    border-radius: 10px;
+    height: 4em;
+    width: 4em;
+    text-align: center;
+    color: #fff;
+    -ms-flex-line-pack: center;
+    align-content: center;
+} */
+.uploadinfo h1 {
+    font-family: 'Lato', sans-serif;
+    text-align: left;
+    padding: 0;
+    font-size: 15px;
+}
+.uploadinfo p {
+    text-align: right;
+    margin-right: 1em;
+}
+.psd img {
+   width: 60%;
+}
+/* .crossbtn{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: red;
+    color: black;
+} */
+.crossbtn img {
+    margin-right: 2em;
+    width: 25%;
+}
+.uploadedfile {
+    padding-bottom: 1em;
+}
+.uploadinfo .ant-progress-success-bg, .ant-progress-bg{
+    background: #299e2e;
+}/* projectmanagement css */
+.wkonList {
+    border-right: 1px solid #e8e8e8;
+    background: #fff;
+    height: 100vh;
+}
+.listView {
+    background: #f4f8fb;
+    padding: 10px;
+}
+.wkonList .ant-list-item {
+    padding-left: 10px;
+}
+.projectManagementpanda {
+    margin: -1em;
+}
+/* projectmanagement css */
+.listView .ant-input-affix-wrapper .ant-input:not(:last-child) {
+    /* padding-right: 30px; */
+    background: transparent;
+    border: none;
+    padding-left: 2em;
+}
+.listView .ant-input-search:not(.ant-input-search-small) > .ant-input-suffix {
+    left: 0;
+}
+.listView i.anticon.anticon-setting {
+    font-size: 17px;
+    float: right;
+    border: 1px solid #d8b7b759;
+    background: #fff;
+    padding: 5px;
+}
+
+.listView button.ant-btn.ant-btn-default {
+    padding-right: 0px;
+    height: 29px;
+    width: 28px;
+    background: #a03e3e;
+    border: none;
+}
+.sidewkonlist .ant-list-item-meta-title{
+    margin-top: 6px;
+}
+.secondlist span.ant-avatar.ant-avatar-circle.ant-avatar-image {
+    padding: 4px;
+}
+.detailview {
+    background: #f7f7f7;
+    height: 100vh;
+    padding: 1em 1em;
+}
+.detailview h1 {
+    text-align: left;
+    padding-left: 1em;
+}
+.asignTo {
+    text-align: center;
+    margin-bottom: 2em;
+    margin-top: 2em;
+}
+.startbtn {
+    text-align: center;
+    margin-bottom: 2em;
+}
+.endbtn {
+    text-align: center;
+    margin-bottom: 2em;
+}
+.status {
+    text-align: center;
+}
+.projectpreview {
+    background: #ffffff;
+    border-radius: 4px;
+    padding-top: 1em;
+    padding-bottom: 5em;
+    box-shadow: 0 5px 23px -7px rgba(163,185,197,.77);
+    margin: 5em;
+    margin-top: 5em;
+}
+.ant-row.projectname {
+    border-bottom: 1px dashed #8080809c;
+}
+.asignTo p {
+    text-align: left;
+    margin-left: 2em;
+}
+.asignTo .ant-select.ant-select-enabled {
+    width: 90%;
+}
+.status p {
+    text-align: left;
+    margin-left: 2em;
+}
+.projectpreview p.expecteDateclient {
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    margin-bottom: 9px;
+    margin-top: 9px;
+    margin-left: 10px;
+}
+.inputForminfo .statuspipeline.ant-select.ant-select-disabled {
+    width: 91%;
+}
+.projectpreview .statuspipeline.ant-select.ant-select-enabled {
+    width: 90%;
+    margin-left: 9px;
+}
+.projectpreview .ant-select.ant-select-enabled {
+    width: 90%;
+    margin-left: 10px;
+}
+.startbtn button.ant-btn.ant-btn-default {
+    margin-right: 10px;
+    background: green;
+    color: #fff;
+    border: none;
+}
+.startbtn button.ant-btn.ant-btn-primary {
+    margin-left: 10px;
+    background: #ce1313;
+    border: none;
+}
+/*# sourceMappingURL=main.css.map*/

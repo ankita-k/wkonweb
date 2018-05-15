@@ -176,39 +176,9 @@ export function createClient(data, location) {
                     dispatch(toast('Warning', 'Client Creation failed!'));
                     dispatch(loaders(false))
                 } else {
-                    let url = config.apiUrl + "client/clientlist?userId=" + data.userId;
-
-                    fetch(url,
-                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                        .then((response) => response.json())
-                        .then((responseJSON) => {
-                            dispatch(toast('success', 'Client Added Successfully!'));
-                            /** FETCH DASHBOARD CUSTOMER DATA*/
-                            let newurl = config.apiUrl + 'user/clientDashboardDetails?id=' + data.userId;
-                            fetch(newurl,
-                                { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                                .then((response) => response.json())
-                                .then((responseJSON) => {
-                                    dispatch(dashboardcustomer(responseJSON.result));
-
-                                })
-                                .catch((error) => {
-                                    dispatch(dashboardcustomer({}));
-
-                                });
-                            /*FETCH DASHBOARD CUSTOMER DATA ENDS*/
-
-                            dispatch(clientList(responseJSON.result));
-                            dispatch(loaders(false));
-                            dispatch(menuKeys('client_list'));
-                            location.push("../dashboard/clientlist");
-                        })
-                        .catch((error) => {
-                            dispatch(clientList([]));
-                            dispatch(toast('warning', 'Client Creation Failed!'));
-                            dispatch(loaders(false))
-                        });
-
+                    dispatch(loaders(false));
+                    dispatch(menuKeys('client_list'));
+                    location.push("../dashboard/clientlist");
                 }
             })
             .catch((error) => {
@@ -246,7 +216,6 @@ function clientList(list) {
     return {
         type: "CLIENT_LIST",
         list
-
     }
 }
 /*UPDATE CLIENT BY API CALL AND GET NEW CLIENT LIST IMMEDIATELY*/
@@ -604,7 +573,7 @@ export function addMember(data, id) {
 }
 //API FOR REMOVE MEMBER FROM PROJECT AND UPDATE
 export function removeMember(data, projectId) {
-    console.log('member Removed',data, projectId)
+    console.log('member Removed', data, projectId)
     return (dispatch) => {
         fetch(config.apiUrl + 'project/deletemember?id=' + projectId,
             {
@@ -614,12 +583,12 @@ export function removeMember(data, projectId) {
                     'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
                 },
                 method: 'PUT',
-                body: JSON.stringify({userId:data})
+                body: JSON.stringify({ userId: data })
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-console.log(responseJSON.members)
-                console.log('Member Deleted',responseJSON)
+                console.log(responseJSON.members)
+                console.log('Member Deleted', responseJSON)
                 dispatch(toast('success', 'Member Deleted!'));
                 dispatch(member(responseJSON.result.members));
 

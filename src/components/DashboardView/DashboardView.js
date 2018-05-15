@@ -18,7 +18,6 @@ import Loading from 'react-loading-bar';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
 
-
 const Option = Select.Option;
 
 const FormItem = Form.Item;
@@ -47,7 +46,6 @@ class DashboardView extends Component {
     componentDidMount() {
         console.log('==========component did mount=====', this.props);
         this.commonFunction(this.props);
-    
     }
 
     componentWillReceiveProps(newprops) {
