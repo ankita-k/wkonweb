@@ -325,22 +325,24 @@ class ProjectManagement extends Component {
                                 />
                             </div>
                         </Col>
-                        <Col lg={12}>
-                            <div className="wkonList detailView">
+
+                        {/* area for task add form start*/}
+                        {/* <Col lg={12}>
+                            <div className="wkonList detailView taskaddform">
 
                                 <Form onSubmit={this.handleSubmit} className="projectForm">
                                     <FormItem label="Task Name">
                                         {getFieldDecorator('taskname', {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
                                         })(
-                                            <Input placeholder="Task Name" />
+                                            <Input placeholder="Enter name" />
                                         )}
                                     </FormItem>
                                     <FormItem label="Task Description">
                                         {getFieldDecorator('taskdescription', {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
-                                            <textarea placeholder="Task Description" />
+                                            <textarea placeholder="Enter Description" />
                                         )}
                                     </FormItem>
                                     <FormItem label="Status">
@@ -356,7 +358,7 @@ class ProjectManagement extends Component {
                                             </Select>
                                         )}
                                     </FormItem>
-                                    {/* <p className="expecteDateclient">Choose Client :</p> */}
+                                 
                                     <FormItem label="Start Date"
                                         {...formItemLayout}>
                                         {getFieldDecorator('date-picker', config)(
@@ -392,7 +394,73 @@ class ProjectManagement extends Component {
 
 
                             </div>
+                        </Col> */}
+                        {/* area for task add form end*/}
+                        {/* area for project add form start*/}
+                        <Col lg={12}>
+                            <div className="wkonList detailView projectaddform">
+
+                                <Form onSubmit={this.handleSubmit} className="projectForm">
+                                    <FormItem label="Project Name">
+                                        {getFieldDecorator('taskname', {
+                                            rules: [{ required: true, message: 'Please input your Task Name !' }],
+                                        })(
+                                            <Input placeholder="Enter name" />
+                                        )}
+                                    </FormItem>
+                                    <FormItem label="Project Description">
+                                        {getFieldDecorator('taskdescription', {
+                                            rules: [{ required: true, message: 'Please input your Task Description !' }],
+                                        })(
+                                            <textarea placeholder="Enter Description" />
+                                        )}
+                                    </FormItem>
+
+                                    <FormItem>
+                                        <div className="savebtn modalbtn">
+                                            <Button onClick={this.handleSubmitmodal}>Save</Button>
+                                            <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
+                                        </div>
+                                    </FormItem>
+                                </Form>
+
+
+                            </div>
                         </Col>
+                        {/* area for project add form end*/}
+
+                        {/* area for module add form start*/}
+                        {/* <Col lg={12}>
+                            <div className="wkonList detailView moduleaddform">
+
+                                <Form onSubmit={this.handleSubmit} className="projectForm">
+                                    <FormItem label="Module Name">
+                                        {getFieldDecorator('taskname', {
+                                            rules: [{ required: true, message: 'Please input your Task Name !' }],
+                                        })(
+                                            <Input placeholder="Enter here" />
+                                        )}
+                                    </FormItem>
+                                    <FormItem label="Module Description">
+                                        {getFieldDecorator('taskdescription', {
+                                            rules: [{ required: true, message: 'Please input your Task Description !' }],
+                                        })(
+                                            <textarea placeholder="Enter Description" />
+                                        )}
+                                    </FormItem>
+
+                                    <FormItem>
+                                        <div className="savebtn modalbtn">
+                                            <Button onClick={this.handleSubmitmodal}>Save</Button>
+                                            <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
+                                        </div>
+                                    </FormItem>
+                                </Form>
+
+
+                            </div>
+                        </Col> */}
+                        {/* area for module add form end*/}
                     </Row>
                     <div className="modal"><Modal
                         title="Module name"
