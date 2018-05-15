@@ -334,14 +334,14 @@ class ProjectManagement extends Component {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
                                         })(
                                             <Input placeholder="Task Name" />
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem label="Task Description">
                                         {getFieldDecorator('taskdescription', {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
                                             <Input placeholder="Task Description" />
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem label="Status">
                                         {getFieldDecorator('gender', {
@@ -354,7 +354,7 @@ class ProjectManagement extends Component {
                                                 <Option value="Statusa">Status</Option>
                                                 <Option value="Status">Status</Option>
                                             </Select>
-                                            )}
+                                        )}
                                     </FormItem>
                                     {/* <p className="expecteDateclient">Choose Client :</p> */}
                                     <FormItem label="Start Date"
@@ -380,12 +380,12 @@ class ProjectManagement extends Component {
                                                 <Option value="efgh">abcd</Option>
                                                 <Option value="abcd">efgh</Option>
                                             </Select>
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem>
-                                        <div className="projectSave">
-                                            <Button type="primary" htmlType="submit" className="login-form-button">
-                                                Save</Button>
+                                        <div className="savebtn modalbtn">
+                                            <Button onClick={this.handleSubmitmodal}>Save</Button>
+                                            <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
                                         </div>
                                     </FormItem>
                                 </Form>
@@ -409,7 +409,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -419,7 +419,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
                         </Form>
@@ -438,7 +438,7 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal3Visible(false)}
                         onCancel={() => this.setModal3Visible(false)}
                     >
-                        
+
                         <Form>
                             <div className="projectname">
                                 <p>Name :</p>
@@ -475,7 +475,7 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal4Visible(false)}
                         onCancel={() => this.setModal4Visible(false)}
                     >
-                         <Form>
+                        <Form>
                             <div className="projectname">
                                 <p>Name :</p>
                                 <FormItem>
