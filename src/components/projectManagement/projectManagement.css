@@ -104,10 +104,10 @@
     border-right: 1px solid #e8e8e8;
     background: #fff;
     height: auto;
-    padding: 4em;
-    -webkit-box-shadow: 0 5px 23px -7px rgba(163,185,197,.77);
-    box-shadow: 0 5px 23px -7px rgba(163,185,197,.77);
-    margin: 5em;
+    padding: 2em 4em 0 4em;
+    /* -webkit-box-shadow: 0 5px 23px -7px rgba(163,185,197,.77);
+    box-shadow: 0 5px 23px -7px rgba(163,185,197,.77); */
+    /* margin: 5em; */
 }
 .plus {
     width: 20px !important;
@@ -121,16 +121,18 @@
 }
 .savebtn button.ant-btn:hover {
     
-    box-shadow: 0px 7px 23px -7px rgb(80, 100, 111);
+    box-shadow: 0px 3px 23px -7px rgb(80, 100, 111);
 }
 .savebtn {
     text-align: center;
     padding-top: 0em;
     margin-top: 4em;
 }
+.ant-list-item-meta-avatar{
+    margin-top: 10px;
+}
 .listHeader {
     padding-top: 1em;
-    padding-bottom: 1em;
     background: #f4f8fb;
 }
 .startbtn {
@@ -203,4 +205,58 @@
     font-size: 19px;
     line-height: 22px;
     font-variant: all-petite-caps;
+}
+.projectManagementpanda .ant-layout{
+    background: #fff;
+}
+/* projectform css */
+
+.projectForm .ant-form-item-required:before {
+    display:none;
+}
+.projectForm .ant-row.ant-form-item {
+    margin-bottom: 5px;
+}
+.projectSave {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 2em;
+}
+.projectForm .ant-form-item-label {
+    color: #000000a3;
+    font-family: Roboto;
+    font-weight: 600;
+    text-align: left;
+    font-variant: all-petite-caps;
+    font-size: 18px !important;
+    letter-spacing: 0px;
+}
+.projectForm span#date-picker {
+    width: 100%;
+}
+
+/* projectform css */
+.activelink.ant-breadcrumb > span:last-child {
+    color: rgb(68, 138, 255);
+}
+.projectForm .ant-form-item-label label {
+    color: #000000a3;
+    font-family: Roboto;
+    font-weight: 600;
+    text-align: left;
+    font-variant: all-petite-caps;
+    font-size: 18px;
+    letter-spacing: 0px;
+}
+.detailView textarea{
+    overflow: auto;
+    resize: vertical;
+    width: 100%;
+    color: #bfbfbf;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    padding-left: 10px;
+}
+textarea#taskdescription::placeholder {
+    color: #bfbfbf;
 }

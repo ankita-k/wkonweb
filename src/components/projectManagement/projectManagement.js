@@ -6,7 +6,7 @@ import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import { getProjectModule } from '../../redux/action';
 import { bindActionCreators } from 'redux';
-import { Layout, Modal, Input, Menu, Row, Col, List, Avatar, Form, Select, Dropdown, Button, Icon, Breadcrumb } from 'antd';
+import { Layout, Modal, Input, Menu, DatePicker, Row, Col, List, Avatar, Form, Select, Dropdown, Button, Icon, Breadcrumb } from 'antd';
 import backbtn from '../../Images/backbtn.svg';
 import addbtn from '../../Images/addbtn.svg';
 const Option = Select.Option;
@@ -16,14 +16,20 @@ const FormItem2 = Form.Item;
 const { TextArea } = Input;
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
-
 class ProjectManagement extends Component {
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
             }
+        });
+    }
+    handleSelectChange = (value) => {
+        console.log(value);
+        this.props.form.setFieldsValue({
+            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
         });
     }
     constructor(props) {
@@ -99,6 +105,8 @@ class ProjectManagement extends Component {
     // CLOSE MODULE ON CANCEL
     closeModule = () => {
         this.setState({ modal2Visible: false })
+        this.setState({ modal3Visible: false })
+        this.setState({ modal4Visible: false })
     }
     addSubModule = () => {
         this.props.form.validateFields((err, values) => {
@@ -280,6 +288,20 @@ class ProjectManagement extends Component {
         const { size } = this.props;
         const state = this.state;
         const { getFieldDecorator } = this.props.form;
+        const formItemLayout = {
+            labelCol: {
+                xs: { span: 24 },
+                sm: { span: 24 },
+            },
+            wrapperCol: {
+                xs: { span: 24 },
+                sm: { span: 24 },
+            },
+        };
+
+        const config = {
+            rules: [{ type: 'object', required: true, message: 'Please select time!' }],
+        };
 
         return (
             /* list section */
@@ -295,7 +317,7 @@ class ProjectManagement extends Component {
                                                 <Button type="primary"><img src={backbtn} /></Button>
                                             </Col>
                                             <Col lg={12}>
-                                                <Breadcrumb>
+                                                <Breadcrumb className="activelink">
                                                     <Breadcrumb.Item>{this.state.projectname}</Breadcrumb.Item>
                                                     <Breadcrumb.Item onClick={this.fetchModules}><a>Modules</a></Breadcrumb.Item>
                                                     {this.state.showsubmodule ? <Breadcrumb.Item onClick={this.getsubModules}><a>Sub_modules</a></Breadcrumb.Item> : ''}
@@ -338,18 +360,70 @@ class ProjectManagement extends Component {
                         </Col>
                         <Col lg={12}>
                             <div className="wkonList detailView">
-                                <div className="projectname">
-                                    <p>Project Name :</p>
-                                    <Input placeholder="" />
 
-                                </div>
-                                <div className="projectdata">
-                                    <p>Project Details :</p>
-                                    <TextArea rows={4} />
-                                </div>
-                                <div className="savebtn">
-                                    <Button>Save</Button>
-                                </div>
+                                <Form onSubmit={this.handleSubmit} className="projectForm">
+                                    <FormItem label="Task Name">
+                                        {getFieldDecorator('taskname', {
+                                            rules: [{ required: true, message: 'Please input your Task Name !' }],
+                                        })(
+                                            <Input placeholder="Task Name" />
+                                        )}
+                                    </FormItem>
+                                    <FormItem label="Task Description">
+                                        {getFieldDecorator('taskdescription', {
+                                            rules: [{ required: true, message: 'Please input your Task Description !' }],
+                                        })(
+                                            <textarea placeholder="Task Description" />
+                                        )}
+                                    </FormItem>
+                                    <FormItem label="Status">
+                                        {getFieldDecorator('gender', {
+                                            rules: [{ required: true, message: 'Please select your status!' }],
+                                        })(
+                                            <Select
+                                                placeholder="Status"
+                                                onChange={this.handleSelectChange}
+                                            >
+                                                <Option value="Statusa">Status</Option>
+                                                <Option value="Status">Status</Option>
+                                            </Select>
+                                        )}
+                                    </FormItem>
+                                    {/* <p className="expecteDateclient">Choose Client :</p> */}
+                                    <FormItem label="Start Date"
+                                        {...formItemLayout}>
+                                        {getFieldDecorator('date-picker', config)(
+                                            <DatePicker />
+                                        )}
+                                    </FormItem>
+                                    <FormItem label="End Date"
+                                        {...formItemLayout}>
+                                        {getFieldDecorator('date-picker', config)(
+                                            <DatePicker />
+                                        )}
+                                    </FormItem>
+                                    <FormItem label="Assigned To">
+                                        {getFieldDecorator('assign', {
+                                            rules: [{ required: true, message: 'Please select your assignee!' }],
+                                        })(
+                                            <Select
+                                                placeholder="Assigned To"
+                                                onChange={this.handleSelectChange}
+                                            >
+                                                <Option value="efgh">abcd</Option>
+                                                <Option value="abcd">efgh</Option>
+                                            </Select>
+                                        )}
+                                    </FormItem>
+                                    <FormItem>
+                                        <div className="savebtn modalbtn">
+                                            <Button onClick={this.handleSubmitmodal}>Save</Button>
+                                            <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
+                                        </div>
+                                    </FormItem>
+                                </Form>
+
+
                             </div>
                         </Col>
                     </Row>
@@ -397,35 +471,33 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal3Visible(false)}
                         onCancel={() => this.setModal3Visible(false)}
                     >
+
                         <Form>
-                            <p>Name :</p>
-                            <FormItem>
-
-                                <Input placeholder="name" />
-
-                            </FormItem>
-                            <FormItem>
-
-                                <p>Descriptions :</p>
-
-                                <TextArea rows={4} className="note" placeholder="description" />
-
-
-
-                            </FormItem>
-
-                            <FormItem
-                                wrapperCol={{ span: 12, offset: 5 }}
-                            >
-
-                                <div className="savebtn modalbtn">
-                                    <Button htmlType="submit">
-                                        Save
-                                    </Button>
-                                    <Button className="cancelbtn" onClick={this.handleReset}>Cancel</Button>
-                                </div>
-                            </FormItem>
+                            <div className="projectname">
+                                <p>Name :</p>
+                                <FormItem>
+                                    {getFieldDecorator('projectname', {
+                                        rules: [{ required: true, message: 'Please input your ProjectName!' }],
+                                    })(
+                                        <Input placeholder="" />
+                                    )}
+                                </FormItem>
+                            </div>
+                            <div className="projectdata">
+                                <p>Details :</p>
+                                <FormItem>
+                                    {getFieldDecorator('projectdetails', {
+                                        rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
+                                    })(
+                                        <TextArea rows={4} />
+                                    )}
+                                </FormItem>
+                            </div>
                         </Form>
+                        <div className="savebtn modalbtn">
+                            <Button onClick={this.handleSubmitmodal}>Save</Button>
+                            <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
+                        </div>
                     </Modal>
 
                     </div>
@@ -436,35 +508,32 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal4Visible(false)}
                         onCancel={() => this.setModal4Visible(false)}
                     >
-                        <Form >
-                            <p>Name :</p>
-                            <FormItem>
-
-                                <Input placeholder="name" />
-
-                            </FormItem>
-                            <FormItem>
-
-                                <p>Descriptions :</p>
-
-                                <TextArea rows={4} className="note" placeholder="description" />
-
-
-
-                            </FormItem>
-
-                            <FormItem
-                                wrapperCol={{ span: 12, offset: 5 }}
-                            >
-
-                                <div className="savebtn modalbtn">
-                                    <Button htmlType="submit">
-                                        Save
-                                    </Button>
-                                    <Button className="cancelbtn" onClick={this.handleReset}>Cancel</Button>
-                                </div>
-                            </FormItem>
+                        <Form>
+                            <div className="projectname">
+                                <p>Name :</p>
+                                <FormItem>
+                                    {getFieldDecorator('projectname', {
+                                        rules: [{ required: true, message: 'Please input your ProjectName!' }],
+                                    })(
+                                        <Input placeholder="" />
+                                    )}
+                                </FormItem>
+                            </div>
+                            <div className="projectdata">
+                                <p>Details :</p>
+                                <FormItem>
+                                    {getFieldDecorator('projectdetails', {
+                                        rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
+                                    })(
+                                        <TextArea rows={4} />
+                                    )}
+                                </FormItem>
+                            </div>
                         </Form>
+                        <div className="savebtn modalbtn">
+                            <Button onClick={this.handleSubmitmodal}>Save</Button>
+                            <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
+                        </div>
                     </Modal>
                     </div>
 
