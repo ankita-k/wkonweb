@@ -1275,7 +1275,9 @@ export function getProjectModule(projectId) {
 
 /***********GET PARTICULAR MODULES DATA*********/
 export function getModuleInfo(id) {
+    console.log(id)
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'module/' + id,
             {
                 headers: {
@@ -1286,12 +1288,15 @@ export function getModuleInfo(id) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
                 //code to dispatch action for storing module list 
             })
             .catch((error) => {
+                reject(error)
                 // code to handle error
             });
-    }
+    })
+}
 }
 /* ***************PROJECT MODULES  CRUD  ENDS***************/
 
@@ -1384,7 +1389,9 @@ export function getSubModuleList(id) {
 }
 /***********GET SUB MODULESD ATA********/
 export function getSubModuleInfo(id) {
+    console.log(id)
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'submodule/' + id,
             {
                 headers: {
@@ -1395,11 +1402,14 @@ export function getSubModuleInfo(id) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON);
                 //code to dispatch action for storing module list 
             })
             .catch((error) => {
+                reject(error);
                 // code to handle error
             });
+        })
     }
 }
 
@@ -1560,6 +1570,7 @@ export function taskEnded(data, id) {
 /***********GET TASK DATA*********/
 export function getTaskInfo(id) {
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'task/' + id,
             {
                 headers: {
@@ -1570,11 +1581,14 @@ export function getTaskInfo(id) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
                 //code to dispatch action for storing module list 
             })
             .catch((error) => {
+                reject(error)
                 // code to handle error
             });
+        });
     }
 }
 
