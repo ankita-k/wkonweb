@@ -73,7 +73,7 @@ class Dashboard extends Component {
 
   gotoDashboard = () => {
     this.props.actions.menuKeys('home');
-    this.props.actions.openkey([]);
+    this.props.actions.openkey('');
 
   }
 
@@ -82,7 +82,7 @@ class Dashboard extends Component {
     this.props.actions.menuKeys(nav.key);
 
     if (nav.key == 'home') {
-      this.props.actions.openkey([])
+      this.props.actions.openkey('')
     };
 
   }
@@ -96,7 +96,7 @@ class Dashboard extends Component {
       this.props.actions.openkey(key);
 
     } else {
-      this.props.actions.openkey([])
+      this.props.actions.openkey('')
 
     }
   }
@@ -143,7 +143,7 @@ class Dashboard extends Component {
     
 
     /**  INITIALLY HOME MENU TO BE SELECTED  */
-    this.props.actions.openkey([]);
+    this.props.actions.openkey('');
     this.props.actions.menuKeys('home');
     /**  INITIALLY HOME MENU TO BE SELECTED  ENDS */
 
