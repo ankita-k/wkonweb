@@ -128,9 +128,11 @@
     padding-top: 0em;
     margin-top: 4em;
 }
+.ant-list-item-meta-avatar{
+    margin-top: 10px;
+}
 .listHeader {
     padding-top: 1em;
-    padding-bottom: 1em;
     background: #f4f8fb;
 }
 .startbtn {
@@ -228,3 +230,6 @@
 }
 
 /* projectform css */
+.activelink.ant-breadcrumb > span:last-child {
+    color: rgb(68, 138, 255);
+}
