@@ -12,12 +12,20 @@ import addbtn from '../../Images/addbtn.svg';
 const Option = Select.Option;
 const Search = Input.Search;
 const FormItem = Form.Item;
+const FormItem2 = Form.Item;
 const { TextArea } = Input;
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
 class ProjectManagement extends Component {
-
+    handleSubmit = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
+    }
     constructor(props) {
         super(props);
 
@@ -78,7 +86,7 @@ class ProjectManagement extends Component {
                     ['name']: '',
                     ['description']: '',
                 })
-                this.setState({ modal2Visible: false });
+                // this.setState({ modal2Visible: false });
                 console.log('Received values of form: ', values);
             }
         })
@@ -356,21 +364,41 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal3Visible(false)}
                         onCancel={() => this.setModal3Visible(false)}
                     >
-                        <div className="projectname">
+                         <Form onSubmit={this.handleSubmit}>
                             <p>Name :</p>
-                            <Input placeholder="" />
+                            <FormItem>
+                                {getFieldDecorator('name', {
+                                    rules: [{ required: true, message: 'Please input your note!' }],
+                                })(
+                                    <Input placeholder="name" />
+                                )}
+                            </FormItem>
+                            <FormItem>
 
-                        </div>
-                        <div className="projectdata">
-                            <p>Descriptions :</p>
-                            <TextArea rows={4} />
-                        </div>
-                        <div className="savebtn modalbtn">
-                            <Button>Save</Button>
-                            <Button className="cancelbtn">Cancel</Button>
-                        </div>
+                                <p>Descriptions :</p>
+                                {getFieldDecorator('note', {
+                                    rules: [{ required: true, message: 'Please input your note!' }],
+                                })(
+                                    <TextArea rows={4} className="note" placeholder="description" />
+                                )}
 
+
+                            </FormItem>
+
+                            <FormItem
+                                wrapperCol={{ span: 12, offset: 5 }}
+                            >
+
+                                <div className="savebtn modalbtn">
+                                    <Button htmlType="submit">
+                                        Save
+                                    </Button>
+                                    <Button className="cancelbtn" onClick={this.handleReset}>Cancel</Button>
+                                </div>
+                            </FormItem>
+                        </Form>
                     </Modal>
+                    
                     </div>
                     <div className="modal"><Modal
                         title="Task"
@@ -379,20 +407,39 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal4Visible(false)}
                         onCancel={() => this.setModal4Visible(false)}
                     >
-                        <div className="projectname">
+                         <Form onSubmit={this.handleSubmit}>
                             <p>Name :</p>
-                            <Input placeholder="" />
+                            <FormItem>
+                                {getFieldDecorator('name', {
+                                    rules: [{ required: true, message: 'Please input your note!' }],
+                                })(
+                                    <Input placeholder="name" />
+                                )}
+                            </FormItem>
+                            <FormItem>
 
-                        </div>
-                        <div className="projectdata">
-                            <p>Descriptions :</p>
-                            <TextArea rows={4} />
-                        </div>
-                        <div className="savebtn modalbtn">
-                            <Button>Save</Button>
-                            <Button className="cancelbtn">Cancel</Button>
-                        </div>
+                                <p>Descriptions :</p>
+                                {getFieldDecorator('note', {
+                                    rules: [{ required: true, message: 'Please input your note!' }],
+                                })(
+                                    <TextArea rows={4} className="note" placeholder="description" />
+                                )}
 
+
+                            </FormItem>
+
+                            <FormItem
+                                wrapperCol={{ span: 12, offset: 5 }}
+                            >
+
+                                <div className="savebtn modalbtn">
+                                    <Button htmlType="submit">
+                                        Save
+                                    </Button>
+                                    <Button className="cancelbtn" onClick={this.handleReset}>Cancel</Button>
+                                </div>
+                            </FormItem>
+                        </Form>
                     </Modal>
                     </div>
 
