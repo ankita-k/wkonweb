@@ -55,24 +55,15 @@ class Dashboard extends Component {
     this.showConfirm = this.showConfirm.bind(this);
   }
 
-
-  connectSocket = () => {
-    socket.on('clientCreated', (interval) => {
-      if (sessionStorage.getItem('id')) {
-        this.props.actions.clientlist(sessionStorage.getItem('id'));
-        this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
-        this.props.actions.dashboardProject(sessionStorage.getItem('id'));
-      }
-      else if (localStorage.getItem('id')) {
-        this.props.actions.clientlist(localStorage.getItem('id'));
-        this.props.actions.dashboardCustomer(localStorage.getItem('id'));
-        this.props.actions.dashboardProject(localStorage.getItem('id'));
-      }
-    });
-  }
-
   disconnectSocket = () => {
+    console.log('socket disconnected')
     socket.off('clientCreated', function () { });
+    socket.off('projectCreated', function () { });
+    socket.off('userCreated', function () { });
+    socket.off('billCreated', function () { });
+    
+    
+    
   }
 
 
@@ -85,6 +76,7 @@ class Dashboard extends Component {
         console.log('OK');
         sessionStorage.clear();
         localStorage.clear();
+        _base.disconnectSocket()
         _base.props.history.push('/login');
 
       },
@@ -130,8 +122,10 @@ class Dashboard extends Component {
 
   componentDidMount() {
     console.log('#############################', this.props);
-    this.connectSocket();
-
+    this.connectClientSocket();
+this.connectProjectSocket();
+this.connectUserSocket();
+this.connectBillSocket();
     /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA 
     */
     if (sessionStorage.getItem('id')) {
@@ -208,6 +202,90 @@ class Dashboard extends Component {
       this.setState({ userrole: this.props.loggeduserDetails.role });
     }
 
+  }
+   // CONNECT SOCKET FOR CLIENT CREATE
+  connectClientSocket = () => {
+    socket.on('clientCreated', (interval) => {
+      console.log('......client created.......',interval)
+      
+      if (sessionStorage.getItem('id')) {
+      console.log('......client created session.......',interval)
+        
+        this.props.actions.clientlist(sessionStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
+        this.props.actions.dashboardProject(sessionStorage.getItem('id'));
+      }
+      else if (localStorage.getItem('id')) {
+      console.log('......client created local.......',interval)
+        
+        this.props.actions.clientlist(localStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(localStorage.getItem('id'));
+        this.props.actions.dashboardProject(localStorage.getItem('id'));
+      }
+    });
+  }
+  // CONNECT SOCKET FOR PROJECT CREATE
+  connectProjectSocket=()=>{
+    socket.on('projectCreated', (interval) => {
+      console.log('......Project created.......',interval)
+      
+      if (sessionStorage.getItem('id')) {
+      console.log('......Project created session.......',interval)
+        
+        this.props.actions.projectList(sessionStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
+        this.props.actions.dashboardProject(sessionStorage.getItem('id'));
+      }
+      else if (localStorage.getItem('id')) {
+      console.log('......Project created local.......',interval)
+        
+        this.props.actions.projectList(localStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(localStorage.getItem('id'));
+        this.props.actions.dashboardProject(localStorage.getItem('id'));
+      }
+    });
+  }
+  // CONNECT SOCKET FOR USER CREATE
+  connectUserSocket=()=>{
+    socket.on('userCreated', (interval) => {
+      console.log('......user created.......',interval)
+      
+      if (sessionStorage.getItem('id')) {
+      console.log('......User created session.......',interval)
+        
+        this.props.actions.userList(sessionStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
+        this.props.actions.dashboardProject(sessionStorage.getItem('id'));
+      }
+      else if (localStorage.getItem('id')) {
+      console.log('......User created local.......',interval)
+        
+        this.props.actions.userList(localStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(localStorage.getItem('id'));
+        this.props.actions.dashboardProject(localStorage.getItem('id'));
+      }
+    });
+  }
+  // CONNECT SOCKET FOR Bill CREATE
+  connectBillSocket=()=>{
+    socket.on('billCreated', (interval) => {
+      console.log('......Bill created.......',interval)
+      
+      if (sessionStorage.getItem('id')) {
+      console.log('......Bill created session.......',interval)
+        
+        this.props.actions.billlist(sessionStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
+        this.props.actions.dashboardProject(sessionStorage.getItem('id'));
+      }
+      else if (localStorage.getItem('id')) {
+      console.log('......bill created local.......',interval)
+        
+        this.props.actions.billlist(localStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(localStorage.getItem('id'));
+        this.props.actions.dashboardProject(localStorage.getItem('id'));
+      }
+    });
   }
 
   render() {
