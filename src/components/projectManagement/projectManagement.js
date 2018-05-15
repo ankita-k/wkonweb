@@ -53,21 +53,25 @@ class ProjectManagement extends Component {
                         <a onClick={() => this.setModal4Visible(true)}>Task</a>
                     </Menu.Item>
                 </Menu>
-            )
+            ),
+            showsubmodule: false,
+            showtask: false,
+            functioncall: 'submodules'
         }
     }
 
     componentDidMount() {
+        console.log(this.props)
         if (this.props.location.data) {
             console.log(this.props.location.data.record);
 
             console.log(this.props.location.data.record._id);
-
+            this.setState({ projectname: this.props.location.data.record.name1 })
             this.setState({
                 projectId: this.props.location.data.record._id
             }, function () {
                 this.fetchModules();
-                this.getModules();
+                // this.getModules();
             });
         }
     }
@@ -126,6 +130,9 @@ class ProjectManagement extends Component {
     }
     // FETCH ALL THE MODULES AGAINST PROJECT,uSING PROJECTID
     fetchModules = () => {
+        this.setState({ showtask: false })
+        this.setState({ showsubmodule:  false});
+        this.setState({ functioncall: 'submodules' })
         getProjectModule(this.state.projectId).then((success) => {
             console.log(success)
             this.setState({ moduleList: success.result })
@@ -134,15 +141,34 @@ class ProjectManagement extends Component {
         });
     }
 
-    // fetch submodules against a module , using module id
-    fetchSubModules = () => {
+    // FETCH SUBMODULE LIST AGAINST MODULE ID
+    fetchSubModules = (id) => {
+        console.log(id);
+        this.setState({ showsubmodule: true })
+        this.setState({ functioncall: 'tasks' })
+        this.setState({ submoduleId: id })
+        this.props.actions.getSubModuleList(id).then(response => {
+            console.log(response)
+            if (!response.error) {
+                this.setState({ moduleList: response.result })
+            }
+        }, err => {
+
+        })
+    }
+
+    // FETCH TASK LIST AGAINST SUBMODULE ID
+    fetchTasks = (data) => {
+        console.log(data)
+        this.setState({ showtask: true })
+        this.setState({ functioncall: 'taskdetail' })
+        this.props.actions.getTaskList(data._id).then(response => {
+            console.log(response)
+            this.setState({ moduleList: response.result })
+        })
 
     }
 
-    //fetch Task , using sub-modules id
-    fetchTasks = () => {
-
-    }
     deleteModule = () => {
 
     }
@@ -199,16 +225,6 @@ class ProjectManagement extends Component {
         this.setState({ modal2Visible: false });
     }
 
-    // FETCH ALL THE MODULES 
-    getModules = () => {
-        getProjectModule(this.state.projectId).then((success) => {
-            console.log(success)
-            this.setState({ moduleList: success.result })
-        }, function (error) {
-            console.log(error);
-        });
-    }
-
     handleSubmitmodal2 = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -242,16 +258,32 @@ class ProjectManagement extends Component {
     //     })
     // }
 
-    //   // FETCH ALL THE SUBMODULES 
-    //   getSubModules = () => {
-    //     getProjectModule(this.state.moduleId).then((success) => {
-    //         console.log(success)
-    //         this.setState({ subModuleList: success.result })
-    //     }, function (error) {
-    //         console.log(error);
-    //     });
-    // }
 
+
+    // FUNCTION CALL FOR SUBMODULE LIST AND TASK LIST WHEN CLICKED ON LIST ITEM
+    ListItemClicked = (data) => {
+        console.log(data,this.state.functioncall)
+        if (this.state.functioncall == 'submodules') {
+            console.log('fetch submodues')
+            this.fetchSubModules(data._id);
+
+        }
+        else if (this.state.functioncall == 'tasks') {
+            console.log('fetchtask')
+            this.fetchTasks(data);
+        }
+        else if (this.state.functioncall == 'taskdetail') {
+            console.log('task data')
+        }
+    }
+
+    // GET SUBMODULES LIST WHEN CLICKED ON UPPER TAB SUB_MODULE 
+    getsubModules = () => {
+        this.setState({ showtask: false });
+        this.setState({ functioncall: 'submodules' });
+        this.fetchSubModules(this.state.submoduleId);
+
+    }
     render() {
         const { size } = this.props;
         const state = this.state;
@@ -286,10 +318,10 @@ class ProjectManagement extends Component {
                                             </Col>
                                             <Col lg={12}>
                                                 <Breadcrumb className="activelink">
-                                                    <Breadcrumb.Item>Home</Breadcrumb.Item>
-                                                    <Breadcrumb.Item><a href="">Module</a></Breadcrumb.Item>
-                                                    <Breadcrumb.Item><a href="">Sub_module</a></Breadcrumb.Item>
-                                                    <Breadcrumb.Item>Project</Breadcrumb.Item>
+                                                    <Breadcrumb.Item>{this.state.projectname}</Breadcrumb.Item>
+                                                    <Breadcrumb.Item onClick={this.fetchModules}><a>Modules</a></Breadcrumb.Item>
+                                                    {this.state.showsubmodule ? <Breadcrumb.Item onClick={this.getsubModules}><a>Sub_modules</a></Breadcrumb.Item> : ''}
+                                                    {this.state.showtask ? <Breadcrumb.Item>Tasks</Breadcrumb.Item> : ''}
                                                 </Breadcrumb>
                                             </Col>
 
@@ -311,11 +343,12 @@ class ProjectManagement extends Component {
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={this.state.moduleList}
+
                                     renderItem={moduleList => (
-                                        <List.Item>
+                                        <List.Item onClick={() => { console.log('selected module detail'); this.ListItemClicked(moduleList) }} >
                                             <List.Item.Meta
                                                 avatar={<Avatar src={modulesidebarlogo} />}
-                                                title={<a href="#">{moduleList.name}</a>}
+                                                title={<a><span onClick={console.log('module list')}>{moduleList.name}</span></a>}
                                                 description={moduleList.description}
 
                                             // description="17 points | 7 comments | 16 hours ago by Suganth S"
