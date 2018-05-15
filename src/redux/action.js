@@ -1155,7 +1155,7 @@ export function emailService(data) {
 /* ***************PROJECT MODULES  CRUD ***************/
 
 /* Add Module*/
-export function addModule(data) {
+export function moduleCreate(data) {
     console.log(data)
     return (dispatch) => {
         fetch(config.apiUrl + 'module',
@@ -1172,18 +1172,17 @@ export function addModule(data) {
             .then((responseJSON) => {
                 console.log(responseJSON)
                 if (!responseJSON.error) {
-                    dispatch(toast('success', 'Module Added Successfully'))
+                    dispatch(toast('success', 'Module Created Successfully'))
                 }
                 else {
-                    dispatch(toast('error', 'Module Addition Failed'))
+                    dispatch(toast('error', 'Module Creation Failed'))
                 }
             })
             .catch((error) => {
-                dispatch(toast('error', ' Module Addition Failed'))
+                dispatch(toast('error', ' Module Creation Failed'))
             });
     }
 }
-
 /*DELETE MODULE*/
 export function deleteModule(id) {
     return (dispatch) => {
@@ -1211,11 +1210,19 @@ export function deleteModule(id) {
             });
     }
 }
+// FOR DISPATCHING ACTION TO REDUCER
+function modulelist(list) {
+    return {
+        type: "MODULE_LIST",
+        list
 
+    }
+}
 /***********GET PROJECT MODULES LIST*********/
-export function getProjectModule(id) {
-    return (dispatch) => {
-        fetch(config.apiUrl + 'module/getbyprojectid?id=' + id,
+export function getProjectModule(projectId) {
+    console.log(projectId)
+    return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'module/getbyprojectid?id=' + projectId,
             {
                 headers: {
                     'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
@@ -1224,14 +1231,16 @@ export function getProjectModule(id) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                console.log(responseJSON)
-                //code to dispatch action for storing module list 
+                resolve(responseJSON);
+                console.log('get module list', responseJSON)
             })
             .catch((error) => {
-                // code to handle error
+                reject(error);
             });
-    }
+    })
+
 }
+
 
 /***********GET PARTICULAR MODULES DATA*********/
 export function getModuleInfo(id) {
@@ -1254,7 +1263,6 @@ export function getModuleInfo(id) {
     }
 }
 /* ***************PROJECT MODULES  CRUD  ENDS***************/
-
 
 
 
@@ -1535,3 +1543,4 @@ export function getTaskInfo(id) {
     }
 }
 /* ***************PROJECT SUB TASK CRUD  ENDS***************/
+
