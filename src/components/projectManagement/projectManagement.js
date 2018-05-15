@@ -6,7 +6,7 @@ import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import { getProjectModule } from '../../redux/action';
 import { bindActionCreators } from 'redux';
-import { Layout, Modal, Input, Menu, Row, Col, List, Avatar, Form, Select, Dropdown, Button, Icon, Breadcrumb } from 'antd';
+import { Layout, Modal, Input, Menu, DatePicker, Row, Col, List, Avatar, Form, Select, Dropdown, Button, Icon, Breadcrumb } from 'antd';
 import backbtn from '../../Images/backbtn.svg';
 import addbtn from '../../Images/addbtn.svg';
 const Option = Select.Option;
@@ -16,8 +16,8 @@ const FormItem2 = Form.Item;
 const { TextArea } = Input;
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
-
 class ProjectManagement extends Component {
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -26,13 +26,19 @@ class ProjectManagement extends Component {
             }
         });
     }
+    handleSelectChange = (value) => {
+        console.log(value);
+        this.props.form.setFieldsValue({
+            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
+        });
+    }
     constructor(props) {
         super(props);
 
         this.state = {
             projectId: '',
             moduleList: [],
-            subModuleList:[],
+            subModuleList: [],
             moduleId: '',
             modal2Visible: false,
             menu: (
@@ -243,11 +249,25 @@ class ProjectManagement extends Component {
     //         console.log(error);
     //     });
     // }
-    
+
     render() {
         const { size } = this.props;
         const state = this.state;
         const { getFieldDecorator } = this.props.form;
+        const formItemLayout = {
+            labelCol: {
+                xs: { span: 24 },
+                sm: { span: 24 },
+            },
+            wrapperCol: {
+                xs: { span: 24 },
+                sm: { span: 24 },
+            },
+        };
+
+        const config = {
+            rules: [{ type: 'object', required: true, message: 'Please select time!' }],
+        };
 
         return (
             /* list section */
@@ -305,18 +325,70 @@ class ProjectManagement extends Component {
                         </Col>
                         <Col lg={12}>
                             <div className="wkonList detailView">
-                                <div className="projectname">
-                                    <p>Project Name :</p>
-                                    <Input placeholder="" />
 
-                                </div>
-                                <div className="projectdata">
-                                    <p>Project Details :</p>
-                                    <TextArea rows={4} />
-                                </div>
-                                <div className="savebtn">
-                                    <Button>Save</Button>
-                                </div>
+                                <Form onSubmit={this.handleSubmit} className="projectForm">
+                                    <FormItem label="Task Name">
+                                        {getFieldDecorator('taskname', {
+                                            rules: [{ required: true, message: 'Please input your Task Name !' }],
+                                        })(
+                                            <Input placeholder="Task Name" />
+                                            )}
+                                    </FormItem>
+                                    <FormItem label="Task Description">
+                                        {getFieldDecorator('taskdescription', {
+                                            rules: [{ required: true, message: 'Please input your Task Description !' }],
+                                        })(
+                                            <Input placeholder="Task Description" />
+                                            )}
+                                    </FormItem>
+                                    <FormItem label="Status">
+                                        {getFieldDecorator('gender', {
+                                            rules: [{ required: true, message: 'Please select your status!' }],
+                                        })(
+                                            <Select
+                                                placeholder="Status"
+                                                onChange={this.handleSelectChange}
+                                            >
+                                                <Option value="Statusa">Status</Option>
+                                                <Option value="Status">Status</Option>
+                                            </Select>
+                                            )}
+                                    </FormItem>
+                                    {/* <p className="expecteDateclient">Choose Client :</p> */}
+                                    <FormItem label="Start Date"
+                                        {...formItemLayout}>
+                                        {getFieldDecorator('date-picker', config)(
+                                            <DatePicker />
+                                        )}
+                                    </FormItem>
+                                    <FormItem label="End Date"
+                                        {...formItemLayout}>
+                                        {getFieldDecorator('date-picker', config)(
+                                            <DatePicker />
+                                        )}
+                                    </FormItem>
+                                    <FormItem label="Assigned To">
+                                        {getFieldDecorator('assign', {
+                                            rules: [{ required: true, message: 'Please select your assignee!' }],
+                                        })(
+                                            <Select
+                                                placeholder="Assigned To"
+                                                onChange={this.handleSelectChange}
+                                            >
+                                                <Option value="efgh">abcd</Option>
+                                                <Option value="abcd">efgh</Option>
+                                            </Select>
+                                            )}
+                                    </FormItem>
+                                    <FormItem>
+                                        <div className="projectSave">
+                                            <Button type="primary" htmlType="submit" className="login-form-button">
+                                                Save</Button>
+                                        </div>
+                                    </FormItem>
+                                </Form>
+
+
                             </div>
                         </Col>
                     </Row>
@@ -335,7 +407,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -345,7 +417,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
                         </Form>
@@ -364,19 +436,19 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal3Visible(false)}
                         onCancel={() => this.setModal3Visible(false)}
                     >
-                         <Form>
+                        <Form>
                             <p>Name :</p>
                             <FormItem>
-                               
-                                    <Input placeholder="name" />
-                            
+
+                                <Input placeholder="name" />
+
                             </FormItem>
                             <FormItem>
 
                                 <p>Descriptions :</p>
-                              
-                                    <TextArea rows={4} className="note" placeholder="description" />
-                             
+
+                                <TextArea rows={4} className="note" placeholder="description" />
+
 
 
                             </FormItem>
@@ -394,7 +466,7 @@ class ProjectManagement extends Component {
                             </FormItem>
                         </Form>
                     </Modal>
-                    
+
                     </div>
                     <div className="modal"><Modal
                         title="Task"
@@ -403,19 +475,19 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal4Visible(false)}
                         onCancel={() => this.setModal4Visible(false)}
                     >
-                         <Form >
+                        <Form >
                             <p>Name :</p>
                             <FormItem>
-                             
-                                    <Input placeholder="name" />
-                           
+
+                                <Input placeholder="name" />
+
                             </FormItem>
                             <FormItem>
 
                                 <p>Descriptions :</p>
-                                
-                                    <TextArea rows={4} className="note" placeholder="description" />
-                             
+
+                                <TextArea rows={4} className="note" placeholder="description" />
+
 
 
                             </FormItem>

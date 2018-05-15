@@ -104,10 +104,10 @@
     border-right: 1px solid #e8e8e8;
     background: #fff;
     height: auto;
-    padding: 4em;
-    -webkit-box-shadow: 0 5px 23px -7px rgba(163,185,197,.77);
-    box-shadow: 0 5px 23px -7px rgba(163,185,197,.77);
-    margin: 5em;
+    padding: 2em 4em 0 4em;
+    /* -webkit-box-shadow: 0 5px 23px -7px rgba(163,185,197,.77);
+    box-shadow: 0 5px 23px -7px rgba(163,185,197,.77); */
+    /* margin: 5em; */
 }
 .plus {
     width: 20px !important;
@@ -204,3 +204,27 @@
     line-height: 22px;
     font-variant: all-petite-caps;
 }
+/* projectform css */
+
+.projectForm .ant-form-item-required:before {
+    display:none;
+}
+.projectForm .ant-row.ant-form-item {
+    margin-bottom: 5px;
+}
+.projectSave {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 2em;
+}
+.projectForm .ant-form-item-label {
+    color: rgba(7, 7, 7, 0.65);
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    text-align: left;
+}
+.projectForm span#date-picker {
+    width: 100%;
+}
+
+/* projectform css */
