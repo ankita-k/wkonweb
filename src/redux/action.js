@@ -176,43 +176,14 @@ export function createClient(data, location) {
                     dispatch(toast('Warning', 'Client Creation failed!'));
                     dispatch(loaders(false))
                 } else {
-                    let url = config.apiUrl + "client/clientlist?userId=" + data.userId;
-
-                    fetch(url,
-                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                        .then((response) => response.json())
-                        .then((responseJSON) => {
-                            dispatch(toast('success', 'Client Added Successfully!'));
-                            /** FETCH DASHBOARD CUSTOMER DATA*/
-                            let newurl = config.apiUrl + 'user/clientDashboardDetails?id=' + data.userId;
-                            fetch(newurl,
-                                { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                                .then((response) => response.json())
-                                .then((responseJSON) => {
-                                    dispatch(dashboardcustomer(responseJSON.result));
-
-                                })
-                                .catch((error) => {
-                                    dispatch(dashboardcustomer({}));
-
-                                });
-                            /*FETCH DASHBOARD CUSTOMER DATA ENDS*/
-
-                            dispatch(clientList(responseJSON.result));
-                            dispatch(loaders(false));
-                            dispatch(menuKeys('client_list'));
-                            location.push("../dashboard/clientlist");
-                        })
-                        .catch((error) => {
-                            dispatch(clientList([]));
-                            dispatch(toast('warning', 'Client Creation Failed!'));
-                            dispatch(loaders(false))
-                        });
-
+                    dispatch(loaders(false));
+                    dispatch(menuKeys('client_list'));
+                    dispatch(toast('success', 'Client Created Sucessfully!'));
+                    location.push("../dashboard/clientlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('success', 'Client Creation failed!'));
+                dispatch(toast('Warning', 'Client Creation failed!'));
                 dispatch(loaders(false))
             });
     }
@@ -246,7 +217,6 @@ function clientList(list) {
     return {
         type: "CLIENT_LIST",
         list
-
     }
 }
 /*UPDATE CLIENT BY API CALL AND GET NEW CLIENT LIST IMMEDIATELY*/
@@ -379,43 +349,14 @@ export function addProject(data, location) {
                     dispatch(toast('warning', 'Project Creation failed!'));
                     dispatch(loaders(false))
                 } else {
-                    let url = config.apiUrl + 'project/projectlist?userId=' + data.userId;
-
-                    fetch(url,
-                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                        .then((response) => response.json())
-                        .then((responseJSON) => {
-                            dispatch(Projectlist(responseJSON.result))
-                            dispatch(toast('success', 'Project Added Successfully!'));
-                            /** FETCH DASHBOARD PROJECT DATA*/
-                            let newurl = config.apiUrl + 'user/dashboardDetails?id=' + data.userId;
-                            fetch(newurl,
-                                { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                                .then((response) => response.json())
-                                .then((responseJSON) => {
-                                    dispatch(dashboardproject(responseJSON.result));
-                                    dispatch(loaders(false));
-                                })
-                                .catch((error) => {
-                                    dispatch(dashboardproject({}))
-                                    dispatch(loaders(false))
-                                });
-                            /*FETCH DASHBOARD PROJECT DATA ENDS*/
-                            dispatch(loaders(false));
-                            dispatch(menuKeys('project_list'));
-                            location.push("../dashboard/projectlist")
-
-                        })
-                        .catch((error) => {
-                            dispatch(Projectlist([]))
-                            dispatch(toast('warning', 'Project Creation failed!'));
-                            dispatch(loaders(false))
-                        });
-
+                    dispatch(loaders(false));
+                    dispatch(menuKeys('project_list'));
+                    dispatch(toast('success', 'Project Created Sucessfully!'));
+                    location.push("../dashboard/projectlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'Project Creation failed!'));
+                dispatch(toast('Warning', 'Project Creation failed!'));
                 dispatch(loaders(false))
             });
     }
@@ -666,28 +607,14 @@ export function createUser(data, location) {
                     dispatch(toast('warning', responseJSON.message));
                     dispatch(loaders(false))
                 } else {
-                    let url = config.apiUrl + "user/getAllUser";
-
-                    fetch(url,
-                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                        .then((response) => response.json())
-                        .then((responseJSON) => {
-                            dispatch(userlist(responseJSON.result))
-                            dispatch(toast('success', 'User Added Successfully!'));
-                            dispatch(loaders(false));
-                            dispatch(menuKeys('user_list'));
-                            location.push("../dashboard/userlist")
-                        })
-                        .catch((error) => {
-                            dispatch(userlist([]))
-                            dispatch(toast('warning', 'User Creation failed!'));
-                            dispatch(loaders(false))
-                        });
-
+                    dispatch(loaders(false));
+                    dispatch(menuKeys('user_list'));
+                    dispatch(toast('success', 'User Created Sucessfully!'));
+                    location.push("../dashboard/userlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'User Creation failed!'));
+                dispatch(toast('Warning', 'User Creation failed!'));
                 dispatch(loaders(false))
             });
     }
@@ -837,30 +764,15 @@ export function billCreate(billdata, location) {
                 if (responseJSON.error) {
                     dispatch(toast('warning', 'Bill Creation failed!'));
                     dispatch(loaders(false))
-                }
-                else {
-                    let url = config.apiUrl + "bill?userId=" + billdata.userId;
-
-                    fetch(url,
-                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                        .then((response) => response.json())
-                        .then((responseJSON) => {
-                            dispatch(toast('success', 'Bill Created Successfully!'));
-                            dispatch(BillList(responseJSON.result))
-                            dispatch(loaders(false));
-                            dispatch(menuKeys('bill_list'));
-                            location.push("../dashboard/billlist")
-                        })
-                        .catch((error) => {
-                            dispatch(BillList([]))
-                            dispatch(toast('warning', 'Bill Creation failed!'));
-                            dispatch(loaders(false))
-                        });
-
+                } else {
+                    dispatch(loaders(false));
+                    dispatch(menuKeys('bill_list'));
+                    dispatch(toast('success', 'Bill Created Sucessfully!'));
+                    location.push("../dashboard/billlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'Bill Creation Failed!'));
+                dispatch(toast('Warning', 'Bill Creation failed!'));
                 dispatch(loaders(false))
             });
 

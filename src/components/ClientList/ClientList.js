@@ -82,24 +82,6 @@ const data = [{
 
 class ClientList extends Component {
 
-  // modal for delete start
-  // state = {
-  //   ModalText: 'Content of the modal',
-  //   visible: false,
-  //   confirmLoading: false,
-  // }
-  //   setTimeout(() => {
-  //     this.setState({
-  //       visible: false,
-  //       confirmLoading: false,
-  //     });
-  //   }, 2000);
-  // }
-  state = {
-    loading: false,
-    visible: false,
-    searchinput: '',
-  }
   showModal = () => {
     this.setState({
       visible: true,
@@ -124,6 +106,9 @@ class ClientList extends Component {
       selectedId: '',  //FOR SELECT CLIENT ROW ID
       searchedclient: [],
       trueClientList: [],
+      loading: false,
+      visible: false,
+      searchinput: '',
       searchinput: '',
       allclient: 'All',
       userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
@@ -190,7 +175,7 @@ class ClientList extends Component {
   }
 
   componentDidMount() {
-    console.log('++++++++++++++++component will mount++++++++++++++++',this.props);
+    console.log('++++++++++++++++component will mount++++++++++++++++', this.props);
     this.setState({ show: true });
     this.commonFunction();
   }
@@ -198,7 +183,6 @@ class ClientList extends Component {
   componentWillReceiveProps(props) {
     console.log(props);
     this.commonFunction();
-
   }
 
   // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
@@ -226,8 +210,8 @@ class ClientList extends Component {
   //**DELETE CLIENT ACTION CALLING  */
   deleteClient = () => {
     this.setState({ show: true })
-   this.props.actions.deleteclient(this.state.selectedId._id,sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),this.props.history);
-   this.setState({ visible: false })
+    this.props.actions.deleteclient(this.state.selectedId._id, sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'), this.props.history);
+    this.setState({ visible: false })
 
   }
 
@@ -279,8 +263,11 @@ class ClientList extends Component {
       }
     }
     else {
+      console.log("Show client list . . . . . . . . .. . ");
       this.setState({
         searchedclient: this.props.clientList
+      }, function () {
+        this.forceUpdate();
       });
     }
 
@@ -308,7 +295,7 @@ class ClientList extends Component {
           <h1 className="clientList">Client List</h1>
           <Row>
             <div className="addButton clientadd">
-              <Button onClick={() => { this.props.actions.menuKeys('create_client');this.props.history.push('/dashboard/clientcreate') }}>+</Button>
+              <Button onClick={() => { this.props.actions.menuKeys('create_client'); this.props.history.push('/dashboard/clientcreate') }}>+</Button>
             </div>
           </Row>
           <Row>

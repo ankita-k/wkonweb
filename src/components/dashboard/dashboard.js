@@ -22,6 +22,9 @@ import Loading from 'react-loading-bar';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
 import ProjectManagement from '../projectManagement/projectManagement';
+import io from 'socket.io-client';
+const socket = io('http://mitapi.memeinfotech.com:5088/');
+
 // const { SubMenu } = Menu;
 const SubMenu = Menu.SubMenu;
 const { Header, Content, Sider } = Layout;
@@ -50,8 +53,20 @@ class Dashboard extends Component {
     }
 
     this.showConfirm = this.showConfirm.bind(this);
-
   }
+
+  disconnectSocket = () => {
+    console.log('socket disconnected')
+    socket.off('clientCreated', function () { });
+    socket.off('projectCreated', function () { });
+    socket.off('userCreated', function () { });
+    socket.off('billCreated', function () { });
+    
+    
+    
+  }
+
+
   showConfirm() {
     let _base = this;
     confirm({
@@ -61,6 +76,7 @@ class Dashboard extends Component {
         console.log('OK');
         sessionStorage.clear();
         localStorage.clear();
+        _base.disconnectSocket()
         _base.props.history.push('/login');
 
       },
@@ -106,11 +122,13 @@ class Dashboard extends Component {
 
   componentDidMount() {
     console.log('#############################', this.props);
-
+    this.connectClientSocket();
+this.connectProjectSocket();
+this.connectUserSocket();
+this.connectBillSocket();
     /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA 
     */
     if (sessionStorage.getItem('id')) {
-
       this.props.actions.clientlist(sessionStorage.getItem('id'));
       this.props.actions.billlist(sessionStorage.getItem('id'));
       this.props.actions.projectList(sessionStorage.getItem('id'));
@@ -121,10 +139,8 @@ class Dashboard extends Component {
       this.props.actions.dashboardProject(sessionStorage.getItem('id'));
       this.props.actions.tagsList('VerticalLead');
       this.props.actions.countrylist();
-
     }
     else if (localStorage.getItem('id')) {
-
       this.props.actions.clientlist(localStorage.getItem('id'));
       this.props.actions.billlist(localStorage.getItem('id'));
       this.props.actions.projectList(localStorage.getItem('id'));
@@ -138,9 +154,10 @@ class Dashboard extends Component {
     }
     /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA  ENDS */
 
+
     /*GET USER NAME AND ROLE*/
     this.commonFunction();
-    
+
 
     /**  INITIALLY HOME MENU TO BE SELECTED  */
     this.props.actions.openkey('');
@@ -185,6 +202,90 @@ class Dashboard extends Component {
       this.setState({ userrole: this.props.loggeduserDetails.role });
     }
 
+  }
+   // CONNECT SOCKET FOR CLIENT CREATE
+  connectClientSocket = () => {
+    socket.on('clientCreated', (interval) => {
+      console.log('......client created.......',interval)
+      
+      if (sessionStorage.getItem('id')) {
+      console.log('......client created session.......',interval)
+        
+        this.props.actions.clientlist(sessionStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
+        this.props.actions.dashboardProject(sessionStorage.getItem('id'));
+      }
+      else if (localStorage.getItem('id')) {
+      console.log('......client created local.......',interval)
+        
+        this.props.actions.clientlist(localStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(localStorage.getItem('id'));
+        this.props.actions.dashboardProject(localStorage.getItem('id'));
+      }
+    });
+  }
+  // CONNECT SOCKET FOR PROJECT CREATE
+  connectProjectSocket=()=>{
+    socket.on('projectCreated', (interval) => {
+      console.log('......Project created.......',interval)
+      
+      if (sessionStorage.getItem('id')) {
+      console.log('......Project created session.......',interval)
+        
+        this.props.actions.projectList(sessionStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
+        this.props.actions.dashboardProject(sessionStorage.getItem('id'));
+      }
+      else if (localStorage.getItem('id')) {
+      console.log('......Project created local.......',interval)
+        
+        this.props.actions.projectList(localStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(localStorage.getItem('id'));
+        this.props.actions.dashboardProject(localStorage.getItem('id'));
+      }
+    });
+  }
+  // CONNECT SOCKET FOR USER CREATE
+  connectUserSocket=()=>{
+    socket.on('userCreated', (interval) => {
+      console.log('......user created.......',interval)
+      
+      if (sessionStorage.getItem('id')) {
+      console.log('......User created session.......',interval)
+        
+        this.props.actions.userList(sessionStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
+        this.props.actions.dashboardProject(sessionStorage.getItem('id'));
+      }
+      else if (localStorage.getItem('id')) {
+      console.log('......User created local.......',interval)
+        
+        this.props.actions.userList(localStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(localStorage.getItem('id'));
+        this.props.actions.dashboardProject(localStorage.getItem('id'));
+      }
+    });
+  }
+  // CONNECT SOCKET FOR Bill CREATE
+  connectBillSocket=()=>{
+    socket.on('billCreated', (interval) => {
+      console.log('......Bill created.......',interval)
+      
+      if (sessionStorage.getItem('id')) {
+      console.log('......Bill created session.......',interval)
+        
+        this.props.actions.billlist(sessionStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
+        this.props.actions.dashboardProject(sessionStorage.getItem('id'));
+      }
+      else if (localStorage.getItem('id')) {
+      console.log('......bill created local.......',interval)
+        
+        this.props.actions.billlist(localStorage.getItem('id'));
+        this.props.actions.dashboardCustomer(localStorage.getItem('id'));
+        this.props.actions.dashboardProject(localStorage.getItem('id'));
+      }
+    });
   }
 
   render() {
@@ -284,7 +385,7 @@ class Dashboard extends Component {
                 onClick={this.handleClick}
                 mode="inline"
                 selectedKeys={this.state.selectedKey}
-          
+
                 defaultOpenKeys={this.state.selectedKey}
                 style={{ height: '100%', borderRight: 0 }}
                 openKeys={this.state.openKeys}
@@ -344,7 +445,7 @@ class Dashboard extends Component {
                     </Menu.Item>
                   </SubMenu>
                   : '' : ''}
-   
+
               </Menu>
             </Sider>
             <Layout style={{ padding: '0 0px 0px' }}>
@@ -364,8 +465,8 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/editbill`} component={BillForm} />
                 <Route exact path={`${this.props.match.url}/billlist`} component={BillList} />
                 <Route exact path={`${this.props.match.url}/project/:projectname`} component={Files} />
-                <Route exact path={`${this.props.match.url}/singleproject`}  component={ProjectManagement}/>
-     
+                <Route exact path={`${this.props.match.url}/singleproject`} component={ProjectManagement} />
+
 
               </Content>
             </Layout>

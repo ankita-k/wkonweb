@@ -242,10 +242,10 @@ class ClientComponent extends Component {
                                         {getFieldDecorator('phone', {
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
                                         })(
-                                            <NumberFormat format="#### #### #### ####"
+                                            <NumberFormat format="################"
                                                 type="test"
-                                                maxLength="15"
-                                                placeholder="Phone No." name="phoneNumber" minlength="8" maxlength="15"/>
+                                                // maxLength="15"
+                                                placeholder="Phone No." name="phoneNumber"/>
                                         )}
                                     </FormItem>
                                 </Col>
