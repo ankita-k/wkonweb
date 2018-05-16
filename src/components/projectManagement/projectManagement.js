@@ -60,11 +60,13 @@ class ProjectManagement extends Component {
             showsubmodule: false,                               // hide-show submodule tab from  header
             showtask: false,                                    // hide-show task tab from  header 
             showtaskForm: false,                                //  hide -show task form
-            showInitialForm: true,                              //  hide -show initial form for project-module-submodule form
+            showInitialForm: true,                           //  hide -show initial form for project-module-submodule form
             functioncall: 'submodules',                       // switch function call for submodule list ,task list from list item
             showform: false,                                  // hide-show save,cancel button when project detail show
             namefieldlabel: 'Project Name',                   // dynamic form field label name
-            descriptionfieldlabel: 'Project Description'     // dynamic form field label name
+            descriptionfieldlabel: 'Project Description',     // dynamic form field label name
+            projectreRequirement: '',
+            projectname: '',
         }
     }
 
@@ -75,12 +77,18 @@ class ProjectManagement extends Component {
 
             console.log(this.props.location.data.record._id);
             this.setState({ projectname: this.props.location.data.record.name1 })
+            this.setState({projectreRequirement: this.props.location.data.record.requirement1})
+
             this.setState({
                 projectId: this.props.location.data.record._id
             }, function () {
                 this.fetchModules();
             });
         }
+        // this.props.form.setFieldsValue({
+        //     ['name']: this.props.location.data.record.name,
+        //     ['description']: this.props.location.data.record.requirement,
+        // })
     }
     componentWillReceiveProps(props) {
         console.log(this.props);
@@ -91,19 +99,18 @@ class ProjectManagement extends Component {
         this.props.form.validateFields((err, values) => {
             console.log('Received values of form: of module ', values);
             if (!err) {
-                let data = {
-                    name: values.name,
-                    description: values.description,
-                    projectId: this.state.projectId
-                }
-                console.log(data);
-                this.props.actions.addModule(data);
-                this.fetchModules();
-                this.props.form.setFieldsValue({    //For Clear the Input  Field
-                    ['name']: '',
-                    ['description']: '',
-                })
-               
+                    let data = {
+                        name: values.name,
+                        description: values.description,
+                        projectId: this.state.projectId
+                    }
+                    console.log(data);
+                    this.props.actions.addModule(data);
+                    this.fetchModules();
+                    this.props.form.setFieldsValue({    //For Clear the Input  Field
+                        ['name']: '',
+                        ['description']: '',
+                    })
             }
         })
 
@@ -143,19 +150,19 @@ class ProjectManagement extends Component {
     // CREATE MODULES
     createModule = (res) => {
         console.log(res);
-        let data = {
-            name: res.projectname,
-            description: res.projectdetails,
-            projectId: this.state.projectId
-        }
-        console.log(data);
-        this.props.actions.moduleCreate(data)
-        this.getModules();
-        this.props.form.setFieldsValue({    //For Clear the Input  Field
-            ['projectname']: '',
-            ['projectdetails']: '',
-        })
-        this.setState({ modal2Visible: false });
+            let data = {
+                name: res.projectname,
+                description: res.projectdetails,
+                projectId: this.state.projectId
+            }
+            console.log(data);
+            this.props.actions.moduleCreate(data)
+            this.getModules();
+            this.props.form.setFieldsValue({    //For Clear the Input  Field
+                ['projectname']: '',
+                ['projectdetails']: '',
+            })
+            this.setState({ modal2Visible: false });
     }
 
 
@@ -224,7 +231,6 @@ class ProjectManagement extends Component {
         if (this.state.functioncall == 'submodules') {
             this.fetchSubModules(data._id);
             this.fetchModuleData(data._id)
-
         }
         else if (this.state.functioncall == 'tasks') {
             this.fetchTasks(data);
@@ -338,29 +344,40 @@ class ProjectManagement extends Component {
         });
     }
 
-    // // CREATE SUBMODULES
-    // createSubModule = () => {
-    //     this.props.form.validateFields((err, values) => {
-    //         if (!err) {
-    //             let data = {
-    //                 name: values.name,
-    //                 description: values.description,
-    //                 moduleId: this.state.moduleId
-    //             }
-    //             console.log(data);
-    //             this.props.actions.addSubModule(data)
-    //             this.fetchModules();
-    //             this.props.form.setFieldsValue({    //For Clear the Input  Field
-    //                 ['name']: '',
-    //                 ['description']: '',
-    //             })
-    //             this.setState({ visible: false });
-    //             console.log('Received values of form: ', values);
-    //         }
-    //     })
-    // }
+editModule = (e)=>{
+    e.preventDefault();
+    
+    this.props.form.validateFields((err, values) => { 
+   console.log(values)
+        if(this.state.namefieldlabel=='Module Name'  && this.state.descriptionfieldlabel=='Module Description'){
+            if (values.name && values.description) {
+                console.log('Received values of form: ', values);
+                let data= {
+                    name: values.name,
+                    description: values.description,
+                    projectId: this.state.projectId
+                  }
+                  console.log(data)
+                  this.props.actions.editmodule(data,this.state.moduleId)
+            }
+        }
+    
+        else if(this.state.namefieldlabel=='Sub-Module Name'  && this.state.descriptionfieldlabel=='Sub-Module Description'){
+            if(values.name && values.description){
+                let data= {
+                    name: values.name,
+                    description: values.description,
+                    moduleId: this.state.moduleId
+                  }
+                  console.log(data)
+                  this.props.actions.editSubModule(data,this.state.submoduleId)
+            }
+        }
+        
 
-
+    });
+  
+}
 
 
 
@@ -515,9 +532,11 @@ class ProjectManagement extends Component {
                         {/* area for task add form end*/}
                         {/* area for project add form start*/}
                         <Col lg={12}>
-                            {/* {this.state.showInitialForm ? <div className="wkonList detailView projectaddform">
+                            {this.state.showInitialForm? 
+                         
+                            <div className="wkonList detailView projectaddform">
 
-                                <Form onSubmit={this.handleSubmit} className="projectForm">
+                                <Form onSubmit={this.editModule} className="projectForm">
                                     <FormItem label={namefieldlabel}>
                                         {getFieldDecorator('name', {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
@@ -536,18 +555,18 @@ class ProjectManagement extends Component {
                                     <FormItem>
                                         {this.state.showform ?
                                             <div className="savebtn modalbtn">
-                                                <Button onClick={this.handleSubmitmodal}>Save</Button>
+                                                <Button htmlType='submit'>Save</Button>
                                                 <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
                                             </div> : ''}
                                     </FormItem>
                                 </Form>
 
 
-                            </div> : ""} */}
-                            <div>
-                                <p className="projectaTitle">Project Name : <span className="projectaName">Kuoodo </span> </p>
-                                <p className="projecteTitle">Project Description : <span className="projectaNamelorem">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever</span> </p>
-                            </div>
+                            </div> :''}
+                            {/* <div>
+                               <p className="projectaTitle">Project Name : <span className="projectaName">{this.state.projectname}</span> </p>
+                               <p className="projecteTitle">Project Description : <span className="projectaNamelorem">{this.state.projectreRequirement}</span> </p>
+                            </div> */}
                         </Col>
                         {/* area for project add form end*/}
 
