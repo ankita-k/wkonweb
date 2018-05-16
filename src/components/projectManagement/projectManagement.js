@@ -85,10 +85,6 @@ class ProjectManagement extends Component {
                 this.fetchModules();
             });
         }
-        // this.props.form.setFieldsValue({
-        //     ['name']: this.props.location.data.record.name,
-        //     ['description']: this.props.location.data.record.requirement,
-        // })
     }
     componentWillReceiveProps(props) {
         console.log(this.props);
@@ -185,8 +181,7 @@ class ProjectManagement extends Component {
                 ['description']: this.props.location.data.record.requirement1
             })
             /** CHANGE FIELD LABEL NAME DYNAMICALLY AND SET PROJECT FIELD VALUE DETAILS ENDS*/
-        }, function (error) {
-            console.log(error);
+        }, err=> {
         });
     }
 
@@ -379,7 +374,19 @@ editModule = (e)=>{
   
 }
 
+startTask =() =>{
+    let data ={
+        startDate:Date.now()
+    }
+    this.props.actions.taskStarted(data,);
+}
 
+endTask =() =>{
+    let data ={
+        endDate:Date.now()
+    }
+    this.props.actions.taskEnded(data,);
+}
 
     render() {
         const { size } = this.props;
@@ -440,7 +447,7 @@ editModule = (e)=>{
 
                                     </div>
                                 </Row>
-                                <Spin indicator={antIcon} />
+                                <Spin   spinning={this.props.fullloader} indicator={antIcon} />
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={this.state.moduleList}
@@ -493,17 +500,20 @@ editModule = (e)=>{
                                             )}
                                     </FormItem>
 
-                                    <FormItem label="Start Date"
+                                    <FormItem 
                                         {...formItemLayout}>
-                                        {getFieldDecorator('date-picker', config)(
+                                        {/* // {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
-                                        )}
+                                        )} */}
+                                         <Button onClick={this.startTask}>Start Task</Button>
+                                         <Button onClick={this.endTask}>Start Task</Button>
                                     </FormItem>
-                                    <FormItem label="End Date"
+                                    <FormItem 
                                         {...formItemLayout}>
-                                        {getFieldDecorator('date-picker', config)(
+                                        <Button>End Task</Button>
+                                        {/* {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
-                                        )}
+                                        )} */}
                                     </FormItem>
                                     <FormItem label="Assigned To">
                                         {getFieldDecorator('assign', {
