@@ -328,7 +328,7 @@ console.log(data)
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
                                         })(
                                             <NumberFormat format="################" placeholder="Phone No." name="phoneNumber"
-                                            />
+                                                />
                                         )}
                                     </FormItem>
                                 </Col>

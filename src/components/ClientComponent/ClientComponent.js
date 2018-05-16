@@ -244,8 +244,8 @@ class ClientComponent extends Component {
                                         })(
                                             <NumberFormat format="################"
                                                 type="test"
-                                                // maxLength="15"
-                                                placeholder="Phone No." name="phoneNumber"/>
+                                                maxLength="15"
+                                                placeholder="Phone No." name="phoneNumber" />
                                         )}
                                     </FormItem>
                                 </Col>

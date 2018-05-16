@@ -13,6 +13,7 @@ const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 const Option = Select.Option;
 const Search = Input.Search;
 const FormItem = Form.Item;
+const FormItem1 = Form.Item;
 const FormItem2 = Form.Item;
 const { TextArea } = Input;
 const { SubMenu } = Menu;
@@ -85,10 +86,10 @@ class ProjectManagement extends Component {
         console.log(this.props);
     }
     //CREATE MODULE AGAINST PROJECT
-    handleSubmit = (e) => {
+    addModule = (e) => {
         e.preventDefault();
-        console.log(this.props.location);
         this.props.form.validateFields((err, values) => {
+            console.log('Received values of form: of module ', values);
             if (!err) {
                 let data = {
                     name: values.name,
@@ -96,14 +97,13 @@ class ProjectManagement extends Component {
                     projectId: this.state.projectId
                 }
                 console.log(data);
-                this.props.actions.addModule(data)
+                this.props.actions.addModule(data);
                 this.fetchModules();
                 this.props.form.setFieldsValue({    //For Clear the Input  Field
                     ['name']: '',
                     ['description']: '',
                 })
-                // this.setState({ modal2Visible: false });
-                console.log('Received values of form: ', values);
+               
             }
         })
 
@@ -114,8 +114,12 @@ class ProjectManagement extends Component {
         this.setState({ modal3Visible: false })
         this.setState({ modal4Visible: false })
     }
-    addSubModule = () => {
+
+    //  ADD SUBMODULE TO MODULE 
+    addSubModule = (e) => {
+        e.preventDefault();
         this.props.form.validateFields((err, values) => {
+            console.log('Received values of form: ', values);
             if (!err) {
                 let data = {
                     name: values.name,
@@ -124,13 +128,13 @@ class ProjectManagement extends Component {
                 }
                 console.log(data);
                 this.props.actions.addSubModule(data)
-                this.fetchModules();
+                this.fetchSubModules( this.state.moduleId);
                 this.props.form.setFieldsValue({    //For Clear the Input  Field
                     ['name']: '',
                     ['description']: '',
                 })
                 this.setState({ visible: false });
-                console.log('Received values of form: ', values);
+                
             }
         })
     }
@@ -587,30 +591,30 @@ class ProjectManagement extends Component {
                         onOk={() => this.setModal2Visible(false)}
                         onCancel={() => this.setModal2Visible(false)}
                     >
-                        <Form>
+                        <Form >
                             <div className="projectname">
                                 <p>Name :</p>
-                                <FormItem>
-                                    {getFieldDecorator('projectname', {
+                                <FormItem1>
+                                    {getFieldDecorator('modulename', {
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
-                                        )}
-                                </FormItem>
+                                    )}
+                                </FormItem1>
                             </div>
                             <div className="projectdata">
                                 <p>Details :</p>
-                                <FormItem>
-                                    {getFieldDecorator('projectdetails', {
+                                <FormItem1>
+                                    {getFieldDecorator('moduledetails', {
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                        )}
-                                </FormItem>
+                                    )}
+                                </FormItem1>
                             </div>
                         </Form>
                         <div className="savebtn modalbtn">
-                            <Button onClick={this.handleSubmitmodal}>Save</Button>
+                            <Button type='submit' onClick={this.addModule}>Save</Button>
                             <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
                         </div>
                     </Modal>
@@ -625,11 +629,11 @@ class ProjectManagement extends Component {
                         onCancel={() => this.setModal3Visible(false)}
                     >
 
-                        <Form>
+                        <Form onSubmit={this.addSubModule}>
                             <div className="projectname">
                                 <p>Name :</p>
                                 <FormItem>
-                                    {getFieldDecorator('projectname', {
+                                    {getFieldDecorator('submodulename', {
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
@@ -639,7 +643,7 @@ class ProjectManagement extends Component {
                             <div className="projectdata">
                                 <p>Details :</p>
                                 <FormItem>
-                                    {getFieldDecorator('projectdetails', {
+                                    {getFieldDecorator('submoduledetails', {
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
@@ -648,7 +652,7 @@ class ProjectManagement extends Component {
                             </div>
                         </Form>
                         <div className="savebtn modalbtn">
-                            <Button onClick={this.handleSubmitmodal}>Save</Button>
+                            <Button onClick={this.addSubModule}>Save</Button>
                             <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
                         </div>
                     </Modal>
@@ -665,7 +669,7 @@ class ProjectManagement extends Component {
                             <div className="projectname">
                                 <p>Name :</p>
                                 <FormItem>
-                                    {getFieldDecorator('projectname', {
+                                    {getFieldDecorator('taskname', {
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
@@ -675,7 +679,7 @@ class ProjectManagement extends Component {
                             <div className="projectdata">
                                 <p>Details :</p>
                                 <FormItem>
-                                    {getFieldDecorator('projectdetails', {
+                                    {getFieldDecorator('taskdetails', {
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
@@ -684,7 +688,7 @@ class ProjectManagement extends Component {
                             </div>
                         </Form>
                         <div className="savebtn modalbtn">
-                            <Button onClick={this.handleSubmitmodal}>Save</Button>
+                            <Button onClick={this.addTask}>Save</Button>
                             <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
                         </div>
                     </Modal>

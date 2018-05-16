@@ -306,7 +306,7 @@ class BillForm extends Component {
                                                 rules: [{ required: true, message: 'Please input pay bill no!' }],
                                             })(
 
-                                                <NumberFormat format="#### #### #### ####"  placeholder="Bill Number" />
+                                                <NumberFormat format="################"  placeholder="Bill Number" />
                                             )}
                                         </FormItem>
                                     </Col>
@@ -316,7 +316,7 @@ class BillForm extends Component {
                                                 rules: [{ required: true, message: 'Please input bill number !' }],
                                             })(
 
-                                                <NumberFormat format="#### #### #### ####" placeholder="Bill" />
+                                                <NumberFormat format="################" placeholder="Bill" />
                                             )}
                                         </FormItem>
                                     </Col>
@@ -360,7 +360,7 @@ class BillForm extends Component {
                                                 rules: [{ required: true, message: 'Please input cost!' }],
                                             })(
 
-                                                <NumberFormat format="#### #### #### ####" placeholder="Amount"  />
+                                                <NumberFormat format="################" placeholder="Amount"  />
                                             )}
                                         </FormItem>
                                     </Col>
@@ -387,7 +387,7 @@ class BillForm extends Component {
                                                 rules: [{ required: true, message: 'Please input record!' }],
                                             })(
 
-                                                <NumberFormat format="#### #### #### ####" placeholder="Amount"/>
+                                                <NumberFormat format="################" placeholder="Amount"/>
                                             )}
                                         </FormItem>
                                     </Col>
@@ -396,7 +396,7 @@ class BillForm extends Component {
                                             {getFieldDecorator('balance', {
                                                 rules: [{ required: true, message: 'Please input !' }],
                                             })(
-                                                <NumberFormat format="#### #### #### ####" placeholder="Amount" />
+                                                <NumberFormat format="################" placeholder="Amount" />
                                             )}
                                         </FormItem>
                                     </Col>

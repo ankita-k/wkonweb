@@ -1098,7 +1098,7 @@ export function emailService(data) {
 /* ***************PROJECT MODULES  CRUD ***************/
 
 /* Add Module*/
-export function moduleCreate(data) {
+export function addModule(data) {
     console.log(data)
     return (dispatch) => {
         fetch(config.apiUrl + 'module',
