@@ -234,7 +234,37 @@
 .projectForm span#date-picker {
     width: 100%;
 }
-
+p.projecteTitle {
+    color: rgba(0, 0, 0, 0.65);
+    font-weight: 500;
+    margin-left: 2em;
+    font-size: 16px;
+    margin-right: 3em;
+}
+span.projectaNamelorem {
+    font-weight: 400;
+}
+span.projectaName {
+    color: #448aff;
+}
+.heightWkon {
+    height: 100vh;
+    position:relative;
+}
+.ant-spin.ant-spin-spinning {
+    position: absolute;
+    top: 45%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+p.projectaTitle {
+    color: rgba(0, 0, 0, 0.65);
+    font-weight: 500;
+    margin-top: 4em;
+    margin-left: 2em;
+    font-size: 16px;
+}
 /* projectform css */
 .activelink.ant-breadcrumb > span:last-child {
     color: rgb(68, 138, 255);

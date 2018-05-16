@@ -1126,6 +1126,35 @@ export function addModule(data) {
             });
     }
 }
+
+//API FOR EDIT MODULE 
+export function editmodule(data,id) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'module/' + id,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'PUT',
+                body: JSON.stringify(data)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'Module Updated Successfully'))
+                }
+                else {
+                    dispatch(toast('error', 'Module Updation Failed'))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', ' Module Updation Failed'))
+            });
+    }
+}
 /*DELETE MODULE*/
 export function deleteModule(id) {
     return (dispatch) => {
@@ -1325,6 +1354,34 @@ export function getSubModuleInfo(id) {
     }
 }
 
+//API FOR EDIT SUBMODULE 
+export function editSubModule(data,id) {
+    return (dispatch) => {
+        fetch(config.apiUrl + 'submodule/' + id,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'PUT',
+                body: JSON.stringify(data)
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON)
+                if (!responseJSON.error) {
+                    dispatch(toast('success', 'Submodule Updated Successfully'))
+                }
+                else {
+                    dispatch(toast('error', 'Submodule Updation Failed'))
+                }
+            })
+            .catch((error) => {
+                dispatch(toast('error', ' Submdule Updation Failed'))
+            });
+    }
+}
 
 /* ***************PROJECT SUB MODULES  CRUD  ENDS***************/
 
