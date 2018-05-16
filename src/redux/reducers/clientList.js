@@ -5,6 +5,7 @@ import * as actionCreators from '../action';
 export function clientList(state = [], action) {
     switch (action.type) {
         case 'CLIENT_LIST':
+            console.log("================== Inside CLient List ===================");
             return action.list.map(function (item, index) {
                 return {
                     name: item.name.length > 20 ? (item.name.slice(0, 20) + '...') : item.name,

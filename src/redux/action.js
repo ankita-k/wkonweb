@@ -176,43 +176,14 @@ export function createClient(data, location) {
                     dispatch(toast('Warning', 'Client Creation failed!'));
                     dispatch(loaders(false))
                 } else {
-                    let url = config.apiUrl + "client/clientlist?userId=" + data.userId;
-
-                    fetch(url,
-                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                        .then((response) => response.json())
-                        .then((responseJSON) => {
-                            dispatch(toast('success', 'Client Added Successfully!'));
-                            /** FETCH DASHBOARD CUSTOMER DATA*/
-                            let newurl = config.apiUrl + 'user/clientDashboardDetails?id=' + data.userId;
-                            fetch(newurl,
-                                { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                                .then((response) => response.json())
-                                .then((responseJSON) => {
-                                    dispatch(dashboardcustomer(responseJSON.result));
-
-                                })
-                                .catch((error) => {
-                                    dispatch(dashboardcustomer({}));
-
-                                });
-                            /*FETCH DASHBOARD CUSTOMER DATA ENDS*/
-
-                            dispatch(clientList(responseJSON.result));
-                            dispatch(loaders(false));
-                            dispatch(menuKeys('client_list'));
-                            location.push("../dashboard/clientlist");
-                        })
-                        .catch((error) => {
-                            dispatch(clientList([]));
-                            dispatch(toast('warning', 'Client Creation Failed!'));
-                            dispatch(loaders(false))
-                        });
-
+                    dispatch(loaders(false));
+                    dispatch(menuKeys('client_list'));
+                    dispatch(toast('success', 'Client Created Sucessfully!'));
+                    location.push("../dashboard/clientlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('success', 'Client Creation failed!'));
+                dispatch(toast('Warning', 'Client Creation failed!'));
                 dispatch(loaders(false))
             });
     }
@@ -246,7 +217,6 @@ function clientList(list) {
     return {
         type: "CLIENT_LIST",
         list
-
     }
 }
 /*UPDATE CLIENT BY API CALL AND GET NEW CLIENT LIST IMMEDIATELY*/
@@ -379,43 +349,14 @@ export function addProject(data, location) {
                     dispatch(toast('warning', 'Project Creation failed!'));
                     dispatch(loaders(false))
                 } else {
-                    let url = config.apiUrl + 'project/projectlist?userId=' + data.userId;
-
-                    fetch(url,
-                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                        .then((response) => response.json())
-                        .then((responseJSON) => {
-                            dispatch(Projectlist(responseJSON.result))
-                            dispatch(toast('success', 'Project Added Successfully!'));
-                            /** FETCH DASHBOARD PROJECT DATA*/
-                            let newurl = config.apiUrl + 'user/dashboardDetails?id=' + data.userId;
-                            fetch(newurl,
-                                { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                                .then((response) => response.json())
-                                .then((responseJSON) => {
-                                    dispatch(dashboardproject(responseJSON.result));
-                                    dispatch(loaders(false));
-                                })
-                                .catch((error) => {
-                                    dispatch(dashboardproject({}))
-                                    dispatch(loaders(false))
-                                });
-                            /*FETCH DASHBOARD PROJECT DATA ENDS*/
-                            dispatch(loaders(false));
-                            dispatch(menuKeys('project_list'));
-                            location.push("../dashboard/projectlist")
-
-                        })
-                        .catch((error) => {
-                            dispatch(Projectlist([]))
-                            dispatch(toast('warning', 'Project Creation failed!'));
-                            dispatch(loaders(false))
-                        });
-
+                    dispatch(loaders(false));
+                    dispatch(menuKeys('project_list'));
+                    dispatch(toast('success', 'Project Created Sucessfully!'));
+                    location.push("../dashboard/projectlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'Project Creation failed!'));
+                dispatch(toast('Warning', 'Project Creation failed!'));
                 dispatch(loaders(false))
             });
     }
@@ -604,7 +545,7 @@ export function addMember(data, id) {
 }
 //API FOR REMOVE MEMBER FROM PROJECT AND UPDATE
 export function removeMember(data, projectId) {
-    console.log('member Removed',data, projectId)
+    console.log('member Removed', data, projectId)
     return (dispatch) => {
         fetch(config.apiUrl + 'project/deletemember?id=' + projectId,
             {
@@ -614,12 +555,12 @@ export function removeMember(data, projectId) {
                     'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
                 },
                 method: 'PUT',
-                body: JSON.stringify({userId:data})
+                body: JSON.stringify({ userId: data })
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-console.log(responseJSON.members)
-                console.log('Member Deleted',responseJSON)
+                console.log(responseJSON.members)
+                console.log('Member Deleted', responseJSON)
                 dispatch(toast('success', 'Member Deleted!'));
                 dispatch(member(responseJSON.result.members));
 
@@ -666,28 +607,14 @@ export function createUser(data, location) {
                     dispatch(toast('warning', responseJSON.message));
                     dispatch(loaders(false))
                 } else {
-                    let url = config.apiUrl + "user/getAllUser";
-
-                    fetch(url,
-                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                        .then((response) => response.json())
-                        .then((responseJSON) => {
-                            dispatch(userlist(responseJSON.result))
-                            dispatch(toast('success', 'User Added Successfully!'));
-                            dispatch(loaders(false));
-                            dispatch(menuKeys('user_list'));
-                            location.push("../dashboard/userlist")
-                        })
-                        .catch((error) => {
-                            dispatch(userlist([]))
-                            dispatch(toast('warning', 'User Creation failed!'));
-                            dispatch(loaders(false))
-                        });
-
+                    dispatch(loaders(false));
+                    dispatch(menuKeys('user_list'));
+                    dispatch(toast('success', 'User Created Sucessfully!'));
+                    location.push("../dashboard/userlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'User Creation failed!'));
+                dispatch(toast('Warning', 'User Creation failed!'));
                 dispatch(loaders(false))
             });
     }
@@ -837,30 +764,15 @@ export function billCreate(billdata, location) {
                 if (responseJSON.error) {
                     dispatch(toast('warning', 'Bill Creation failed!'));
                     dispatch(loaders(false))
-                }
-                else {
-                    let url = config.apiUrl + "bill?userId=" + billdata.userId;
-
-                    fetch(url,
-                        { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
-                        .then((response) => response.json())
-                        .then((responseJSON) => {
-                            dispatch(toast('success', 'Bill Created Successfully!'));
-                            dispatch(BillList(responseJSON.result))
-                            dispatch(loaders(false));
-                            dispatch(menuKeys('bill_list'));
-                            location.push("../dashboard/billlist")
-                        })
-                        .catch((error) => {
-                            dispatch(BillList([]))
-                            dispatch(toast('warning', 'Bill Creation failed!'));
-                            dispatch(loaders(false))
-                        });
-
+                } else {
+                    dispatch(loaders(false));
+                    dispatch(menuKeys('bill_list'));
+                    dispatch(toast('success', 'Bill Created Sucessfully!'));
+                    location.push("../dashboard/billlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'Bill Creation Failed!'));
+                dispatch(toast('Warning', 'Bill Creation failed!'));
                 dispatch(loaders(false))
             });
 
@@ -1203,18 +1115,17 @@ export function addModule(data) {
             .then((responseJSON) => {
                 console.log(responseJSON)
                 if (!responseJSON.error) {
-                    dispatch(toast('success', 'Module Added Successfully'))
+                    dispatch(toast('success', 'Module Created Successfully'))
                 }
                 else {
-                    dispatch(toast('error', 'Module Addition Failed'))
+                    dispatch(toast('error', 'Module Creation Failed'))
                 }
             })
             .catch((error) => {
-                dispatch(toast('error', ' Module Addition Failed'))
+                dispatch(toast('error', ' Module Creation Failed'))
             });
     }
 }
-
 /*DELETE MODULE*/
 export function deleteModule(id) {
     return (dispatch) => {
@@ -1242,11 +1153,19 @@ export function deleteModule(id) {
             });
     }
 }
+// FOR DISPATCHING ACTION TO REDUCER
+function modulelist(list) {
+    return {
+        type: "MODULE_LIST",
+        list
 
+    }
+}
 /***********GET PROJECT MODULES LIST*********/
-export function getProjectModule(id) {
-    return (dispatch) => {
-        fetch(config.apiUrl + 'module/getbyprojectid?id=' + id,
+export function getProjectModule(projectId) {
+    console.log(projectId)
+    return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'module/getbyprojectid?id=' + projectId,
             {
                 headers: {
                     'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
@@ -1255,18 +1174,22 @@ export function getProjectModule(id) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                console.log(responseJSON)
-                //code to dispatch action for storing module list 
+                resolve(responseJSON);
+                console.log('get module list', responseJSON)
             })
             .catch((error) => {
-                // code to handle error
+                reject(error);
             });
-    }
+    })
+
 }
+
 
 /***********GET PARTICULAR MODULES DATA*********/
 export function getModuleInfo(id) {
+    console.log(id)
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'module/' + id,
             {
                 headers: {
@@ -1277,15 +1200,17 @@ export function getModuleInfo(id) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
                 //code to dispatch action for storing module list 
             })
             .catch((error) => {
+                reject(error)
                 // code to handle error
             });
-    }
+    })
+}
 }
 /* ***************PROJECT MODULES  CRUD  ENDS***************/
-
 
 
 
@@ -1353,6 +1278,7 @@ export function deleteSubModule(id) {
 /***********GET SUB MODULES OF MODULE OF PARTICULAR LIST*********/
 export function getSubModuleList(id) {
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'submodule/getbymoduleid?id=' + id,
             {
                 headers: {
@@ -1362,17 +1288,22 @@ export function getSubModuleList(id) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                console.log(responseJSON)
+                console.log(responseJSON);
+                resolve(responseJSON);
                 //code to dispatch action for storing module list 
             })
             .catch((error) => {
                 // code to handle error
+                reject(error);
             });
+        });
     }
 }
 /***********GET SUB MODULESD ATA********/
 export function getSubModuleInfo(id) {
+    console.log(id)
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'submodule/' + id,
             {
                 headers: {
@@ -1383,11 +1314,14 @@ export function getSubModuleInfo(id) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON);
                 //code to dispatch action for storing module list 
             })
             .catch((error) => {
+                reject(error);
                 // code to handle error
             });
+        })
     }
 }
 
@@ -1548,6 +1482,7 @@ export function taskEnded(data, id) {
 /***********GET TASK DATA*********/
 export function getTaskInfo(id) {
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'task/' + id,
             {
                 headers: {
@@ -1558,11 +1493,41 @@ export function getTaskInfo(id) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
+                //code to dispatch action for storing module list 
+            })
+            .catch((error) => {
+                reject(error)
+                // code to handle error
+            });
+        });
+    }
+}
+
+
+/***********GET TASK LIST OF SUBMODULE  *********/
+export function getTaskList(id) {
+    return (dispatch) => {
+        return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'task/getbysubmoduleid?id=' + id,
+            {
+                headers: {
+                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                },
+                method: 'GET',
+            })
+            .then((response) => response.json())
+            .then((responseJSON) => {
+                console.log(responseJSON);
+                resolve(responseJSON);
                 //code to dispatch action for storing module list 
             })
             .catch((error) => {
                 // code to handle error
+                reject(error);
             });
+        });
     }
 }
 /* ***************PROJECT SUB TASK CRUD  ENDS***************/
+

@@ -15,6 +15,9 @@ import {listByTags} from '../reducers/listByTags';
 import {menuselectedkey} from '../reducers/menukey';
 import {openKey} from '../reducers/openkey';
 import {ProjectMember} from '../reducers/member';
+import {CreateModule} from '../reducers/createModule';
+// import { moduleList } from '../reducers/modulelist';
+
 
 // reducers list
 const rootReducer = combineReducers({
@@ -33,7 +36,9 @@ const rootReducer = combineReducers({
     listByTags,
     menuselectedkey,
     openKey,
-    ProjectMember
+    ProjectMember,
+    CreateModule,
+    // moduleList                          //get module list against project
 })
 
 

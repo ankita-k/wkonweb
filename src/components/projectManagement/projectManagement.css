@@ -2,9 +2,10 @@
 .wkonList {
     border-right: 1px solid #e8e8e8;
     background: #fff;
-    height: 100vh;
+    height: auto;
 }
 .listView {
+    position: relative;
     background: #f4f8fb;
     padding: 10px;
 }
@@ -16,28 +17,34 @@
 }
 /* projectmanagement css */
 .listView .ant-input-affix-wrapper .ant-input:not(:last-child) {
-    /* padding-right: 30px; */
+    padding-right: 0px;
     background: transparent;
     border: none;
     padding-left: 2em;
 }
-.listView .ant-input-search:not(.ant-input-search-small) > .ant-input-suffix {
-    left: 0;
-}
-.listView i.anticon.anticon-setting {
-    font-size: 17px;
-    float: right;
-    border: 1px solid #d8b7b759;
-    background: #fff;
-    padding: 5px;
-}
 
-.listView button.ant-btn.ant-btn-default {
-    padding-right: 0px;
-    height: 29px;
-    width: 28px;
-    background: #a03e3e;
+.listHeader i.anticon.anticon-plus-square-o {
+    font-size: 21px;
+    float: right;
+    color: #c3b9b9c9;
+    /* border: 1px solid #d8b7b759; */
+    background: transparent;
+    /* padding: 5px; */
+}
+#components-dropdown-demo-placement .ant-btn {
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+
+  .listHeader img {
+    width: 12px;
+}
+.listHeader button.ant-btn.ant-btn-primary {
+    background: transparent;
     border: none;
+}
+.projectdata {
+    margin-top: 2em;
 }
 .sidewkonlist .ant-list-item-meta-title{
     margin-top: 6px;
@@ -45,19 +52,88 @@
 .secondlist span.ant-avatar.ant-avatar-circle.ant-avatar-image {
     padding: 4px;
 }
-.detailview {
-    background: #f7f7f7;
-    height: 100vh;
-    padding: 1em 1em;
+.projectname p {
+    font-size: 16px;
+    font-weight: 600;
 }
+
+.projectdata p {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
 .detailview h1 {
     text-align: left;
     padding-left: 1em;
+}
+.listHeader .ant-breadcrumb {
+    margin-top: 6px;
 }
 .asignTo {
     text-align: center;
     margin-bottom: 2em;
     margin-top: 2em;
+}
+.ant-modal-footer{
+    display: none;
+}
+.cancelbtn {
+    background: #ffffff !important;
+    color: #00070e!important;
+    border: 1px solid #c3b6b6!important;
+    margin-left: 1em!important;
+}
+.listaddbtn button.ant-btn.ant-dropdown-trigger {
+    font-size: 22px;
+    width: 36px;
+    border-radius: 50%;
+    padding: 0;
+    border: none;
+    color: #fff;
+    margin-bottom: 10px;
+    padding-bottom: 36px;
+    background: transparent;
+}
+.modalbtn {
+    text-align: center;
+    padding-top: 0em;
+    margin-top: 2em!important;
+}
+.detailView {
+    border-right: 1px solid #e8e8e8;
+    background: #fff;
+    height: auto;
+    padding: 2em 4em 0 4em;
+    /* -webkit-box-shadow: 0 5px 23px -7px rgba(163,185,197,.77);
+    box-shadow: 0 5px 23px -7px rgba(163,185,197,.77); */
+    /* margin: 5em; */
+}
+.plus {
+    width: 20px !important;
+}
+.savebtn button.ant-btn {
+    width: 77px;
+    background: #448aff;
+    font-size: 13px;
+    color: #fff;
+    border: none;
+}
+.savebtn button.ant-btn:hover {
+    
+    box-shadow: 0px 3px 23px -7px rgb(80, 100, 111);
+}
+.savebtn {
+    text-align: center;
+    padding-top: 0em;
+    margin-top: 4em;
+}
+.ant-list-item-meta-avatar{
+    margin-top: 10px;
+}
+.listHeader {
+    padding-top: 1em;
+    background: #f4f8fb;
 }
 .startbtn {
     text-align: center;
@@ -122,4 +198,65 @@
     margin-left: 10px;
     background: #ce1313;
     border: none;
+}
+.sidewkonlist .ant-list-item-meta-title {
+    color: rgba(0, 0, 0, 0.65);
+    margin-bottom: 4px;
+    font-size: 19px;
+    line-height: 22px;
+    font-variant: all-petite-caps;
+}
+.projectManagementpanda .ant-layout{
+    background: #fff;
+}
+/* projectform css */
+
+.projectForm .ant-form-item-required:before {
+    display:none;
+}
+.projectForm .ant-row.ant-form-item {
+    margin-bottom: 5px;
+}
+.projectSave {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 2em;
+}
+.projectForm .ant-form-item-label {
+    color: #000000a3;
+    font-family: Roboto;
+    font-weight: 600;
+    text-align: left;
+    font-variant: all-petite-caps;
+    font-size: 18px !important;
+    letter-spacing: 0px;
+}
+.projectForm span#date-picker {
+    width: 100%;
+}
+
+/* projectform css */
+.activelink.ant-breadcrumb > span:last-child {
+    color: rgb(68, 138, 255);
+}
+.projectForm .ant-form-item-label label {
+    color: #000000a3;
+    font-family: Roboto;
+    font-weight: 600;
+    text-align: left;
+    font-variant: all-petite-caps;
+    font-size: 18px;
+    letter-spacing: 0px;
+}
+.detailView textarea{
+    overflow: auto;
+    resize: vertical;
+    width: 100%;
+    color: #bfbfbf;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    padding-left: 10px;
+}
+textarea#taskdescription::placeholder {
+    color: #bfbfbf;
 }

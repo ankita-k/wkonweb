@@ -238,7 +238,7 @@ class UserManagement extends Component {
                         manager: values.managers,
                         tags: values.tags.length != 0 ? values.tags : []
                     }
-
+console.log(data)
                     this.props.actions.createUser(data, this.props.history)
                     // .then(result => {
                     //     this.setState({ showLoader: false });
@@ -262,9 +262,9 @@ class UserManagement extends Component {
         });
     }
 
-    
-     // VALIDATE PASSWORD LENGTH
-     validatepassword = (rule, value, callback) => {
+
+    // VALIDATE PASSWORD LENGTH
+    validatepassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value && form.getFieldValue('password')) {
             if (value.length < 8)
@@ -276,7 +276,7 @@ class UserManagement extends Component {
             callback();
         }
     }
-    
+
     render() {
         const { result } = this.state;
 
@@ -338,7 +338,7 @@ class UserManagement extends Component {
                                     <FormItem label="Password">
                                         {getFieldDecorator('password', {
                                             rules: [{ required: true, message: 'Please input your Password!' },
-                                            {validator: this.validatepassword }],
+                                            { validator: this.validatepassword }],
                                         })(
                                             <Input type="password" placeholder="Password" name="password" minLength="8"
 
