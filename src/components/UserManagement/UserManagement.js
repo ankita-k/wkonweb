@@ -327,8 +327,8 @@ class UserManagement extends Component {
                                         {getFieldDecorator('phone', {
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
                                         })(
-                                            <NumberFormat format="#### #### #### ####" placeholder="Phone No." name="phoneNumber"
-                                                maxLength="15" minlength="8" />
+                                            <NumberFormat format="################" placeholder="Phone No." name="phoneNumber"
+                                                />
                                         )}
                                     </FormItem>
                                 </Col>
