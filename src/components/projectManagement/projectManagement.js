@@ -6,9 +6,10 @@ import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
 import { getProjectModule } from '../../redux/action';
 import { bindActionCreators } from 'redux';
-import { Layout, Modal, Input, Menu, DatePicker, Row, Col, List, Avatar, Form, Select, Dropdown, Button, Icon, Breadcrumb } from 'antd';
+import { Layout, Modal, Input, Menu, DatePicker, Row, Col, List, Avatar, Form, Select, Spin, Dropdown, Button, Icon, Breadcrumb } from 'antd';
 import backbtn from '../../Images/backbtn.svg';
 import addbtn from '../../Images/addbtn.svg';
+const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
 const Option = Select.Option;
 const Search = Input.Search;
 const FormItem = Form.Item;
@@ -232,11 +233,11 @@ class ProjectManagement extends Component {
                 ['taskname']: data.name,
                 ['taskdescription']: data.description,
             })
-           
+
         }
     }
 
- 
+
     // GET SUBMODULES LIST WHEN CLICKED ON UPPER TAB SUB_MODULE 
     getsubModules = () => {
         this.setState({ showtask: false });
@@ -321,7 +322,7 @@ class ProjectManagement extends Component {
         });
     }
 
-    
+
     handleSubmitmodal2 = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -357,8 +358,8 @@ class ProjectManagement extends Component {
 
 
 
-    
-    
+
+
     render() {
         const { size } = this.props;
         const state = this.state;
@@ -386,7 +387,8 @@ class ProjectManagement extends Component {
                 <Layout>
                     <Row>
                         <Col lg={12}>
-                            <div className="wkonList sidewkonlist">
+                       
+                            <div className="wkonList sidewkonlist heightWkon">
                                 <Row>
                                     <div className="listHeader">
                                         <Row>
@@ -417,6 +419,7 @@ class ProjectManagement extends Component {
 
                                     </div>
                                 </Row>
+                                <Spin indicator={antIcon} />
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={this.state.moduleList}
@@ -446,14 +449,14 @@ class ProjectManagement extends Component {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
                                         })(
                                             <Input placeholder="Enter name" />
-                                        )}
+                                            )}
                                     </FormItem>
                                     <FormItem label="Task Description">
-                                        {getFieldDecorator('taskdescription',{ initialValue: '' }, {
+                                        {getFieldDecorator('taskdescription', { initialValue: '' }, {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
                                             <textarea placeholder="Enter Description" />
-                                        )}
+                                            )}
                                     </FormItem>
                                     <FormItem label="Status">
                                         {getFieldDecorator('gender', {
@@ -466,7 +469,7 @@ class ProjectManagement extends Component {
                                                 <Option value="Statusa">Status</Option>
                                                 <Option value="Status">Status</Option>
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
 
                                     <FormItem label="Start Date"
@@ -492,7 +495,7 @@ class ProjectManagement extends Component {
                                                 <Option value="efgh">abcd</Option>
                                                 <Option value="abcd">efgh</Option>
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                     <FormItem>
                                         <div className="savebtn modalbtn">
@@ -508,7 +511,7 @@ class ProjectManagement extends Component {
                         {/* area for task add form end*/}
                         {/* area for project add form start*/}
                         <Col lg={12}>
-                            {this.state.showInitialForm ? <div className="wkonList detailView projectaddform">
+                            {/* {this.state.showInitialForm ? <div className="wkonList detailView projectaddform">
 
                                 <Form onSubmit={this.handleSubmit} className="projectForm">
                                     <FormItem label={namefieldlabel}>
@@ -536,7 +539,11 @@ class ProjectManagement extends Component {
                                 </Form>
 
 
-                            </div> : ""}
+                            </div> : ""} */}
+                            <div>
+                                <p className="projectaTitle">Project Name : <span className="projectaName">Kuoodo </span> </p>
+                                <p className="projecteTitle">Project Description : <span className="projectaNamelorem">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever</span> </p>
+                            </div>
                         </Col>
                         {/* area for project add form end*/}
 
@@ -588,7 +595,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -598,7 +605,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
                         </Form>
@@ -626,7 +633,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -636,7 +643,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
                         </Form>
@@ -662,7 +669,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -672,7 +679,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
                         </Form>
