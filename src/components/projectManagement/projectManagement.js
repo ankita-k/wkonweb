@@ -672,7 +672,6 @@ endTask =() =>{
                                         <TextArea rows={4} />
                                         )}
                                 </FormItem>
-<<<<<<< HEAD
                             </div>
 
                             <div className="savebtn modalbtn">
@@ -680,15 +679,6 @@ endTask =() =>{
                                 <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
                             </div>
 
-=======
-                            </div>
-
-                            <div className="savebtn modalbtn">
-                                <Button htmlType="submit" >Save</Button>
-                                <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
-                            </div>
-
->>>>>>> ee49b57e4c1e5e2ebd7aad994481e309068e62d7
                         </Form>
                         {/* <div className="savebtn modalbtn">
                             <Button type='submit' onClick={this.addModule}>Save</Button>
