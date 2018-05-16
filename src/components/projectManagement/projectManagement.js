@@ -691,7 +691,7 @@ editModule = (e)=>{
                                 <p>Name :</p>
                                 <FormItem>
                                     {getFieldDecorator('submodulename', {
-                                        rules: [{ required: true, message: 'Please input your ProjectName!' }],
+                                        rules: [{ required: true, message: 'Please input your  SubModule Name!' }],
                                     })(
                                         <Input placeholder="" />
                                         )}
@@ -701,7 +701,7 @@ editModule = (e)=>{
                                 <p>Details :</p>
                                 <FormItem>
                                     {getFieldDecorator('submoduledetails', {
-                                        rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
+                                        rules: [{ required: true, message: 'Please input your SubModule Details!' }],
                                     })(
                                         <TextArea rows={4} />
                                         )}
@@ -734,7 +734,7 @@ editModule = (e)=>{
                                 <p>Name :</p>
                                 <FormItem>
                                     {getFieldDecorator('taskname', {
-                                        rules: [{ required: true, message: 'Please input your ProjectName!' }],
+                                        rules: [{ required: true, message: 'Please input your TaskName!' }],
                                     })(
                                         <Input placeholder="" />
                                         )}
@@ -744,7 +744,7 @@ editModule = (e)=>{
                                 <p>Details :</p>
                                 <FormItem>
                                     {getFieldDecorator('taskdetails', {
-                                        rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
+                                        rules: [{ required: true, message: 'Please input your TaskDetails!' }],
                                     })(
                                         <TextArea rows={4} />
                                         )}
