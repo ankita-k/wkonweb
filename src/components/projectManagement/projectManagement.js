@@ -50,7 +50,7 @@ class ProjectManagement extends Component {
                     <Menu.Item>
                         <a onClick={() => this.setModal2Visible(true)}>Module</a>
                     </Menu.Item>
-                    <Menu.Item>
+                  <Menu.Item>
                         <a onClick={() => this.setModal3Visible(true)}>Sub Module</a>
                     </Menu.Item>
                     <Menu.Item>
@@ -294,7 +294,7 @@ addTask= (e) => {
     fetchSubModuleData = (id) => {
         this.props.actions.getSubModuleInfo(id).then(response => {
             console.log(response)
-            if (!response.error) {
+            if (!response.error && response.result) {
                 /** CHANGE FIELD LABEL NAME DYNAMICALLY AND SET SUBMODULE FIELD VALUE DETAILS */
                 this.setState({ namefieldlabel: 'Sub-Module Name' })
                 this.setState({ descriptionfieldlabel: 'Sub-Module Description' })
@@ -312,7 +312,7 @@ addTask= (e) => {
     fetchModuleData = (id) => {
         this.props.actions.getModuleInfo(id).then(response => {
             console.log(response)
-            if (!response.error) {
+            if (!response.error && response.result) {
                 /** CHANGE FIELD LABEL NAME DYNAMICALLY AND SET MODULE FIELD VALUE DETAILS */
                 this.setState({ namefieldlabel: 'Module Name' })
                 this.setState({ descriptionfieldlabel: 'Module Description' })
