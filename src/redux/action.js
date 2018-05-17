@@ -192,6 +192,7 @@ export function createClient(data, location) {
 //FUNCTION FOR API CALL FOR GETTING CLIENT LIST AND DISPATCHING ACTION
 export function clientlist(userId) {
     return (dispatch) => {
+        // return new Promise((resolve, reject) => {}
         dispatch(loaders(true))
         fetch(config.apiUrl + 'client/clientlist?userId=' + userId,
             {
@@ -1480,6 +1481,7 @@ export function assignDevelopers(data) {
 export function taskStarted(data, id) {
     console.log(data)
     return (dispatch) => {
+        return new Promise((resolve, reject) =>{
         fetch(config.apiUrl + 'task/' + id,
             {
                 headers: {
@@ -1492,6 +1494,7 @@ export function taskStarted(data, id) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
+                resolve(responseJSON);
                 console.log(responseJSON)
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'Task  Started'))
@@ -1501,8 +1504,10 @@ export function taskStarted(data, id) {
                 }
             })
             .catch((error) => {
+                reject(error);
                 dispatch(toast('error', ' Task not started'))
             });
+    })
     }
 }
 
@@ -1511,6 +1516,7 @@ export function taskStarted(data, id) {
 export function taskEnded(data, id) {
     console.log(data)
     return (dispatch) => {
+        return new Promise((resolve, reject) =>{
         fetch(config.apiUrl + 'task/' + id,
             {
                 headers: {
@@ -1523,6 +1529,7 @@ export function taskEnded(data, id) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
+                resolve(responseJSON);
                 console.log(responseJSON)
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'Task Ended'))
@@ -1532,9 +1539,11 @@ export function taskEnded(data, id) {
                 }
             })
             .catch((error) => {
+                reject(error);
                 dispatch(toast('error', ' Task not Ended'))
             });
-    }
+    })
+}
 }
 
 /***********GET TASK DATA*********/

@@ -219,6 +219,10 @@ button.ant-btn.task {
     line-height: 22px;
     font-variant: all-petite-caps;
 }
+.listHeader button.ant-btn.ant-btn-primary {
+    width: 50px;
+    
+}
 .projectManagementpanda .ant-layout{
     background: #fff;
 }
