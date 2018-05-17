@@ -144,19 +144,19 @@ class ProjectManagement extends Component {
         this.props.form.validateFields((err, values) => {
             console.log('Received values of form: ', values);
             if (values.tasknames && values.taskdetails) {
-                // let data = {
-                //     name: values.taskname,
-                //     description: values.taskdetails,
-                //     submoduleId: this.state.submoduleId
-                // }
-                // console.log(data);
-                // this.props.actions.addTask(data)
-                // this.fetchTasks(this.state.submoduleId);
+                let data = {
+                    name: values.taskname,
+                    description: values.taskdetails,
+                    submoduleId: this.state.submoduleId
+                }
+                console.log(data);
+                this.props.actions.addTask(data)
+                this.fetchTasks(this.state.submoduleId);
                 this.props.form.setFieldsValue({   
                     ['tasknames']: '',
                     ['taskdetails']: '',
                 })
-                // this.setState({ modal4Visible: false });
+                this.setState({ modal4Visible: false });
             }
         })
     }
