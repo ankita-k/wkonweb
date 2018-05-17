@@ -45,19 +45,6 @@ class ProjectManagement extends Component {
             submoduleId: '',     //save submoduleid
             taskId: '',          //save taskid
             modal2Visible: false,
-            menu: (
-                <Menu>
-                    <Menu.Item style>
-                        <a onClick={() => this.setModal2Visible(true)}>Module</a>
-                    </Menu.Item>
-                    <Menu.Item>
-                        <a onClick={() => this.setModal3Visible(true)}>Sub Module</a>
-                    </Menu.Item>
-                    <Menu.Item>
-                        <a onClick={() => this.setModal4Visible(true)}>Task</a>
-                    </Menu.Item>
-                </Menu>
-            ),
             showsubmodule: false,                               // hide-show submodule tab from  header
             showtask: false,                                    // hide-show task tab from  header 
             functioncall: 'submodules',                       // switch function call for submodule list ,task list from list item
@@ -66,13 +53,13 @@ class ProjectManagement extends Component {
             descriptionfieldlabel: 'Project Description',     // dynamic form field label name
             projectreRequirement: '',
             projectname: '',
-            formstyle: { display: 'none' },
-            projectstyle: { display: 'block' },
-            taskformstyle: { display: 'none' },
-            modulestyle: { display: 'block' },
-            submodulestyle: { display: 'none' },
-            taskstyle: { display: 'none' },
-            showloader: true
+            formstyle: { display: 'none' },                   // HIDE-SHOW EDIT FORM OF MODULE-SUBMODULE
+            projectstyle: { display: 'block' },               // HIDE-SHOW PROJECT VIEW   
+            taskformstyle: { display: 'none' },               // HIDE-SHOW TASK EDIT FORM
+            modulestyle: { display: 'block' },                 // HIDE-SHOW MODULE MENUITEM OF DROPDOWN
+            submodulestyle: { display: 'none' },              // HIDE-SHOW SUBMODULE MENUITEM OF DROPDOWN
+            taskstyle: { display: 'none' },                   // HIDE-SHOW TASK MENUITEM OF DROPDOWN
+            showloader: true                                  // HIDE-SHOW LOADER
         }
     }
 
@@ -93,16 +80,12 @@ class ProjectManagement extends Component {
         }
     }
     componentWillReceiveProps(props) {
-        console.log(this.props);
+        console.log(props);
     }
     //CREATE MODULE AGAINST PROJECT
     addModule = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-
-            // console.log(err.moduledetails);
-            console.log(err.modulename);
-
             if (values.moduledetails && values.modulename) {
                 let data = {
                     name: values.modulename,
@@ -460,7 +443,7 @@ class ProjectManagement extends Component {
         const { size } = this.props;
         const state = this.state;
         const { getFieldDecorator } = this.props.form;
-        const { namefieldlabel, descriptionfieldlabel, formstyle, projectstyle, taskformstyle, showloader,modulestyle,submodulestyle,taskstyle } = this.state;
+        const { namefieldlabel, descriptionfieldlabel, formstyle, projectstyle, taskformstyle, showloader, modulestyle, submodulestyle, taskstyle } = this.state;
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -492,11 +475,11 @@ class ProjectManagement extends Component {
                                                 <Button type="primary"><img src={backbtn} /></Button>
                                             </Col>
                                             <Col lg={12}>
-                                                <Breadcrumb className="activelink">
+                                                <Breadcrumb >
                                                     <Breadcrumb.Item>{this.state.projectname}</Breadcrumb.Item>
-                                                    <Breadcrumb.Item onClick={this.fetchModules}><a>Modules</a></Breadcrumb.Item>
-                                                    {this.state.showsubmodule ? <Breadcrumb.Item onClick={this.getsubModules}><a>Sub_modules</a></Breadcrumb.Item> : ''}
-                                                    {this.state.showtask ? <Breadcrumb.Item>Tasks</Breadcrumb.Item> : ''}
+                                                    <Breadcrumb.Item className="activelink" onClick={this.fetchModules}><a>Modules</a></Breadcrumb.Item>
+                                                    {this.state.showsubmodule ? <Breadcrumb.Item className="activelink"onClick={this.getsubModules}><a>Sub_modules</a></Breadcrumb.Item> : ''}
+                                                    {this.state.showtask ? <Breadcrumb.Item className="activelink">Tasks</Breadcrumb.Item> : ''}
                                                 </Breadcrumb>
                                             </Col>
 
@@ -639,14 +622,14 @@ class ProjectManagement extends Component {
                                         )}
                                     </FormItem>
 
-                                        <FormItem>
-                                            {this.state.showform ?
-                                                <div className="savebtn modalbtn">
-                                                    <Button htmlType='submit'>Save</Button>
-                                                    <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
-                                                </div> : ''}
-                                        </FormItem>
-                                    </Form>
+                                    <FormItem>
+                                        {this.state.showform ?
+                                            <div className="savebtn modalbtn">
+                                                <Button htmlType='submit'>Save</Button>
+                                                <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
+                                            </div> : ''}
+                                    </FormItem>
+                                </Form>
 
 
                             </div>
