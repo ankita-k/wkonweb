@@ -8,6 +8,7 @@ import DashboardView from '../DashboardView/DashboardView';
 import ClientList from '../ClientList/ClientList';
 import ChangePassword from '../passwordChange/passwordChange';
 import UserManagement from '../UserManagement/UserManagement';
+import timesheetManagement from '../timesheetManagement/timesheetManagement';
 import * as basicActions from '../../redux/action';
 import { bindActionCreators } from 'redux';
 import { connect } from "react-redux";
@@ -373,7 +374,16 @@ this.connectBillSocket();
               <Menu.Item key="bill_list">
                 <span><Icon type="logout" /> Log Out</span>
               </Menu.Item>
-
+              <SubMenu key="sheet" title={<span><Icon type="file-text" />Timesheet management</span>} subMenuCloseDelay={0.1}>
+                {/* <Menu.Item key="create_bill">
+                  <span>Bill Create</span>
+                  <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
+                </Menu.Item>
+                <Menu.Item key="bill_list">
+                  <span>Bill List</span>
+                  <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink>
+                </Menu.Item> */}
+              </SubMenu>
 
             </Menu>
           </div>
@@ -445,6 +455,14 @@ this.connectBillSocket();
                     </Menu.Item>
                   </SubMenu>
                   : '' : ''}
+                 
+                 <Menu.Item key="timesheet">
+                 <Icon type="calendar" />
+                  <span>Timesheet</span>
+                  <NavLink to="../dashboard/timesheet" activeClassName="active"></NavLink>
+                </Menu.Item>
+          
+
 
               </Menu>
             </Sider>
@@ -466,7 +484,7 @@ this.connectBillSocket();
                 <Route exact path={`${this.props.match.url}/billlist`} component={BillList} />
                 <Route exact path={`${this.props.match.url}/project/:projectname`} component={Files} />
                 <Route exact path={`${this.props.match.url}/singleproject`} component={ProjectManagement} />
-
+                <Route exact path={`${this.props.match.url}/timesheet`} component={timesheetManagement} />
 
               </Content>
             </Layout>

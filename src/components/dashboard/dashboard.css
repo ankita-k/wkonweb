@@ -21,6 +21,9 @@ button.ant-btn.wkonlogout {
   color:red;
 
 }
+.timesheetbtn i.ant-menu-submenu-arrow {
+  display: none;
+}
   .header img{
     width: 85px !important;
 }
