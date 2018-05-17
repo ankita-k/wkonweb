@@ -46,7 +46,7 @@ class ProjectManagement extends Component {
             modal2Visible: false,
             menu: (
                 <Menu>
-                    <Menu.Item>
+                    <Menu.Item style>
                         <a onClick={() => this.setModal2Visible(true)}>Module</a>
                     </Menu.Item>
                     <Menu.Item>
@@ -67,8 +67,11 @@ class ProjectManagement extends Component {
             projectname: '',
             formstyle: { display: 'none' },
             projectstyle: { display: 'block' },
-            taskformstyle:{display: 'none' },
-            showloader:true
+            taskformstyle: { display: 'none' },
+            modulestyle: { display: 'block' },
+            submodulestyle: { display: 'none' },
+            taskstyle: { display: 'none' },
+            showloader: true
         }
     }
 
@@ -197,7 +200,7 @@ class ProjectManagement extends Component {
 
     // FETCH ALL THE MODULES AGAINST PROJECT,uSING PROJECTID
     fetchModules = () => {
-        this.setState({showloader:true})
+        this.setState({ showloader: true })
         this.setState({ moduleList: [] })
         this.setState({ showtask: false })
         this.setState({ showsubmodule: false });
@@ -206,9 +209,12 @@ class ProjectManagement extends Component {
         this.setState({ formstyle: { display: 'none' } });
         this.setState({ projectstyle: { display: 'block' } });
         this.setState({ taskformstyle: { display: 'none' } });
-       this.props.actions.getProjectModule(this.state.projectId).then((success) => {
+        this.setState({ modulestyle: { display: 'block' } });
+        this.setState({ submodulestyle: { display: 'none' } });
+        this.setState({ taskstyle: { display: 'none' } });
+        this.props.actions.getProjectModule(this.state.projectId).then((success) => {
             console.log(success)
-            this.setState({showloader:false})
+            this.setState({ showloader: false })
             this.setState({ moduleList: success.result })
             /** CHANGE FIELD LABEL NAME DYNAMICALLY AND SET PROJECT FIELD VALUE DETAILS */
             this.setState({ namefieldlabel: 'Project Name' }),
@@ -225,7 +231,7 @@ class ProjectManagement extends Component {
     // FETCH SUBMODULE LIST AGAINST MODULE ID
     fetchSubModules = (id) => {
         console.log(id);
-        this.setState({showloader:true})
+        this.setState({ showloader: true })
         this.setState({ moduleList: [] })
         this.setState({ showsubmodule: true })
         this.setState({ functioncall: 'tasks' })
@@ -233,9 +239,12 @@ class ProjectManagement extends Component {
         this.setState({ showform: true })
         this.setState({ formstyle: { display: 'block' } });
         this.setState({ projectstyle: { display: 'none' } });
+        this.setState({ modulestyle: { display: 'none' } });
+        this.setState({ submodulestyle: { display: 'block' } });
+        this.setState({ taskstyle: { display: 'none' } });
         this.props.actions.getSubModuleList(id).then(response => {
             console.log(response)
-            this.setState({showloader:false})
+            this.setState({ showloader: false })
             if (!response.error) {
                 this.setState({ moduleList: response.result })
 
@@ -248,16 +257,19 @@ class ProjectManagement extends Component {
     // FETCH TASK LIST AGAINST SUBMODULE ID
     fetchTasks = (id) => {
         console.log(id)
-        this.setState({showloader:true})
+        this.setState({ showloader: true })
         this.setState({ moduleList: [] })
         this.setState({ showtask: true })
         this.setState({ functioncall: 'taskdetail' })
         this.setState({ submoduleId: id })
         this.setState({ formstyle: { display: 'block' } });
         this.setState({ projectstyle: { display: 'none' } });
+        this.setState({ modulestyle: { display: 'none' } });
+        this.setState({ submodulestyle: { display: 'none' } });
+        this.setState({ taskstyle: { display: 'block' } });
         this.props.actions.getTaskList(id).then(response => {
             console.log(response)
-            this.setState({showloader:false})
+            this.setState({ showloader: false })
             if (!response.error) {
                 this.setState({ moduleList: response.result })
             }
@@ -298,6 +310,9 @@ class ProjectManagement extends Component {
         this.setState({ formstyle: { display: 'block' } });
         this.setState({ projectstyle: { display: 'none' } });
         this.setState({ taskformstyle: { display: 'none' } });
+        this.setState({ modulestyle: { display: 'none' } });
+        this.setState({ submodulestyle: { display: 'block' } });
+        this.setState({ taskstyle: { display: 'none' } });
         this.fetchSubModules(this.state.moduleId);
         this.fetchModuleData(this.state.moduleId)
     }
@@ -441,7 +456,7 @@ class ProjectManagement extends Component {
         const { size } = this.props;
         const state = this.state;
         const { getFieldDecorator } = this.props.form;
-        const { namefieldlabel, descriptionfieldlabel, formstyle, projectstyle ,taskformstyle,showloader} = this.state;
+        const { namefieldlabel, descriptionfieldlabel, formstyle, projectstyle, taskformstyle, showloader,modulestyle,submodulestyle,taskstyle } = this.state;
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -485,7 +500,17 @@ class ProjectManagement extends Component {
                                             <Col lg={2}>
 
                                                 <div className="listaddbtn">
-                                                    <Dropdown overlay={this.state.menu} placement="bottomCenter" trigger={['click']}>
+                                                    <Dropdown overlay={<Menu>
+                                                        <Menu.Item style={modulestyle} >
+                                                            <a onClick={() => this.setModal2Visible(true)}>Module</a>
+                                                        </Menu.Item>
+                                                        <Menu.Item style={submodulestyle} >
+                                                            <a onClick={() => this.setModal3Visible(true)}>Sub Module</a>
+                                                        </Menu.Item>
+                                                        <Menu.Item style={taskstyle} >
+                                                            <a onClick={() => this.setModal4Visible(true)}>Task</a>
+                                                        </Menu.Item>
+                                                    </Menu>} placement="bottomCenter" trigger={['click']}>
                                                         <Button><img className="plus" src={addbtn} /></Button>
                                                     </Dropdown>
                                                 </div>
@@ -518,7 +543,7 @@ class ProjectManagement extends Component {
 
                         {/* area for task add form start*/}
                         <Col lg={12}>
-                     <div className="wkonList detailView taskaddform" style={taskformstyle}>
+                            <div className="wkonList detailView taskaddform" style={taskformstyle}>
 
                                 <Form onSubmit={this.handleSubmit} className="projectForm">
                                     <FormItem label="Task Name">
