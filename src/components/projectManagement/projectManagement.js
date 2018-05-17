@@ -4,12 +4,11 @@ import modulelogo from '../../Images/module.svg';
 import modulesidebarlogo from '../../Images/module2.svg';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
-import { getProjectModule } from '../../redux/action';
 import { bindActionCreators } from 'redux';
 import { Layout, Modal, Input, Menu, DatePicker, Row, Col, List, Avatar, Form, Select, Spin, Dropdown, Button, Icon, Breadcrumb } from 'antd';
 import backbtn from '../../Images/backbtn.svg';
 import addbtn from '../../Images/addbtn.svg';
-const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+const antIcon = <Icon type="loading" style={{ fontSize: 50 }} spin />;
 const Option = Select.Option;
 const Search = Input.Search;
 const FormItem = Form.Item;
@@ -44,30 +43,23 @@ class ProjectManagement extends Component {
             subModuleList: [],
             moduleId: '',       //save modueid
             submoduleId: '',     //save submoduleid
+            taskId: '',          //save taskid
             modal2Visible: false,
-            menu: (
-                <Menu>
-                    <Menu.Item>
-                        <a onClick={() => this.setModal2Visible(true)}>Module</a>
-                    </Menu.Item>
-                  <Menu.Item>
-                        <a onClick={() => this.setModal3Visible(true)}>Sub Module</a>
-                    </Menu.Item>
-                    <Menu.Item>
-                        <a onClick={() => this.setModal4Visible(true)}>Task</a>
-                    </Menu.Item>
-                </Menu>
-            ),
             showsubmodule: false,                               // hide-show submodule tab from  header
             showtask: false,                                    // hide-show task tab from  header 
-            showtaskForm: false,                                //  hide -show task form
-            showInitialForm: true,                           //  hide -show initial form for project-module-submodule form
             functioncall: 'submodules',                       // switch function call for submodule list ,task list from list item
             showform: false,                                  // hide-show save,cancel button when project detail show
             namefieldlabel: 'Project Name',                   // dynamic form field label name
             descriptionfieldlabel: 'Project Description',     // dynamic form field label name
             projectreRequirement: '',
             projectname: '',
+            formstyle: { display: 'none' },                   // HIDE-SHOW EDIT FORM OF MODULE-SUBMODULE
+            projectstyle: { display: 'block' },               // HIDE-SHOW PROJECT VIEW   
+            taskformstyle: { display: 'none' },               // HIDE-SHOW TASK EDIT FORM
+            modulestyle: { display: 'block' },                 // HIDE-SHOW MODULE MENUITEM OF DROPDOWN
+            submodulestyle: { display: 'none' },              // HIDE-SHOW SUBMODULE MENUITEM OF DROPDOWN
+            taskstyle: { display: 'none' },                   // HIDE-SHOW TASK MENUITEM OF DROPDOWN
+            showloader: true                                  // HIDE-SHOW LOADER
         }
     }
 
@@ -78,28 +70,22 @@ class ProjectManagement extends Component {
 
             console.log(this.props.location.data.record._id);
             this.setState({ projectname: this.props.location.data.record.name1 })
-            this.setState({projectreRequirement: this.props.location.data.record.requirement1})
+            this.setState({ projectreRequirement: this.props.location.data.record.requirement1 })
 
             this.setState({
-                projectId: this.props.location.data.record._id,
-                submoduleId:this.props.location.data.record._id,
-                moduleId:this.props.location.data.record._id
+                projectId: this.props.location.data.record._id
             }, function () {
                 this.fetchModules();
             });
         }
     }
     componentWillReceiveProps(props) {
-        console.log(this.props);
+        console.log(props);
     }
     //CREATE MODULE AGAINST PROJECT
     addModule = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-
-            // console.log(err.moduledetails);
-            console.log(err.modulename);
-
             if (values.moduledetails && values.modulename) {
                 let data = {
                     name: values.modulename,
@@ -144,66 +130,73 @@ class ProjectManagement extends Component {
                     ['submodulename']: '',
                     ['submoduledetails']: '',
                 })
-               // this.setState({ visible: false });
+                // this.setState({ visible: false });
                 this.setState({ modal3Visible: false });
 
             }
         })
     }
-//ADD TASK (MODAL)
-addTask= (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-        console.log('Received values of form: ', values);
-        if (values.taskname && values.taskdetails) {
-            let data = {
-                name: values.taskname,
-                description: values.taskdetails,
-                submoduleId: this.state.submoduleId
-            }
-            console.log(data);
-            this.props.actions.addTask(data)
-            this.fetchTasks(this.state.submoduleId);
-            this.props.form.setFieldsValue({    //For Clear the Input  Field
-                ['taskname']: '',
-                ['taskdetails']: '',
-            })
-           // this.setState({ visible: false });
-            this.setState({ modal4Visible: false });
+    //ADD TASK (MODAL)
+    addTask = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            console.log('Received values of form: ', values);
+            if (values.taskname && values.taskdetails) {
+                let data = {
+                    name: values.taskname,
+                    description: values.taskdetails,
+                    submoduleId: this.state.submoduleId
+                }
+                console.log(data);
+                this.props.actions.addTask(data)
+                this.fetchTasks(this.state.submoduleId);
+                this.props.form.setFieldsValue({    //For Clear the Input  Field
+                    ['taskname']: '',
+                    ['taskdetails']: '',
+                })
+                // this.setState({ visible: false });
+                this.setState({ modal4Visible: false });
 
-        }
-    })
-}
-//*********ADD TASK ENDS********
+            }
+        })
+    }
+    //*********ADD TASK ENDS********
     // CREATE MODULES
     createModule = (res) => {
         console.log(res);
-            let data = {
-                name: res.projectname,
-                description: res.projectdetails,
-                projectId: this.state.projectId
-            }
-            console.log(data);
-            this.props.actions.moduleCreate(data)
-            this.getModules();
-            this.props.form.setFieldsValue({    //For Clear the Input  Field
-                ['projectname']: '',
-                ['projectdetails']: '',
-            })
-            this.setState({ modal2Visible: false });
+        let data = {
+            name: res.projectname,
+            description: res.projectdetails,
+            projectId: this.state.projectId
+        }
+        console.log(data);
+        this.props.actions.moduleCreate(data)
+        this.getModules();
+        this.props.form.setFieldsValue({    //For Clear the Input  Field
+            ['projectname']: '',
+            ['projectdetails']: '',
+        })
+        this.setState({ modal2Visible: false });
     }
 
 
     // FETCH ALL THE MODULES AGAINST PROJECT,uSING PROJECTID
     fetchModules = () => {
+        this.setState({ showloader: true })
+        this.setState({ moduleList: [] })
         this.setState({ showtask: false })
         this.setState({ showsubmodule: false });
         this.setState({ functioncall: 'submodules' });
         this.setState({ showform: false })
-        this.setState({ showtaskForm: false })
-        this.setState({ showInitialForm: true })
-        getProjectModule(this.state.projectId).then((success) => {
+        this.setState({ formstyle: { display: 'none' } });
+        this.setState({ projectstyle: { display: 'block' } });
+        this.setState({ taskformstyle: { display: 'none' } });
+        this.setState({ modulestyle: { display: 'block' } });
+        this.setState({ submodulestyle: { display: 'none' } });
+        this.setState({ taskstyle: { display: 'none' } });
+        this.props.actions.getProjectModule(this.state.projectId).then((success) => {
             console.log(success)
+            this.setState({ showloader: false })
             this.setState({ moduleList: success.result })
             /** CHANGE FIELD LABEL NAME DYNAMICALLY AND SET PROJECT FIELD VALUE DETAILS */
             this.setState({ namefieldlabel: 'Project Name' }),
@@ -213,19 +206,27 @@ addTask= (e) => {
                 ['description']: this.props.location.data.record.requirement1
             })
             /** CHANGE FIELD LABEL NAME DYNAMICALLY AND SET PROJECT FIELD VALUE DETAILS ENDS*/
-        }, err=> {
+        }, err => {
         });
     }
 
     // FETCH SUBMODULE LIST AGAINST MODULE ID
     fetchSubModules = (id) => {
         console.log(id);
+        this.setState({ showloader: true })
+        this.setState({ moduleList: [] })
         this.setState({ showsubmodule: true })
         this.setState({ functioncall: 'tasks' })
         this.setState({ moduleId: id });
         this.setState({ showform: true })
+        this.setState({ formstyle: { display: 'block' } });
+        this.setState({ projectstyle: { display: 'none' } });
+        this.setState({ modulestyle: { display: 'none' } });
+        this.setState({ submodulestyle: { display: 'block' } });
+        this.setState({ taskstyle: { display: 'none' } });
         this.props.actions.getSubModuleList(id).then(response => {
             console.log(response)
+            this.setState({ showloader: false })
             if (!response.error) {
                 this.setState({ moduleList: response.result })
 
@@ -238,11 +239,19 @@ addTask= (e) => {
     // FETCH TASK LIST AGAINST SUBMODULE ID
     fetchTasks = (id) => {
         console.log(id)
+        this.setState({ showloader: true })
+        this.setState({ moduleList: [] })
         this.setState({ showtask: true })
         this.setState({ functioncall: 'taskdetail' })
-        this.setState({ submoduleId:id })
+        this.setState({ submoduleId: id })
+        this.setState({ formstyle: { display: 'block' } });
+        this.setState({ projectstyle: { display: 'none' } });
+        this.setState({ modulestyle: { display: 'none' } });
+        this.setState({ submodulestyle: { display: 'none' } });
+        this.setState({ taskstyle: { display: 'block' } });
         this.props.actions.getTaskList(id).then(response => {
             console.log(response)
+            this.setState({ showloader: false })
             if (!response.error) {
                 this.setState({ moduleList: response.result })
             }
@@ -254,7 +263,8 @@ addTask= (e) => {
     // FUNCTION CALL FOR SUBMODULE LIST AND TASK LIST WHEN CLICKED ON LIST ITEM
     ListItemClicked = (data) => {
         console.log(data, this.state.functioncall)
-
+        console.log(data._id);
+        this.setState({ taskId: data._id });
         if (this.state.functioncall == 'submodules') {
             this.fetchSubModules(data._id);
             this.fetchModuleData(data._id)
@@ -264,8 +274,9 @@ addTask= (e) => {
             this.fetchSubModuleData(data._id)
         }
         else if (this.state.functioncall == 'taskdetail') {
-            this.setState({ showtaskForm: true });
-            this.setState({ showInitialForm: false })
+            this.setState({ formstyle: { display: 'none' } });
+            this.setState({ projectstyle: { display: 'none' } });
+            this.setState({ taskformstyle: { display: 'block' } });
             this.props.form.setFieldsValue({
                 ['taskname']: data.name,
                 ['taskdescription']: data.description,
@@ -279,8 +290,12 @@ addTask= (e) => {
     getsubModules = () => {
         this.setState({ showtask: false });
         this.setState({ functioncall: 'submodules' });
-        this.setState({ showtaskForm: false })
-        this.setState({ showInitialForm: true })
+        this.setState({ formstyle: { display: 'block' } });
+        this.setState({ projectstyle: { display: 'none' } });
+        this.setState({ taskformstyle: { display: 'none' } });
+        this.setState({ modulestyle: { display: 'none' } });
+        this.setState({ submodulestyle: { display: 'block' } });
+        this.setState({ taskstyle: { display: 'none' } });
         this.fetchSubModules(this.state.moduleId);
         this.fetchModuleData(this.state.moduleId)
     }
@@ -371,60 +386,64 @@ addTask= (e) => {
         });
     }
 
-editModule = (e)=>{
-    e.preventDefault();
-    
-    this.props.form.validateFields((err, values) => { 
-   console.log(values)
-        if(this.state.namefieldlabel=='Module Name'  && this.state.descriptionfieldlabel=='Module Description'){
-            if (values.name && values.description) {
-                console.log('Received values of form: ', values);
-                let data= {
-                    name: values.name,
-                    description: values.description,
-                    projectId: this.state.projectId
-                  }
-                  console.log(data)
-                  this.props.actions.editmodule(data,this.state.moduleId)
+    editModule = (e) => {
+        e.preventDefault();
+
+        this.props.form.validateFields((err, values) => {
+            console.log(values)
+            if (this.state.namefieldlabel == 'Module Name' && this.state.descriptionfieldlabel == 'Module Description') {
+                if (values.name && values.description) {
+                    console.log('Received values of form: ', values);
+                    let data = {
+                        name: values.name,
+                        description: values.description,
+                        projectId: this.state.projectId
+                    }
+                    console.log(data)
+                    this.props.actions.editmodule(data, this.state.moduleId)
+                }
             }
-        }
-    
-        else if(this.state.namefieldlabel=='Sub-Module Name'  && this.state.descriptionfieldlabel=='Sub-Module Description'){
-            if(values.name && values.description){
-                let data= {
-                    name: values.name,
-                    description: values.description,
-                    moduleId: this.state.moduleId
-                  }
-                  console.log(data)
-                  this.props.actions.editSubModule(data,this.state.submoduleId)
+
+            else if (this.state.namefieldlabel == 'Sub-Module Name' && this.state.descriptionfieldlabel == 'Sub-Module Description') {
+                if (values.name && values.description) {
+                    let data = {
+                        name: values.name,
+                        description: values.description,
+                        moduleId: this.state.moduleId
+                    }
+                    console.log(data)
+                    this.props.actions.editSubModule(data, this.state.submoduleId)
+                }
             }
+
+
+        });
+
+    }
+
+    startTask = () => {
+
+        // var d = new Date();
+        // var startDate = d.toISOString();
+        let data = {
+            startDate: new Date().toISOString()
         }
-        
-
-    });
-  
-}
-
-startTask =() =>{
-    let data ={
-        startDate:Date.now()
+        console.log(this.state.taskId);
+        this.props.actions.taskStarted(data, this.state.taskId);
     }
-    this.props.actions.taskStarted(data,);
-}
 
-endTask =() =>{
-    let data ={
-        endDate:Date.now()
+    endTask = () => {
+        let data = {
+            endDate: new Date().toISOString()
+        }
+        this.props.actions.taskEnded(data, this.state.taskId);
     }
-    this.props.actions.taskEnded(data,);
-}
 
     render() {
         const { size } = this.props;
         const state = this.state;
         const { getFieldDecorator } = this.props.form;
-        const { namefieldlabel, descriptionfieldlabel } = this.state;
+        const { namefieldlabel, descriptionfieldlabel, formstyle, projectstyle, taskformstyle, showloader, modulestyle, submodulestyle, taskstyle } = this.state;
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -447,7 +466,7 @@ endTask =() =>{
                 <Layout>
                     <Row>
                         <Col lg={12}>
-                       
+
                             <div className="wkonList sidewkonlist heightWkon">
                                 <Row>
                                     <div className="listHeader">
@@ -456,11 +475,11 @@ endTask =() =>{
                                                 <Button type="primary"><img src={backbtn} /></Button>
                                             </Col>
                                             <Col lg={12}>
-                                                <Breadcrumb className="activelink">
+                                                <Breadcrumb >
                                                     <Breadcrumb.Item>{this.state.projectname}</Breadcrumb.Item>
-                                                    <Breadcrumb.Item onClick={this.fetchModules}><a>Modules</a></Breadcrumb.Item>
-                                                    {this.state.showsubmodule ? <Breadcrumb.Item onClick={this.getsubModules}><a>Sub_modules</a></Breadcrumb.Item> : ''}
-                                                    {this.state.showtask ? <Breadcrumb.Item>Tasks</Breadcrumb.Item> : ''}
+                                                    <Breadcrumb.Item className="activelink" onClick={this.fetchModules}><a>Modules</a></Breadcrumb.Item>
+                                                    {this.state.showsubmodule ? <Breadcrumb.Item className="activelink"onClick={this.getsubModules}><a>Sub_modules</a></Breadcrumb.Item> : ''}
+                                                    {this.state.showtask ? <Breadcrumb.Item className="activelink">Tasks</Breadcrumb.Item> : ''}
                                                 </Breadcrumb>
                                             </Col>
 
@@ -468,7 +487,17 @@ endTask =() =>{
                                             <Col lg={2}>
 
                                                 <div className="listaddbtn">
-                                                    <Dropdown overlay={this.state.menu} placement="bottomCenter" trigger={['click']}>
+                                                    <Dropdown overlay={<Menu>
+                                                        <Menu.Item style={modulestyle} >
+                                                            <a onClick={() => this.setModal2Visible(true)}>Module</a>
+                                                        </Menu.Item>
+                                                        <Menu.Item style={submodulestyle} >
+                                                            <a onClick={() => this.setModal3Visible(true)}>Sub Module</a>
+                                                        </Menu.Item>
+                                                        <Menu.Item style={taskstyle} >
+                                                            <a onClick={() => this.setModal4Visible(true)}>Task</a>
+                                                        </Menu.Item>
+                                                    </Menu>} placement="bottomCenter" trigger={['click']}>
                                                         <Button><img className="plus" src={addbtn} /></Button>
                                                     </Dropdown>
                                                 </div>
@@ -479,7 +508,7 @@ endTask =() =>{
 
                                     </div>
                                 </Row>
-                                <Spin   spinning={this.props.fullloader} indicator={antIcon} />
+                                <Spin spinning={showloader} indicator={antIcon} />
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={this.state.moduleList}
@@ -501,7 +530,7 @@ endTask =() =>{
 
                         {/* area for task add form start*/}
                         <Col lg={12}>
-                            {this.state.showtaskForm ? <div className="wkonList detailView taskaddform">
+                            <div className="wkonList detailView taskaddform" style={taskformstyle}>
 
                                 <Form onSubmit={this.handleSubmit} className="projectForm">
                                     <FormItem label="Task Name">
@@ -509,14 +538,14 @@ endTask =() =>{
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
                                         })(
                                             <Input placeholder="Enter name" />
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem label="Task Description">
                                         {getFieldDecorator('taskdescription', { initialValue: '' }, {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
                                             <textarea placeholder="Enter Description" />
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem label="Status">
                                         {getFieldDecorator('gender', {
@@ -529,20 +558,19 @@ endTask =() =>{
                                                 <Option value="Statusa">Status</Option>
                                                 <Option value="Status">Status</Option>
                                             </Select>
-                                            )}
+                                        )}
                                     </FormItem>
 
-                                    <FormItem 
+                                    <FormItem
                                         {...formItemLayout}>
                                         {/* // {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}
-                                         <Button onClick={this.startTask}>Start Task</Button>
-                                         <Button onClick={this.endTask}>Start Task</Button>
+                                        <Button onClick={this.startTask}>Start Task</Button>
                                     </FormItem>
-                                    <FormItem 
+                                    <FormItem
                                         {...formItemLayout}>
-                                        <Button>End Task</Button>
+                                        <Button onClick={this.endTask}>End Task</Button>
                                         {/* {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}
@@ -558,7 +586,7 @@ endTask =() =>{
                                                 <Option value="efgh">abcd</Option>
                                                 <Option value="abcd">efgh</Option>
                                             </Select>
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem>
                                         <div className="savebtn modalbtn">
@@ -569,14 +597,14 @@ endTask =() =>{
                                 </Form>
 
 
-                            </div> : ''}
+                            </div>
                         </Col>
                         {/* area for task add form end*/}
                         {/* area for project add form start*/}
                         <Col lg={12}>
-                            {this.state.showInitialForm? 
-                         
-                            <div className="wkonList detailView projectaddform">
+                            {/* {this.state.showInitialForm?  */}
+
+                            <div className="wkonList detailView projectaddform" style={formstyle}>
 
                                 <Form onSubmit={this.editModule} className="projectForm">
                                     <FormItem label={namefieldlabel}>
@@ -584,14 +612,14 @@ endTask =() =>{
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
                                         })(
                                             <Input placeholder="Enter name" />
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem label={descriptionfieldlabel}>
                                         {getFieldDecorator('description', {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
                                             <textarea placeholder="Enter Description" />
-                                            )}
+                                        )}
                                     </FormItem>
 
                                     <FormItem>
@@ -604,11 +632,12 @@ endTask =() =>{
                                 </Form>
 
 
-                            </div> :''}
-                            {/* <div>
-                               <p className="projectaTitle">Project Name : <span className="projectaName">{this.state.projectname}</span> </p>
-                               <p className="projecteTitle">Project Description : <span className="projectaNamelorem">{this.state.projectreRequirement}</span> </p>
-                            </div> */}
+                            </div>
+                            {/* :''} */}
+                            <div style={projectstyle}>
+                                <p className="projectaTitle">Project Name : <span className="projectaName">{this.state.projectname}</span> </p>
+                                <p className="projecteTitle">Project Description : <span className="projectaNamelorem">{this.state.projectreRequirement}</span> </p>
+                            </div>
                         </Col>
                         {/* area for project add form end*/}
 
@@ -660,7 +689,7 @@ endTask =() =>{
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -670,7 +699,7 @@ endTask =() =>{
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
 
@@ -704,7 +733,7 @@ endTask =() =>{
                                         rules: [{ required: true, message: 'Please input your  SubModule Name!' }],
                                     })(
                                         <Input placeholder="" />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -714,7 +743,7 @@ endTask =() =>{
                                         rules: [{ required: true, message: 'Please input your SubModule Details!' }],
                                     })(
                                         <TextArea rows={4} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
 
@@ -739,7 +768,7 @@ endTask =() =>{
                         onOk={() => this.setModal4Visible(false)}
                         onCancel={() => this.setModal4Visible(false)}
                     >
-                        <Form onSubmit= {this.addTask}>
+                        <Form onSubmit={this.addTask}>
                             <div className="projectname">
                                 <p>Name :</p>
                                 <FormItem>
@@ -747,7 +776,7 @@ endTask =() =>{
                                         rules: [{ required: true, message: 'Please input your TaskName!' }],
                                     })(
                                         <Input placeholder="" />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -757,7 +786,7 @@ endTask =() =>{
                                         rules: [{ required: true, message: 'Please input your TaskDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
 
