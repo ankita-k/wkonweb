@@ -44,6 +44,7 @@ class ProjectManagement extends Component {
             moduleId: '',       //save modueid
             submoduleId: '',     //save submoduleid
             taskId: '',          //save taskid
+            members: [],
             modal2Visible: false,
             menu: (
                 <Menu>
@@ -69,19 +70,20 @@ class ProjectManagement extends Component {
             formstyle: { display: 'none' },
             projectstyle: { display: 'block' },
             taskformstyle:{display: 'none' },
-            showloader:true
+            showloader:true,
+            Status: ''
         }
     }
 
     componentDidMount() {
         console.log(this.props)
         if (this.props.location.data) {
-            console.log(this.props.location.data.record);
-
+            console.log(this.props.location.data.record.members);
+            this.setState({members:this.props.location.data.record.members});
+            console.log(this.state.members);
             console.log(this.props.location.data.record._id);
             this.setState({ projectname: this.props.location.data.record.name1 })
             this.setState({ projectreRequirement: this.props.location.data.record.requirement1 })
-
             this.setState({
                 projectId: this.props.location.data.record._id
             }, function () {
@@ -428,17 +430,40 @@ class ProjectManagement extends Component {
         // var d = new Date();
         // var startDate = d.toISOString();
         let data = {
-            startDate: new Date().toISOString()
+            startDate: new Date().toISOString(),
+            status: "InProgess"
         }
         console.log(this.state.taskId);
-        this.props.actions.taskStarted(data, this.state.taskId);
+        
+        this.props.actions.taskStarted(data, this.state.taskId).then(response => {
+            console.log(response)
+            this.setState({showloader:false})
+            if (!response.error) {
+                this.setState({ Status: response.result.status })
+                console.log(this.state.Status)
+
+            }
+        }, err => {
+
+        })
     }
 
     endTask = () => {
         let data = {
-            endDate: new Date().toISOString()
+            endDate: new Date().toISOString(),
+            status: "Completed"
         }
-        this.props.actions.taskEnded(data, this.state.taskId);
+        this.props.actions.taskEnded(data, this.state.taskId).then(response => {
+            console.log(response)
+            this.setState({showloader:false})
+            if (!response.error) {
+                this.setState({ Status: response.result.status })
+                console.log(this.state.Status)
+
+            }
+        }, err => {
+
+        })
     }
 
     render() {
@@ -540,7 +565,7 @@ class ProjectManagement extends Component {
                                         )}
                                     </FormItem>
                                     <FormItem label="Status">
-                                        {getFieldDecorator('gender', {
+                                        {/* {getFieldDecorator('gender', {
                                             rules: [{ required: true, message: 'Please select your status!' }],
                                         })(
                                             <Select
@@ -550,7 +575,8 @@ class ProjectManagement extends Component {
                                                 <Option value="Statusa">Status</Option>
                                                 <Option value="Status">Status</Option>
                                             </Select>
-                                        )}
+                                        )} */}
+                                        <p>{this.state.Status}</p>
                                     </FormItem>
 
                                     <FormItem
@@ -566,6 +592,7 @@ class ProjectManagement extends Component {
                                         {/* {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}
+                                         {/* || !(item.tags.indexOf("Vertical Head")) */}
                                     </FormItem>
                                     <FormItem label="Assigned To">
                                         {getFieldDecorator('assign', {
@@ -575,10 +602,11 @@ class ProjectManagement extends Component {
                                                 placeholder="Assigned To"
                                                 onChange={this.handleSelectChange}
                                             >
-                                                <Option value="efgh">abcd</Option>
-                                                <Option value="abcd">efgh</Option>
+                                            {this.state.members.map((item, index) => {
+                                                return ((!(item.userId.role == "Sales") || !(item.userId.tags.indexOf("Vertical Head"))) ?<Option  key={index} value={item.userId._id}>{item.userId.name}</Option>:"")
+                                            })}
                                             </Select>
-                                        )}
+                                         )}
                                     </FormItem>
                                     <FormItem>
                                         <div className="savebtn modalbtn">
