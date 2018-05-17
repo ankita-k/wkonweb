@@ -43,6 +43,7 @@ class ProjectManagement extends Component {
             subModuleList: [],
             moduleId: '',       //save modueid
             submoduleId: '',     //save submoduleid
+            taskId: '',          //save taskid
             modal2Visible: false,
             menu: (
                 <Menu>
@@ -85,9 +86,7 @@ class ProjectManagement extends Component {
             this.setState({ projectreRequirement: this.props.location.data.record.requirement1 })
 
             this.setState({
-                projectId: this.props.location.data.record._id,
-                submoduleId: this.props.location.data.record._id,
-                moduleId: this.props.location.data.record._id
+                projectId: this.props.location.data.record._id
             }, function () {
                 this.fetchModules();
             });
@@ -281,7 +280,8 @@ class ProjectManagement extends Component {
     // FUNCTION CALL FOR SUBMODULE LIST AND TASK LIST WHEN CLICKED ON LIST ITEM
     ListItemClicked = (data) => {
         console.log(data, this.state.functioncall)
-
+        console.log(data._id);
+        this.setState({ taskId: data._id });
         if (this.state.functioncall == 'submodules') {
             this.fetchSubModules(data._id);
             this.fetchModuleData(data._id)
@@ -439,17 +439,21 @@ class ProjectManagement extends Component {
     }
 
     startTask = () => {
+
+        // var d = new Date();
+        // var startDate = d.toISOString();
         let data = {
-            startDate: Date.now()
+            startDate: new Date().toISOString()
         }
-        this.props.actions.taskStarted(data, );
+        console.log(this.state.taskId);
+        this.props.actions.taskStarted(data, this.state.taskId);
     }
 
     endTask = () => {
         let data = {
-            endDate: Date.now()
+            endDate: new Date().toISOString()
         }
-        this.props.actions.taskEnded(data, );
+        this.props.actions.taskEnded(data, this.state.taskId);
     }
 
     render() {
@@ -580,11 +584,10 @@ class ProjectManagement extends Component {
                                             <DatePicker />
                                         )} */}
                                         <Button onClick={this.startTask}>Start Task</Button>
-                                        <Button onClick={this.endTask}>Start Task</Button>
                                     </FormItem>
                                     <FormItem
                                         {...formItemLayout}>
-                                        <Button>End Task</Button>
+                                        <Button onClick={this.endTask}>End Task</Button>
                                         {/* {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}
@@ -636,14 +639,14 @@ class ProjectManagement extends Component {
                                         )}
                                     </FormItem>
 
-                                    <FormItem>
-                                        {this.state.showform ?
-                                            <div className="savebtn modalbtn">
-                                                <Button htmlType='submit'>Save</Button>
-                                                <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
-                                            </div> : ''}
-                                    </FormItem>
-                                </Form>
+                                        <FormItem>
+                                            {this.state.showform ?
+                                                <div className="savebtn modalbtn">
+                                                    <Button htmlType='submit'>Save</Button>
+                                                    <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
+                                                </div> : ''}
+                                        </FormItem>
+                                    </Form>
 
 
                             </div>
