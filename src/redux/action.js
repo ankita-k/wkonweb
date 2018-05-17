@@ -1193,8 +1193,7 @@ function modulelist(list) {
 /***********GET PROJECT MODULES LIST*********/
 export function getProjectModule(projectId) {
     console.log(projectId)
-    // return (dispatch) => {
-        // dispatch(loaders(true))
+    return (dispatch) => {
     return new Promise((resolve, reject) => {
         fetch(config.apiUrl + 'module/getbyprojectid?id=' + projectId,
             {
@@ -1206,15 +1205,13 @@ export function getProjectModule(projectId) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 resolve(responseJSON);
-                // dispatch(loaders(false))
                 console.log('get module list', responseJSON)
             })
             .catch((error) => {
                 reject(error);
-                // dispatch(loaders(false))
             });
     })
-    // }
+    }
 }
 
 

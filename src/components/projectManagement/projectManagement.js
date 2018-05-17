@@ -4,12 +4,11 @@ import modulelogo from '../../Images/module.svg';
 import modulesidebarlogo from '../../Images/module2.svg';
 import * as actioncreators from '../../redux/action';
 import { connect } from "react-redux";
-import { getProjectModule } from '../../redux/action';
 import { bindActionCreators } from 'redux';
 import { Layout, Modal, Input, Menu, DatePicker, Row, Col, List, Avatar, Form, Select, Spin, Dropdown, Button, Icon, Breadcrumb } from 'antd';
 import backbtn from '../../Images/backbtn.svg';
 import addbtn from '../../Images/addbtn.svg';
-const antIcon = <Icon type="loading" style={{ fontSize: 24 }} spin />;
+const antIcon = <Icon type="loading" style={{ fontSize: 50 }} spin />;
 const Option = Select.Option;
 const Search = Input.Search;
 const FormItem = Form.Item;
@@ -68,7 +67,8 @@ class ProjectManagement extends Component {
             projectname: '',
             formstyle: { display: 'none' },
             projectstyle: { display: 'block' },
-            taskformstyle:{display: 'none' }
+            taskformstyle:{display: 'none' },
+            showloader:true
         }
     }
 
@@ -197,6 +197,8 @@ class ProjectManagement extends Component {
 
     // FETCH ALL THE MODULES AGAINST PROJECT,uSING PROJECTID
     fetchModules = () => {
+        this.setState({showloader:true})
+        this.setState({ moduleList: [] })
         this.setState({ showtask: false })
         this.setState({ showsubmodule: false });
         this.setState({ functioncall: 'submodules' });
@@ -204,8 +206,9 @@ class ProjectManagement extends Component {
         this.setState({ formstyle: { display: 'none' } });
         this.setState({ projectstyle: { display: 'block' } });
         this.setState({ taskformstyle: { display: 'none' } });
-        getProjectModule(this.state.projectId).then((success) => {
+       this.props.actions.getProjectModule(this.state.projectId).then((success) => {
             console.log(success)
+            this.setState({showloader:false})
             this.setState({ moduleList: success.result })
             /** CHANGE FIELD LABEL NAME DYNAMICALLY AND SET PROJECT FIELD VALUE DETAILS */
             this.setState({ namefieldlabel: 'Project Name' }),
@@ -222,6 +225,8 @@ class ProjectManagement extends Component {
     // FETCH SUBMODULE LIST AGAINST MODULE ID
     fetchSubModules = (id) => {
         console.log(id);
+        this.setState({showloader:true})
+        this.setState({ moduleList: [] })
         this.setState({ showsubmodule: true })
         this.setState({ functioncall: 'tasks' })
         this.setState({ moduleId: id });
@@ -230,6 +235,7 @@ class ProjectManagement extends Component {
         this.setState({ projectstyle: { display: 'none' } });
         this.props.actions.getSubModuleList(id).then(response => {
             console.log(response)
+            this.setState({showloader:false})
             if (!response.error) {
                 this.setState({ moduleList: response.result })
 
@@ -242,6 +248,8 @@ class ProjectManagement extends Component {
     // FETCH TASK LIST AGAINST SUBMODULE ID
     fetchTasks = (id) => {
         console.log(id)
+        this.setState({showloader:true})
+        this.setState({ moduleList: [] })
         this.setState({ showtask: true })
         this.setState({ functioncall: 'taskdetail' })
         this.setState({ submoduleId: id })
@@ -249,6 +257,7 @@ class ProjectManagement extends Component {
         this.setState({ projectstyle: { display: 'none' } });
         this.props.actions.getTaskList(id).then(response => {
             console.log(response)
+            this.setState({showloader:false})
             if (!response.error) {
                 this.setState({ moduleList: response.result })
             }
@@ -432,7 +441,7 @@ class ProjectManagement extends Component {
         const { size } = this.props;
         const state = this.state;
         const { getFieldDecorator } = this.props.form;
-        const { namefieldlabel, descriptionfieldlabel, formstyle, projectstyle ,taskformstyle} = this.state;
+        const { namefieldlabel, descriptionfieldlabel, formstyle, projectstyle ,taskformstyle,showloader} = this.state;
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -487,7 +496,7 @@ class ProjectManagement extends Component {
 
                                     </div>
                                 </Row>
-                                <Spin spinning={this.props.fullloader} indicator={antIcon} />
+                                <Spin spinning={showloader} indicator={antIcon} />
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={this.state.moduleList}
