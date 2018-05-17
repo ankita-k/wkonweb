@@ -9,6 +9,7 @@ import ChangePassword from './components/passwordChange/passwordChange';
 // import BankDetails from './Components/BankDetails/BankDetails';
 import requireAuth from './authguard';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+// import timesheetManagement from './components/timesheetManagement/timesheetManagement';
 
 const Routes = () => (
     <BrowserRouter>
@@ -23,6 +24,7 @@ const Routes = () => (
             {/* <Route path='/dashboardView' component={DashboardView} /> */}
             {/* <Route path='/UserSubscription' component={UserSubscription} />
             <Route path='/BankDetails' component={BankDetails} /> */}
+            {/* <Route path='/timesheet' component={timesheetManagement} /> */}
         </Switch>
     </BrowserRouter>
 );

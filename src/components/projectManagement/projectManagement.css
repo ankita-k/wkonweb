@@ -269,6 +269,11 @@ p.projectaTitle {
 .activelink.ant-breadcrumb > span:last-child {
     color: rgb(68, 138, 255);
 }
+.activelink.ant-breadcrumb > span:first-child {
+    font-size: 21px;
+    font-weight: 600;
+    font-variant: all-petite-caps;
+}
 .projectForm .ant-form-item-label label {
     color: #000000a3;
     font-family: Roboto;
