@@ -438,6 +438,20 @@ class ProjectManagement extends Component {
         }
         this.props.actions.taskEnded(data, this.state.taskId);
     }
+    goback = () => {
+        console.log("backbutton triggered");
+        if (this.state.showsubmodule && !this.state.showtask) {
+            this.fetchModules();
+        }
+        else if (this.state.showtask && this.state.showsubmodule) {
+            this.getsubModules();
+
+        }
+        else{
+            this.props.history.push('../dashboard/projectlist');
+        }
+
+    }
 
     render() {
         const { size } = this.props;
@@ -472,14 +486,14 @@ class ProjectManagement extends Component {
                                     <div className="listHeader">
                                         <Row>
                                             <Col lg={4}>
-                                                <Button type="primary"><img src={backbtn} /></Button>
+                                                <Button type="primary"><img src={backbtn} onClick={() => { this.goback() }} /></Button>
                                             </Col>
                                             <Col lg={12}>
                                                 <Breadcrumb className="activelink">
                                                     <Breadcrumb.Item>{this.state.projectname}</Breadcrumb.Item>
-                                                    <Breadcrumb.Item className={(!this.state.showsubmodule && !this.state.showtask) ?"currentpos1":"activelink1"} onClick={this.fetchModules}><a>Modules</a></Breadcrumb.Item>
-                                                    {this.state.showsubmodule ? <Breadcrumb.Item className={this.state.showsubmodule && !this.state.showtask? "currentpos1":"activelink1"}onClick={this.getsubModules}><a>Sub_modules</a></Breadcrumb.Item> : ''}
-                                                    {this.state.showtask ? <Breadcrumb.Item className="currentpos">Tasks</Breadcrumb.Item> :''}
+                                                    <Breadcrumb.Item className={(!this.state.showsubmodule && !this.state.showtask) ? "currentpos1" : "activelink1"} onClick={this.fetchModules}><a>Modules</a></Breadcrumb.Item>
+                                                    {this.state.showsubmodule ? <Breadcrumb.Item className={this.state.showsubmodule && !this.state.showtask ? "currentpos1" : "activelink1"} onClick={this.getsubModules}><a>Sub_modules</a></Breadcrumb.Item> : ''}
+                                                    {this.state.showtask ? <Breadcrumb.Item className="currentpos">Tasks</Breadcrumb.Item> : ''}
                                                 </Breadcrumb>
                                             </Col>
 
@@ -538,14 +552,14 @@ class ProjectManagement extends Component {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
                                         })(
                                             <Input placeholder="Enter name" />
-                                        )}
+                                            )}
                                     </FormItem>
                                     <FormItem label="Task Description">
                                         {getFieldDecorator('taskdescription', { initialValue: '' }, {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
                                             <textarea placeholder="Enter Description" />
-                                        )}
+                                            )}
                                     </FormItem>
                                     <FormItem label="Status">
                                         {getFieldDecorator('gender', {
@@ -558,7 +572,7 @@ class ProjectManagement extends Component {
                                                 <Option value="Statusa">Status</Option>
                                                 <Option value="Status">Status</Option>
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
 
                                     <FormItem
@@ -586,7 +600,7 @@ class ProjectManagement extends Component {
                                                 <Option value="efgh">abcd</Option>
                                                 <Option value="abcd">efgh</Option>
                                             </Select>
-                                        )}
+                                            )}
                                     </FormItem>
                                     <FormItem>
                                         <div className="savebtn modalbtn">
@@ -612,14 +626,14 @@ class ProjectManagement extends Component {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
                                         })(
                                             <Input placeholder="Enter name" />
-                                        )}
+                                            )}
                                     </FormItem>
                                     <FormItem label={descriptionfieldlabel}>
                                         {getFieldDecorator('description', {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
                                             <textarea placeholder="Enter Description" />
-                                        )}
+                                            )}
                                     </FormItem>
 
                                     <FormItem>
@@ -689,7 +703,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -699,7 +713,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
 
@@ -733,7 +747,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your  SubModule Name!' }],
                                     })(
                                         <Input placeholder="" />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -743,7 +757,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your SubModule Details!' }],
                                     })(
                                         <TextArea rows={4} />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
 
@@ -776,7 +790,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your TaskName!' }],
                                     })(
                                         <Input placeholder="" />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -786,7 +800,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your TaskDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                    )}
+                                        )}
                                 </FormItem>
                             </div>
 
