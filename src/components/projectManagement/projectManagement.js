@@ -561,16 +561,18 @@ class ProjectManagement extends Component {
                                         )}
                                     </FormItem>
 
-                                    <FormItem
+                                    <FormItem className="taskbtn"
                                         {...formItemLayout}>
                                         {/* // {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}
-                                        <Button onClick={this.startTask}>Start Task</Button>
+                                        <Button className="task" onClick={this.startTask}>Start Task</Button>
+                                        {/* <Button className="task"onClick={this.endTask}>End Task</Button> */}
+                                        
                                     </FormItem>
                                     <FormItem
                                         {...formItemLayout}>
-                                        <Button onClick={this.endTask}>End Task</Button>
+                                        <Button className="taskPicker" onClick={this.endTask}>End Task</Button>
                                         {/* {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}

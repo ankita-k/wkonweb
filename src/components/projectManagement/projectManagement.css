@@ -169,6 +169,9 @@
     text-align: left;
     margin-left: 2em;
 }
+.taskbtn .ant-form-item-control {
+    text-align: center;
+}
 .projectpreview p.expecteDateclient {
     color: rgba(7, 7, 7, 0.65);
     font-family: 'Lato', sans-serif;
@@ -176,6 +179,16 @@
     margin-bottom: 9px;
     margin-top: 9px;
     margin-left: 10px;
+}
+button.ant-btn.taskPicker {
+    margin-top: 2em;
+    width: 100%;
+}
+button.ant-btn.task {
+    /* width: 10em;
+    margin-right: 2em; */
+    margin-top: 2em;
+    width: 100%;
 }
 .inputForminfo .statuspipeline.ant-select.ant-select-disabled {
     width: 91%;

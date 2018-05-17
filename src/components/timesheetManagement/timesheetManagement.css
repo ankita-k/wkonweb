@@ -5,8 +5,7 @@
     border-color: #6065690d;
     width: 55%;
     height: 50px;
-    margin: 1em 0;
-    background-image: linear-gradient(135deg, #f5f7fa26 0%, #448aff33 100%);
+    margin: 1em 0 0 0;
     font-size: 16px;
 }
 .teabreak .ant-btn-primary {
@@ -15,8 +14,7 @@
     border-color: #6065690d;
     width: 55%;
     height: 50px;
-    margin: 1em 0;
-    background-image: linear-gradient(135deg, #f5f7fa26 0%, #448aff33 100%);
+    margin: 1em 0 0 0;
     font-size: 16px;
 }
 .meeting .ant-btn-primary {
@@ -25,21 +23,24 @@
     border-color: #6065690d;
     width: 55%;
     height: 50px;
-    margin: 1em 0;
-
-    background-image: linear-gradient(135deg, #f5f7fa26 0%, #448aff33 100%);
+    margin: 1em 0 0 0;
     font-size: 16px;
 }
 .ant-row.lunch {
-    margin-top: 3em;
-    text-align: center;
+    margin-bottom: 1em;
+    text-align: left;
+    margin-left: 3em;
 
 }
 .ant-row.teabreak {
     text-align: center;
+    text-align: left;
+    margin-left: 3em;
 }
 .ant-row.meeting {
     text-align: center;
+    text-align: left;
+    margin-left: 3em;
 }
 .activitybutton .ant-btn > .anticon + span, .ant-btn > span + .anticon {
     margin-left: 0;
@@ -52,11 +53,12 @@
     font-size: 19px;
     font-family: lato;
 }
+.timesheet {
+    margin: -1em;
+}
 .activityName{
     background: #fff;
     height: 100vh;
-    margin: -1em;
-
 }
 .activitybutton img {
     width: 28px;
@@ -75,3 +77,66 @@
     font-size: 16px;
     border-bottom: 1px solid #448aff26;
 }
+/* modal css */
+.vertical-center-modal {
+    text-align: center;
+    white-space: nowrap;
+  }
+  
+  .vertical-center-modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    width: 0;
+  }
+  span.lunchMeal {
+    float: left;
+    margin-left: 3em;
+}
+.ant-row.actname h1 {
+    margin-bottom: 6px;
+    text-align: left;
+    padding-left: 1em;
+}
+.lunchTime span.ant-time-picker {
+    width: 100%;
+}
+.lunchTime p {
+    margin-bottom: 4px;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.65);
+    font-weight: 500;
+}
+.lunchTime {
+    padding: 0 4em;
+}
+button.ant-btn.modalSave {
+    border: none;
+    margin-right: 2em;
+    background: #448aff;
+    color: #fff;
+    outline: none;
+}
+button.ant-btn.modalCancel {
+    margin-right: 2em;
+    background: #f7f7f7;
+    color: #000;
+    outline: none;
+    border: none;
+}
+.dataonly .ant-list-item {
+    padding-left: 2em;
+}
+.dataonly {
+    height: 100vh;
+    background: #fff;
+    border-left: 1px solid rgba(158, 158, 158, 0.1);
+}
+  .vertical-center-modal .ant-modal {
+    display: inline-block;
+    vertical-align: middle;
+    top: 0;
+    text-align: left;
+  }
+/* modal css   */
