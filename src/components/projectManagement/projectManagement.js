@@ -61,7 +61,11 @@ class ProjectManagement extends Component {
             submodulestyle: { display: 'none' },              // HIDE-SHOW SUBMODULE MENUITEM OF DROPDOWN
             taskstyle: { display: 'none' },                   // HIDE-SHOW TASK MENUITEM OF DROPDOWN
             showloader: true,
-            Status: ''                                  // HIDE-SHOW LOADER
+            Status: '',
+            taskMatch: '',                                // HIDE-SHOW LOADER
+            assignToEmpty: {},
+
+            loginId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
         }
     }
 
@@ -69,7 +73,7 @@ class ProjectManagement extends Component {
         console.log(this.props)
         if (this.props.location.data) {
             console.log(this.props.location.data.record.members);
-            this.setState({members:this.props.location.data.record.members});
+            this.setState({ members: this.props.location.data.record.members });
             console.log(this.state.members);
             console.log(this.props.location.data.record._id);
             this.setState({ projectname: this.props.location.data.record.name1 })
@@ -264,8 +268,9 @@ class ProjectManagement extends Component {
 
     // FUNCTION CALL FOR SUBMODULE LIST AND TASK LIST WHEN CLICKED ON LIST ITEM
     ListItemClicked = (data) => {
-        console.log(data, this.state.functioncall)
-        console.log(data._id);
+        console.log(this.state.functioncall);
+        console.log(data);
+
         this.setState({ taskId: data._id });
         if (this.state.functioncall == 'submodules') {
             this.fetchSubModules(data._id);
@@ -276,6 +281,7 @@ class ProjectManagement extends Component {
             this.fetchSubModuleData(data._id)
         }
         else if (this.state.functioncall == 'taskdetail') {
+
             this.setState({ formstyle: { display: 'none' } });
             this.setState({ projectstyle: { display: 'none' } });
             this.setState({ taskformstyle: { display: 'block' } });
@@ -283,8 +289,12 @@ class ProjectManagement extends Component {
                 ['taskname']: data.name,
                 ['taskdescription']: data.description,
             })
-
+            this.setState({ assignToEmpty: data }, function () {
+                console.log(this.state.assignToEmpty)
+                // this.setState({ taskMatch: (this.state.assignToEmpty.assignTo.length > 0) ? this.state.assignToEmpty.assignTo[0].userId._id : "" })
+            })
         }
+
     }
 
 
@@ -427,41 +437,52 @@ class ProjectManagement extends Component {
 
         // var d = new Date();
         // var startDate = d.toISOString();
-        let data = {
-            startDate: new Date().toISOString(),
-            status: "InProgess"
-        }
-        console.log(this.state.taskId);
-        
-        this.props.actions.taskStarted(data, this.state.taskId).then(response => {
-            console.log(response)
-            this.setState({showloader:false})
-            if (!response.error) {
-                this.setState({ Status: response.result.status })
-                console.log(this.state.Status)
+        console.log(this.state.assignToEmpty);
+        if (this.state.assignToEmpty.assignTo.length != 0) {
 
+            if (this.state.loginId == this.state.assignToEmpty.assignTo[0].userId._id) {
+                let data = {
+                    startDate: new Date().toISOString(),
+                    status: "InProgess"
+                }
+                console.log(this.state.taskId);
+
+                this.props.actions.taskStarted(data, this.state.taskId).then(response => {
+                    console.log(response)
+                    this.setState({ showloader: false })
+                    if (!response.error) {
+                        this.setState({ Status: response.result.status })
+                        console.log(this.state.Status)
+
+                    }
+                }, err => {
+
+                })
             }
-        }, err => {
-
-        })
+        }
     }
 
     endTask = () => {
-        let data = {
-            endDate: new Date().toISOString(),
-            status: "Completed"
-        }
-        this.props.actions.taskEnded(data, this.state.taskId).then(response => {
-            console.log(response)
-            this.setState({showloader:false})
-            if (!response.error) {
-                this.setState({ Status: response.result.status })
-                console.log(this.state.Status)
+        console.log(this.state.assignToEmpty);
+        if (this.state.assignToEmpty.assignTo.length != 0) {
 
+            if (this.state.loginId == this.state.assignToEmpty.assignTo[0].userId._id) {
+                let data = {
+                    endDate: new Date().toISOString(),
+                    status: "Completed"
+                }
+                this.props.actions.taskEnded(data, this.state.taskId).then(response => {
+                    console.log(response)
+                    this.setState({ showloader: false })
+                    if (!response.error) {
+                        this.setState({ Status: response.result.status })
+                        console.log(this.state.Status)
+                    }
+                }, err => {
+
+                })
             }
-        }, err => {
-
-        })
+        }
     }
     goback = () => {
         console.log("backbutton triggered");
@@ -472,7 +493,7 @@ class ProjectManagement extends Component {
             this.getsubModules();
 
         }
-        else{
+        else {
             this.props.history.push('../dashboard/projectlist');
         }
 
@@ -577,14 +598,14 @@ class ProjectManagement extends Component {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
                                         })(
                                             <Input placeholder="Enter name" />
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem label="Task Description">
                                         {getFieldDecorator('taskdescription', { initialValue: '' }, {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
                                             <textarea placeholder="Enter Description" />
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem label="Status">
                                         {/* {getFieldDecorator('gender', {
@@ -614,7 +635,6 @@ class ProjectManagement extends Component {
                                         {/* {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}
-                                         {/* || !(item.tags.indexOf("Vertical Head")) */}
                                     </FormItem>
                                     <FormItem label="Assigned To">
                                         {getFieldDecorator('assign', {
@@ -624,11 +644,11 @@ class ProjectManagement extends Component {
                                                 placeholder="Assigned To"
                                                 onChange={this.handleSelectChange}
                                             >
-                                            {this.state.members.map((item, index) => {
-                                                return ((!(item.userId.role == "Sales") || !(item.userId.tags.indexOf("Vertical Head"))) ?<Option  key={index} value={item.userId._id}>{item.userId.name}</Option>:"")
-                                            })}
+                                                {this.state.members.map((item, index) => {
+                                                    return ((!(item.userId.role == "Sales") || !(item.userId.tags.indexOf("Vertical Head"))) ? <Option key={index} value={item.userId._id}>{item.userId.name}</Option> : "")
+                                                })}
                                             </Select>
-                                         )}
+                                        )}
                                     </FormItem>
                                     <FormItem>
                                         <div className="savebtn modalbtn">
@@ -654,14 +674,14 @@ class ProjectManagement extends Component {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
                                         })(
                                             <Input placeholder="Enter name" />
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem label={descriptionfieldlabel}>
                                         {getFieldDecorator('description', {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
                                             <textarea placeholder="Enter Description" />
-                                            )}
+                                        )}
                                     </FormItem>
 
                                     <FormItem>
@@ -731,7 +751,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -741,7 +761,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
 
@@ -775,7 +795,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your  SubModule Name!' }],
                                     })(
                                         <Input placeholder="" />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -785,7 +805,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your SubModule Details!' }],
                                     })(
                                         <TextArea rows={4} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
 
@@ -818,7 +838,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your TaskName!' }],
                                     })(
                                         <Input placeholder="" />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -828,7 +848,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your TaskDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
 
