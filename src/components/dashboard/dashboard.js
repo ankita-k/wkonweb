@@ -46,7 +46,17 @@ class Dashboard extends Component {
       username: '',
       selectedKey: ['home'],
       userrole: '',
-      openKeys: []
+      openKeys: [],
+      clientstyle: { display: 'none' },
+      clientcreate_style: { display: 'none' },
+      clientlist_style: { display: 'none' },
+      projectstyle: { display: 'none' },
+      projectcreate_style: { display: 'none' },
+      projectlist_style: { display: 'none' },
+      billstyle: { display: 'none' },
+      billcreate_style: { display: 'none' },
+      billlist_style: { display: 'none' },
+      userstyle: { display: 'none' }
     }
     if (!sessionStorage.getItem('id') && !localStorage.getItem('id')) {
       this.props.history.push('/login');
@@ -62,9 +72,9 @@ class Dashboard extends Component {
     socket.off('projectCreated', function () { });
     socket.off('userCreated', function () { });
     socket.off('billCreated', function () { });
-    
-    
-    
+
+
+
   }
 
 
@@ -124,9 +134,9 @@ class Dashboard extends Component {
   componentDidMount() {
     console.log('#############################', this.props);
     this.connectClientSocket();
-this.connectProjectSocket();
-this.connectUserSocket();
-this.connectBillSocket();
+    this.connectProjectSocket();
+    this.connectUserSocket();
+    this.connectBillSocket();
     /*GET PROJECT LIST,CLIENT LIST,DEVELOPER LIST,BILL LIST,LOGGEDIN USER DATA 
     */
     if (sessionStorage.getItem('id')) {
@@ -197,28 +207,64 @@ this.connectBillSocket();
 
   // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
   commonFunction() {
-    /* SHOWING LOGGEDIN USER NAME AFTER RECEIVING DATA FROM PROPS*/
+    /* SHOWING LOGGEDIN USER NAME AFTER RECEIVING DATA FROM PROPS AND IMPLEMENTING ACL IN MENU ITEMS*/
     if (this.props.loggeduserDetails) {
       this.setState({ username: this.props.loggeduserDetails.name });
-      this.setState({ userrole: this.props.loggeduserDetails.role });
+      // this.setState({ userrole: this.props.loggeduserDetails.role });
+      if (this.props.loggeduserDetails.role == 'admin') {
+        this.setState({ clientstyle: { display: 'block' } });
+        this.setState({ clientcreate_style: { display: 'block' } });
+        this.setState({ clientlist_style: { display: 'block' } });
+        this.setState({ projectstyle: { display: 'block' } });
+        this.setState({ projectcreate_style: { display: 'block' } });
+        this.setState({ projectlist_style: { display: 'block' } });
+        this.setState({ billstyle: { display: 'block' } });
+        this.setState({ billcreate_style: { display: 'none' } });
+        this.setState({ billlist_style: { display: 'block' } });
+        this.setState({ userstyle: { display: 'block' } });
+      }
+      else if (this.props.loggeduserDetails.role == 'Sales') {
+        this.setState({ clientstyle: { display: 'block' } });
+        this.setState({ clientcreate_style: { display: 'block' } });
+        this.setState({ clientlist_style: { display: 'block' } });
+        this.setState({ projectstyle: { display: 'block' } });
+        this.setState({ projectcreate_style: { display: 'block' } });
+        this.setState({ projectlist_style: { display: 'block' } });
+        this.setState({ billstyle: { display: 'block' } });
+        this.setState({ billcreate_style: { display: 'block' } });
+        this.setState({ billlist_style: { display: 'block' } });
+        this.setState({ userstyle: { display: 'none' } });
+      }
+      else if (this.props.loggeduserDetails.role == 'Developer') {
+        this.setState({ clientstyle: { display: 'none' } });
+        this.setState({ clientcreate_style: { display: 'none' } });
+        this.setState({ clientlist_style: { display: 'none' } });
+        this.setState({ projectstyle: { display: 'block' } });
+        this.setState({ projectcreate_style: { display: 'none' } });
+        this.setState({ projectlist_style: { display: 'block' } });
+        this.setState({ billstyle: { display: 'none' } });
+        this.setState({ billcreate_style: { display: 'none' } });
+        this.setState({ billlist_style: { display: 'none' } });
+        this.setState({ userstyle: { display: 'none' } });
+      }
     }
 
   }
-   // CONNECT SOCKET FOR CLIENT CREATE
+  // CONNECT SOCKET FOR CLIENT CREATE
   connectClientSocket = () => {
     socket.on('clientCreated', (interval) => {
-      console.log('......client created.......',interval)
-      
+      console.log('......client created.......', interval)
+
       if (sessionStorage.getItem('id')) {
-      console.log('......client created session.......',interval)
-        
+        console.log('......client created session.......', interval)
+
         this.props.actions.clientlist(sessionStorage.getItem('id'));
         this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
         this.props.actions.dashboardProject(sessionStorage.getItem('id'));
       }
       else if (localStorage.getItem('id')) {
-      console.log('......client created local.......',interval)
-        
+        console.log('......client created local.......', interval)
+
         this.props.actions.clientlist(localStorage.getItem('id'));
         this.props.actions.dashboardCustomer(localStorage.getItem('id'));
         this.props.actions.dashboardProject(localStorage.getItem('id'));
@@ -226,20 +272,20 @@ this.connectBillSocket();
     });
   }
   // CONNECT SOCKET FOR PROJECT CREATE
-  connectProjectSocket=()=>{
+  connectProjectSocket = () => {
     socket.on('projectCreated', (interval) => {
-      console.log('......Project created.......',interval)
-      
+      console.log('......Project created.......', interval)
+
       if (sessionStorage.getItem('id')) {
-      console.log('......Project created session.......',interval)
-        
+        console.log('......Project created session.......', interval)
+
         this.props.actions.projectList(sessionStorage.getItem('id'));
         this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
         this.props.actions.dashboardProject(sessionStorage.getItem('id'));
       }
       else if (localStorage.getItem('id')) {
-      console.log('......Project created local.......',interval)
-        
+        console.log('......Project created local.......', interval)
+
         this.props.actions.projectList(localStorage.getItem('id'));
         this.props.actions.dashboardCustomer(localStorage.getItem('id'));
         this.props.actions.dashboardProject(localStorage.getItem('id'));
@@ -247,20 +293,20 @@ this.connectBillSocket();
     });
   }
   // CONNECT SOCKET FOR USER CREATE
-  connectUserSocket=()=>{
+  connectUserSocket = () => {
     socket.on('userCreated', (interval) => {
-      console.log('......user created.......',interval)
-      
+      console.log('......user created.......', interval)
+
       if (sessionStorage.getItem('id')) {
-      console.log('......User created session.......',interval)
-        
+        console.log('......User created session.......', interval)
+
         this.props.actions.userList(sessionStorage.getItem('id'));
         this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
         this.props.actions.dashboardProject(sessionStorage.getItem('id'));
       }
       else if (localStorage.getItem('id')) {
-      console.log('......User created local.......',interval)
-        
+        console.log('......User created local.......', interval)
+
         this.props.actions.userList(localStorage.getItem('id'));
         this.props.actions.dashboardCustomer(localStorage.getItem('id'));
         this.props.actions.dashboardProject(localStorage.getItem('id'));
@@ -268,20 +314,20 @@ this.connectBillSocket();
     });
   }
   // CONNECT SOCKET FOR Bill CREATE
-  connectBillSocket=()=>{
+  connectBillSocket = () => {
     socket.on('billCreated', (interval) => {
-      console.log('......Bill created.......',interval)
-      
+      console.log('......Bill created.......', interval)
+
       if (sessionStorage.getItem('id')) {
-      console.log('......Bill created session.......',interval)
-        
+        console.log('......Bill created session.......', interval)
+
         this.props.actions.billlist(sessionStorage.getItem('id'));
         this.props.actions.dashboardCustomer(sessionStorage.getItem('id'));
         this.props.actions.dashboardProject(sessionStorage.getItem('id'));
       }
       else if (localStorage.getItem('id')) {
-      console.log('......bill created local.......',interval)
-        
+        console.log('......bill created local.......', interval)
+
         this.props.actions.billlist(localStorage.getItem('id'));
         this.props.actions.dashboardCustomer(localStorage.getItem('id'));
         this.props.actions.dashboardProject(localStorage.getItem('id'));
@@ -291,6 +337,7 @@ this.connectBillSocket();
 
   render() {
     console.log('(((((((((((((())))))))))))render dashboard')
+    const { clientstyle, clientcreate_style, clientlist_style, projectcreate_style, projectstyle, projectlist_style, userstyle, billcreate_style, billlist_style, billstyle } = this.state;
     return (
       <div>
         <Layout>
@@ -350,7 +397,7 @@ this.connectBillSocket();
                   <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                 </Menu.Item>
               </SubMenu>
-              <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
+              <SubMenu key="user"  title={<span><Icon type="user" />User Management</span>} subMenuCloseDelay={0.1}>
                 <Menu.Item key="create_user">
                   <span>Create User</span>
                   <NavLink to="../dashboard/createuser" activeClassName="active"></NavLink>
@@ -405,63 +452,62 @@ this.connectBillSocket();
                   <span>Home</span>
                   <NavLink to="../dashboard" activeClassName="active"></NavLink>
                 </Menu.Item>
-                {this.state.userrole ? this.state.userrole == "admin" || "Sales" && this.state.userrole != 'Developer' ?
-                  <SubMenu key="client" title={<span><Icon type="usergroup-add" />Clients</span>} subMenuCloseDelay={0.1}>
-                    <Menu.Item key="create_client">
-                      <span>Client Create</span>
-                      <NavLink to="../dashboard/clientcreate" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                    <Menu.Item key="client_list">
-                      <span>Client List</span>
-                      <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                  </SubMenu> : '' : ''}
-                {this.state.userrole ? this.state.userrole == "Developer" || "admin" || 'Sales' ?
-                  <SubMenu key="projects" title={<span><Icon type="file-text" /> Projects</span>} subMenuCloseDelay={0.1}>
-                    {this.state.userrole != "Developer" ?
-                      <Menu.Item key="create_project">
-                        <span>Project Create</span>
-                        <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
-                      </Menu.Item> : ''}
-                    <Menu.Item key="project_list">
-                      <span>Project List</span>
-                      <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                  </SubMenu> : '' : ''}
-                {this.state.userrole ? this.state.userrole == "admin" ?
-                  <SubMenu key="user" title={<span>User Management</span>} subMenuCloseDelay={0.1}>
-                    <Menu.Item key="create_user">
-                      <span>Create User</span>
-                      <NavLink to="../dashboard/createuser" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                    <Menu.Item key="user_list">
-                      <span>User List</span>
-                      <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                  </SubMenu> : '' : ''}
 
-                {this.state.userrole ? this.state.userrole == "admin" || "Sales" && this.state.userrole != 'Developer' ?
-                  <SubMenu key="bill" title={<span><Icon type="solution" />Bill Managements</span>} subMenuCloseDelay={0.1}>
-                    {
-                      this.state.userrole == "Sales" ?
-                        <Menu.Item key="create_bill">
-                          <span>Bill Create</span>
-                          <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
-                        </Menu.Item> : ''
-                    }
-                    <Menu.Item key="bill_list">
-                      <span>Bill List</span>
-                      <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink>
-                    </Menu.Item>
-                  </SubMenu>
-                  : '' : ''}
-                 
-                 <Menu.Item key="timesheet">
-                 <Icon type="calendar" />
+                <SubMenu style={clientstyle} key="client" title={<span><Icon type="usergroup-add" />Clients</span>} subMenuCloseDelay={0.1}>
+                  <Menu.Item key="create_client" style={clientcreate_style} >
+                    <span>Client Create</span>
+                    <NavLink to="../dashboard/clientcreate" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                  <Menu.Item key="client_list" style={clientlist_style} >
+                    <span>Client List</span>
+                    <NavLink to="../dashboard/clientlist" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                </SubMenu>
+
+                <SubMenu style={projectstyle} key="projects" title={<span><Icon type="file-text" /> Projects</span>} subMenuCloseDelay={0.1}>
+
+                  <Menu.Item key="create_project" style={projectcreate_style}>
+                    <span>Project Create</span>
+                    <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
+                  </Menu.Item> 
+                    <Menu.Item key="project_list" style={projectlist_style}>
+                    <span>Project List</span>
+                    <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                </SubMenu>
+
+                <SubMenu style={userstyle} key="user" title={<span><Icon type="user" />User Management</span>} subMenuCloseDelay={0.1}>
+                  <Menu.Item key="create_user">
+                    <span>Create User</span>
+                    <NavLink to="../dashboard/createuser" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                  <Menu.Item key="user_list">
+                    <span>User List</span>
+                    <NavLink to="../dashboard/userlist" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                </SubMenu>
+
+
+                <SubMenu style={billstyle} key="bill" title={<span><Icon type="solution" />Bill Managements</span>} subMenuCloseDelay={0.1}>
+
+                  <Menu.Item key="create_bill" style={billcreate_style}>
+                    <span>Bill Create</span>
+                    <NavLink to="../dashboard/bill" activeClassName="active"></NavLink>
+                  </Menu.Item>
+
+                  <Menu.Item key="bill_list" style={billlist_style}>
+                    <span>Bill List</span>
+                    <NavLink to="../dashboard/billlist" activeClassName="active"></NavLink>
+                  </Menu.Item>
+                </SubMenu>
+
+
+                <Menu.Item key="timesheet">
+                  <Icon type="calendar" />
                   <span>Timesheet</span>
                   <NavLink to="../dashboard/timesheet" activeClassName="active"></NavLink>
                 </Menu.Item>
-          
+
 
 
               </Menu>
