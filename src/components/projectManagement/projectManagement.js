@@ -19,21 +19,16 @@ const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 class ProjectManagement extends Component {
 
-    handleSubmit = (e) => {
-        console.log("handlesubmit");
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
-    }
-    handleSelectChange = (value) => {
-        console.log(value);
-        this.props.form.setFieldsValue({
-            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
-        });
-    }
+    // handleSubmit = (e) => {
+    //     console.log("handlesubmit");
+    //     e.preventDefault();
+    //     this.props.form.validateFields((err, values) => {
+    //         if (!err) {
+    //             console.log('Received values of form: ', values);
+    //         }
+    //     });
+    // }
+
     constructor(props) {
         super(props);
 
@@ -64,18 +59,29 @@ class ProjectManagement extends Component {
             Status: '',
             taskMatch: '',                                // HIDE-SHOW LOADER
             assignToEmpty: {},
-
+            assignMemberId: '',
             loginId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
         }
     }
+    handleSelectChange = (value) => {
+        console.log(value);
+        this.setState({assignMemberId: value}, function () {
+            console.log(this.state.assignMemberId)
+        })
+        this.props.form.setFieldsValue({
+            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
+        });
 
+    }
     componentDidMount() {
         console.log(this.props)
         if (this.props.location.data) {
+            let memberarray = [];
             console.log(this.props.location.data.record.members);
-            this.setState({ members: this.props.location.data.record.members });
-            console.log(this.state.members);
-            console.log(this.props.location.data.record._id);
+            memberarray = this.props.location.data.record.members.filter(element => { return element.role == "Consultant1" || element.role == "Consultant2" || element.role == "Consultant3" || element.role == "Consultant4" });
+            console.log(memberarray)
+            this.setState({ members: memberarray });
+            console.log(this.state.members)
             this.setState({ projectname: this.props.location.data.record.name1 })
             this.setState({ projectreRequirement: this.props.location.data.record.requirement1 })
             this.setState({
@@ -84,6 +90,7 @@ class ProjectManagement extends Component {
                 this.fetchModules();
             });
         }
+
     }
     componentWillReceiveProps(props) {
         console.log(props);
@@ -156,7 +163,7 @@ class ProjectManagement extends Component {
                 console.log(data);
                 this.props.actions.addTask(data)
                 this.fetchTasks(this.state.submoduleId);
-                this.props.form.setFieldsValue({   
+                this.props.form.setFieldsValue({
                     ['tasknames']: '',
                     ['taskdetails']: '',
                 })
@@ -373,17 +380,7 @@ class ProjectManagement extends Component {
         this.setState({ modal4Visible });
     }
 
-    handleSubmitmodal = (e) => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-                this.createModule(values);
-            }
-
-        });
-    }
-
+   
 
     handleSubmitmodal2 = (e) => {
         e.preventDefault();
@@ -489,14 +486,32 @@ class ProjectManagement extends Component {
         }
         else if (this.state.showtask && this.state.showsubmodule) {
             this.getsubModules();
-
         }
         else {
             this.props.history.push('../dashboard/projectlist');
         }
-
     }
 
+    // assign member by vertical head
+    assignToMember = () => {
+        // if(){
+            let data = {
+                userId: this.state.assignMemberId
+            }
+            this.props.actions.assignDevelopers(data, this.state.taskId)
+        // }
+       
+    }
+
+    editTask=(e)=>{
+        e.preventDefault();
+            this.props.form.validateFields((err, values) => {
+                if (!err) {
+                    console.log('Received values of form: ', values);
+                    this.assignToMember();
+                }
+            })
+    }
     render() {
         const { size } = this.props;
         const state = this.state;
@@ -530,7 +545,7 @@ class ProjectManagement extends Component {
                                     <div className="listHeader">
                                         <Row>
                                             <Col lg={4}>
-                                                <Button  onClick={() => { this.goback() }} type="primary"><img src={backbtn} /></Button>
+                                                <Button onClick={() => { this.goback() }} type="primary"><img src={backbtn} /></Button>
                                             </Col>
                                             <Col lg={12}>
                                                 <Breadcrumb className="activelink">
@@ -590,7 +605,7 @@ class ProjectManagement extends Component {
                         <Col lg={12}>
                             <div className="wkonList detailView taskaddform" style={taskformstyle}>
 
-                                <Form onSubmit={this.handleSubmit} className="projectForm">
+                                <Form onSubmit={this.editTask} className="projectForm">
                                     <FormItem label="Task Name">
                                         {getFieldDecorator('taskname', { initialValue: '' }, {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
@@ -627,7 +642,7 @@ class ProjectManagement extends Component {
                                         )} */}
                                         <Button className="task" onClick={this.startTask}>Start Task</Button>
                                         {/* <Button className="task"onClick={this.endTask}>End Task</Button> */}
-                                        
+
                                     </FormItem>
                                     <FormItem
                                         {...formItemLayout}>
@@ -645,14 +660,14 @@ class ProjectManagement extends Component {
                                                 onChange={this.handleSelectChange}
                                             >
                                                 {this.state.members.map((item, index) => {
-                                                    return ((!(item.userId.role == "Sales") || !(item.userId.tags.indexOf("Vertical Head"))) ? <Option key={index} value={item.userId._id}>{item.userId.name}</Option> : "")
+                                                    return <Option key={index} value={item.userId._id}>{item.userId.name}</Option>
                                                 })}
                                             </Select>
                                         )}
                                     </FormItem>
                                     <FormItem>
                                         <div className="savebtn modalbtn">
-                                            <Button onClick={this.handleSubmitmodal}>Save</Button>
+                                            <Button htmlType="submit">Save"</Button>
                                             <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
                                         </div>
                                     </FormItem>
@@ -688,7 +703,7 @@ class ProjectManagement extends Component {
                                         {this.state.showform ?
                                             <div className="savebtn modalbtn">
                                                 <Button htmlType='submit'>Save</Button>
-    
+
                                             </div> : ''}
                                     </FormItem>
                                 </Form>
@@ -831,16 +846,16 @@ class ProjectManagement extends Component {
                         onCancel={() => this.setModal4Visible(false)}
                     >
                         <Form onSubmit={this.addTask}>
-                        <div className="projectname">
-                        <p>Name :</p>
-                        <FormItem>
-                            {getFieldDecorator('tasknames', {
-                                rules: [{ required: true, message: 'Please input your  Task Name!' }],
-                            })(
-                                <Input placeholder="Enter task name" />
-                                )}
-                        </FormItem>
-                    
+                            <div className="projectname">
+                                <p>Name :</p>
+                                <FormItem>
+                                    {getFieldDecorator('tasknames', {
+                                        rules: [{ required: true, message: 'Please input your  Task Name!' }],
+                                    })(
+                                        <Input placeholder="Enter task name" />
+                                    )}
+                                </FormItem>
+
                             </div>
                             <div className="projectdata">
                                 <p>Details :</p>

@@ -1449,18 +1449,18 @@ export function deleteTask(id) {
     }
 }
 /*ASSIGN TASK TO DEVELOPERS FOR SUBMODULE OF MODULE*/
-export function assignDevelopers(data) {
-    console.log(data)
+export function assignDevelopers(data,taskId) {
+    console.log('member assigned', data,taskId)
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        fetch(config.apiUrl + 'task/addassignto?id=' + taskId,
             {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
                 },
-                method: 'POST',
-                body: JSON.stringify(data)
+                method: 'PUT',
+                body: JSON.stringify({data})
             })
             .then((response) => response.json())
             .then((responseJSON) => {
@@ -1597,4 +1597,3 @@ export function getTaskList(id) {
     }
 }
 /* ***************PROJECT SUB TASK CRUD  ENDS***************/
-
