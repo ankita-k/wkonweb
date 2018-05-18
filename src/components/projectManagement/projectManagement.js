@@ -147,7 +147,7 @@ class ProjectManagement extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             console.log('Received values of form: ', values);
-            if (values.taskname && values.taskdetails) {
+            if (values.tasknames && values.taskdetails) {
                 let data = {
                     name: values.taskname,
                     description: values.taskdetails,
@@ -156,13 +156,11 @@ class ProjectManagement extends Component {
                 console.log(data);
                 this.props.actions.addTask(data)
                 this.fetchTasks(this.state.submoduleId);
-                this.props.form.setFieldsValue({    //For Clear the Input  Field
-                    ['taskname']: '',
+                this.props.form.setFieldsValue({   
+                    ['tasknames']: '',
                     ['taskdetails']: '',
                 })
-                // this.setState({ visible: false });
                 this.setState({ modal4Visible: false });
-
             }
         })
     }
@@ -532,7 +530,7 @@ class ProjectManagement extends Component {
                                     <div className="listHeader">
                                         <Row>
                                             <Col lg={4}>
-                                                <Button type="primary"><img src={backbtn} onClick={() => { this.goback() }} /></Button>
+                                                <Button  onClick={() => { this.goback() }} type="primary"><img src={backbtn} /></Button>
                                             </Col>
                                             <Col lg={12}>
                                                 <Breadcrumb className="activelink">
@@ -549,7 +547,7 @@ class ProjectManagement extends Component {
                                                 <div className="listaddbtn">
                                                     <Dropdown overlay={<Menu>
                                                         <Menu.Item style={modulestyle} >
-                                                            <a onClick={() => this.setModal2Visible(true)}>Module</a>
+                                                            <a onClick={() => this.setModal2Visible(true)}> Module</a>
                                                         </Menu.Item>
                                                         <Menu.Item style={submodulestyle} >
                                                             <a onClick={() => this.setModal3Visible(true)}>Sub Module</a>
@@ -622,16 +620,18 @@ class ProjectManagement extends Component {
                                         <p>{this.state.Status}</p>
                                     </FormItem>
 
-                                    <FormItem
+                                    <FormItem className="taskbtn"
                                         {...formItemLayout}>
                                         {/* // {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}
-                                        <Button onClick={this.startTask}>Start Task</Button>
+                                        <Button className="task" onClick={this.startTask}>Start Task</Button>
+                                        {/* <Button className="task"onClick={this.endTask}>End Task</Button> */}
+                                        
                                     </FormItem>
                                     <FormItem
                                         {...formItemLayout}>
-                                        <Button onClick={this.endTask}>End Task</Button>
+                                        <Button className="taskPicker" onClick={this.endTask}>End Task</Button>
                                         {/* {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}
@@ -688,7 +688,7 @@ class ProjectManagement extends Component {
                                         {this.state.showform ?
                                             <div className="savebtn modalbtn">
                                                 <Button htmlType='submit'>Save</Button>
-                                                <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
+    
                                             </div> : ''}
                                     </FormItem>
                                 </Form>
@@ -831,15 +831,16 @@ class ProjectManagement extends Component {
                         onCancel={() => this.setModal4Visible(false)}
                     >
                         <Form onSubmit={this.addTask}>
-                            <div className="projectname">
-                                <p>Name :</p>
-                                <FormItem>
-                                    {getFieldDecorator('taskname', {
-                                        rules: [{ required: true, message: 'Please input your TaskName!' }],
-                                    })(
-                                        <Input placeholder="" />
-                                    )}
-                                </FormItem>
+                        <div className="projectname">
+                        <p>Name :</p>
+                        <FormItem>
+                            {getFieldDecorator('tasknames', {
+                                rules: [{ required: true, message: 'Please input your  Task Name!' }],
+                            })(
+                                <Input placeholder="Enter task name" />
+                                )}
+                        </FormItem>
+                    
                             </div>
                             <div className="projectdata">
                                 <p>Details :</p>
