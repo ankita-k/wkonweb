@@ -65,7 +65,7 @@ class ProjectManagement extends Component {
     }
     handleSelectChange = (value) => {
         console.log(value);
-        this.setState({assignMemberId: value}, function () {
+        this.setState({ assignMemberId: value }, function () {
             console.log(this.state.assignMemberId)
         })
         this.props.form.setFieldsValue({
@@ -77,6 +77,12 @@ class ProjectManagement extends Component {
         console.log(this.props)
         if (this.props.location.data) {
             let memberarray = [];
+            console.log(this.props.location.data.record.members);
+            // this.setState({lead: this.props.loggeduserDetails},
+            //     function () {
+            //         console.log(this.state.lead)
+            //     })
+
             console.log(this.props.location.data.record.members);
             memberarray = this.props.location.data.record.members.filter(element => { return element.role == "Consultant1" || element.role == "Consultant2" || element.role == "Consultant3" || element.role == "Consultant4" });
             console.log(memberarray)
@@ -380,7 +386,7 @@ class ProjectManagement extends Component {
         this.setState({ modal4Visible });
     }
 
-   
+
 
     handleSubmitmodal2 = (e) => {
         e.preventDefault();
@@ -494,23 +500,24 @@ class ProjectManagement extends Component {
 
     // assign member by vertical head
     assignToMember = () => {
-        // if(){
+        // console.log(this.state.lead)
+        // if ((this.state.lead.tags.length !=0)&& (this.state.lead.tags[0].VerticalLead)) {
             let data = {
                 userId: this.state.assignMemberId
             }
             this.props.actions.assignDevelopers(data, this.state.taskId)
         // }
-       
+
     }
 
-    editTask=(e)=>{
+    editTask = (e) => {
         e.preventDefault();
-            this.props.form.validateFields((err, values) => {
-                if (!err) {
-                    console.log('Received values of form: ', values);
-                    this.assignToMember();
-                }
-            })
+        this.props.form.validateFields((err, values) => {
+            if (values.taskname && values.taskdescription && values.assign) {
+                console.log('Received values of form: ', values);
+                this.assignToMember();
+            }
+        })
     }
     render() {
         const { size } = this.props;
@@ -655,7 +662,8 @@ class ProjectManagement extends Component {
                                         {getFieldDecorator('assign', {
                                             rules: [{ required: true, message: 'Please select your assignee!' }],
                                         })(
-                                            <Select
+
+                                           <Select
                                                 placeholder="Assigned To"
                                                 onChange={this.handleSelectChange}
                                             >
