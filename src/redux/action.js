@@ -1633,29 +1633,27 @@ export function createTimeSheet(data) {
 }
 
 /** GET USER TIMESHEET */
-export function getTimesheet(id,date) {
+export function getTimesheetByDate(id,date) {
     return (dispatch) => {
-        fetch(config.apiUrl + 'timesheet/getbyUseridandDate?id='+id+'&createdDate?='+date,
-            {
-                headers: {
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET',
-
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                console.log(responseJSON)
-                if (!responseJSON.error) {
-                    // dispatch(toast('success', 'Timesheet Created Successfully'))
-                }
-                else {
-                    // dispatch(toast('error', 'Timesheet Addition Failed'))
-                }
-            })
-            .catch((error) => {
-                // dispatch(toast('error', ' Timesheet Addition Failed'))
-            });
+        return new Promise((resolve, reject) => {
+        fetch(config.apiUrl + 'timesheet/getbyUseridandDate?userId='+id+'&createdDate='+date,
+        {
+            headers: {
+                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+            },
+            method: 'GET',
+        })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+            console.log(responseJSON);
+            resolve(responseJSON);
+            //code to dispatch action for storing module list 
+        })
+        .catch((error) => {
+            // code to handle error
+            reject(error);
+        });
+        });
     }
 }
 /* ***************PROJECT SUB TASK CRUD  ENDS***************/

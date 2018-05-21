@@ -35,11 +35,16 @@ class WrappedtimesheetManagement extends Component {
         this.state = {
             userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
             timesheet_title: '',  //DYNAMIC TIITLE FOR TIMESHEET PURPOSE
-            disableEnd_time: false
+            disableEnd_time: false,
+            date: moment(),
+            timesheetList: []
         }
     }
 
     componentDidMount() {
+
+        console.log(this.state.date)
+        this.getTimesheet(this.state.date)
         // this.props.actions.getTimesheet('5afec2af77860e41ff84217f', '2018-05-18T12:10:23.548Z');
     }
 
@@ -51,8 +56,10 @@ class WrappedtimesheetManagement extends Component {
             if (!err) {
                 let data = {
                     userId: this.state.userId,
-                    startTime: values.start_time.format(),
-                    endTime: values.end_time.format()
+                    startTime: values.start_time._d.toISOString(),
+                    endTime: values.end_time._d.toISOString(),
+                    date: moment()._d.toISOString(),
+                    purpose: this.state.timesheet_title
                 }
                 // console.log(values.end_time.toISOString())
                 console.log(data)
@@ -120,6 +127,22 @@ class WrappedtimesheetManagement extends Component {
 
     }
 
+    // GET USER TIMESHHET ACCORDING TO DATE CHOOSEN
+    getTimesheet = (date) => {
+        console.log(date._d.toISOString())
+        this.props.actions.getTimesheetByDate(this.state.userId, date._d.toISOString()).then(response => {
+            console.log(response)
+            if (!response.error) {
+                if (response.result.length != 0) {
+                    this.setState({ timesheetList: response.result })
+                }else{
+                    this.setState({timesheetList:[] })
+                }
+            }
+        }, err => {
+
+        })
+    }
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -218,16 +241,18 @@ class WrappedtimesheetManagement extends Component {
 
                         </Col>
                         <Col lg={12}>
-
+                            <div>
+                                <DatePicker onChange={this.getTimesheet} />
+                            </div>
                             <div className="dataonly">
                                 <List
                                     itemLayout="horizontal"
-                                    dataSource={data}
+                                    dataSource={this.state.timesheetList}
                                     renderItem={item => (
                                         <List.Item>
                                             <List.Item.Meta
-                                                title={<a>LOREM IPSUM</a>}
-                                                description="Lorem Ipsum is simply dummy text"
+                                                title={<a>{item.purpose}</a>}
+                                            // description="Lorem Ipsum is simply dummy text"
                                             />
                                         </List.Item>
                                     )}
