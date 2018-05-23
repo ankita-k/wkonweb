@@ -1448,10 +1448,11 @@ export function deleteTask(id) {
             });
     }
 }
-/*ASSIGN TASK TO DEVELOPERS FOR SUBMODULE OF MODULE*/
-export function assignDevelopers(data,taskId) {
-    console.log('member assigned', data,taskId)
+/*ASSIGN TASK TO DEVELOPERS FOR SUBMODULE OF MODULE THEN UPDATE TASK*/
+export function assignDevelopersandUpdate(developerdata, updatedata, taskId) {
+    console.log(developerdata, updatedata, taskId)
     return (dispatch) => {
+
         fetch(config.apiUrl + 'task/addassignto?id=' + taskId,
             {
                 headers: {
@@ -1460,29 +1461,55 @@ export function assignDevelopers(data,taskId) {
                     'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
                 },
                 method: 'PUT',
-                body: JSON.stringify({data})
+                body: JSON.stringify(developerdata)
             })
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
-                if (!responseJSON.error) {
-                    dispatch(toast('success', 'Task Assigned Successfully'))
-                }
-                else {
+                if (responseJSON.error) {
                     dispatch(toast('error', 'Task Assignment Failed'))
                 }
+                else {
+                    dispatch(toast('success', 'Task Assignment Successfully!'));
+                    let url = config.apiUrl + "task/" + taskId;
+
+                    fetch(url,
+                        {
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                            },
+                            method: 'PUT',
+                            body: JSON.stringify(updatedata)
+                        })
+                        .then((response) => response.json())
+                        .then((responseJSON) => {
+                            console.log(responseJSON)
+
+                            dispatch(toast('success', 'Task Updated Successfully!'));
+
+                        })
+                        .catch((error) => {
+
+                            dispatch(toast('warning', 'Task Updation Failed!'));
+                        });
+
+
+
+                }
+
+
             })
-            .catch((error) => {
-                dispatch(toast('error', ' Task Assignment Failed'))
-            });
+
     }
 }
-/*FETCHING STARTED DATE OF TASK*/
-export function taskStarted(data, id) {
+/*API CALL FOR UPDATING TASK */
+export function UpdateTask(data, taskid) {
     console.log(data)
     return (dispatch) => {
         return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'task/' + id,
+            fetch(config.apiUrl + 'task/' + taskid,
                 {
                     headers: {
                         'Accept': 'application/json',
@@ -1496,55 +1523,23 @@ export function taskStarted(data, id) {
                 .then((responseJSON) => {
                     resolve(responseJSON);
                     console.log(responseJSON)
-                    if (!responseJSON.error) {
-                        dispatch(toast('success', 'Task  Started'))
+                    if (responseJSON.error) {
+                        dispatch(toast('error', 'Task updation falied '))
                     }
                     else {
-                        dispatch(toast('error', 'Task not started '))
+                        dispatch(toast('success', 'Task updatied Successfully '))
                     }
                 })
                 .catch((error) => {
                     reject(error);
-                    dispatch(toast('error', ' Task not started'))
+                    dispatch(toast('error', ' Task updation falied'))
                 });
         })
     }
 }
 
 
-/*FETCHING END DATE OF TASK*/
-export function taskEnded(data, id) {
-    console.log(data)
-    return (dispatch) => {
-        return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'task/' + id,
-                {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                    },
-                    method: 'PUT',
-                    body: JSON.stringify(data)
-                })
-                .then((response) => response.json())
-                .then((responseJSON) => {
-                    resolve(responseJSON);
-                    console.log(responseJSON)
-                    if (!responseJSON.error) {
-                        dispatch(toast('success', 'Task Ended'))
-                    }
-                    else {
-                        dispatch(toast('error', 'Task not Ended '))
-                    }
-                })
-                .catch((error) => {
-                    reject(error);
-                    dispatch(toast('error', ' Task not Ended'))
-                });
-        })
-    }
-}
+
 
 /***********GET TASK DATA*********/
 export function getTaskInfo(id) {
@@ -1633,26 +1628,26 @@ export function createTimeSheet(data) {
 }
 
 /** GET USER TIMESHEET */
-export function getTimesheetByDate(id,date) {
+export function getTimesheetByDate(id, date) {
     return (dispatch) => {
         return new Promise((resolve, reject) => {
-        fetch(config.apiUrl + 'timesheet/getbyUseridandDate?userId='+id+'&createdDate='+date,
-        {
-            headers: {
-                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-            },
-            method: 'GET',
-        })
-        .then((response) => response.json())
-        .then((responseJSON) => {
-            console.log(responseJSON);
-            resolve(responseJSON);
-            //code to dispatch action for storing module list 
-        })
-        .catch((error) => {
-            // code to handle error
-            reject(error);
-        });
+            fetch(config.apiUrl + 'task/getbyuserId?userId=' + id + '&createdDate=' + date,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET',
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON);
+                    resolve(responseJSON);
+                    //code to dispatch action for storing module list 
+                })
+                .catch((error) => {
+                    // code to handle error
+                    reject(error);
+                });
         });
     }
 }

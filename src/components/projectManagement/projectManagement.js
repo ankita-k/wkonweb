@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { Layout, Modal, Input, Menu, DatePicker, Row, Col, List, Avatar, Form, Select, Spin, Dropdown, Button, Icon, Breadcrumb } from 'antd';
 import backbtn from '../../Images/backbtn.svg';
 import addbtn from '../../Images/addbtn.svg';
+import moment from 'moment';
 const antIcon = <Icon type="loading" style={{ fontSize: 50 }} spin />;
 const Option = Select.Option;
 const Search = Input.Search;
@@ -17,6 +18,7 @@ const FormItem2 = Form.Item;
 const { TextArea } = Input;
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
+
 class ProjectManagement extends Component {
 
     // handleSubmit = (e) => {
@@ -63,7 +65,11 @@ class ProjectManagement extends Component {
             loginId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
             showselect: { display: "block" },
             endTaskStyle: { display: "block" },
-            startTaskStyle: { display: "block" }
+            startTaskStyle: { display: "block" },
+            addStyle: { display: "block" },
+            saveStyle: { display: "block" },
+            disableSelect: false,
+            developer: false
         }
     }
 
@@ -75,21 +81,21 @@ class ProjectManagement extends Component {
             this.setState({ members: memberarray });
             this.setState({ projectname: this.props.location.data.record.name1 })
             this.setState({ projectreRequirement: this.props.location.data.record.requirement1 });
-            this.setState({ Status: this.props.location.data.record.status });
 
-            /**SHOW ENDTASK IF PROJECT STATUS IS INPROGRESS & SHOW START TASK IF PROJECT STATUS IS NEW */
-            if (this.props.location.data.record.status == 'New') {
-                this.setState({ endTaskStyle: { display: 'none' } })
-                this.setState({ startTaskStyle: { display: 'block' } })
-            }
-            else if (this.props.location.data.record.status == 'InProgress') {
-                this.setState({ startTaskStyle: { display: 'none' } })
-                this.setState({ endTaskStyle: { display: 'block' } })
-            }
-            else if (this.props.location.data.record.status == 'Completed') {
-                this.setState({ endTaskStyle: { display: 'none' } })
-                this.setState({ startTaskStyle: { display: 'none' } })
-            }
+
+            // /**SHOW ENDTASK IF PROJECT STATUS IS INPROGRESS & SHOW START TASK IF PROJECT STATUS IS NEW */
+            // if (this.props.location.data.record.status == 'New') {
+            //     this.setState({ endTaskStyle: { display: 'none' } })
+            //     this.setState({ startTaskStyle: { display: 'block' } })
+            // }
+            // else if (this.props.location.data.record.status == 'InProgress') {
+            //     this.setState({ startTaskStyle: { display: 'none' } })
+            //     this.setState({ endTaskStyle: { display: 'block' } })
+            // }
+            // else if (this.props.location.data.record.status == 'Completed') {
+            //     this.setState({ endTaskStyle: { display: 'none' } })
+            //     this.setState({ startTaskStyle: { display: 'none' } })
+            // }
             /** ENDS LOGIC*/
             this.setState({
                 projectId: this.props.location.data.record._id
@@ -102,9 +108,13 @@ class ProjectManagement extends Component {
         if (Object.keys(this.props.loggeduserDetails).length != 0) {
             if (this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
                 this.setState({ showselect: { display: 'block' } })
+                this.setState({ addStyle: { display: 'block' } })
+                this.setState({ saveStyle: { display: 'block' } })
             }
             else {
                 this.setState({ showselect: { display: 'none' } })
+                this.setState({ addStyle: { display: 'none' } })
+                this.setState({ saveStyle: { display: 'none' } })
             }
         }
         /**GET ROLE OF LOGGED USER  AND SHOW SELECT ASIGNESS DROPDOWN ONLY TO VERTICAL HEAD* ENDS**/
@@ -176,7 +186,8 @@ class ProjectManagement extends Component {
                 let data = {
                     name: values.tasknames,
                     description: values.taskdetails,
-                    submoduleId: this.state.submoduleId
+                    submoduleId: this.state.submoduleId,
+                    date: moment()._d.toISOString()
                 }
                 console.log(data);
                 this.props.actions.addTask(data)
@@ -291,7 +302,6 @@ class ProjectManagement extends Component {
 
     // FUNCTION CALL FOR SUBMODULE LIST AND TASK LIST WHEN CLICKED ON LIST ITEM
     ListItemClicked = (data) => {
-        console.log(this.state.functioncall);
         console.log(data);
 
         this.setState({ taskId: data._id });
@@ -304,18 +314,59 @@ class ProjectManagement extends Component {
             this.fetchSubModuleData(data._id)
         }
         else if (this.state.functioncall == 'taskdetail') {
+            this.setState({ disableSelect: false });
+            this.setState({ developer: false })
+            this.gettaskInfo(data);
 
-            this.setState({ formstyle: { display: 'none' } });
-            this.setState({ projectstyle: { display: 'none' } });
-            this.setState({ taskformstyle: { display: 'block' } });
-            this.props.form.setFieldsValue({
-                ['taskname']: data.name,
-                ['taskdescription']: data.description,
-            })
-            this.setState({ assignToEmpty: data }, function () {
-                console.log(this.state.assignToEmpty)
-                // this.setState({ taskMatch: (this.state.assignToEmpty.assignTo.length > 0) ? this.state.assignToEmpty.assignTo[0].userId._id : "" })
-            })
+
+        }
+
+    }
+
+    // GET TASK INFO
+    gettaskInfo = (data) => {
+        this.setState({ formstyle: { display: 'none' } });
+        this.setState({ projectstyle: { display: 'none' } });
+        this.setState({ taskformstyle: { display: 'block' } });
+        this.setState({ Status: data.status });
+        this.props.form.setFieldsValue({
+            ['taskname']: data.name,
+            ['taskdescription']: data.description,
+            ['assign']: data.assignTo.length != 0 ? data.assignTo[0].userId.name : ''
+        })
+        if (data.assignTo.length != 0) {
+            this.setState({ disableSelect: true });
+            this.setState({ developer: true })
+        }
+
+
+        if (this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
+            console.log(this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1)
+            this.setState({ endTaskStyle: { display: 'none' } })
+            this.setState({ startTaskStyle: { display: 'none' } })
+        }
+        else {
+            let arr = []
+            arr = data.assignTo.filter(element => { return element.userId != null && element.userId._id == this.state.loginId });
+            console.log(arr)
+
+            if (arr.length != 0) {
+                // this.setState({ endTaskStyle: { display: 'block' } })
+                // this.setState({ endTaskStyle: { display: 'block' } })
+                if (data.status && data.status == 'New') {
+                    this.setState({ endTaskStyle: { display: 'none' } })
+                    this.setState({ startTaskStyle: { display: 'block' } })
+                }
+                else if (data.status && data.status == 'InProgress') {
+                    this.setState({ startTaskStyle: { display: 'none' } })
+                    this.setState({ endTaskStyle: { display: 'block' } })
+                }
+                else if (data.status && data.status == 'Completed') {
+                    this.setState({ endTaskStyle: { display: 'none' } })
+                    this.setState({ startTaskStyle: { display: 'none' } })
+                }
+            }
+
         }
 
     }
@@ -335,6 +386,8 @@ class ProjectManagement extends Component {
         this.fetchModuleData(this.state.moduleId)
     }
 
+
+    // GET TASK DETAIL
     //GET PARTICULAR SUBMODULE INFO
     fetchSubModuleData = (id) => {
         this.props.actions.getSubModuleInfo(id).then(response => {
@@ -448,53 +501,44 @@ class ProjectManagement extends Component {
 
     startTask = () => {
 
-        // var d = new Date();
-        // var startDate = d.toISOString();
-        console.log(this.state.assignToEmpty);
-        // if (this.state.assignToEmpty.assignTo.length != 0) {
-
-        // if (this.state.loginId == this.state.assignToEmpty.assignTo[0].userId._id) {
         let data = {
-            startDate: new Date().toISOString(),
+            startDate: moment()._d.toISOString(),
+            date: moment()._d.toISOString(),
+            status: 'InProgress'
         }
-        console.log(this.data);
-
-        this.props.actions.taskStarted(data, this.state.taskId).then(response => {
+        this.props.actions.UpdateTask(data, this.state.taskId).then(response => {
             console.log(response)
-            this.setState({ showloader: false })
             if (!response.error) {
-                this.setState({ Status: response.result.status })
-                console.log(this.state.Status)
-
+                this.setState({ startTaskStyle: { display: 'none' } })
+                this.setState({ endTaskStyle: { display: 'block' } })
+                this.setState({ Status: response.result.status });
             }
-        }, err => {
 
         })
-        // }
-        // }
+
     }
 
     endTask = () => {
-        console.log(this.state.assignToEmpty);
-        if (this.state.assignToEmpty.assignTo.length != 0) {
 
-            if (this.state.loginId == this.state.assignToEmpty.assignTo[0].userId._id) {
-                let data = {
-                    endDate: new Date().toISOString(),
-                    status: "Completed"
-                }
-                this.props.actions.taskEnded(data, this.state.taskId).then(response => {
-                    console.log(response)
-                    this.setState({ showloader: false })
-                    if (!response.error) {
-                        this.setState({ Status: response.result.status })
-                        console.log(this.state.Status)
-                    }
-                }, err => {
-
-                })
-            }
+        let data = {
+            endDate: moment()._d.toISOString(),
+            date: moment()._d.toISOString(),
+            status: 'Completed'
         }
+        this.props.actions.UpdateTask(data, this.state.taskId)
+            .then(response => {
+                console.log(response)
+                this.setState({ showloader: false })
+                if (!response.error) {
+                    this.setState({ startTaskStyle: { display: 'none' } })
+                    this.setState({ endTaskStyle: { display: 'none' } })
+                    this.setState({ Status: response.result.status });
+                }
+            }, err => {
+
+            })
+
+
     }
     goback = () => {
         console.log("backbutton triggered");
@@ -520,37 +564,76 @@ class ProjectManagement extends Component {
         });
 
     }
-    // assign member by vertical head
-    assignToMember = () => {
-        // console.log(this.state.lead)
-        // if ((this.state.lead.tags.length !=0)&& (this.state.lead.tags[0].VerticalLead)) {
-        let data = {
-            userId: this.state.assignMemberId
-        }
-        this.props.actions.assignDevelopers(data, this.state.taskId)
-        // }
 
-    }
 
     editTask = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            console.log(values)
+
             if (values.taskname && values.taskdescription) {
                 console.log('Received values of form: ', values);
-                if (values.assign) {
+                if (this.state.developer) {
                     let data = {
-                        userId: values.assign
+                        name: values.taskname,
+                        description: values.taskdescription,
+                        submoduleId: this.state.submoduleId
                     }
-                    this.props.actions.assignDevelopers(data,this.state.taskId);
+                    console.log(data)
+                    console.log('fffffffffffff only and update')
+                    this.props.actions.UpdateTask(data, this.state.taskId, this.state.submoduleId).then(response => {
+                        console.log(response)
+                        if (!response.error) {
+                            this.props.actions.getTaskList(this.state.submoduleId).then(result => {
+                                console.log(result)
+                                if(!result.error&& result.result.length!=0){
+                                    this.setState({ moduleList: result.result })
+                                }
+                            })
+                        }
+                    })
                 }
-                let editdata = {
-                    name: values.taskname,
-                    description: values.description,
-                    submoduleId: this.state.submoduleId
+                else {
+                    let editdata = {
+                        name: values.taskname,
+                        description: values.taskdescription,
+                        submoduleId: this.state.submoduleId
+                    }
+                    if (values.assign) {
+                        var devdata = {
+                            userId: values.assign
+                        }
+                        console.log('fffffffffffff assign and update')
+                        this.props.actions.assignDevelopersandUpdate(devdata, editdata, this.state.taskId)
+                        // .then(response => {
+                        //     console.log(response)
+                        //     if (!response.error) {
+                        //         this.props.actions.getTaskList(this.state.submoduleId).then(result => {
+                        //             console.log(result)
+                        //             if(!result.error&& result.result.length!=0){
+                        //                 this.setState({ moduleList: result.result })
+                        //             }
+                        //         })
+                        //     }
+                        // })
+                    }
+                    else {
+                        console.log('fffffffffffff only update')
+                        this.props.actions.UpdateTask(editdata, this.state.taskId, this.state.submoduleId).then(response => {
+                            console.log(response)
+                            if (!response.error) {
+                                this.props.actions.getTaskList(this.state.submoduleId).then(result => {
+                                    console.log(result)
+                                    if(!result.error&& result.result.length!=0){
+                                        this.setState({ moduleList: result.result })
+                                    }
+                                })
+                            }
+                        })
+                    }
+
+
                 }
-              
-                // this.assignToMember();
+
             }
         })
     }
@@ -558,7 +641,8 @@ class ProjectManagement extends Component {
         const { size } = this.props;
         const state = this.state;
         const { getFieldDecorator } = this.props.form;
-        const { namefieldlabel, descriptionfieldlabel, formstyle, projectstyle, taskformstyle, showloader, modulestyle, submodulestyle, taskstyle, showselect, endTaskStyle, startTaskStyle } = this.state;
+        const { disableSelect, namefieldlabel, descriptionfieldlabel, formstyle, projectstyle, taskformstyle, showloader, modulestyle,
+            submodulestyle, taskstyle, showselect, endTaskStyle, startTaskStyle, addStyle, saveStyle } = this.state;
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -612,8 +696,10 @@ class ProjectManagement extends Component {
                                                         <Menu.Item style={taskstyle} >
                                                             <a onClick={() => this.setModal4Visible(true)}>Task</a>
                                                         </Menu.Item>
-                                                    </Menu>} placement="bottomCenter" trigger={['click']}>
-                                                        <Button><img className="plus" src={addbtn} /></Button>
+                                                    </Menu>}
+                                                        placement="bottomCenter" trigger={['click']}>
+                                                        {/* <span>hghfg</span> */}
+                                                        <Button style={addStyle}><img className="plus" src={addbtn} /></Button>
                                                     </Dropdown>
                                                 </div>
                                             </Col>
@@ -695,12 +781,14 @@ class ProjectManagement extends Component {
                                     </FormItem>
                                     <FormItem label="Assigned To" style={showselect}>
                                         {getFieldDecorator('assign', {
-                                            rules: [{ required: true, message: 'Please select your assignee!' }],
+                                            rules: [{ required: false, message: 'Please select your assignee!' }],
                                         })(
 
                                             <Select
                                                 placeholder="Assigned To"
                                                 onChange={this.selectMember}
+                                                disabled={disableSelect}
+
                                             >
                                                 {this.state.members.map((item, index) => {
                                                     return <Option key={index} value={item.userId._id}>{item.userId.name}</Option>
@@ -709,9 +797,9 @@ class ProjectManagement extends Component {
                                         )}
                                     </FormItem>
                                     <FormItem>
-                                        <div className="savebtn modalbtn">
+                                        <div style={saveStyle} className="savebtn modalbtn">
                                             <Button htmlType="submit">Save"</Button>
-                                            <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
+
                                         </div>
                                     </FormItem>
                                 </Form>
@@ -744,7 +832,7 @@ class ProjectManagement extends Component {
 
                                     <FormItem>
                                         {this.state.showform ?
-                                            <div className="savebtn modalbtn">
+                                            <div style={saveStyle} className="savebtn modalbtn">
                                                 <Button htmlType='submit'>Save</Button>
 
                                             </div> : ''}
