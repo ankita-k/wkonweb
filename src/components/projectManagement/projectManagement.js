@@ -61,41 +61,53 @@ class ProjectManagement extends Component {
             assignToEmpty: {},
             assignMemberId: '',
             loginId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
+            showselect: { display: "block" },
+            endTaskStyle: { display: "block" },
+            startTaskStyle: { display: "block" }
         }
     }
-    handleSelectChange = (value) => {
-        console.log(value);
-        this.setState({ assignMemberId: value }, function () {
-            console.log(this.state.assignMemberId)
-        })
-        this.props.form.setFieldsValue({
-            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
-        });
 
-    }
     componentDidMount() {
         console.log(this.props)
         if (this.props.location.data) {
             let memberarray = [];
-            console.log(this.props.location.data.record.members);
-            // this.setState({lead: this.props.loggeduserDetails},
-            //     function () {
-            //         console.log(this.state.lead)
-            //     })
-
-            console.log(this.props.location.data.record.members);
             memberarray = this.props.location.data.record.members.filter(element => { return element.role == "Consultant1" || element.role == "Consultant2" || element.role == "Consultant3" || element.role == "Consultant4" });
-            console.log(memberarray)
             this.setState({ members: memberarray });
-            console.log(this.state.members)
             this.setState({ projectname: this.props.location.data.record.name1 })
-            this.setState({ projectreRequirement: this.props.location.data.record.requirement1 })
+            this.setState({ projectreRequirement: this.props.location.data.record.requirement1 });
+            this.setState({ Status: this.props.location.data.record.status });
+
+            /**SHOW ENDTASK IF PROJECT STATUS IS INPROGRESS & SHOW START TASK IF PROJECT STATUS IS NEW */
+            if (this.props.location.data.record.status == 'New') {
+                this.setState({ endTaskStyle: { display: 'none' } })
+                this.setState({ startTaskStyle: { display: 'block' } })
+            }
+            else if (this.props.location.data.record.status == 'InProgress') {
+                this.setState({ startTaskStyle: { display: 'none' } })
+                this.setState({ endTaskStyle: { display: 'block' } })
+            }
+            else if (this.props.location.data.record.status == 'Completed') {
+                this.setState({ endTaskStyle: { display: 'none' } })
+                this.setState({ startTaskStyle: { display: 'none' } })
+            }
+            /** ENDS LOGIC*/
             this.setState({
                 projectId: this.props.location.data.record._id
             }, function () {
                 this.fetchModules();
             });
         }
+
+        /**GET ROLE OF LOGGED USER  AND SHOW SELECT ASIGNESS DROPDOWN ONLY TO VERTICAL HEAD*/
+        if (Object.keys(this.props.loggeduserDetails).length != 0) {
+            if (this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
+                this.setState({ showselect: { display: 'block' } })
+            }
+            else {
+                this.setState({ showselect: { display: 'none' } })
+            }
+        }
+        /**GET ROLE OF LOGGED USER  AND SHOW SELECT ASIGNESS DROPDOWN ONLY TO VERTICAL HEAD* ENDS**/
 
     }
     componentWillReceiveProps(props) {
@@ -162,7 +174,7 @@ class ProjectManagement extends Component {
             console.log('Received values of form: ', values);
             if (values.tasknames && values.taskdetails) {
                 let data = {
-                    name: values.taskname,
+                    name: values.tasknames,
                     description: values.taskdetails,
                     submoduleId: this.state.submoduleId
                 }
@@ -439,28 +451,27 @@ class ProjectManagement extends Component {
         // var d = new Date();
         // var startDate = d.toISOString();
         console.log(this.state.assignToEmpty);
-        if (this.state.assignToEmpty.assignTo.length != 0) {
+        // if (this.state.assignToEmpty.assignTo.length != 0) {
 
-            if (this.state.loginId == this.state.assignToEmpty.assignTo[0].userId._id) {
-                let data = {
-                    startDate: new Date().toISOString(),
-                    status: "InProgess"
-                }
-                console.log(this.state.taskId);
-
-                this.props.actions.taskStarted(data, this.state.taskId).then(response => {
-                    console.log(response)
-                    this.setState({ showloader: false })
-                    if (!response.error) {
-                        this.setState({ Status: response.result.status })
-                        console.log(this.state.Status)
-
-                    }
-                }, err => {
-
-                })
-            }
+        // if (this.state.loginId == this.state.assignToEmpty.assignTo[0].userId._id) {
+        let data = {
+            startDate: new Date().toISOString(),
         }
+        console.log(this.data);
+
+        this.props.actions.taskStarted(data, this.state.taskId).then(response => {
+            console.log(response)
+            this.setState({ showloader: false })
+            if (!response.error) {
+                this.setState({ Status: response.result.status })
+                console.log(this.state.Status)
+
+            }
+        }, err => {
+
+        })
+        // }
+        // }
     }
 
     endTask = () => {
@@ -498,14 +509,25 @@ class ProjectManagement extends Component {
         }
     }
 
+    // SELECT MEMBER TO BE ASSIGNED TO TASK
+    selectMember = (value) => {
+        console.log(value);
+        this.setState({ assignMemberId: value }, function () {
+            console.log(this.state.assignMemberId)
+        })
+        this.props.form.setFieldsValue({
+            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
+        });
+
+    }
     // assign member by vertical head
     assignToMember = () => {
         // console.log(this.state.lead)
         // if ((this.state.lead.tags.length !=0)&& (this.state.lead.tags[0].VerticalLead)) {
-            let data = {
-                userId: this.state.assignMemberId
-            }
-            this.props.actions.assignDevelopers(data, this.state.taskId)
+        let data = {
+            userId: this.state.assignMemberId
+        }
+        this.props.actions.assignDevelopers(data, this.state.taskId)
         // }
 
     }
@@ -513,9 +535,22 @@ class ProjectManagement extends Component {
     editTask = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            if (values.taskname && values.taskdescription && values.assign) {
+            console.log(values)
+            if (values.taskname && values.taskdescription) {
                 console.log('Received values of form: ', values);
-                this.assignToMember();
+                if (values.assign) {
+                    let data = {
+                        userId: values.assign
+                    }
+                    this.props.actions.assignDevelopers(data,this.state.taskId);
+                }
+                let editdata = {
+                    name: values.taskname,
+                    description: values.description,
+                    submoduleId: this.state.submoduleId
+                }
+              
+                // this.assignToMember();
             }
         })
     }
@@ -523,7 +558,7 @@ class ProjectManagement extends Component {
         const { size } = this.props;
         const state = this.state;
         const { getFieldDecorator } = this.props.form;
-        const { namefieldlabel, descriptionfieldlabel, formstyle, projectstyle, taskformstyle, showloader, modulestyle, submodulestyle, taskstyle } = this.state;
+        const { namefieldlabel, descriptionfieldlabel, formstyle, projectstyle, taskformstyle, showloader, modulestyle, submodulestyle, taskstyle, showselect, endTaskStyle, startTaskStyle } = this.state;
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -642,7 +677,7 @@ class ProjectManagement extends Component {
                                         <p>{this.state.Status}</p>
                                     </FormItem>
 
-                                    <FormItem className="taskbtn"
+                                    <FormItem className="taskbtn" style={startTaskStyle}
                                         {...formItemLayout}>
                                         {/* // {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
@@ -651,21 +686,21 @@ class ProjectManagement extends Component {
                                         {/* <Button className="task"onClick={this.endTask}>End Task</Button> */}
 
                                     </FormItem>
-                                    <FormItem
+                                    <FormItem style={endTaskStyle}
                                         {...formItemLayout}>
                                         <Button className="taskPicker" onClick={this.endTask}>End Task</Button>
                                         {/* {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}
                                     </FormItem>
-                                    <FormItem label="Assigned To">
+                                    <FormItem label="Assigned To" style={showselect}>
                                         {getFieldDecorator('assign', {
                                             rules: [{ required: true, message: 'Please select your assignee!' }],
                                         })(
 
-                                           <Select
+                                            <Select
                                                 placeholder="Assigned To"
-                                                onChange={this.handleSelectChange}
+                                                onChange={this.selectMember}
                                             >
                                                 {this.state.members.map((item, index) => {
                                                     return <Option key={index} value={item.userId._id}>{item.userId.name}</Option>
