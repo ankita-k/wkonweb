@@ -72,6 +72,7 @@ class NewProject extends Component {
                 title: 'Role',
                 dataIndex: 'role',
             },
+            
             {
                 title: 'Action',
                 key: 'operation',
