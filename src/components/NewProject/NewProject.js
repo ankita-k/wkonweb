@@ -541,9 +541,9 @@ class NewProject extends Component {
                                                 showSearch
                                             >
                                                 <Option value="New">New</Option>
-                                                <Option value="InDiscussion">InDiscussion</Option>
+                                                <Option value="InDiscussion">In Discussion</Option>
                                                 <Option value="Scoping">Scoping</Option>
-                                                {(this.state.editClient == true) ? <Option value="InProgress">InProgress</Option> : ''}
+                                                {(this.state.editClient == true) ? <Option value="InProgress">In Progress</Option> : ''}
                                                 <Option value="Stalled">Stalled</Option>
                                                 <Option value="Completed">Completed</Option>
                                             </Select>
@@ -710,7 +710,7 @@ class NewProject extends Component {
                                                         placeholder="VerticalLead"
 
                                                     >
-                                                        <Option value="VerticalLead">VerticalLead</Option>
+                                                        <Option value="VerticalLead">Vertical Lead</Option>
                                                     </Select>
                                                 )}
                                             </FormItem>
