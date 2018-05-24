@@ -21,16 +21,6 @@ const { Header, Content, Footer, Sider } = Layout;
 
 class ProjectManagement extends Component {
 
-    // handleSubmit = (e) => {
-    //     console.log("handlesubmit");
-    //     e.preventDefault();
-    //     this.props.form.validateFields((err, values) => {
-    //         if (!err) {
-    //             console.log('Received values of form: ', values);
-    //         }
-    //     });
-    // }
-
     constructor(props) {
         super(props);
 
@@ -82,21 +72,6 @@ class ProjectManagement extends Component {
             this.setState({ projectname: this.props.location.data.record.name1 })
             this.setState({ projectreRequirement: this.props.location.data.record.requirement1 });
 
-
-            // /**SHOW ENDTASK IF PROJECT STATUS IS INPROGRESS & SHOW START TASK IF PROJECT STATUS IS NEW */
-            // if (this.props.location.data.record.status == 'New') {
-            //     this.setState({ endTaskStyle: { display: 'none' } })
-            //     this.setState({ startTaskStyle: { display: 'block' } })
-            // }
-            // else if (this.props.location.data.record.status == 'InProgress') {
-            //     this.setState({ startTaskStyle: { display: 'none' } })
-            //     this.setState({ endTaskStyle: { display: 'block' } })
-            // }
-            // else if (this.props.location.data.record.status == 'Completed') {
-            //     this.setState({ endTaskStyle: { display: 'none' } })
-            //     this.setState({ startTaskStyle: { display: 'none' } })
-            // }
-            /** ENDS LOGIC*/
             this.setState({
                 projectId: this.props.location.data.record._id
             }, function () {
@@ -134,8 +109,14 @@ class ProjectManagement extends Component {
                     projectId: this.state.projectId
                 }
                 console.log(data);
-                this.props.actions.addModule(data);
-                this.fetchModules();
+                this.props.actions.addModule(data).
+                then(response => {
+                    console.log(response)
+                    if (!response.error) {
+                        this.fetchModules();
+                    }
+                })
+
                 this.props.form.setFieldsValue({    //For Clear the Input  Field
                     ['modulename']: '',
                     ['moduledetails']: '',
@@ -165,10 +146,12 @@ class ProjectManagement extends Component {
                     moduleId: this.state.moduleId
                 }
                 console.log(data);
-                this.props.actions.addSubModule(data).then(response=>{
-
+                this.props.actions.addSubModule(data).then(response => {
+                    console.log(response)
+                    if (!response.error) {
+                        this.fetchSubModules(this.state.moduleId)
+                    }
                 })
-                // this.fetchSubModules(this.state.moduleId);
                 this.props.form.setFieldsValue({    //For Clear the Input  Field
                     ['submodulename']: '',
                     ['submoduledetails']: '',
@@ -192,8 +175,13 @@ class ProjectManagement extends Component {
                     date: moment()._d.toISOString()
                 }
                 console.log(data);
-                this.props.actions.addTask(data)
-                this.fetchTasks(this.state.submoduleId);
+                this.props.actions.addTask(data).then(response=>{
+                    console.log(response)
+                    if(!response.error){
+                        this.fetchTasks(this.state.submoduleId);
+                    }
+                })
+               
                 this.props.form.setFieldsValue({
                     ['tasknames']: '',
                     ['taskdetails']: '',
@@ -203,24 +191,6 @@ class ProjectManagement extends Component {
         })
     }
     //*********ADD TASK ENDS********
-    // CREATE MODULES
-    createModule = (res) => {
-        console.log(res);
-        let data = {
-            name: res.projectname,
-            description: res.projectdetails,
-            projectId: this.state.projectId
-        }
-        console.log(data);
-        this.props.actions.moduleCreate(data)
-        this.getModules();
-        this.props.form.setFieldsValue({    //For Clear the Input  Field
-            ['projectname']: '',
-            ['projectdetails']: '',
-        })
-        this.setState({ modal2Visible: false });
-    }
-
 
     // FETCH ALL THE MODULES AGAINST PROJECT,uSING PROJECTID
     fetchModules = () => {
@@ -455,18 +425,7 @@ class ProjectManagement extends Component {
 
 
 
-    handleSubmitmodal2 = (e) => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-                // this.createSubModule(values);
-            }
-
-        });
-    }
-
-    editModule = (e) => {
+    edit_Module_Submodule = (e) => {
         e.preventDefault();
 
         this.props.form.validateFields((err, values) => {
@@ -587,7 +546,7 @@ class ProjectManagement extends Component {
                         if (!response.error) {
                             this.props.actions.getTaskList(this.state.submoduleId).then(result => {
                                 console.log(result)
-                                if(!result.error&& result.result.length!=0){
+                                if (!result.error && result.result.length != 0) {
                                     this.setState({ moduleList: result.result })
                                 }
                             })
@@ -606,17 +565,17 @@ class ProjectManagement extends Component {
                         }
                         console.log('fffffffffffff assign and update')
                         this.props.actions.assignDevelopersandUpdate(devdata, editdata, this.state.taskId)
-                        .then(response => {
-                            console.log(response)
-                            if (!response.error) {
-                                this.props.actions.getTaskList(this.state.submoduleId).then(result => {
-                                    console.log(result)
-                                    if(!result.error&& result.result.length!=0){
-                                        this.setState({ moduleList: result.result })
-                                    }
-                                })
-                            }
-                        })
+                            .then(response => {
+                                console.log(response)
+                                if (!response.error) {
+                                    this.props.actions.getTaskList(this.state.submoduleId).then(result => {
+                                        console.log(result)
+                                        if (!result.error && result.result.length != 0) {
+                                            this.setState({ moduleList: result.result })
+                                        }
+                                    })
+                                }
+                            })
                     }
                     else {
                         console.log('fffffffffffff only update')
@@ -625,7 +584,7 @@ class ProjectManagement extends Component {
                             if (!response.error) {
                                 this.props.actions.getTaskList(this.state.submoduleId).then(result => {
                                     console.log(result)
-                                    if(!result.error&& result.result.length!=0){
+                                    if (!result.error && result.result.length != 0) {
                                         this.setState({ moduleList: result.result })
                                     }
                                 })
@@ -816,7 +775,7 @@ class ProjectManagement extends Component {
 
                             <div className="wkonList detailView projectaddform" style={formstyle}>
 
-                                <Form onSubmit={this.editModule} className="projectForm">
+                                <Form onSubmit={this.edit_Module_Submodule} className="projectForm">
                                     <FormItem label={namefieldlabel}>
                                         {getFieldDecorator('name', {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],

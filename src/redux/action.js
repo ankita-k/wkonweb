@@ -1102,7 +1102,8 @@ export function emailService(data) {
 export function addModule(data) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'module',
+        return new Promise((resolve,reject)=>{
+            fetch(config.apiUrl + 'module',
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1115,6 +1116,7 @@ export function addModule(data) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'Module Created Successfully'))
                 }
@@ -1123,8 +1125,11 @@ export function addModule(data) {
                 }
             })
             .catch((error) => {
+                reject(error)
                 dispatch(toast('error', ' Module Creation Failed'))
             });
+        })
+       
     }
 }
 
@@ -1251,7 +1256,8 @@ export function getModuleInfo(id) {
 export function addSubModule(data) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'submodule',
+        return new Promise((resolve,reject)=>{
+            fetch(config.apiUrl + 'submodule',
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1264,6 +1270,7 @@ export function addSubModule(data) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'SubModule Added Successfully'))
                 }
@@ -1272,8 +1279,11 @@ export function addSubModule(data) {
                 }
             })
             .catch((error) => {
+                reject(error)
                 dispatch(toast('error', ' SubModule Addition Failed'))
             });
+        })
+       
     }
 }
 
@@ -1394,7 +1404,8 @@ export function editSubModule(data, id) {
 export function addTask(data) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'task',
+        return new Promise((resolve,reject)=>{
+            fetch(config.apiUrl + 'task',
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1407,6 +1418,7 @@ export function addTask(data) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'Task Added Successfully'))
                 }
@@ -1415,8 +1427,11 @@ export function addTask(data) {
                 }
             })
             .catch((error) => {
+                reject(error)
                 dispatch(toast('error', ' Task Addition Failed'))
             });
+        })
+        
     }
 }
 
