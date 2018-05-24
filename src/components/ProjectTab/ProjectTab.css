@@ -1,0 +1,67 @@
+
+.cardblock {
+    background: #fff;
+    padding: 2em;
+    border-radius: 8px;
+    -webkit-box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.12), 0 2px 0px -2px rgba(0, 0, 0, 0.32);
+    margin-bottom: 1em;
+    -webkit-transition: 1.6s ease;
+    -o-transition: 1.6s ease;
+    transition: 1.6s ease;
+}
+
+.projecttabWindow {
+    padding: 8px 8px;
+}
+
+.cardcontent {
+    text-align: center;
+}
+
+img.upldimg {
+    width: 50px;
+    text-align: center;
+}
+
+img.prjct {
+    width: 50px;
+}
+p.prjcttxt {
+    font-family: Lato;
+    font-size: 18px;
+    margin-top: 10px;
+    font-weight: 500;
+}
+img.chatting {
+    width: 50px;
+}
+
+p.prjctnameheading {
+    font-size: 26px;
+    font-family: Lato;
+    margin-bottom: 1px
+}
+
+span.prjctnm {
+    color: #006df0;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+p.prjctdesc {
+    font-size: 25px;
+    font-family: Lato;
+    margin-bottom: 2px;
+
+}
+
+p.prjcdtl {
+    font-size: 19px;
+    color: #6d6161;
+    line-height: 28px;
+}
+
+.prjctcontent {
+    margin-bottom: 2em;
+}
