@@ -763,7 +763,7 @@ else{
                                     </FormItem>
                                     <FormItem>
                                         <div style={saveStyle} className="savebtn modalbtn">
-                                            <Button htmlType="submit">Save"</Button>
+                                            <Button htmlType="submit">Save</Button>
 
                                         </div>
                                     </FormItem>
