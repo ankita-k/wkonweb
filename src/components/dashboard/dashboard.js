@@ -214,10 +214,10 @@ class Dashboard extends Component {
       // this.setState({ userrole: this.props.loggeduserDetails.role });
       if (this.props.loggeduserDetails.role == 'admin') {
         this.setState({ clientstyle: { display: 'block' } });
-        this.setState({ clientcreate_style: { display: 'block' } });
+        this.setState({ clientcreate_style: { display: 'none' } });
         this.setState({ clientlist_style: { display: 'block' } });
         this.setState({ projectstyle: { display: 'block' } });
-        this.setState({ projectcreate_style: { display: 'block' } });
+        this.setState({ projectcreate_style: { display: 'none' } });
         this.setState({ projectlist_style: { display: 'block' } });
         this.setState({ billstyle: { display: 'block' } });
         this.setState({ billcreate_style: { display: 'none' } });
