@@ -163,9 +163,9 @@ class ClientList extends Component {
               <Button className="edita" onClick={() => { this.editClient(record) }}>
                 <a href="javascript:;"> <img className="fileIcon" src={editList} /></a></Button></Col>
             <Col lg={{ span: 4 }}></Col>
-            <Col lg={{ span: 10 }}>
+            {/* <Col lg={{ span: 10 }}>
               <Button className="delete" onClick={this.showModal}><a href="javascript:;"><img className="fileIcon" src={deleteList} /></a></Button>
-            </Col>
+            </Col> */}
 
           </Row>
         ),
