@@ -28,6 +28,10 @@ class ClientComponent extends Component {
     componentDidMount() {
         console.log(this.props);
         console.log(this.props.form)
+        this.props.form.setFieldsValue({
+            ['status']: "Interested",
+            ['currency']: "USD",
+        })
         if (this.props.location.data) {
             this.setState({ clientEdit: true })
             this.props.form.setFieldsValue({
