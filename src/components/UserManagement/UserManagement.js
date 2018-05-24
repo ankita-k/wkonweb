@@ -236,26 +236,14 @@ class UserManagement extends Component {
                         role: values.role,
                         password: values.password,
                         manager: values.managers,
-                        tags: values.tags.length != 0 ? values.tags : []
                     }
-console.log(data)
+
+                    if (values.tags!=undefined&& values.tags.length != 0) {
+                        data.tags = values.tags
+                    }
+                    console.log(data)
                     this.props.actions.createUser(data, this.props.history)
-                    // .then(result => {
-                    //     this.setState({ showLoader: false });
-                    //     this.setState({ show: false });
-                    //     console.log(result);
-                    //     if (!result.error) {
-                    //         this.props.opentoast('success', 'User Created  Successfully!');
-                    //         this.props.history.push('/dashboard/Userlist')
-                    //     }
-                    //     else {
-                    //         this.props.opentoast('warning', result.message);
-                    //     }
-                    // }, err => {
-                    //     this.setState({ show: false });
-                    //     this.setState({ showLoader: false });
-                    //     this.props.opentoast('warning', 'UserNot  Created  Successfully!');
-                    // })
+                   
                 }
 
             }
@@ -328,7 +316,7 @@ console.log(data)
                                             rules: [{ required: true, message: 'Please input your Phone No.!' }],
                                         })(
                                             <NumberFormat format="################" placeholder="Phone No." name="phoneNumber"
-                                                />
+                                            />
                                         )}
                                     </FormItem>
                                 </Col>

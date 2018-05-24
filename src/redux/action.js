@@ -1102,7 +1102,8 @@ export function emailService(data) {
 export function addModule(data) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'module',
+        return new Promise((resolve,reject)=>{
+            fetch(config.apiUrl + 'module',
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1115,6 +1116,7 @@ export function addModule(data) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'Module Created Successfully'))
                 }
@@ -1123,13 +1125,16 @@ export function addModule(data) {
                 }
             })
             .catch((error) => {
+                reject(error)
                 dispatch(toast('error', ' Module Creation Failed'))
             });
+        })
+       
     }
 }
 
 //API FOR EDIT MODULE 
-export function editmodule(data,id) {
+export function editmodule(data, id) {
     return (dispatch) => {
         fetch(config.apiUrl + 'module/' + id,
             {
@@ -1195,23 +1200,23 @@ function modulelist(list) {
 export function getProjectModule(projectId) {
     console.log(projectId)
     return (dispatch) => {
-    return new Promise((resolve, reject) => {
-        fetch(config.apiUrl + 'module/getbyprojectid?id=' + projectId,
-            {
-                headers: {
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET',
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                resolve(responseJSON);
-                console.log('get module list', responseJSON)
-            })
-            .catch((error) => {
-                reject(error);
-            });
-    })
+        return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'module/getbyprojectid?id=' + projectId,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET',
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    resolve(responseJSON);
+                    console.log('get module list', responseJSON)
+                })
+                .catch((error) => {
+                    reject(error);
+                });
+        })
     }
 }
 
@@ -1221,25 +1226,25 @@ export function getModuleInfo(id) {
     console.log(id)
     return (dispatch) => {
         return new Promise((resolve, reject) => {
-        fetch(config.apiUrl + 'module/' + id,
-            {
-                headers: {
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET',
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                console.log(responseJSON)
-                resolve(responseJSON)
-                //code to dispatch action for storing module list 
-            })
-            .catch((error) => {
-                reject(error)
-                // code to handle error
-            });
-    })
-}
+            fetch(config.apiUrl + 'module/' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET',
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON)
+                    resolve(responseJSON)
+                    //code to dispatch action for storing module list 
+                })
+                .catch((error) => {
+                    reject(error)
+                    // code to handle error
+                });
+        })
+    }
 }
 /* ***************PROJECT MODULES  CRUD  ENDS***************/
 
@@ -1251,7 +1256,8 @@ export function getModuleInfo(id) {
 export function addSubModule(data) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'submodule',
+        return new Promise((resolve,reject)=>{
+            fetch(config.apiUrl + 'submodule',
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1264,6 +1270,7 @@ export function addSubModule(data) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'SubModule Added Successfully'))
                 }
@@ -1272,8 +1279,11 @@ export function addSubModule(data) {
                 }
             })
             .catch((error) => {
+                reject(error)
                 dispatch(toast('error', ' SubModule Addition Failed'))
             });
+        })
+       
     }
 }
 
@@ -1310,23 +1320,23 @@ export function deleteSubModule(id) {
 export function getSubModuleList(id) {
     return (dispatch) => {
         return new Promise((resolve, reject) => {
-        fetch(config.apiUrl + 'submodule/getbymoduleid?id=' + id,
-            {
-                headers: {
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET',
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                console.log(responseJSON);
-                resolve(responseJSON);
-                //code to dispatch action for storing module list 
-            })
-            .catch((error) => {
-                // code to handle error
-                reject(error);
-            });
+            fetch(config.apiUrl + 'submodule/getbymoduleid?id=' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET',
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON);
+                    resolve(responseJSON);
+                    //code to dispatch action for storing module list 
+                })
+                .catch((error) => {
+                    // code to handle error
+                    reject(error);
+                });
         });
     }
 }
@@ -1335,29 +1345,29 @@ export function getSubModuleInfo(id) {
     console.log(id)
     return (dispatch) => {
         return new Promise((resolve, reject) => {
-        fetch(config.apiUrl + 'submodule/' + id,
-            {
-                headers: {
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET',
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                console.log(responseJSON)
-                resolve(responseJSON);
-                //code to dispatch action for storing module list 
-            })
-            .catch((error) => {
-                reject(error);
-                // code to handle error
-            });
+            fetch(config.apiUrl + 'submodule/' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET',
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON)
+                    resolve(responseJSON);
+                    //code to dispatch action for storing module list 
+                })
+                .catch((error) => {
+                    reject(error);
+                    // code to handle error
+                });
         })
     }
 }
 
 //API FOR EDIT SUBMODULE 
-export function editSubModule(data,id) {
+export function editSubModule(data, id) {
     return (dispatch) => {
         fetch(config.apiUrl + 'submodule/' + id,
             {
@@ -1394,7 +1404,8 @@ export function editSubModule(data,id) {
 export function addTask(data) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'task',
+        return new Promise((resolve,reject)=>{
+            fetch(config.apiUrl + 'task',
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1407,6 +1418,7 @@ export function addTask(data) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 console.log(responseJSON)
+                resolve(responseJSON)
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'Task Added Successfully'))
                 }
@@ -1415,8 +1427,11 @@ export function addTask(data) {
                 }
             })
             .catch((error) => {
+                reject(error)
                 dispatch(toast('error', ' Task Addition Failed'))
             });
+        })
+        
     }
 }
 
@@ -1448,11 +1463,163 @@ export function deleteTask(id) {
             });
     }
 }
-/*ASSIGN TASK TO DEVELOPERS FOR SUBMODULE OF MODULE*/
-export function assignDevelopers(data) {
+/*ASSIGN TASK TO DEVELOPERS FOR SUBMODULE OF MODULE THEN UPDATE TASK*/
+export function assignDevelopersandUpdate(developerdata, updatedata, taskId) {
+    console.log(developerdata, updatedata, taskId)
+
+    return (dispatch) => {
+        return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'task/addassignto?id=' + taskId,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify(developerdata)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON)
+                    if (responseJSON.error) {
+                        dispatch(toast('error', 'Task Assignment Failed'))
+                    }
+                    else {
+                        dispatch(toast('success', 'Task Assignment Successfully!'));
+                        let url = config.apiUrl + "task/" + taskId;
+
+                        fetch(url,
+                            {
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json',
+                                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                                },
+                                method: 'PUT',
+                                body: JSON.stringify(updatedata)
+                            })
+                            .then((response) => response.json())
+                            .then((responseJSON) => {
+                                console.log(responseJSON)
+                                resolve(responseJSON)
+                                dispatch(toast('success', 'Task Updated Successfully!'));
+
+                            })
+                            .catch((error) => {
+                                reject(error)
+                                dispatch(toast('warning', 'Task Updation Failed!'));
+                            });
+
+
+
+                    }
+
+
+                })
+        })
+
+
+    }
+}
+/*API CALL FOR UPDATING TASK */
+export function UpdateTask(data, taskid) {
     console.log(data)
     return (dispatch) => {
-        fetch(config.apiUrl + 'email',
+        return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'task/' + taskid,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    resolve(responseJSON);
+                    console.log(responseJSON)
+                    if (responseJSON.error) {
+                        dispatch(toast('error', 'Task updation falied '))
+                    }
+                    else {
+                        dispatch(toast('success', 'Task updatied Successfully '))
+                    }
+                })
+                .catch((error) => {
+                    reject(error);
+                    dispatch(toast('error', ' Task updation falied'))
+                });
+        })
+    }
+}
+
+
+
+
+/***********GET TASK DATA*********/
+export function getTaskInfo(id) {
+    return (dispatch) => {
+        return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'task/' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET',
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON)
+                    resolve(responseJSON)
+                    //code to dispatch action for storing module list 
+                })
+                .catch((error) => {
+                    reject(error)
+                    // code to handle error
+                });
+        });
+    }
+}
+
+
+/***********GET TASK LIST OF SUBMODULE  *********/
+export function getTaskList(id) {
+    return (dispatch) => {
+        return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'task/getbysubmoduleid?id=' + id,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET',
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON);
+                    resolve(responseJSON);
+                    //code to dispatch action for storing module list 
+                })
+                .catch((error) => {
+                    // code to handle error
+                    reject(error);
+                });
+        });
+    }
+}
+/* ***************PROJECT SUB TASK CRUD  ENDS***************/
+
+
+
+/*********** TIMESHEET  MANAGEMENT CRUD  STARTS*****************/
+
+/** ADD DATA TO USER TIMESHEET  */
+export function createTimeSheet(data) {
+    console.log('dadadaddatatat', data)
+    return (dispatch) => {
+        fetch(config.apiUrl + 'timesheet',
             {
                 headers: {
                     'Accept': 'application/json',
@@ -1466,135 +1633,40 @@ export function assignDevelopers(data) {
             .then((responseJSON) => {
                 console.log(responseJSON)
                 if (!responseJSON.error) {
-                    dispatch(toast('success', 'Task Assigned Successfully'))
+                    dispatch(toast('success', 'Timesheet Created Successfully'))
                 }
                 else {
-                    dispatch(toast('error', 'Task Assignment Failed'))
+                    dispatch(toast('error', 'Timesheet Addition Failed'))
                 }
             })
             .catch((error) => {
-                dispatch(toast('error', ' Task Assignment Failed'))
+                dispatch(toast('error', ' Timesheet Addition Failed'))
             });
     }
 }
-/*FETCHING STARTED DATE OF TASK*/
-export function taskStarted(data, id) {
-    console.log(data)
-    return (dispatch) => {
-        return new Promise((resolve, reject) =>{
-        fetch(config.apiUrl + 'task/' + id,
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'PUT',
-                body: JSON.stringify(data)
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                resolve(responseJSON);
-                console.log(responseJSON)
-                if (!responseJSON.error) {
-                    dispatch(toast('success', 'Task  Started'))
-                }
-                else {
-                    dispatch(toast('error', 'Task not started '))
-                }
-            })
-            .catch((error) => {
-                reject(error);
-                dispatch(toast('error', ' Task not started'))
-            });
-    })
-    }
-}
 
-
-/*FETCHING END DATE OF TASK*/
-export function taskEnded(data, id) {
-    console.log(data)
-    return (dispatch) => {
-        return new Promise((resolve, reject) =>{
-        fetch(config.apiUrl + 'task/' + id,
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'PUT',
-                body: JSON.stringify(data)
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                resolve(responseJSON);
-                console.log(responseJSON)
-                if (!responseJSON.error) {
-                    dispatch(toast('success', 'Task Ended'))
-                }
-                else {
-                    dispatch(toast('error', 'Task not Ended '))
-                }
-            })
-            .catch((error) => {
-                reject(error);
-                dispatch(toast('error', ' Task not Ended'))
-            });
-    })
-}
-}
-
-/***********GET TASK DATA*********/
-export function getTaskInfo(id) {
+/** GET USER TIMESHEET */
+export function getTimesheetByDate(id, date) {
     return (dispatch) => {
         return new Promise((resolve, reject) => {
-        fetch(config.apiUrl + 'task/' + id,
-            {
-                headers: {
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET',
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                console.log(responseJSON)
-                resolve(responseJSON)
-                //code to dispatch action for storing module list 
-            })
-            .catch((error) => {
-                reject(error)
-                // code to handle error
-            });
-        });
-    }
-}
-
-
-/***********GET TASK LIST OF SUBMODULE  *********/
-export function getTaskList(id) {
-    return (dispatch) => {
-        return new Promise((resolve, reject) => {
-        fetch(config.apiUrl + 'task/getbysubmoduleid?id=' + id,
-            {
-                headers: {
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'GET',
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                console.log(responseJSON);
-                resolve(responseJSON);
-                //code to dispatch action for storing module list 
-            })
-            .catch((error) => {
-                // code to handle error
-                reject(error);
-            });
+            fetch(config.apiUrl + 'task/getbyuserId?userId=' + id + '&createdDate=' + date,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET',
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON);
+                    resolve(responseJSON);
+                    //code to dispatch action for storing module list 
+                })
+                .catch((error) => {
+                    // code to handle error
+                    reject(error);
+                });
         });
     }
 }
 /* ***************PROJECT SUB TASK CRUD  ENDS***************/
-

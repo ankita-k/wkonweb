@@ -156,12 +156,14 @@ class NewProject extends Component {
             console.log(this.props.loggeduserDetails.role)
             this.setState({ loggedInRole: this.props.loggeduserDetails.role })
         }
-
-        /** GET VERTICAL LEADS LIST*/
-        if (this.props.listByTags) {
-            this.setState({ verticalHeadrarray: this.props.listByTags });
+        /*IF LOGGED USER IS SALES ASSIGNED LIST IS VERTICAL LEADS AND IF USER IS VERTICAL LEAD LIST IS DEVELOPERS */
+        if (this.props.loggeduserDetails.role == 'Sales') {
+            this.setState({ verticalHeadrarray: this.props.listByTags })
         }
-        /** GET VERTICAL LEADS LIST ENDS*/
+        else if (this.props.loggeduserDetails.role == 'Developer' && this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
+            this.setState({ verticalHeadrarray: this.props.developerlist })
+        }
+        
     }
 
     // ADD PROJECT FUNCTION 
@@ -442,7 +444,7 @@ class NewProject extends Component {
     removeMember = (data, index) => {
         console.log(data, index)    // SELECTED MEMBER USERID
         this.props.actions.removeMember(data, this.state.projectId)
-        this.state.addMember.splice(index,1)   //REMOVE MEMBER FROM LIST AFTER DELETING
+        this.state.addMember.splice(index, 1)   //REMOVE MEMBER FROM LIST AFTER DELETING
     }
 
     render() {

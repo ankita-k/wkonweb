@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { Layout, Modal, Input, Menu, DatePicker, Row, Col, List, Avatar, Form, Select, Spin, Dropdown, Button, Icon, Breadcrumb } from 'antd';
 import backbtn from '../../Images/backbtn.svg';
 import addbtn from '../../Images/addbtn.svg';
+import moment from 'moment';
 const antIcon = <Icon type="loading" style={{ fontSize: 50 }} spin />;
 const Option = Select.Option;
 const Search = Input.Search;
@@ -17,23 +18,9 @@ const FormItem2 = Form.Item;
 const { TextArea } = Input;
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
+
 class ProjectManagement extends Component {
 
-    handleSubmit = (e) => {
-        console.log("handlesubmit");
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-            }
-        });
-    }
-    handleSelectChange = (value) => {
-        console.log(value);
-        this.props.form.setFieldsValue({
-            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
-        });
-    }
     constructor(props) {
         super(props);
 
@@ -61,25 +48,52 @@ class ProjectManagement extends Component {
             submodulestyle: { display: 'none' },              // HIDE-SHOW SUBMODULE MENUITEM OF DROPDOWN
             taskstyle: { display: 'none' },                   // HIDE-SHOW TASK MENUITEM OF DROPDOWN
             showloader: true,
-            Status: ''                                  // HIDE-SHOW LOADER
+            Status: '',
+            taskMatch: '',                                // HIDE-SHOW LOADER
+            assignToEmpty: {},
+            assignMemberId: '',
+            loginId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
+            showselect: { display: "block" },
+            endTaskStyle: { display: "block" },
+            startTaskStyle: { display: "block" },
+            addStyle: { display: "block" },
+            saveStyle: { display: "block" },
+            disableSelect: false,
+            developer: false
         }
     }
 
     componentDidMount() {
         console.log(this.props)
         if (this.props.location.data) {
-            console.log(this.props.location.data.record.members);
-            this.setState({members:this.props.location.data.record.members});
-            console.log(this.state.members);
-            console.log(this.props.location.data.record._id);
+            let memberarray = [];
+            memberarray = this.props.location.data.record.members.filter(element => { return element.role == "Consultant1" || element.role == "Consultant2" || element.role == "Consultant3" || element.role == "Consultant4" });
+            this.setState({ members: memberarray });
             this.setState({ projectname: this.props.location.data.record.name1 })
-            this.setState({ projectreRequirement: this.props.location.data.record.requirement1 })
+            this.setState({ projectreRequirement: this.props.location.data.record.requirement1 });
+
             this.setState({
                 projectId: this.props.location.data.record._id
             }, function () {
                 this.fetchModules();
             });
         }
+
+        /**GET ROLE OF LOGGED USER  AND SHOW SELECT ASIGNESS DROPDOWN ONLY TO VERTICAL HEAD*/
+        if (Object.keys(this.props.loggeduserDetails).length != 0) {
+            if (this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
+                this.setState({ showselect: { display: 'block' } })
+                this.setState({ addStyle: { display: 'block' } })
+                this.setState({ saveStyle: { display: 'block' } })
+            }
+            else {
+                this.setState({ showselect: { display: 'none' } })
+                this.setState({ addStyle: { display: 'none' } })
+                this.setState({ saveStyle: { display: 'none' } })
+            }
+        }
+        /**GET ROLE OF LOGGED USER  AND SHOW SELECT ASIGNESS DROPDOWN ONLY TO VERTICAL HEAD* ENDS**/
+
     }
     componentWillReceiveProps(props) {
         console.log(props);
@@ -95,8 +109,14 @@ class ProjectManagement extends Component {
                     projectId: this.state.projectId
                 }
                 console.log(data);
-                this.props.actions.addModule(data);
-                this.fetchModules();
+                this.props.actions.addModule(data).
+                then(response => {
+                    console.log(response)
+                    if (!response.error) {
+                        this.fetchModules();
+                    }
+                })
+
                 this.props.form.setFieldsValue({    //For Clear the Input  Field
                     ['modulename']: '',
                     ['moduledetails']: '',
@@ -126,8 +146,12 @@ class ProjectManagement extends Component {
                     moduleId: this.state.moduleId
                 }
                 console.log(data);
-                this.props.actions.addSubModule(data)
-                this.fetchSubModules(this.state.moduleId);
+                this.props.actions.addSubModule(data).then(response => {
+                    console.log(response)
+                    if (!response.error) {
+                        this.fetchSubModules(this.state.moduleId)
+                    }
+                })
                 this.props.form.setFieldsValue({    //For Clear the Input  Field
                     ['submodulename']: '',
                     ['submoduledetails']: '',
@@ -145,14 +169,20 @@ class ProjectManagement extends Component {
             console.log('Received values of form: ', values);
             if (values.tasknames && values.taskdetails) {
                 let data = {
-                    name: values.taskname,
+                    name: values.tasknames,
                     description: values.taskdetails,
-                    submoduleId: this.state.submoduleId
+                    submoduleId: this.state.submoduleId,
+                    date: moment()._d.toISOString()
                 }
                 console.log(data);
-                this.props.actions.addTask(data)
-                this.fetchTasks(this.state.submoduleId);
-                this.props.form.setFieldsValue({   
+                this.props.actions.addTask(data).then(response=>{
+                    console.log(response)
+                    if(!response.error){
+                        this.fetchTasks(this.state.submoduleId);
+                    }
+                })
+               
+                this.props.form.setFieldsValue({
                     ['tasknames']: '',
                     ['taskdetails']: '',
                 })
@@ -161,24 +191,6 @@ class ProjectManagement extends Component {
         })
     }
     //*********ADD TASK ENDS********
-    // CREATE MODULES
-    createModule = (res) => {
-        console.log(res);
-        let data = {
-            name: res.projectname,
-            description: res.projectdetails,
-            projectId: this.state.projectId
-        }
-        console.log(data);
-        this.props.actions.moduleCreate(data)
-        this.getModules();
-        this.props.form.setFieldsValue({    //For Clear the Input  Field
-            ['projectname']: '',
-            ['projectdetails']: '',
-        })
-        this.setState({ modal2Visible: false });
-    }
-
 
     // FETCH ALL THE MODULES AGAINST PROJECT,uSING PROJECTID
     fetchModules = () => {
@@ -262,8 +274,8 @@ class ProjectManagement extends Component {
 
     // FUNCTION CALL FOR SUBMODULE LIST AND TASK LIST WHEN CLICKED ON LIST ITEM
     ListItemClicked = (data) => {
-        console.log(data, this.state.functioncall)
-        console.log(data._id);
+        console.log(data);
+
         this.setState({ taskId: data._id });
         if (this.state.functioncall == 'submodules') {
             this.fetchSubModules(data._id);
@@ -274,15 +286,61 @@ class ProjectManagement extends Component {
             this.fetchSubModuleData(data._id)
         }
         else if (this.state.functioncall == 'taskdetail') {
-            this.setState({ formstyle: { display: 'none' } });
-            this.setState({ projectstyle: { display: 'none' } });
-            this.setState({ taskformstyle: { display: 'block' } });
-            this.props.form.setFieldsValue({
-                ['taskname']: data.name,
-                ['taskdescription']: data.description,
-            })
+            this.setState({ disableSelect: false });
+            this.setState({ developer: false })
+            this.gettaskInfo(data);
+
 
         }
+
+    }
+
+    // GET TASK INFO
+    gettaskInfo = (data) => {
+        this.setState({ formstyle: { display: 'none' } });
+        this.setState({ projectstyle: { display: 'none' } });
+        this.setState({ taskformstyle: { display: 'block' } });
+        this.setState({ Status: data.status });
+        this.props.form.setFieldsValue({
+            ['taskname']: data.name,
+            ['taskdescription']: data.description,
+            ['assign']: data.assignTo.length != 0 ? data.assignTo[0].userId.name : ''
+        })
+        if (data.assignTo.length != 0) {
+            this.setState({ disableSelect: true });
+            this.setState({ developer: true })
+        }
+
+
+        if (this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
+            console.log(this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1)
+            this.setState({ endTaskStyle: { display: 'none' } })
+            this.setState({ startTaskStyle: { display: 'none' } })
+        }
+        else {
+            let arr = []
+            arr = data.assignTo.filter(element => { return element.userId != null && element.userId._id == this.state.loginId });
+            console.log(arr)
+
+            if (arr.length != 0) {
+                // this.setState({ endTaskStyle: { display: 'block' } })
+                // this.setState({ endTaskStyle: { display: 'block' } })
+                if (data.status && data.status == 'New') {
+                    this.setState({ endTaskStyle: { display: 'none' } })
+                    this.setState({ startTaskStyle: { display: 'block' } })
+                }
+                else if (data.status && data.status == 'InProgress') {
+                    this.setState({ startTaskStyle: { display: 'none' } })
+                    this.setState({ endTaskStyle: { display: 'block' } })
+                }
+                else if (data.status && data.status == 'Completed') {
+                    this.setState({ endTaskStyle: { display: 'none' } })
+                    this.setState({ startTaskStyle: { display: 'none' } })
+                }
+            }
+
+        }
+
     }
 
 
@@ -300,6 +358,8 @@ class ProjectManagement extends Component {
         this.fetchModuleData(this.state.moduleId)
     }
 
+
+    // GET TASK DETAIL
     //GET PARTICULAR SUBMODULE INFO
     fetchSubModuleData = (id) => {
         this.props.actions.getSubModuleInfo(id).then(response => {
@@ -363,30 +423,9 @@ class ProjectManagement extends Component {
         this.setState({ modal4Visible });
     }
 
-    handleSubmitmodal = (e) => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-                this.createModule(values);
-            }
-
-        });
-    }
 
 
-    handleSubmitmodal2 = (e) => {
-        e.preventDefault();
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-                // this.createSubModule(values);
-            }
-
-        });
-    }
-
-    editModule = (e) => {
+    edit_Module_Submodule = (e) => {
         e.preventDefault();
 
         this.props.form.validateFields((err, values) => {
@@ -423,43 +462,44 @@ class ProjectManagement extends Component {
 
     startTask = () => {
 
-        // var d = new Date();
-        // var startDate = d.toISOString();
         let data = {
-            startDate: new Date().toISOString(),
-            status: "InProgess"
+            startDate: moment()._d.toISOString(),
+            date: moment()._d.toISOString(),
+            status: 'InProgress'
         }
-        console.log(this.state.taskId);
-        
-        this.props.actions.taskStarted(data, this.state.taskId).then(response => {
+        this.props.actions.UpdateTask(data, this.state.taskId).then(response => {
             console.log(response)
-            this.setState({showloader:false})
             if (!response.error) {
-                this.setState({ Status: response.result.status })
-                console.log(this.state.Status)
-
+                this.setState({ startTaskStyle: { display: 'none' } })
+                this.setState({ endTaskStyle: { display: 'block' } })
+                this.setState({ Status: response.result.status });
             }
-        }, err => {
 
         })
+
     }
 
     endTask = () => {
+
         let data = {
-            endDate: new Date().toISOString(),
-            status: "Completed"
+            endDate: moment()._d.toISOString(),
+            date: moment()._d.toISOString(),
+            status: 'Completed'
         }
-        this.props.actions.taskEnded(data, this.state.taskId).then(response => {
-            console.log(response)
-            this.setState({showloader:false})
-            if (!response.error) {
-                this.setState({ Status: response.result.status })
-                console.log(this.state.Status)
+        this.props.actions.UpdateTask(data, this.state.taskId)
+            .then(response => {
+                console.log(response)
+                this.setState({ showloader: false })
+                if (!response.error) {
+                    this.setState({ startTaskStyle: { display: 'none' } })
+                    this.setState({ endTaskStyle: { display: 'none' } })
+                    this.setState({ Status: response.result.status });
+                }
+            }, err => {
 
-            }
-        }, err => {
+            })
 
-        })
+
     }
     goback = () => {
         console.log("backbutton triggered");
@@ -468,19 +508,102 @@ class ProjectManagement extends Component {
         }
         else if (this.state.showtask && this.state.showsubmodule) {
             this.getsubModules();
-
         }
-        else{
+        else {
             this.props.history.push('../dashboard/projectlist');
         }
+    }
+
+    // SELECT MEMBER TO BE ASSIGNED TO TASK
+    selectMember = (value) => {
+        console.log(value);
+        this.setState({ assignMemberId: value }, function () {
+            console.log(this.state.assignMemberId)
+        })
+        this.props.form.setFieldsValue({
+            note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
+        });
 
     }
 
+
+    editTask = (e) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+
+            if (values.taskname && values.taskdescription) {
+                console.log('Received values of form: ', values);
+                if (this.state.developer) {
+                    let data = {
+                        name: values.taskname,
+                        description: values.taskdescription,
+                        submoduleId: this.state.submoduleId
+                    }
+                    console.log(data)
+                    console.log('fffffffffffff only and update')
+                    this.props.actions.UpdateTask(data, this.state.taskId, this.state.submoduleId).then(response => {
+                        console.log(response)
+                        if (!response.error) {
+                            this.props.actions.getTaskList(this.state.submoduleId).then(result => {
+                                console.log(result)
+                                if (!result.error && result.result.length != 0) {
+                                    this.setState({ moduleList: result.result })
+                                }
+                            })
+                        }
+                    })
+                }
+                else {
+                    let editdata = {
+                        name: values.taskname,
+                        description: values.taskdescription,
+                        submoduleId: this.state.submoduleId
+                    }
+                    if (values.assign) {
+                        var devdata = {
+                            userId: values.assign
+                        }
+                        console.log('fffffffffffff assign and update')
+                        this.props.actions.assignDevelopersandUpdate(devdata, editdata, this.state.taskId)
+                            .then(response => {
+                                console.log(response)
+                                if (!response.error) {
+                                    this.props.actions.getTaskList(this.state.submoduleId).then(result => {
+                                        console.log(result)
+                                        if (!result.error && result.result.length != 0) {
+                                            this.setState({ moduleList: result.result })
+                                        }
+                                    })
+                                }
+                            })
+                    }
+                    else {
+                        console.log('fffffffffffff only update')
+                        this.props.actions.UpdateTask(editdata, this.state.taskId, this.state.submoduleId).then(response => {
+                            console.log(response)
+                            if (!response.error) {
+                                this.props.actions.getTaskList(this.state.submoduleId).then(result => {
+                                    console.log(result)
+                                    if (!result.error && result.result.length != 0) {
+                                        this.setState({ moduleList: result.result })
+                                    }
+                                })
+                            }
+                        })
+                    }
+
+
+                }
+
+            }
+        })
+    }
     render() {
         const { size } = this.props;
         const state = this.state;
         const { getFieldDecorator } = this.props.form;
-        const { namefieldlabel, descriptionfieldlabel, formstyle, projectstyle, taskformstyle, showloader, modulestyle, submodulestyle, taskstyle } = this.state;
+        const { disableSelect, namefieldlabel, descriptionfieldlabel, formstyle, projectstyle, taskformstyle, showloader, modulestyle,
+            submodulestyle, taskstyle, showselect, endTaskStyle, startTaskStyle, addStyle, saveStyle } = this.state;
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -509,7 +632,7 @@ class ProjectManagement extends Component {
                                     <div className="listHeader">
                                         <Row>
                                             <Col lg={4}>
-                                                <Button  onClick={() => { this.goback() }} type="primary"><img src={backbtn} /></Button>
+                                                <Button onClick={() => { this.goback() }} type="primary"><img src={backbtn} /></Button>
                                             </Col>
                                             <Col lg={12}>
                                                 <Breadcrumb className="activelink">
@@ -534,8 +657,10 @@ class ProjectManagement extends Component {
                                                         <Menu.Item style={taskstyle} >
                                                             <a onClick={() => this.setModal4Visible(true)}>Task</a>
                                                         </Menu.Item>
-                                                    </Menu>} placement="bottomCenter" trigger={['click']}>
-                                                        <Button><img className="plus" src={addbtn} /></Button>
+                                                    </Menu>}
+                                                        placement="bottomCenter" trigger={['click']}>
+                                                        {/* <span>hghfg</span> */}
+                                                        <Button style={addStyle}><img className="plus" src={addbtn} /></Button>
                                                     </Dropdown>
                                                 </div>
                                             </Col>
@@ -569,20 +694,20 @@ class ProjectManagement extends Component {
                         <Col lg={12}>
                             <div className="wkonList detailView taskaddform" style={taskformstyle}>
 
-                                <Form onSubmit={this.handleSubmit} className="projectForm">
+                                <Form onSubmit={this.editTask} className="projectForm">
                                     <FormItem label="Task Name">
                                         {getFieldDecorator('taskname', { initialValue: '' }, {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
                                         })(
                                             <Input placeholder="Enter name" />
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem label="Task Description">
                                         {getFieldDecorator('taskdescription', { initialValue: '' }, {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
                                             <textarea placeholder="Enter Description" />
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem label="Status">
                                         {/* {getFieldDecorator('gender', {
@@ -599,41 +724,43 @@ class ProjectManagement extends Component {
                                         <p>{this.state.Status}</p>
                                     </FormItem>
 
-                                    <FormItem className="taskbtn"
+                                    <FormItem className="taskbtn" style={startTaskStyle}
                                         {...formItemLayout}>
                                         {/* // {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}
                                         <Button className="task" onClick={this.startTask}>Start Task</Button>
                                         {/* <Button className="task"onClick={this.endTask}>End Task</Button> */}
-                                        
+
                                     </FormItem>
-                                    <FormItem
+                                    <FormItem style={endTaskStyle}
                                         {...formItemLayout}>
                                         <Button className="taskPicker" onClick={this.endTask}>End Task</Button>
                                         {/* {getFieldDecorator('date-picker', config)(
                                             <DatePicker />
                                         )} */}
-                                         {/* || !(item.tags.indexOf("Vertical Head")) */}
                                     </FormItem>
-                                    <FormItem label="Assigned To">
+                                    <FormItem label="Assigned To" style={showselect}>
                                         {getFieldDecorator('assign', {
-                                            rules: [{ required: true, message: 'Please select your assignee!' }],
+                                            rules: [{ required: false, message: 'Please select your assignee!' }],
                                         })(
+
                                             <Select
                                                 placeholder="Assigned To"
-                                                onChange={this.handleSelectChange}
+                                                onChange={this.selectMember}
+                                                disabled={disableSelect}
+
                                             >
-                                            {this.state.members.map((item, index) => {
-                                                return ((!(item.userId.role == "Sales") || !(item.userId.tags.indexOf("Vertical Head"))) ?<Option  key={index} value={item.userId._id}>{item.userId.name}</Option>:"")
-                                            })}
+                                                {this.state.members.map((item, index) => {
+                                                    return <Option key={index} value={item.userId._id}>{item.userId.name}</Option>
+                                                })}
                                             </Select>
-                                         )}
+                                        )}
                                     </FormItem>
                                     <FormItem>
-                                        <div className="savebtn modalbtn">
-                                            <Button onClick={this.handleSubmitmodal}>Save</Button>
-                                            <Button className="cancelbtn" onClick={this.closeModule}>Cancel</Button>
+                                        <div style={saveStyle} className="savebtn modalbtn">
+                                            <Button htmlType="submit">Save"</Button>
+
                                         </div>
                                     </FormItem>
                                 </Form>
@@ -648,27 +775,27 @@ class ProjectManagement extends Component {
 
                             <div className="wkonList detailView projectaddform" style={formstyle}>
 
-                                <Form onSubmit={this.editModule} className="projectForm">
+                                <Form onSubmit={this.edit_Module_Submodule} className="projectForm">
                                     <FormItem label={namefieldlabel}>
                                         {getFieldDecorator('name', {
                                             rules: [{ required: true, message: 'Please input your Task Name !' }],
                                         })(
                                             <Input placeholder="Enter name" />
-                                            )}
+                                        )}
                                     </FormItem>
                                     <FormItem label={descriptionfieldlabel}>
                                         {getFieldDecorator('description', {
                                             rules: [{ required: true, message: 'Please input your Task Description !' }],
                                         })(
                                             <textarea placeholder="Enter Description" />
-                                            )}
+                                        )}
                                     </FormItem>
 
                                     <FormItem>
                                         {this.state.showform ?
-                                            <div className="savebtn modalbtn">
+                                            <div style={saveStyle} className="savebtn modalbtn">
                                                 <Button htmlType='submit'>Save</Button>
-    
+
                                             </div> : ''}
                                     </FormItem>
                                 </Form>
@@ -731,7 +858,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectName!' }],
                                     })(
                                         <Input placeholder="" />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -741,7 +868,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your ProjectDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
 
@@ -775,7 +902,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your  SubModule Name!' }],
                                     })(
                                         <Input placeholder="" />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
                             <div className="projectdata">
@@ -785,7 +912,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your SubModule Details!' }],
                                     })(
                                         <TextArea rows={4} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
 
@@ -811,16 +938,16 @@ class ProjectManagement extends Component {
                         onCancel={() => this.setModal4Visible(false)}
                     >
                         <Form onSubmit={this.addTask}>
-                        <div className="projectname">
-                        <p>Name :</p>
-                        <FormItem>
-                            {getFieldDecorator('tasknames', {
-                                rules: [{ required: true, message: 'Please input your  Task Name!' }],
-                            })(
-                                <Input placeholder="Enter task name" />
-                                )}
-                        </FormItem>
-                    
+                            <div className="projectname">
+                                <p>Name :</p>
+                                <FormItem>
+                                    {getFieldDecorator('tasknames', {
+                                        rules: [{ required: true, message: 'Please input your  Task Name!' }],
+                                    })(
+                                        <Input placeholder="Enter task name" />
+                                    )}
+                                </FormItem>
+
                             </div>
                             <div className="projectdata">
                                 <p>Details :</p>
@@ -829,7 +956,7 @@ class ProjectManagement extends Component {
                                         rules: [{ required: true, message: 'Please input your TaskDetails!' }],
                                     })(
                                         <TextArea rows={4} />
-                                        )}
+                                    )}
                                 </FormItem>
                             </div>
 
