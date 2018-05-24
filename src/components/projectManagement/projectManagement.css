@@ -169,6 +169,9 @@
     text-align: left;
     margin-left: 2em;
 }
+.ant-row.taskListdate {
+    display: flex;
+}
 .taskbtn .ant-form-item-control {
     text-align: center;
 }
@@ -185,9 +188,6 @@ button.ant-btn.taskPicker {
     width: 100%;
 }
 button.ant-btn.task {
-    /* width: 10em;
-    margin-right: 2em; */
-    margin-top: 2em;
     width: 100%;
 }
 .inputForminfo .statuspipeline.ant-select.ant-select-disabled {

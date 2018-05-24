@@ -1,28 +1,53 @@
 
 .lunch .ant-btn-primary {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: stretch;
+    text-align: center;
     color: #795555;
     background-color: transparent;
     border-color: #6065690d;
-    width: 55%;
-    height: 50px;
+    width: 8em;
+    height: 8em;
     margin: 1em 0 0 0;
     font-size: 16px;
+   
+}
+.lunch .ant-btn-primary:hover {
+    box-shadow: 0px 7px 7px -6px #e4dbdb;
+}
+.teabreak .ant-btn-primary:hover {
+    box-shadow: 0px 7px 7px -6px #e4dbdb;
+}
+.meeting  .ant-btn-primary:hover {
+    box-shadow: 0px 7px 7px -6px #e4dbdb;
 }
 .teabreak .ant-btn-primary {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: stretch;
+    text-align: center;
     color: #795555;
     background-color: transparent;
     border-color: #6065690d;
-    width: 55%;
-    height: 50px;
+    width: 8em;
+    height: 8em;
     margin: 1em 0 0 0;
     font-size: 16px;
 }
 .meeting .ant-btn-primary {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: stretch;
+    text-align: center;
     color: #795555;
     background-color: transparent;
     border-color: #6065690d;
-    width: 55%;
-    height: 50px;
+    width: 8em;
+    height: 8em;
     margin: 1em 0 0 0;
     font-size: 16px;
 }
@@ -30,17 +55,22 @@
     margin-bottom: 1em;
     text-align: left;
     margin-left: 3em;
-
+    float: left;
 }
 .ant-row.teabreak {
-    text-align: center;
+    margin-bottom: 1em;
     text-align: left;
     margin-left: 3em;
+    float: left;
 }
 .ant-row.meeting {
-    text-align: center;
+    margin-bottom: 1em;
     text-align: left;
     margin-left: 3em;
+    float: left;
+}
+span.lunchMeal1 {
+    margin: 44px 0 0 26px;
 }
 .activitybutton .ant-btn > .anticon + span, .ant-btn > span + .anticon {
     margin-left: 0;
@@ -63,7 +93,7 @@
 .activitybutton img {
     width: 28px;
     position: absolute;
-    left: 22px;
+    left: 46px;
 }
 .teaBreak {
     width: 50%;
@@ -92,12 +122,31 @@
   }
   span.lunchMeal {
     float: left;
-    margin-left: 3em;
+    margin-left: 1em;
+    margin-top: 3em;
+}
+.taskListdate span.ant-calendar-picker {
+    position: absolute;
+    right: 1em;
+    margin-top: 9px;
 }
 .ant-row.actname h1 {
-    margin-bottom: 6px;
+    margin-bottom: 10px;
     text-align: left;
     padding-left: 1em;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #0000009e;
+}
+.taskListdate p {
+    margin-left: 1em;
+    color: #5d5e60;
+    font-size: 14px;
+    font-weight: 400;
+    font-family: Lato;
+    padding-top: 13px;
+    letter-spacing: 1px;
 }
 .lunchTime span.ant-time-picker {
     width: 100%;
@@ -113,10 +162,16 @@
 }
 button.ant-btn.modalSave {
     border: none;
-    margin-right: 2em;
+    margin-right: 1em;
     background: #448aff;
     color: #fff;
     outline: none;
+}
+button.ant-btn.modalSave:hover {
+    background: #295fb9;
+}
+button.ant-btn.modalCancel:hover {
+    background: #e2dbdb91;
 }
 button.ant-btn.modalCancel {
     margin-right: 2em;
@@ -139,4 +194,15 @@ button.ant-btn.modalCancel {
     top: 0;
     text-align: left;
   }
-/* modal css   */
+  .ant-row.taskListdate {
+    background: #f4f8fb;
+    border-left: 1px solid #80808026;
+}
+.dataonly a {
+    font-variant: all-petite-caps;
+    font-size: 19px;
+}
+.taskbtn {
+    height: 100vh;
+    background: #fff;
+}
