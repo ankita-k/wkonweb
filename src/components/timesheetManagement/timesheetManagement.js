@@ -55,35 +55,41 @@ class WrappedtimesheetManagement extends Component {
             console.log('Received values of form: ', values);
             if (!err) {
                 let data = {
-                    userId: this.state.userId,
-                    startTime: values.start_time._d.toISOString(),
-                    endTime: values.end_time._d.toISOString(),
+                  
+                    startDate: values.start_time._d.toISOString(),
+                    endDate: values.end_time._d.toISOString(),
                     date: moment()._d.toISOString(),
-                    purpose: this.state.timesheet_title
+                    name: this.state.timesheet_title,
+//assignTo:{usr}
                 }
                 // console.log(values.end_time.toISOString())
                 console.log(data)
-                this.props.actions.createTimeSheet(data);
-                this.setState({ visible: false, });
+                this.props.actions.addTask(data).then(response=>{
+                    console.log(response)
+                    if(!response.error){
+                        this.getTimesheet(this.state.date)
+                    }
+                })
+                this.setState({ modal1Visible: false, });
                 this.props.form.resetFields();
             }
 
 
         });
     }
+
+    
+
     state = {
         modal1Visible: false,
         modal2Visible: false,
         modal3Visible: false,
     }
-    setModal1Visible(modal1Visible) {
+    setModal1Visible(modal1Visible,title) {
         this.setState({ modal1Visible });
-    }
-    setModal2Visible(modal2Visible) {
-        this.setState({ modal2Visible });
-    }
-    setModal3Visible(modal3Visible) {
-        this.setState({ modal3Visible });
+        this.setState({timesheet_title:title})
+        this.setState({ disableEnd_time: false });
+        this.props.form.resetFields();
     }
 
     handleOk = (e) => {
@@ -97,7 +103,7 @@ class WrappedtimesheetManagement extends Component {
     handleCancel = (e) => {
 
         this.setState({
-            visible: false,
+            modal1Visible: false,
         });
     };
 
@@ -177,19 +183,19 @@ class WrappedtimesheetManagement extends Component {
                                 <Row className="actname"><h1>Activity</h1></Row>
                                 <div className="taskbtn">
                                 <Row className="lunch">
-                                    <Button className="activitybutton" type="primary" onClick={() => this.setModal1Visible(true)}>
+                                    <Button className="activitybutton" type="primary" onClick={() => this.setModal1Visible(true,'Lunch')}>
                                   
                                         <img src={lunch} />
                                         <span className="lunchMeal1">Lunch</span>
 
                                     </Button>
                                 </Row>
-                                <Row className="lunch"><Button className="activitybutton" type="primary" onClick={() => this.setModal2Visible(true)}>
+                                <Row className="lunch"><Button className="activitybutton" type="primary" onClick={() => this.setModal1Visible(true,'Tea Break')}>
                                     <img src={teabreak} />
                                     <span className="lunchMeal">Tea break</span>
 
                                 </Button></Row>
-                                <Row className="lunch"><Button className="activitybutton" type="primary" onClick={() => this.setModal3Visible(true)}>
+                                <Row className="lunch"><Button className="activitybutton" type="primary" onClick={() => this.setModal1Visible(true,'Meeting')}>
                                     <img src={meeting} />
                                     <span className="lunchMeal">Meeting</span>
                                 </Button></Row>
@@ -199,12 +205,11 @@ class WrappedtimesheetManagement extends Component {
                             {/* lunch Modal */}
                             <div>
                                 <Modal
-                                    title="Lunch"
+                                    title={timesheet_title}
                                     wrapClassName="vertical-center-modal"
 
                                     visible={this.state.modal1Visible}
-                                    onOk={() => this.setModal1Visible(false)}
-                                    onCancel={() => this.setModal1Visible(false)}
+                                   onCancel={this.handleCancel}
                                 >
                                     <div className="lunchTime">
                                         <Form onSubmit={this.createTimesheet}>
@@ -239,7 +244,7 @@ class WrappedtimesheetManagement extends Component {
                                                 }}
                                             >
                                                 <Button className="modalSave" htmlType="submit">Save</Button>
-                                                <Button className="modalCancel" htmlType="submit" onClick={this.closeModule}>Cancel</Button>
+                                                <Button className="modalCancel"  onClick={this.handleCancel}>Cancel</Button>
                                                 
                                             </FormItem>
                                         </Form>
@@ -248,7 +253,7 @@ class WrappedtimesheetManagement extends Component {
                             </div>
                             {/* lunch Modal */}
                             {/* tea break*/}
-                            <div>
+                            {/* <div>
 
                                 <Modal
                                     title="Tea break"
@@ -289,10 +294,10 @@ class WrappedtimesheetManagement extends Component {
                                         </Form>
                                     </div>
                                 </Modal>
-                            </div>
+                            </div> */}
                             {/*teabreak */}
                             {/* tea break*/}
-                            <div>
+                            {/* <div>
 
                                 <Modal
                                     title="Meeting"
@@ -301,8 +306,8 @@ class WrappedtimesheetManagement extends Component {
                                     visible={this.state.modal3Visible}
                                     onOk={() => this.setModal3Visible(false)}
                                     onCancel={() => this.setModal3Visible(false)}
-                                >
-
+                                > */}
+{/* 
                                     <div className="lunchTime">
                                         <Form onSubmit={this.handleSubmit}>
                                             <p>Start Time:</p>
@@ -333,7 +338,7 @@ class WrappedtimesheetManagement extends Component {
                                         </Form>
                                     </div>
                                 </Modal>
-                            </div>
+                            </div> */}
                             {/*Meeting */}
 
                         </Col>
@@ -351,7 +356,9 @@ class WrappedtimesheetManagement extends Component {
                                         <List.Item>
                                             <List.Item.Meta
                                                 title={<a>{item.name}</a>}
-                                            // description={item.startDate}
+                                              description={item.startDate}
+                                              
+                                              // avatar={item.endDate}
                                             
                                             />
                                         </List.Item>
