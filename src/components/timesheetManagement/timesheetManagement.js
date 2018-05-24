@@ -350,8 +350,9 @@ class WrappedtimesheetManagement extends Component {
                                     renderItem={item => (
                                         <List.Item>
                                             <List.Item.Meta
-                                                title={<a>{item.purpose}</a>}
-                                            // description="Lorem Ipsum is simply dummy text"
+                                                title={<a>{item.name}</a>}
+                                            // description={item.startDate}
+                                            
                                             />
                                         </List.Item>
                                     )}
