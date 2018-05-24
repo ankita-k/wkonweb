@@ -67,7 +67,8 @@ class ProjectManagement extends Component {
         console.log(this.props)
         if (this.props.location.data) {
             let memberarray = [];
-            memberarray = this.props.location.data.record.members.filter(element => { return element.role == "Consultant1" || element.role == "Consultant2" || element.role == "Consultant3" || element.role == "Consultant4" });
+            memberarray = this.props.location.data.record.members.filter(element => { return element.role == "Consultant1" || element.role == "Consultant2" || element.role == "Consultant3" || element.role == "Consultant4"|| element.role=="VerticalLead" });
+         console.log(memberarray);
             this.setState({ members: memberarray });
             this.setState({ projectname: this.props.location.data.record.name1 })
             this.setState({ projectreRequirement: this.props.location.data.record.requirement1 });
@@ -312,12 +313,12 @@ class ProjectManagement extends Component {
         }
 
 
-        if (this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
-            console.log(this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1)
-            this.setState({ endTaskStyle: { display: 'none' } })
-            this.setState({ startTaskStyle: { display: 'none' } })
-        }
-        else {
+        // if (this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
+        //     console.log(this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1)
+        //     this.setState({ endTaskStyle: { display: 'none' } })
+        //     this.setState({ startTaskStyle: { display: 'none' } })
+        // }
+        // else {
             let arr = []
             arr = data.assignTo.filter(element => { return element.userId != null && element.userId._id == this.state.loginId });
             console.log(arr)
@@ -338,8 +339,11 @@ class ProjectManagement extends Component {
                     this.setState({ startTaskStyle: { display: 'none' } })
                 }
             }
-
-        }
+else{
+    this.setState({ endTaskStyle: { display: 'none' } })
+        this.setState({ startTaskStyle: { display: 'none' } })
+}
+        // }
 
     }
 
