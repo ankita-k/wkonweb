@@ -165,8 +165,10 @@ class ProjectManagement extends Component {
                     moduleId: this.state.moduleId
                 }
                 console.log(data);
-                this.props.actions.addSubModule(data)
-                this.fetchSubModules(this.state.moduleId);
+                this.props.actions.addSubModule(data).then(response=>{
+
+                })
+                // this.fetchSubModules(this.state.moduleId);
                 this.props.form.setFieldsValue({    //For Clear the Input  Field
                     ['submodulename']: '',
                     ['submoduledetails']: '',
@@ -604,17 +606,17 @@ class ProjectManagement extends Component {
                         }
                         console.log('fffffffffffff assign and update')
                         this.props.actions.assignDevelopersandUpdate(devdata, editdata, this.state.taskId)
-                        // .then(response => {
-                        //     console.log(response)
-                        //     if (!response.error) {
-                        //         this.props.actions.getTaskList(this.state.submoduleId).then(result => {
-                        //             console.log(result)
-                        //             if(!result.error&& result.result.length!=0){
-                        //                 this.setState({ moduleList: result.result })
-                        //             }
-                        //         })
-                        //     }
-                        // })
+                        .then(response => {
+                            console.log(response)
+                            if (!response.error) {
+                                this.props.actions.getTaskList(this.state.submoduleId).then(result => {
+                                    console.log(result)
+                                    if(!result.error&& result.result.length!=0){
+                                        this.setState({ moduleList: result.result })
+                                    }
+                                })
+                            }
+                        })
                     }
                     else {
                         console.log('fffffffffffff only update')

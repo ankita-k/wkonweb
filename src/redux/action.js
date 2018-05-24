@@ -1451,56 +1451,59 @@ export function deleteTask(id) {
 /*ASSIGN TASK TO DEVELOPERS FOR SUBMODULE OF MODULE THEN UPDATE TASK*/
 export function assignDevelopersandUpdate(developerdata, updatedata, taskId) {
     console.log(developerdata, updatedata, taskId)
+
     return (dispatch) => {
+        return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'task/addassignto?id=' + taskId,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify(developerdata)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON)
+                    if (responseJSON.error) {
+                        dispatch(toast('error', 'Task Assignment Failed'))
+                    }
+                    else {
+                        dispatch(toast('success', 'Task Assignment Successfully!'));
+                        let url = config.apiUrl + "task/" + taskId;
 
-        fetch(config.apiUrl + 'task/addassignto?id=' + taskId,
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'PUT',
-                body: JSON.stringify(developerdata)
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                console.log(responseJSON)
-                if (responseJSON.error) {
-                    dispatch(toast('error', 'Task Assignment Failed'))
-                }
-                else {
-                    dispatch(toast('success', 'Task Assignment Successfully!'));
-                    let url = config.apiUrl + "task/" + taskId;
+                        fetch(url,
+                            {
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json',
+                                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                                },
+                                method: 'PUT',
+                                body: JSON.stringify(updatedata)
+                            })
+                            .then((response) => response.json())
+                            .then((responseJSON) => {
+                                console.log(responseJSON)
+                                resolve(responseJSON)
+                                dispatch(toast('success', 'Task Updated Successfully!'));
 
-                    fetch(url,
-                        {
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json',
-                                'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                            },
-                            method: 'PUT',
-                            body: JSON.stringify(updatedata)
-                        })
-                        .then((response) => response.json())
-                        .then((responseJSON) => {
-                            console.log(responseJSON)
-
-                            dispatch(toast('success', 'Task Updated Successfully!'));
-
-                        })
-                        .catch((error) => {
-
-                            dispatch(toast('warning', 'Task Updation Failed!'));
-                        });
-
-
-
-                }
+                            })
+                            .catch((error) => {
+                                reject(error)
+                                dispatch(toast('warning', 'Task Updation Failed!'));
+                            });
 
 
-            })
+
+                    }
+
+
+                })
+        })
+
 
     }
 }
