@@ -60,6 +60,7 @@ class WrappedtimesheetManagement extends Component {
                     endDate: values.end_time._d.toISOString(),
                     date: moment()._d.toISOString(),
                     name: this.state.timesheet_title,
+                    assignTo:this.state.userId,
 //assignTo:{usr}
                 }
                 // console.log(values.end_time.toISOString())
