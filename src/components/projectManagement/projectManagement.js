@@ -173,7 +173,8 @@ class ProjectManagement extends Component {
                     name: values.tasknames,
                     description: values.taskdetails,
                     submoduleId: this.state.submoduleId,
-                    date: moment()._d.toISOString()
+                    date: moment()._d.toISOString(),
+                    status:'New'
                 }
                 console.log(data);
                 this.props.actions.addTask(data).then(response=>{
@@ -313,11 +314,9 @@ class ProjectManagement extends Component {
         }
 
 
-        // if (this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
-        //     console.log(this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1)
-        //     this.setState({ endTaskStyle: { display: 'none' } })
-        //     this.setState({ startTaskStyle: { display: 'none' } })
-        // }
+        if (this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
+            this.setState({ showselect: { display: 'block' } })
+        }
         // else {
             let arr = []
             arr = data.assignTo.filter(element => { return element.userId != null && element.userId._id == this.state.loginId });

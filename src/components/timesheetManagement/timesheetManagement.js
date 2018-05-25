@@ -13,7 +13,7 @@ import moment from 'moment';
 
 
 const columns = [{
-    title: 'Project Name',
+    title: 'Task Name',
     dataIndex: 'name',
 }, {
     title: 'StartTime',
@@ -24,14 +24,14 @@ const columns = [{
 }];
 
 const data = [];
-for (let i = 0; i < 46; i++) {
-    data.push({
-        key: i,
-        name: `WKON ${i}`,
-        starttime: '10:30',
-       endtime: '12:30 ',
-    });
-}
+// for (let i = 0; i < 46; i++) {
+//     data.push({
+//         key: i,
+//         name: `WKON ${i}`,
+//         starttime: '10:30',
+//        endtime: '12:30 ',
+//     });
+// }
 
 
 
@@ -56,23 +56,6 @@ const { Header, Content, Footer, Sider } = Layout;
 
 class WrappedtimesheetManagement extends Component {
 
-    // table
-    
-    start = () => {
-        this.setState({ loading: true });
-        // ajax request after empty completing
-        setTimeout(() => {
-            this.setState({
-                selectedRowKeys: [],
-                loading: false,
-            });
-        }, 1000);
-    }
-    onSelectChange = (selectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        this.setState({ selectedRowKeys });
-    }
-    // table
 
     state = { visible: false }
     constructor(props) {
@@ -100,19 +83,20 @@ class WrappedtimesheetManagement extends Component {
             console.log('Received values of form: ', values);
             if (!err) {
                 let data = {
-                  
+
                     startDate: values.start_time._d.toISOString(),
                     endDate: values.end_time._d.toISOString(),
                     date: moment()._d.toISOString(),
                     name: this.state.timesheet_title,
-                    assignTo:this.state.userId,
-//assignTo:{usr}
+                    userId: this.state.userId,
+                    status: "Completed",
+                    //assignTo:{usr}
                 }
                 // console.log(values.end_time.toISOString())
                 console.log(data)
-                this.props.actions.addTask(data).then(response=>{
+                this.props.actions.addTask(data).then(response => {
                     console.log(response)
-                    if(!response.error){
+                    if (!response.error) {
                         this.getTimesheet(this.state.date)
                     }
                 })
@@ -124,16 +108,16 @@ class WrappedtimesheetManagement extends Component {
         });
     }
 
-    
+
 
     state = {
         modal1Visible: false,
         modal2Visible: false,
         modal3Visible: false,
     }
-    setModal1Visible(modal1Visible,title) {
+    setModal1Visible(modal1Visible, title) {
         this.setState({ modal1Visible });
-        this.setState({timesheet_title:title})
+        this.setState({ timesheet_title: title })
         this.setState({ disableEnd_time: false });
         this.props.form.resetFields();
     }
@@ -192,7 +176,21 @@ class WrappedtimesheetManagement extends Component {
             console.log(response)
             if (!response.error) {
                 if (response.result.length != 0) {
-                    this.setState({ timesheetList: response.result })
+                 let arr=   response.result.map(function (item, index) {
+                        return {
+                            name: item.name.length > 20 ? (item.name.slice(0, 15) + '...') : item.name,
+                            name1: item.name,
+                            starttime: moment(item.startDate).format('LT'),
+                            endtime: moment(item.endDate).format('LT'),
+
+                            key: Math.random() * 1000000000000000000,
+                            _id: item._id,
+
+
+                        }
+                    })
+                    console.log(arr)
+                    this.setState({ timesheetList:arr })
                 } else {
                     this.setState({ timesheetList: [] })
                 }
@@ -202,6 +200,24 @@ class WrappedtimesheetManagement extends Component {
         })
     }
 
+
+    // table
+
+    start = () => {
+        this.setState({ loading: true });
+        // ajax request after empty completing
+        setTimeout(() => {
+            this.setState({
+                selectedRowKeys: [],
+                loading: false,
+            });
+        }, 1000);
+    }
+    onSelectChange = (selectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({ selectedRowKeys });
+    }
+    // table
     render() {
 
         const { getFieldDecorator } = this.props.form;
@@ -230,19 +246,19 @@ class WrappedtimesheetManagement extends Component {
                                 <Row className="actname"><h1>Activity</h1></Row>
                                 <div className="taskbtn">
                                     <Row className="lunch">
-                                        <Button className="activitybutton" type="primary" onClick={() => this.setModal1Visible(true)}>
+                                        <Button className="activitybutton" type="primary" onClick={() => this.setModal1Visible(true, 'Lunch')}>
 
                                             <img src={lunch} />
                                             <span className="lunchMeal1">Lunch</span>
 
                                         </Button>
                                     </Row>
-                                    <Row className="lunch"><Button className="activitybutton" type="primary" onClick={() => this.setModal2Visible(true)}>
+                                    <Row className="lunch"><Button className="activitybutton" type="primary" onClick={() => this.setModal1Visible(true, 'Tea Break')}>
                                         <img src={teabreak} />
                                         <span className="lunchMeal">Tea break</span>
 
                                     </Button></Row>
-                                    <Row className="lunch"><Button className="activitybutton" type="primary" onClick={() => this.setModal3Visible(true)}>
+                                    <Row className="lunch"><Button className="activitybutton" type="primary" onClick={() => this.setModal1Visible(true, 'Meeting')}>
                                         <img src={meeting} />
                                         <span className="lunchMeal">Meeting</span>
                                     </Button></Row>
@@ -256,7 +272,7 @@ class WrappedtimesheetManagement extends Component {
                                     wrapClassName="vertical-center-modal"
 
                                     visible={this.state.modal1Visible}
-                                   onCancel={this.handleCancel}
+                                    onCancel={this.handleCancel}
                                 >
                                     <div className="lunchTime">
                                         <Form onSubmit={this.createTimesheet}>
@@ -270,7 +286,7 @@ class WrappedtimesheetManagement extends Component {
                                                     ]
                                                 })(
                                                     <TimePicker format="HH:mm" onChange={this.fillendTime} />
-                                                )}
+                                                    )}
                                             </FormItem>
                                             <p>End Time:</p>
                                             <FormItem
@@ -282,7 +298,7 @@ class WrappedtimesheetManagement extends Component {
                                                     ]
                                                 })(
                                                     <TimePicker format="HH:mm" disabled={this.state.disableEnd_time} />
-                                                )}
+                                                    )}
                                             </FormItem>
                                             <FormItem
                                                 wrapperCol={{
@@ -354,7 +370,7 @@ class WrappedtimesheetManagement extends Component {
                                     onOk={() => this.setModal3Visible(false)}
                                     onCancel={() => this.setModal3Visible(false)}
                                 > */}
-{/* 
+                            {/* 
                                     <div className="lunchTime">
                                         <Form onSubmit={this.handleSubmit}>
                                             <p>Start Time:</p>
@@ -419,8 +435,8 @@ class WrappedtimesheetManagement extends Component {
                                    
                                 </div> */}
 
-                                
-                                <Table  columns={columns} dataSource={data} />
+
+                                <Table columns={columns} dataSource={this.state.timesheetList} />
 
 
                             </div>
