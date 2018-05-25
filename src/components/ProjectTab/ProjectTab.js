@@ -29,7 +29,7 @@ class ProjectTab extends Component {
     navigate=()=>{
         console.log('kjghj')
         this.props.history.push({
-           pathName: '/dashboard/singleproject',
+           pathname: '/dashboard/singleproject',
            data:this.state.projectdata
         }
 
