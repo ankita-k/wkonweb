@@ -173,7 +173,8 @@ class ProjectManagement extends Component {
                     name: values.tasknames,
                     description: values.taskdetails,
                     submoduleId: this.state.submoduleId,
-                    date: moment()._d.toISOString()
+                    date: moment()._d.toISOString(),
+                    status:'New'
                 }
                 console.log(data);
                 this.props.actions.addTask(data).then(response=>{
