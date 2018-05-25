@@ -314,11 +314,9 @@ class ProjectManagement extends Component {
         }
 
 
-        // if (this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
-        //     console.log(this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1)
-        //     this.setState({ endTaskStyle: { display: 'none' } })
-        //     this.setState({ startTaskStyle: { display: 'none' } })
-        // }
+        if (this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
+            this.setState({ showselect: { display: 'block' } })
+        }
         // else {
             let arr = []
             arr = data.assignTo.filter(element => { return element.userId != null && element.userId._id == this.state.loginId });
