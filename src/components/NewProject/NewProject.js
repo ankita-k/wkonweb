@@ -613,6 +613,7 @@ class NewProject extends Component {
                             </div>
                             <div className="spaceLess">
                                 <Row>
+                                   
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <div className="startDate">
                                             <p className="expecteDate4">Actual Start Date :</p>
