@@ -557,7 +557,7 @@ class NewProject extends Component {
                                         })(
                                             <Select
                                                 mode="multiple"
-                                                placeholder="Select users"
+                                                placeholder=" Select Technology"
                                                 notFoundContent={fetching ? <Spin size="small" /> : null}
                                                 filterOption={false}
                                                 onSearch={this.searchTechnology}
