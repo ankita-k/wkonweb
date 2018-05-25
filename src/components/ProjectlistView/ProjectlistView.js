@@ -218,7 +218,7 @@ class ProjectlistView extends Component {
   // NAVIGATE TO PROJECT DETAIL PAGE
   detailProject = (record) => {
     this.props.history.push({
-      pathname: '/dashboard/singleproject',
+      pathname: '/dashboard/projecttab',
       data: {
         record
       }

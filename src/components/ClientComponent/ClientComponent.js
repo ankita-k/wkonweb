@@ -12,6 +12,7 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 var NumberFormat = require('react-number-format');
 
+
 class ClientComponent extends Component {
 
     constructor(props) {
@@ -27,6 +28,10 @@ class ClientComponent extends Component {
     componentDidMount() {
         console.log(this.props);
         console.log(this.props.form)
+        this.props.form.setFieldsValue({
+            ['status']: "Interested",
+            ['currency']: "USD",
+        })
         if (this.props.location.data) {
             this.setState({ clientEdit: true })
             this.props.form.setFieldsValue({
@@ -237,21 +242,19 @@ class ClientComponent extends Component {
                                 </Col>
                             </Row>
                             <Row>
-                                <Col xs={24} sm={24} md={11} lg={11}>
-                                    <FormItem label="Phone No.">
-                                        {getFieldDecorator('phone', {
-                                            rules: [{ required: true, message: 'Please input your Phone No.!' }],
-                                        })(
-                                            <NumberFormat format="################"
-                                                type="test"
-                                                maxLength="15"
-                                                placeholder="Phone No." name="phoneNumber" />
-                                        )}
-                                    </FormItem>
-                                </Col>
-                                {/* </Row>
+                            <Col xs={24} sm={24} md={11} lg={11}>
+                                <FormItem label="Phone No.">
+                                    {getFieldDecorator('phone', {
+                                        rules: [{ required: true, message: 'Please input your Phone No.!' }],
+                                    })(
+                                        <NumberFormat format="################" placeholder="Phone No." name="phoneNumber"
+                                        />
+                                    )}
+                                </FormItem>
+                            </Col>
+                        {/* </Row>
 
-                            <Row> */}
+                            <Row>  */}
                                 <Col md={2} lg={2}></Col>
                                 <Col xs={24} sm={24} md={11} lg={11}>
                                     <FormItem label="Domain">
