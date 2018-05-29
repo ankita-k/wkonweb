@@ -10,6 +10,7 @@ import { Card, Table, Button, Icon, Row, Input, Col, Modal, span, Menu, Dropdown
 import user from '../../Images/wkon-2-21.png';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
+const Search = Input.Search;
 const menu = (
     <Menu>
         <Menu.Item key="0">
@@ -111,7 +112,16 @@ class Userlist extends Component {
                     color="red"
                     showSpinner={false}
                 />
+                <Row className="userrow">
                 <h1>USER LIST</h1>
+                {/* <div className="a"> */}
+                <Search
+      placeholder="search user"
+      onSearch={value => console.log(value)}
+      style={{ width: 200 }}
+    />
+    </Row>
+    {/* </div> */}
                 <div className="user1">
                     <Row>
                         {this.state.userList.map((item, index) => {
