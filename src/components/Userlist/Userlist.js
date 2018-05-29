@@ -121,7 +121,8 @@ class Userlist extends Component {
                     show={this.props.fullloader}
                     color="red"
                     showSpinner={false}
-                />
+                   
+                /> <Row className="userrow">
                               <Search className="SearchValue"
                 placeholder="Search Here.."
                 onSearch={value => { this.searchUser(value) }}
@@ -132,6 +133,7 @@ class Userlist extends Component {
 
 
               />
+              </Row>
                 <h1>USER LIST</h1>
                 <div className="user1">
                     <Row>
@@ -178,7 +180,7 @@ class Userlist extends Component {
                                             <Row>
                                                 <Col lg={12}> <p><span className="span1">Roles </span>: {item.role}</p></Col>
                                                 {item.tags.length != 0 ?
-                                                    <p><span className="span1">Tag:</span>{item.tags.map(((tag, index) => {
+                                                    <p><span className="span1">Tag: &nbsp;</span>{item.tags.map(((tag, index) => {
                                                         return index < item.tags.length - 1 ? tag + ',' : tag
                                                     }))} </p>
                                                     : ''
