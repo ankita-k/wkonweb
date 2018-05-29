@@ -1102,34 +1102,39 @@ export function emailService(data) {
 export function addModule(data) {
     console.log(data)
     return (dispatch) => {
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             fetch(config.apiUrl + 'module',
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'POST',
-                body: JSON.stringify(data)
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                console.log(responseJSON)
-                resolve(responseJSON)
-                if (!responseJSON.error) {
-                    dispatch(toast('success', 'Module Created Successfully'))
-                }
-                else {
-                    dispatch(toast('error', 'Module Creation Failed'))
-                }
-            })
-            .catch((error) => {
-                reject(error)
-                dispatch(toast('error', ' Module Creation Failed'))
-            });
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON)
+                    resolve(responseJSON)
+                    if (!responseJSON.error) {
+                        dispatch(toast('success', 'Module Created Successfully'))
+                    }
+                    else if (responseJSON.message == "Module already exists") {
+                        dispatch(toast('warning', 'Module name already exist'))
+                    }
+                    else {
+                        dispatch(toast('error', 'Module Creation Failed'))
+                    }
+
+
+                })
+                .catch((error) => {
+                    reject(error)
+                    dispatch(toast('error', ' Module Creation Failed'))
+                });
         })
-       
+
     }
 }
 
@@ -1152,9 +1157,15 @@ export function editmodule(data, id) {
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'Module Updated Successfully'))
                 }
+                else if (responseJSON.message == "Module already exists") {
+                    dispatch(toast('warning', 'Module name already exist'))
+                }
                 else {
                     dispatch(toast('error', 'Module Updation Failed'))
                 }
+                // else {
+                //     dispatch(toast('error', 'Module Updation Failed'))
+                // }
             })
             .catch((error) => {
                 dispatch(toast('error', ' Module Updation Failed'))
@@ -1256,34 +1267,37 @@ export function getModuleInfo(id) {
 export function addSubModule(data) {
     console.log(data)
     return (dispatch) => {
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             fetch(config.apiUrl + 'submodule',
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'POST',
-                body: JSON.stringify(data)
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                console.log(responseJSON)
-                resolve(responseJSON)
-                if (!responseJSON.error) {
-                    dispatch(toast('success', 'SubModule Added Successfully'))
-                }
-                else {
-                    dispatch(toast('error', 'SubModule Addition Failed'))
-                }
-            })
-            .catch((error) => {
-                reject(error)
-                dispatch(toast('error', ' SubModule Addition Failed'))
-            });
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON)
+                    resolve(responseJSON)
+                    if (!responseJSON.error) {
+                        dispatch(toast('success', 'SubModule Added Successfully'))
+                    }
+                    else if (responseJSON.message == "Submodule already exist") {
+                        dispatch(toast('warning', 'Sub-Module name already exist'))
+                    }
+                    else {
+                        dispatch(toast('error', 'Sub-Module Addition Failed'))
+                    }
+                })
+                .catch((error) => {
+                    reject(error)
+                    dispatch(toast('error', ' SubModule Addition Failed'))
+                });
         })
-       
+
     }
 }
 
@@ -1385,9 +1399,15 @@ export function editSubModule(data, id) {
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'Submodule Updated Successfully'))
                 }
+                else if (responseJSON.message == "Submodule already exist") {
+                    dispatch(toast('warning', 'Sub-Module name already exist'))
+                }
                 else {
                     dispatch(toast('error', 'Submodule Updation Failed'))
                 }
+                // else {
+                //     dispatch(toast('error', 'Submodule Updation Failed'))
+                // }
             })
             .catch((error) => {
                 dispatch(toast('error', ' Submdule Updation Failed'))
@@ -1404,34 +1424,37 @@ export function editSubModule(data, id) {
 export function addTask(data) {
     console.log(data)
     return (dispatch) => {
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             fetch(config.apiUrl + 'task',
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
-                },
-                method: 'POST',
-                body: JSON.stringify(data)
-            })
-            .then((response) => response.json())
-            .then((responseJSON) => {
-                console.log(responseJSON)
-                resolve(responseJSON)
-                if (!responseJSON.error) {
-                    dispatch(toast('success', 'Task Added Successfully'))
-                }
-                else {
-                    dispatch(toast('error', 'Task Addition Failed'))
-                }
-            })
-            .catch((error) => {
-                reject(error)
-                dispatch(toast('error', ' Task Addition Failed'))
-            });
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON)
+                    resolve(responseJSON)
+                    if (!responseJSON.error) {
+                        dispatch(toast('success', 'Task Added Successfully'))
+                    }
+                    else if (responseJSON.message == "Task already exist") {
+                        dispatch(toast('warning', 'Task name already exist'))
+                    }  
+                    else {
+                        dispatch(toast('error', 'Task Addition Failed'))
+                    }
+                })
+                .catch((error) => {
+                    reject(error)
+                    dispatch(toast('error', ' Task Addition Failed'))
+                });
         })
-        
+
     }
 }
 
@@ -1544,9 +1567,15 @@ export function UpdateTask(data, taskid) {
                     if (responseJSON.error) {
                         dispatch(toast('error', 'Task updation falied '))
                     }
+                    else if (responseJSON.message == "Task already exist") {
+                        dispatch(toast('warning', 'Task name already exist'))
+                    }  
                     else {
-                        dispatch(toast('success', 'Task updatied Successfully '))
+                        dispatch(toast('error', 'Task updation falied'))
                     }
+                    // else {
+                    //     dispatch(toast('success', 'Task updatied Successfully '))
+                    // }
                 })
                 .catch((error) => {
                     reject(error);

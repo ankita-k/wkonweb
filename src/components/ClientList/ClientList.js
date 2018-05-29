@@ -16,70 +16,6 @@ import 'react-overlay-loader/styles.css';
 const Search = Input.Search;
 const Option = Select.Option;
 
-
-// const columns = [{
-//   title: 'Name',
-//   dataIndex: 'name',
-//   key: 'name',
-
-// }, {
-//   title: 'Phone',
-//   dataIndex: 'phoneNumber',
-//   key: 'phoneNumber',
-// }, {
-//   title: 'Email',
-//   dataIndex: 'email',
-//   key: 'email',
-// }, {
-//   title: 'Domain',
-//   dataIndex: 'domain',
-//   key: 'domain',
-// }, {
-//   title: 'Country',
-//   dataIndex: 'country',
-//   key: 'country',
-// }, {
-//   title: 'Status',
-//   dataIndex: 'status',
-//   key: 'status',
-// }, {
-// title: 'Action',
-// key: 'action',
-// render: (text, record) => (
-//   <span>
-//     <Button className="edit">
-//       <a href="javascript:;"><Icon type="edit" /></a></Button>
-//     <Button className="delete"><a href="javascript:;"><Icon type="delete" /></a></Button>
-//   </span>
-// ),
-//}];
-
-const data = [{
-  key: '1',
-  name: 'Sukanta Sinha',
-  phone: 876778906,
-  email: 'sukantasinha@memeinfotech.com',
-  domain: 'Lorem',
-  country: 'New York',
-  status: 'Pipeline',
-}, {
-  key: '2',
-  name: 'Payel Dutta',
-  phone: 826778906,
-  email: 'payeldutta@memeinfotech.com',
-  domain: 'Lorem',
-  country: 'London',
-  status: 'Pipeline',
-}, {
-  key: '3',
-  name: 'Priyanka Saha',
-  phone: 846778906,
-  email: 'priyankasaha@memeinfotech.com',
-  domain: 'Lorem',
-  country: 'Sydney',
-  status: 'Pipeline',
-}];
-
 class ClientList extends Component {
 
   showModal = () => {
@@ -186,7 +122,7 @@ class ClientList extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log(props);
+    console.log('--------------------------------component will receive props++++++++++++++++++++++++++++',props);
     // this.commonFunction(props);
     /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
     if (props.clientList.length > 0) {
