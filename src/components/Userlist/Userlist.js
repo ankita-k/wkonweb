@@ -12,8 +12,6 @@ import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
 const Search = Input.Search;
 
-
-
 class Userlist extends Component {
     state = {
         loading: false,
