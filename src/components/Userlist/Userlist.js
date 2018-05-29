@@ -139,18 +139,7 @@ class Userlist extends Component {
                             return <div key={item._id}>
                                 <Col lg={11} className="firstuser">
                                     <Row className="btnedit">
-                                        {/* <Col lg={20}></Col>
-                                        <Col lg={2}>
-                                            <Button className="edit" onClick={() => { this.editUser(item) }}>
-                                                <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
-                                        {/* <Col lg={{ span: 8 }}></Col> */}
-                                        {/* <Col lg={2}>
-                                            <Button className="delete" onClick={() => { this.deleteUser(item._id) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
-                                        </Col>
-                                        <Col lg={2}>
-                                        <Button className="email" onClick={() => { this.SendEmail(item) }}>
-                             <a href="javascript:;"><Icon type="mail" /></a></Button>
-                                           </Col> */}
+                                        
                                         <h1 className="nametxt">{item.name}</h1>
                                         <Dropdown overlay={
                                              <Menu>
