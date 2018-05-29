@@ -97,20 +97,24 @@ class ClientList extends Component {
           <Row>
             <Col lg={{ span: 4 }}>
               <Button className="edita" onClick={() => { this.editClient(record) }}>
-                <a href="javascript:;"> <img className="fileIcon" src={editList} /></a></Button></Col>
+                <a href="javascript:;"> <img className="fileIcon" src={editList} /></a></Button>
+                </Col>
+                <Col lg={{ span: 4 }}>
+                <Button className="email" onClick={() => { this.SendEmail(record) }}>
+                <a href="javascript:;"><Icon type="mail" /></a></Button>
+                </Col>
             <Col lg={{ span: 4 }}></Col>
             {/* <Col lg={{ span: 10 }}>
               <Button className="delete" onClick={this.showModal}><a href="javascript:;"><img className="fileIcon" src={deleteList} /></a></Button>
             </Col> */}
-
           </Row>
         ),
       }]
 
     }
   }
-
-  componentDidMount() {
+ 
+  componentDidMount(props) {
     console.log('++++++++++++++++component will mount++++++++++++++++', this.props);
     this.setState({ show: true });
     
@@ -222,6 +226,19 @@ class ClientList extends Component {
     }
 
   }
+
+      //  APICALL FOR SENDING MAIL TO USER
+      SendEmail = (client) => {
+        console.log(client);
+        let data = {
+            name: client.name,
+            email: client.email,
+            subject: 'Please Login To Your Account',
+            userId: this.state.userId
+        }
+        console.log(data)
+        this.props.actions.emailService(data)
+    }
 
   render() {
 
