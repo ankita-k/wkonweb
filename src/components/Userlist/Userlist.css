@@ -21,6 +21,41 @@ button.ant-btn.wkonlogout {
 .header img{
   width: 140px;
 }
+.firstuser a.ant-dropdown-link.ant-dropdown-trigger {
+    float: right;
+}
+.ant-dropdown-menu-item-divider, .ant-dropdown-menu-submenu-title-divider {
+    height: 0px !important;
+    overflow: hidden;
+    background-color: #e8e8e8;
+    line-height: 0;
+}
+h1.nametxt {
+    font-size: 19px;
+    font-variant: all-petite-caps;
+    color: #7f7d7d;
+}
+.firstuser a.ant-dropdown-link.ant-dropdown-trigger {
+    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.firstuser .ant-row.btnedit {
+    position: relative;
+}
+ul.ant-dropdown-menu.ant-dropdown-menu-light.ant-dropdown-menu-root.ant-dropdown-menu-vertical li {
+    text-align: center;
+    border-bottom: 1px solid #e8e8e8;
+}
+button.ant-btn.email1 {
+    border: none;
+    background: transparent;
+}
+button.ant-btn.edit1 {
+    border: none;
+    background: transparent;
+}
 .username{
   color: rgb(255, 255, 255);
   font-family: 'Lato', sans-serif;
@@ -34,12 +69,21 @@ button.ant-btn.wkonlogout {
 .span1{
     font-weight: 700;
 }
+.extraline {
+    background: #8080802e;
+    height: 1px;
+    margin: 0 -2em;
+    margin-bottom: 1em;
+}
+.ant-dropdown.ant-dropdown-placement-bottomLeft {
+    left: 670.875px !important;
+}
 .firstuser {
     padding-top: 10px;
     margin-top: 11px;
     background: #fff;
-    border-radius: 12px;
-    padding: 1em 2em 2em 4em;
+    border-radius: 4px;
+    padding: 1em 2em 1em 2em;
     margin-left: 1em;
 }
 .padng20 img {

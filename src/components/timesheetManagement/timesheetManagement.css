@@ -183,10 +183,36 @@ button.ant-btn.modalCancel {
 .dataonly .ant-list-item {
     padding-left: 2em;
 }
+.tym {
+    display: flex;
+    /* border: 1px solid #80808054; */
+}
+.tym {
+    border-bottom: 1px solid #ece8e8;
+}
+.tsk p {
+    font-size: 20px;
+    margin-bottom: 0 !important;
+    color: #6f7171;
+    font-variant: all-petite-caps;
+}
+.ant-row.dta {
+    width: 100%;
+}
+.tsk {
+    margin: 1em;
+}
+.strt {
+    margin: 1em;
+}
+.endt {
+    margin: 1em;
+}
 .dataonly {
     height: 100vh;
     background: #fff;
     border-left: 1px solid rgba(158, 158, 158, 0.1);
+    
 }
   .vertical-center-modal .ant-modal {
     display: inline-block;
@@ -200,9 +226,37 @@ button.ant-btn.modalCancel {
 }
 .dataonly a {
     font-variant: all-petite-caps;
-    font-size: 19px;
+    font-size: 14px;
 }
 .taskbtn {
     height: 100vh;
     background: #fff;
+}
+
+p.strttym {
+    font-size: 17px;
+    margin-bottom: 0 !important;
+    font-family: Lato;
+    font-weight: 500;
+    font-variant: all-petite-caps;
+    color: #6f7171;
+}
+
+p.endtym {
+    font-size: 17px;
+    margin-bottom: 0 !important;
+    font-family: Lato;
+    font-weight: 500;
+    color: #6f7171;
+    font-variant: all-petite-caps;
+}
+.dataonly .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    padding: 16px 16px;
+    word-break: normal;
+    text-align: center;
+}
+.dataonly .ant-table-pagination.ant-pagination {
+    margin: 16px 0;
+    float: right;
+    margin-right: 20px;
 }

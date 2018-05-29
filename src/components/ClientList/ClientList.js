@@ -174,19 +174,32 @@ class ClientList extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount(props) {
     console.log('++++++++++++++++component will mount++++++++++++++++', this.props);
     this.setState({ show: true });
-    this.commonFunction();
+    
+    //this.commonFunction(props);
   }
 
   componentWillReceiveProps(props) {
     console.log(props);
-    this.commonFunction();
+    // this.commonFunction(props);
+    /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
+    if (props.clientList.length > 0) {
+      this.setState({ searchedclient:[]});
+      this.setState({searchedclient: (props.clientList) });
+      console.log( props.clientList);
+     console.log(this.state.searchedclient);
+      this.setState({ show: false });
+      this.showallList();
+    }
+    this.handleChange((props.location.filterValue));
   }
 
-  // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
-  commonFunction() {
+ // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
+  commonFunction(props) {
+    console.log(this.props)
+    console.log(props)
     /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
     if (this.props.clientList.length > 0) {
       this.setState({ searchedclient: (this.props.clientList) });
@@ -237,6 +250,7 @@ class ClientList extends Component {
     if (e == '') {
       this.setState({
         searchedclient: this.props.clientList
+
       });
     }
   }

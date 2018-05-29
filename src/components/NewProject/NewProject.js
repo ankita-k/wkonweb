@@ -64,6 +64,8 @@ class NewProject extends Component {
             disabletag: true,
             disableassign: false,
             addMember: [],
+            ActualDate: { display: 'none' },
+
             columns: [{
                 title: 'Assign To',
                 dataIndex: 'name',
@@ -160,9 +162,12 @@ class NewProject extends Component {
         /*IF LOGGED USER IS SALES ASSIGNED LIST IS VERTICAL LEADS AND IF USER IS VERTICAL LEAD LIST IS DEVELOPERS */
         if (this.props.loggeduserDetails.role == 'Sales') {
             this.setState({ verticalHeadrarray: this.props.listByTags })
+            this.setState({ ActualDate: { display: 'none' } });
+
         }
         else if (this.props.loggeduserDetails.role == 'Developer' && this.props.loggeduserDetails.tags.indexOf("VerticalLead") > -1) {
             this.setState({ verticalHeadrarray: this.props.developerlist })
+            this.setState({ ActualDate: { display: 'block' } });
         }
         
     }
@@ -468,7 +473,7 @@ class NewProject extends Component {
                 validator: this.datevalidate
             }]
         };
-        const { fetching, techArray, value } = this.state;
+        const { fetching, techArray, value,ActualDate } = this.state;
         return (
             <div>
                 <Loading
@@ -557,7 +562,7 @@ class NewProject extends Component {
                                         })(
                                             <Select
                                                 mode="multiple"
-                                                placeholder="Select users"
+                                                placeholder=" Select Technology"
                                                 notFoundContent={fetching ? <Spin size="small" /> : null}
                                                 filterOption={false}
                                                 onSearch={this.searchTechnology}
@@ -612,7 +617,9 @@ class NewProject extends Component {
                                 </Row>
                             </div>
                             <div className="spaceLess">
-                                <Row>
+                          
+                           <Row  style={ActualDate} >
+                                     
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <div className="startDate">
                                             <p className="expecteDate4">Actual Start Date :</p>
@@ -629,6 +636,7 @@ class NewProject extends Component {
                                             </FormItem>
                                         </div>
                                     </Col>
+                                   
                                     <Col xs={24} sm={24} md={24} lg={12}>
                                         <div className="startDate">
                                             <p className="expecteDate4">Actual End Date :</p>

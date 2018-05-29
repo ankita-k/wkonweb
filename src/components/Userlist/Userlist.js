@@ -6,11 +6,13 @@ import { bindActionCreators } from 'redux';
 import './Userlist.css';
 import Loading from 'react-loading-bar'
 
-import { Card, Table, Button, Icon, Row, Input, Col, Modal, span } from 'antd';
+import { Card, Table, Button, Icon, Row, Input, Col, Modal, span, Menu, Dropdown } from 'antd';
 import user from '../../Images/wkon-2-21.png';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
 const Search = Input.Search;
+
+
 
 class Userlist extends Component {
     state = {
@@ -110,6 +112,7 @@ class Userlist extends Component {
 
     render() {
         const { visible, loading } = this.state;
+
         return (
             <div className="userlist">
                 {this.props.fullloader == true ? <div className="loader">
@@ -133,24 +136,43 @@ class Userlist extends Component {
               />
                 <h1>USER LIST</h1>
                 <div className="user1">
-
                     <Row>
                         {this.state.userList.map((item, index) => {
                             return <div key={item._id}>
                                 <Col lg={11} className="firstuser">
-
                                     <Row className="btnedit">
-                                        <Col lg={20}></Col>
+                                        {/* <Col lg={20}></Col>
                                         <Col lg={2}>
                                             <Button className="edit" onClick={() => { this.editUser(item) }}>
                                                 <a href="javascript:;"><Icon type="edit" /></a></Button></Col>
                                         {/* <Col lg={{ span: 8 }}></Col> */}
-                                        <Col lg={2}>
+                                        {/* <Col lg={2}>
                                             <Button className="delete" onClick={() => { this.deleteUser(item._id) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
                                         </Col>
                                         <Col lg={2}>
-                                            <Button className="email" onClick={() => { this.SendEmail(item) }}>
-                                                <a href="javascript:;"><Icon type="mail" /></a></Button></Col>
+                                        <Button className="email" onClick={() => { this.SendEmail(item) }}>
+                             <a href="javascript:;"><Icon type="mail" /></a></Button>
+                                           </Col> */}
+                                        <h1 className="nametxt">{item.name}</h1>
+                                        <Dropdown overlay={
+                                             <Menu>
+                                             <Menu.Item key="0">
+                                                 <Button className="edit1" onClick={() => { this.editUser(item)}}><a href="javascript:;"><Icon type="edit" /></a></Button>
+                                             </Menu.Item>
+                                             <Menu.Item key="1">
+                                                 <Button className="delete" onClick={() => { this.deleteUser(item._id) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
+                                             </Menu.Item>
+                                             <Menu.Divider />
+                                             <Menu.Item key="3"><Button className="email1" onClick={() => { this.SendEmail(item) }}><a href="javascript:;"><Icon type="mail" /></a></Button></Menu.Item>
+                                         </Menu>
+                                        } trigger={['click']}>
+                                            <a className="ant-dropdown-link" href="#">
+                                                <Icon type="down" />
+                                            </a>
+                                        </Dropdown>
+                                    </Row>
+                                    <Row>
+                                        <div className="extraline"></div>
                                     </Row>
                                     <Row className="padng20">
                                         <Col lg={4} className="resalign">
@@ -158,139 +180,32 @@ class Userlist extends Component {
                                         </Col>
                                         <Col lg={1}></Col>
                                         <Col lg={19}>
-                                            <Col lg={12}>
-                                                <p><span className="span1">Name </span>:{item.name} </p>
-
+                                            <Col lg={24}>
+                                                {/* <p><span className="span1">Name </span>:{item.name} </p> */}
                                                 <p><span className="span1">Phone </span>: {item.phoneNumber}</p>
-
                                             </Col>
-                                            <Col lg={12}>
-
+                                            <Col lg={24}>
                                                 <p><span className="span1">Email</span>: {item.email}</p>
-
-                                                <p><span className="span1">Roles </span>: {item.role}</p>
                                             </Col>
                                             <Row><p><span className="span1">Reporting Manager </span>: {item.manager ? item.manager.name : ""}</p></Row>
                                             <Row>
+                                                <Col lg={12}> <p><span className="span1">Roles </span>: {item.role}</p></Col>
                                                 {item.tags.length != 0 ?
                                                     <p><span className="span1">Tag:</span>{item.tags.map(((tag, index) => {
-
                                                         return index < item.tags.length - 1 ? tag + ',' : tag
                                                     }))} </p>
                                                     : ''
                                                 }
-
                                             </Row>
                                         </Col>
-
                                     </Row>
-
-
                                 </Col>
                             </div>
                         })
                         }
-
-
                         <Col lg={1}></Col>
-                        {/* <Col lg={11} className="firstuser">
-                            <Row className="padng20">
-                                <Col lg={4} className="resalign">
-                                    <img src={user} />
-                                </Col>
-                                <Col lg={1}></Col>
-                                <Col lg={19}>
-                                    <Col lg={12}>
-                                        <p><span className="span1">Name </span>: jhon</p>
-
-                                        <p><span className="span1">Phone </span>: 123456789</p>
-
-                                    </Col>
-                                    <Col lg={12}>
-
-                                        <p><span className="span1">Email</span>: jhon@mail.com</p>
-
-                                        <p><span className="span1">Roles </span>: Sales</p>
-                                    </Col>
-                                    <Row><p><span className="span1">Reporting Manager </span>: Pushpendu</p></Row></Col>
-                            </Row>
-
-
-                        </Col> */}
-
                     </Row>
-
                 </div>
-                {/* <div className="user1">
-                    <Row>
-                        <Col lg={11} className="firstuser">
-                            <Row className="padng20">
-                                <Col lg={4} className="resalign">
-                                    <img src={user} />
-                                </Col>
-                                <Col lg={1}></Col>
-                                <Col lg={19}>
-                                    <Col lg={12}>
-                                        <p><span className="span1">Name </span>: jhon</p>
-
-                                        <p><span className="span1">Phone </span>: 123456789</p>
-
-                                    </Col>
-                                    <Col lg={12}>
-
-                                        <p><span className="span1">Email</span>: jhon@mail.com</p>
-
-                                        <p><span className="span1">Roles </span>: Sales</p>
-                                    </Col>
-                                    <Row><p><span className="span1">Reporting Manager </span>: Pushpendu</p></Row></Col>
-                            </Row>
-
-
-                        </Col>
-                        <Col lg={1}></Col>
-                        <Col lg={11} className="firstuser">
-                            <Row className="padng20">
-                                <Col lg={4} className="resalign">
-                                    <img src={user} />
-                                </Col>
-                                <Col lg={1}></Col>
-                                <Col lg={19}>
-                                    <Col lg={12}>
-                                        <p><span className="span1">Name </span>: jhon</p>
-
-                                        <p><span className="span1">Phone </span>: 123456789</p>
-
-                                    </Col>
-                                    <Col lg={12}>
-
-                                        <p><span className="span1">Email</span>: jhon@mail.com</p>
-
-                                        <p><span className="span1">Roles </span>: Sales</p>
-                                    </Col>
-                                    <Row><p><span className="span1">Reporting Manager </span>: Pushpendu</p></Row></Col>
-                            </Row>
-
-
-                        </Col>
-                    </Row>
-
-                </div> */}
-
-                {/* <Col lg={12}>
-<Row>
-<Col lg={8}>
-<img src={user}/>
-</Col>
-<Col lg={12}>
-<p>Name : Jhon</p>
-</Col>
-</Row>
-
-
-</Col>
-<Col lg={12}></Col> */}
-
-
             </div>
         );
     }

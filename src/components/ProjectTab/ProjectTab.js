@@ -11,18 +11,31 @@ class ProjectTab extends Component {
         super(props);
         this.state = {
             projectName  :'' ,
-            projectDetails :''
+            projectDetails :'',
+            projectdata:{}
     }
 }
 
     componentDidMount() {
         if (this.props.location.data) {
+            this.setState({projectdata:this.props.location.data})
             this.setState({ projectName: this.props.location.data.record.name1 })
             this.setState({ projectDetails: this.props.location.data.record.requirement1})
         }
         console.log(this.props);
     }
 
+    // NAVIGATE TO PROJECT DETAILS PAGE
+    navigate=()=>{
+        console.log('kjghj')
+        this.props.history.push({
+           pathname: '/dashboard/singleproject',
+           data:this.state.projectdata
+        }
+
+    
+        )
+    }
 
     render() {
 
@@ -40,8 +53,8 @@ class ProjectTab extends Component {
 
                         </div>
                         <Row>
-                            <Col span={7} className="cardblock">
-                                <div className="cardcontent">
+                            <Col span={7} className="cardblock" onClick={this.navigate}>
+                                <div className="cardcontent" >
                                     <img src={projct} className="prjct" />
                                     <p className="prjcttxt">Project</p>
 
