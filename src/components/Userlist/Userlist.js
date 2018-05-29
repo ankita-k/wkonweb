@@ -141,7 +141,18 @@ class Userlist extends Component {
                              <a href="javascript:;"><Icon type="mail" /></a></Button>
                                            </Col> */}
                                         <h1 className="nametxt">{item.name}</h1>
-                                        <Dropdown overlay={menu} trigger={['click']}>
+                                        <Dropdown overlay={
+                                             <Menu>
+                                             <Menu.Item key="0">
+                                                 <Button className="edit1" onClick={() => { this.editUser(item)}}><a href="javascript:;"><Icon type="edit" /></a></Button>
+                                             </Menu.Item>
+                                             <Menu.Item key="1">
+                                                 <Button className="delete" onClick={() => { this.deleteUser(item._id) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
+                                             </Menu.Item>
+                                             <Menu.Divider />
+                                             <Menu.Item key="3"><Button className="email1" onClick={() => { this.SendEmail(item) }}><a href="javascript:;"><Icon type="mail" /></a></Button></Menu.Item>
+                                         </Menu>
+                                        } trigger={['click']}>
                                             <a className="ant-dropdown-link" href="#">
                                                 <Icon type="down" />
                                             </a>
