@@ -11,19 +11,6 @@ import user from '../../Images/wkon-2-21.png';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
 const Search = Input.Search;
-const menu = (
-    <Menu>
-        <Menu.Item key="0">
-            <Button className="edit1" ><a href="javascript:;"><Icon type="edit" /></a></Button>
-        </Menu.Item>
-        <Menu.Item key="1">
-            <Button className="delete" ><a href="javascript:;"><Icon type="delete" /></a></Button>
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="3"><Button className="email1" ><a href="javascript:;"><Icon type="mail" /></a></Button></Menu.Item>
-    </Menu>
-);
-
 
 class Userlist extends Component {
     state = {
@@ -98,6 +85,29 @@ class Userlist extends Component {
         this.props.actions.emailService(data)
     }
 
+      // SearchUser ACCORDING TO INPUT GIVEN
+  searchUser = (val) => {
+    console.log(val);
+    this.setState({ searchinput: val })
+      console.log(this.props.userList);
+    let userarray = this.props.userList.filter(f => {
+      return f.name.toLowerCase().indexOf(val.toLowerCase()) > -1
+    });
+    console.log(userarray)
+    this.setState({ userList: userarray })
+
+
+  }
+
+   //Show All user list
+  showallList =(e) =>{
+      console.log(e);
+      this.setState({ searchinput: e })
+      if (e == '') {
+              this.setState({ userList: this.props.userList })
+            }
+  }
+
     render() {
         const { visible, loading } = this.state;
 
@@ -112,16 +122,17 @@ class Userlist extends Component {
                     color="red"
                     showSpinner={false}
                 />
-                <Row className="userrow">
+                              <Search className="SearchValue"
+                placeholder="Search Here.."
+                onSearch={value => { this.searchUser(value) }}
+                style={{ width: 200 }}
+                onChange={(e) => { this.showallList(e.target.value) }}
+                enterButton
+                value={this.state.searchinput}
+
+
+              />
                 <h1>USER LIST</h1>
-                {/* <div className="a"> */}
-                <Search
-      placeholder="search user"
-      onSearch={value => console.log(value)}
-      style={{ width: 200 }}
-    />
-    </Row>
-    {/* </div> */}
                 <div className="user1">
                     <Row>
                         {this.state.userList.map((item, index) => {
