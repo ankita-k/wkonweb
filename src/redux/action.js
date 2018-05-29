@@ -1157,9 +1157,15 @@ export function editmodule(data, id) {
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'Module Updated Successfully'))
                 }
+                else if (responseJSON.message == "Module already exists") {
+                    dispatch(toast('warning', 'Module name already exist'))
+                }
                 else {
                     dispatch(toast('error', 'Module Updation Failed'))
                 }
+                // else {
+                //     dispatch(toast('error', 'Module Updation Failed'))
+                // }
             })
             .catch((error) => {
                 dispatch(toast('error', ' Module Updation Failed'))
@@ -1393,9 +1399,15 @@ export function editSubModule(data, id) {
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'Submodule Updated Successfully'))
                 }
+                else if (responseJSON.message == "Submodule already exist") {
+                    dispatch(toast('warning', 'Sub-Module name already exist'))
+                }
                 else {
                     dispatch(toast('error', 'Submodule Updation Failed'))
                 }
+                // else {
+                //     dispatch(toast('error', 'Submodule Updation Failed'))
+                // }
             })
             .catch((error) => {
                 dispatch(toast('error', ' Submdule Updation Failed'))
@@ -1555,9 +1567,15 @@ export function UpdateTask(data, taskid) {
                     if (responseJSON.error) {
                         dispatch(toast('error', 'Task updation falied '))
                     }
+                    else if (responseJSON.message == "Task already exist") {
+                        dispatch(toast('warning', 'Task name already exist'))
+                    }  
                     else {
-                        dispatch(toast('success', 'Task updatied Successfully '))
+                        dispatch(toast('error', 'Task updation falied'))
                     }
+                    // else {
+                    //     dispatch(toast('success', 'Task updatied Successfully '))
+                    // }
                 })
                 .catch((error) => {
                     reject(error);
