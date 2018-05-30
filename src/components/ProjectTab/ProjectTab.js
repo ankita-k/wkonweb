@@ -10,33 +10,37 @@ class ProjectTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            projectName  :'' ,
-            projectDetails :'',
-            projectdata:{}
+            projectName: '',
+            projectDetails: '',
+            projectdata: {}
+        }
     }
-}
 
     componentDidMount() {
         if (this.props.location.data) {
-            this.setState({projectdata:this.props.location.data})
+            this.setState({ projectdata: this.props.location.data })
             this.setState({ projectName: this.props.location.data.record.name1 })
-            this.setState({ projectDetails: this.props.location.data.record.requirement1})
+            this.setState({ projectDetails: this.props.location.data.record.requirement1 })
         }
         console.log(this.props);
     }
 
     // NAVIGATE TO PROJECT DETAILS PAGE
-    navigate=()=>{
+    navigateToProject = () => {
         console.log('kjghj')
         this.props.history.push({
-           pathname: '/dashboard/singleproject',
-           data:this.state.projectdata
+            pathname: '/dashboard/singleproject',
+            data: this.state.projectdata
         }
 
-    
+
         )
     }
 
+    // NAVIGATE TO PROJECT CHAT SCREEN
+    navigateToChat = () => {
+        this.props.history.push('../dashboard/chat')
+    }
     render() {
 
         return (
@@ -47,13 +51,13 @@ class ProjectTab extends Component {
                             <p className="prjctnameheading">Project Name :<span className="prjctnm">&nbsp;{this.state.projectName}</span></p>
                             <p className="prjctdesc">Project Description :</p>
                             <p className="prjcdtl">
-                                 {this.state.projectDetails}
+                                {this.state.projectDetails}
                             </p>
 
 
                         </div>
                         <Row>
-                            <Col span={7} className="cardblock" onClick={this.navigate}>
+                            <Col span={7} className="cardblock" onClick={this.navigateToProject}>
                                 <div className="cardcontent" >
                                     <img src={projct} className="prjct" />
                                     <p className="prjcttxt">Project</p>
@@ -64,7 +68,7 @@ class ProjectTab extends Component {
                             </Col>
                             <Col span={1} ></Col>
 
-                            <Col span={8} className="cardblock">
+                            <Col span={8} className="cardblock" onClick={this.navigateToChat}>
                                 <div className="cardcontent">
                                     <img src={chats} className="chatting" />
                                     <p className="prjcttxt">Chat Us</p>

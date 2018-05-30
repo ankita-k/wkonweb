@@ -24,6 +24,7 @@ import Loading from 'react-loading-bar';
 import { Loader } from 'react-overlay-loader';
 import 'react-overlay-loader/styles.css';
 import ProjectManagement from '../projectManagement/projectManagement';
+import ChatScreen from '../chatScreen/chatScreen'
 import io from 'socket.io-client';
 const socket = io('http://mitapi.memeinfotech.com:5088/');
 
@@ -398,7 +399,7 @@ class Dashboard extends Component {
                   <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                 </Menu.Item>
               </SubMenu>
-              <SubMenu key="user"  title={<span><Icon type="user" />User Management</span>} subMenuCloseDelay={0.1}>
+              <SubMenu key="user" title={<span><Icon type="user" />User Management</span>} subMenuCloseDelay={0.1}>
                 <Menu.Item key="create_user">
                   <span>Create User</span>
                   <NavLink to="../dashboard/createuser" activeClassName="active"></NavLink>
@@ -423,7 +424,7 @@ class Dashboard extends Component {
                 <span><Icon type="logout" /> Log Out</span>
               </Menu.Item>
               <SubMenu key="sheet" title={<span><Icon type="file-text" />Timesheet management</span>} subMenuCloseDelay={0.1}>
-                
+
               </SubMenu>
 
             </Menu>
@@ -463,8 +464,8 @@ class Dashboard extends Component {
                   <Menu.Item key="create_project" style={projectcreate_style}>
                     <span>Project Create</span>
                     <NavLink to="../dashboard/newproject" activeClassName="active"></NavLink>
-                  </Menu.Item> 
-                    <Menu.Item key="project_list" style={projectlist_style}>
+                  </Menu.Item>
+                  <Menu.Item key="project_list" style={projectlist_style}>
                     <span>Project List</span>
                     <NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>
                   </Menu.Item>
@@ -503,12 +504,16 @@ class Dashboard extends Component {
                 </Menu.Item>
 
                 <Menu.Item key="ProjectTab">
-                <Icon type="area-chart" />
+                  <Icon type="area-chart" />
                   <span>ProjectTab</span>
                   <NavLink to="../dashboard/projecttab" activeClassName="active"></NavLink>
                 </Menu.Item>
 
-
+                <Menu.Item key="ChatScreen">
+                  <Icon type="area-chart" />
+                  <span>CHAT</span>
+                  <NavLink to="../dashboard/chat" activeClassName="active"></NavLink>
+                </Menu.Item>
 
 
               </Menu>
@@ -533,7 +538,7 @@ class Dashboard extends Component {
                 <Route exact path={`${this.props.match.url}/singleproject`} component={ProjectManagement} />
                 <Route exact path={`${this.props.match.url}/timesheet`} component={timesheetManagement} />
                 <Route exact path={`${this.props.match.url}/projecttab`} component={ProjectTab} />
-
+                <Route exact path={`${this.props.match.url}/chat`} component={ChatScreen} />
               </Content>
             </Layout>
           </Layout>
