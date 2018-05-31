@@ -98,11 +98,11 @@ class ClientList extends Component {
             <Col lg={{ span: 4 }}>
               <Button className="edita" onClick={() => { this.editClient(record) }}>
                 <a href="javascript:;"> <img className="fileIcon" src={editList} /></a></Button>
-                </Col>
-                <Col lg={{ span: 4 }}>
-                <Button style={record.mailstatus==true?{display:'none'}:{display:'block'}}  className="email" onClick={() => { this.SendEmail(record) }}>
+            </Col>
+            <Col lg={{ span: 4 }}>
+              <Button style={record.mailstatus == true ? { display: 'none' } : { display: 'block' }} className="email" onClick={() => { this.SendEmail(record) }}>
                 <a href="javascript:;"><Icon type="mail" /></a></Button>
-                </Col>
+            </Col>
             <Col lg={{ span: 4 }}></Col>
             {/* <Col lg={{ span: 10 }}>
               <Button className="delete" onClick={this.showModal}><a href="javascript:;"><img className="fileIcon" src={deleteList} /></a></Button>
@@ -113,30 +113,34 @@ class ClientList extends Component {
 
     }
   }
- 
+
   componentDidMount(props) {
     console.log('++++++++++++++++component will mount++++++++++++++++', this.props);
     this.setState({ show: true });
-    
+    if (this.props.loggeduserDetails.role == "Sales") {
+    }
+    else {
+      this.state.column.pop();   // pop the action field for any other logged user
+    }
     //this.commonFunction(props);
   }
 
   componentWillReceiveProps(props) {
-    console.log('--------------------------------component will receive props++++++++++++++++++++++++++++',props);
+    console.log('--------------------------------component will receive props++++++++++++++++++++++++++++', props);
     // this.commonFunction(props);
     /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
     if (props.clientList.length > 0) {
-      this.setState({ searchedclient:[]});
-      this.setState({searchedclient: (props.clientList) });
-      console.log( props.clientList);
-     console.log(this.state.searchedclient);
+      this.setState({ searchedclient: [] });
+      this.setState({ searchedclient: (props.clientList) });
+      console.log(props.clientList);
+      console.log(this.state.searchedclient);
       this.setState({ show: false });
       this.showallList();
     }
     this.handleChange((props.location.filterValue));
   }
 
- // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
+  // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
   commonFunction(props) {
     console.log(this.props)
     console.log(props)
@@ -227,19 +231,19 @@ class ClientList extends Component {
 
   }
 
-      //  APICALL FOR SENDING MAIL TO USER
-      SendEmail = (client) => {
-        console.log(client);
-        let data = {
-            name: client.name,
-            email: client.email,
-            subject: 'Please Login To Your Account',
-            userId: this.state.userId,
-            clientId:client._id
-        }
-        console.log(data)
-        this.props.actions.emailService(data)
+  //  APICALL FOR SENDING MAIL TO USER
+  SendEmail = (client) => {
+    console.log(client);
+    let data = {
+      name: client.name,
+      email: client.email,
+      subject: 'Please Login To Your Account',
+      userId: this.state.userId,
+      clientId: client._id
     }
+    console.log(data)
+    this.props.actions.emailService(data)
+  }
 
   render() {
 
@@ -309,9 +313,9 @@ class ClientList extends Component {
                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
               };
             }}
-      
-        columns={columns}    dataSource={this.state.searchedclient} />
-  
+
+            columns={columns} dataSource={this.state.searchedclient} />
+
         </Card>
         {/* clientlist */}
         <div className="deletemodal">
