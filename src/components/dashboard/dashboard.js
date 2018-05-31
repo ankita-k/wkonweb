@@ -503,11 +503,7 @@ class Dashboard extends Component {
                   <NavLink to="../dashboard/timesheet" activeClassName="active"></NavLink>
                 </Menu.Item>
 
-                <Menu.Item key="ProjectTab">
-                  <Icon type="area-chart" />
-                  <span>ProjectTab</span>
-                  <NavLink to="../dashboard/projecttab" activeClassName="active"></NavLink>
-                </Menu.Item>
+               
 
                 <Menu.Item key="ChatScreen">
                   <Icon type="area-chart" />
