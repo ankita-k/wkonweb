@@ -126,26 +126,27 @@ class ClientList extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log('--------------------------------component will receive props++++++++++++++++++++++++++++', props);
+    console.log('--------------------------------component will receive props++++++++++++++++++++++++++++', props,this.props);
     // this.commonFunction(props);
     /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
     if (props.clientList.length > 0) {
       this.setState({ searchedclient: [] });
-      this.setState({ searchedclient: (props.clientList) });
+      this.setState({ searchedclient:props.clientList});
       console.log(props.clientList);
       console.log(this.state.searchedclient);
       this.setState({ show: false });
-      this.showallList();
+      // this.showallList();
     }
     this.handleChange((props.location.filterValue));
   }
-
+ 
   // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
   commonFunction(props) {
     console.log(this.props)
     console.log(props)
     /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
     if (this.props.clientList.length > 0) {
+
       this.setState({ searchedclient: (this.props.clientList) });
       this.setState({ show: false });
     }
@@ -246,7 +247,7 @@ class ClientList extends Component {
   }
 
   render() {
-
+console.log('CLIENT LIST PAGE RENDER')
     // modal
     const { visible, loading } = this.state;
     // modal

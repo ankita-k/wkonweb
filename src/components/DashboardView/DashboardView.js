@@ -39,7 +39,8 @@ class DashboardView extends Component {
             projectinprogress: {},
             projectcompleted: {},
             dashboardCustomerData: {},
-            dashboardProjectData: {}
+            dashboardProjectData: {},
+            addStyle: { display: 'block' }
         }
     }
 
@@ -84,10 +85,10 @@ class DashboardView extends Component {
                 this.startCounter(newprops.dashboardCustomerData.Committed, 'clientcommitted')
         }
         else {
-            this.setState({ clienttotal :{ Total: newprops.dashboardCustomerData.Total } });
-            this.setState({ clientpipeline: { Pipeline: newprops.dashboardCustomerData.Pipeline} });
+            this.setState({ clienttotal: { Total: newprops.dashboardCustomerData.Total } });
+            this.setState({ clientpipeline: { Pipeline: newprops.dashboardCustomerData.Pipeline } });
             this.setState({ clientcommitted: { Committed: newprops.dashboardCustomerData.Committed } });
-        }   
+        }
         /*SHOW COUNTER FOR CUSTOMER DASHBOARD NUMBERS*/
 
         /*HIDE FULL LOADER */
@@ -95,6 +96,16 @@ class DashboardView extends Component {
             this.setState({ show: newprops.fullloader })
         }
         /*HIDE FULL LOADER ENDS */
+
+        //* HIDE CLIENT CREATION AND PROJECT CREATION ICON FROM ADMIN AND DEVELOPER/
+        if (Object.keys(newprops.loggeduserDetails).length != 0) {
+            if (newprops.loggeduserDetails.role == 'Sales') {
+                this.setState({ addStyle: { display: 'block' } })
+            }
+            else {
+                this.setState({ addStyle: { display: 'none' } })
+            }
+        }
     }
 
 
@@ -231,96 +242,96 @@ class DashboardView extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { visible, loading } = this.state;
+        const { visible, loading, addStyle } = this.state;
         return (
 
 
             <div className="dashboardMain">
                 {/* dashboardviewcustomer */}
-                {this.props.loggeduserDetails.role=='Sales'||'admin'&& this.props.loggeduserDetails.role!='Developer'?
-                 <div className="dashboardView">
-                 <h1 className="customer">Clients</h1>
-                 <Row>
-                     <div className="addButton btnplace">
-                         <Button onClick={() => { this.props.actions.openkey('client'); this.props.actions.menuKeys('create_client'); this.props.history.push('/dashboard/clientcreate') }}>+</Button>
-                     </div>
-                 </Row>
-                 <Row>
-                     <Col xs={24} sm={24} md={8} lg={8}>
-                         <div className="cusTotal" onClick={() => { this.filterClient('All') }}>
+                {this.props.loggeduserDetails.role == 'Sales' || 'admin' && this.props.loggeduserDetails.role != 'Developer' ?
+                    <div className="dashboardView">
+                        <h1 className="customer">Clients</h1>
+                        <Row>
+                            <div className="addButton btnplace" style={addStyle}>
+                                <Button onClick={() => { this.props.actions.openkey('client'); this.props.actions.menuKeys('create_client'); this.props.history.push('/dashboard/clientcreate') }}>+</Button>
+                            </div>
+                        </Row>
+                        <Row>
+                            <Col xs={24} sm={24} md={8} lg={8}>
+                                <div className="cusTotal" onClick={() => { this.filterClient('All') }}>
 
-                             <p>
-                                 <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
-
-
-                             </p>
-                             <h1 className="totalNumber">{this.state.clienttotal.Total ? this.state.clienttotal.Total : 0}</h1>
-
-                         </div>
-
-                     </Col>
-                     <Col xs={24} sm={24} md={8} lg={8}>
-                         <div className="cusTotal" onClick={() => { this.filterClient('Committed') }}>
-                             <p>
-                                 <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Committed</span>
-                                 {/*<NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>*/}
-                             </p>
-                             <h1 className="totalNumber">{this.state.clientcommitted.Committed ? this.state.clientcommitted.Committed : 0}</h1>
-                         </div>
+                                    <p>
+                                        <img src={total} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
 
 
-                     </Col>
-                     <Col xs={24} sm={24} md={8} lg={8}>
-                         <div className="cusTotal" onClick={() => { this.filterClient('Pipeline') }}>
-                             <p>
-                                 <img src={pipeline} className="totalImg" alt="Pipeline" /><span className="totalContent">Pipeline</span>
-                             </p>
-                             <h1 className="totalNumber">{this.state.clientpipeline.Pipeline ? this.state.clientpipeline.Pipeline : 0}</h1>
-                         </div>
-                     </Col>
-                 </Row>
-             </div>:''
+                                    </p>
+                                    <h1 className="totalNumber">{this.state.clienttotal.Total ? this.state.clienttotal.Total : 0}</h1>
+
+                                </div>
+
+                            </Col>
+                            <Col xs={24} sm={24} md={8} lg={8}>
+                                <div className="cusTotal" onClick={() => { this.filterClient('Committed') }}>
+                                    <p>
+                                        <img src={convert} className="totalImg" alt="Convert" /><span className="totalContent">Committed</span>
+                                        {/*<NavLink to="../dashboard/projectlist" activeClassName="active"></NavLink>*/}
+                                    </p>
+                                    <h1 className="totalNumber">{this.state.clientcommitted.Committed ? this.state.clientcommitted.Committed : 0}</h1>
+                                </div>
+
+
+                            </Col>
+                            <Col xs={24} sm={24} md={8} lg={8}>
+                                <div className="cusTotal" onClick={() => { this.filterClient('Pipeline') }}>
+                                    <p>
+                                        <img src={pipeline} className="totalImg" alt="Pipeline" /><span className="totalContent">Pipeline</span>
+                                    </p>
+                                    <h1 className="totalNumber">{this.state.clientpipeline.Pipeline ? this.state.clientpipeline.Pipeline : 0}</h1>
+                                </div>
+                            </Col>
+                        </Row>
+                    </div> : ''
                 }
-               
+
                 {/* dashboardviewcustomer */}
                 {/* Project section start */}
-                {this.props.loggeduserDetails.role=='Developer'||'admin' ||'Sales'?
-                <div className="dashboardView">
-                    <h1 className="customer">Projects</h1>
-                    <Row>
-                        <div className="addButton btnplace">
-                            <Button onClick={() => { this.props.actions.openkey('projects'); this.props.actions.menuKeys('create_project'); this.props.history.push('/dashboard/newproject') }}>+</Button>
-                        </div>
-                    </Row>
-                    <Row>
-                        <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal" onClick={() => { this.filterProject('All') }}>
-                                <p>
-                                    <img src={projecttotal} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
-                                </p>
-                                <h1 className="totalNumber">{this.state.projecttotal.Total ? this.state.projecttotal.Total : 0}</h1>
+                {this.props.loggeduserDetails.role == 'Developer' || 'admin' || 'Sales' ?
+                    <div className="dashboardView">
+                        <h1 className="customer">Projects</h1>
+                        <Row>
+                            <div className="addButton btnplace" style={addStyle}>
+                                <Button onClick={() => { this.props.actions.openkey('projects'); this.props.actions.menuKeys('create_project'); this.props.history.push('/dashboard/newproject') }}>+</Button>
+                            </div>
+                        </Row>
+                        <Row>
+                            <Col xs={24} sm={24} md={8} lg={8}>
+                                <div className="cusTotal" onClick={() => { this.filterProject('All') }}>
+                                    <p>
+                                        <img src={projecttotal} className="totalImg" alt="Customer" /><span className="totalContent">Total</span>
+                                    </p>
+                                    <h1 className="totalNumber">{this.state.projecttotal.Total ? this.state.projecttotal.Total : 0}</h1>
 
-                            </div>
-                        </Col>
-                        <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal" onClick={() => { this.filterProject('Completed') }}>
-                                <p>
-                                    <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent"> Completed</span>
-                                </p>
-                                <h1 className="totalNumber">{this.state.projectcompleted.Completed ? this.state.projectcompleted.Completed : 0}</h1>
-                            </div>
+                                </div>
+                            </Col>
+                            <Col xs={24} sm={24} md={8} lg={8}>
+                                <div className="cusTotal" onClick={() => { this.filterProject('Completed') }}>
+                                    <p>
+                                        <img src={progress} className="totalImg" alt="Convert" /><span className="totalContent"> Completed</span>
+                                    </p>
+                                    <h1 className="totalNumber">{this.state.projectcompleted.Completed ? this.state.projectcompleted.Completed : 0}</h1>
+                                </div>
 
-                        </Col>
-                        <Col xs={24} sm={24} md={8} lg={8}>
-                            <div className="cusTotal" onClick={() => { this.filterProject('InProgess') }}>
-                                <p>
-                                    <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">InProgess</span>
-                                </p>
-                                <h1 className="totalNumber">{this.state.projectinprogress.InProgess ? this.state.projectinprogress.InProgess : 0}</h1>
-                            </div>
-                        </Col>
-                    </Row>
-                </div>:''}
+                            </Col>
+                            <Col xs={24} sm={24} md={8} lg={8}>
+                                <div className="cusTotal" onClick={() => { this.filterProject('InProgess') }}>
+                                    <p>
+                                        <img src={projectpipe} className="totalImg" alt="Customer" /><span className="totalContent">InProgess</span>
+                                    </p>
+                                    <h1 className="totalNumber">{this.state.projectinprogress.InProgess ? this.state.projectinprogress.InProgess : 0}</h1>
+                                </div>
+                            </Col>
+                        </Row>
+                    </div> : ''}
                 {/* Project section end */}
                 {/* Recentactivity start*/}
                 <div className="recentactivity">
