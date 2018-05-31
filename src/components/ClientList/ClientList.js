@@ -48,6 +48,7 @@ class ClientList extends Component {
       searchinput: '',
       allclient: 'All',
       userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
+      addStyle: { display: 'block' },
       column: [{
         title: 'Name',
         dataIndex: 'name',
@@ -123,6 +124,16 @@ class ClientList extends Component {
       this.state.column.pop();   // pop the action field for any other logged user
     }
     //this.commonFunction(props);
+
+    //* HIDE CLIENT CREATION AND PROJECT CREATION ICON FROM ADMIN AND DEVELOPER/
+    if (Object.keys(this.props.loggeduserDetails).length != 0) {
+      if (this.props.loggeduserDetails.role == 'Sales') {
+          this.setState({ addStyle: { display: 'block' } })
+      }
+      else {
+          this.setState({ addStyle: { display: 'none' } })
+      }
+  }
   }
 
   componentWillReceiveProps(props) {
@@ -249,7 +260,7 @@ class ClientList extends Component {
   render() {
 console.log('CLIENT LIST PAGE RENDER')
     // modal
-    const { visible, loading } = this.state;
+    const { visible, loading ,addStyle} = this.state;
     // modal
     const columns = this.state.column;
     return (
@@ -267,7 +278,7 @@ console.log('CLIENT LIST PAGE RENDER')
         <div className="projectListheader">
           <h1 className="clientList">Client List</h1>
           <Row>
-            <div className="addButton clientadd">
+            <div className="addButton clientadd" style={addStyle}>
               <Button onClick={() => { this.props.actions.menuKeys('create_client'); this.props.history.push('/dashboard/clientcreate') }}>+</Button>
             </div>
           </Row>

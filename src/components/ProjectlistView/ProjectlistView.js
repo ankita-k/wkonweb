@@ -49,6 +49,7 @@ class ProjectlistView extends Component {
       selectedRowKeys: [],
       show: true,  //loading-bar
       allproject: 'All',
+      addStyle: { display: 'block' },
       column: [{
         title: 'Name',
         dataIndex: 'name',
@@ -136,6 +137,15 @@ class ProjectlistView extends Component {
     else{
 
     }
+ //* HIDE CLIENT CREATION AND PROJECT CREATION ICON FROM ADMIN AND DEVELOPER/
+     if (Object.keys(this.props.loggeduserDetails).length != 0) {
+      if (this.props.loggeduserDetails.role == 'Sales') {
+          this.setState({ addStyle: { display: 'block' } })
+      }
+      else {
+          this.setState({ addStyle: { display: 'none' } })
+      }
+  }
   }
   // DELETE PROJECT 
   deleteProject = () => {
@@ -240,7 +250,7 @@ class ProjectlistView extends Component {
   render() {
     console.log('render')
     const columns = this.state.column;
-    const { visible, loading } = this.state;
+    const { visible, loading,addStyle } = this.state;
     return (
       <div className="projectListdiv">
         {this.state.show == true ? <div className="loader">
@@ -298,7 +308,7 @@ class ProjectlistView extends Component {
               }}>All Projects</Button>
 
 
-              <div className="addButton project">
+              <div className="addButton project" style={addStyle}>
                 <Button onClick={() => { this.props.actions.menuKeys('create_project'); this.props.history.push('/dashboard/newproject') }} >+</Button>
               </div>
 
