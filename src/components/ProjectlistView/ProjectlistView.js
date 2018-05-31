@@ -125,6 +125,17 @@ class ProjectlistView extends Component {
   commonFunction = () => {
     this.setState({ show: false });
     this.handleChange(this.props.location.filterValue);
+
+    /**HIDE ACTION FROM ADMIN */
+    if(this.props.loggeduserDetails.role=='admin'){
+      this.state.column.pop();
+    }
+    else if(this.props.loggeduserDetails.role=='Developer' && this.props.loggeduserDetails.tags.length==0){
+      this.state.column.pop();
+    }
+    else{
+
+    }
   }
   // DELETE PROJECT 
   deleteProject = () => {
