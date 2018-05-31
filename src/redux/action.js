@@ -1085,9 +1085,12 @@ export function emailService(data) {
                 if (!responseJSON.error) {
                     dispatch(toast('success', 'Mail Sent Successfully'))
                 }
-                else {
-                    dispatch(toast('error', 'Mail Sending Failed'))
-                }
+                else if(responseJSON.message=="Mail already send "){
+                    dispatch(toast('error', 'Mail already sent'))}
+                    else{
+                        dispatch(toast('error', 'Mail Sending Failed'))
+                    }
+                   
             })
             .catch((error) => {
                 dispatch(toast('error', 'Mail Sending Failed'))

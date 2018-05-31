@@ -152,7 +152,7 @@ class Userlist extends Component {
                                                  <Button className="delete" onClick={() => { this.deleteUser(item._id) }}><a href="javascript:;"><Icon type="delete" /></a></Button>
                                              </Menu.Item>
                                              <Menu.Divider />
-                                             <Menu.Item key="3"><Button className="email1" onClick={() => { this.SendEmail(item) }}><a href="javascript:;"><Icon type="mail" /></a></Button></Menu.Item>
+                                             {/* <Menu.Item key="3"><Button className="email1" onClick={() => { this.SendEmail(item) }}><a href="javascript:;"><Icon type="mail" /></a></Button></Menu.Item> */}
                                          </Menu>
                                         } trigger={['click']}>
                                             <a className="ant-dropdown-link" href="#">

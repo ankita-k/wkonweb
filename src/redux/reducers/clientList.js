@@ -21,6 +21,7 @@ export function clientList(state = [], action) {
                     company: item.company ? item.company.length > 10 ? (item.company.slice(0, 10) + '...') : item.company : '-',
                     company1: item.company ? item.company : '-',
                     key: Math.random() * 1000000000000000000,
+                    mailstatus:item.mailstatus?item.mailstatus:'',
                     _id: item._id
                 }
             })   //returning client list

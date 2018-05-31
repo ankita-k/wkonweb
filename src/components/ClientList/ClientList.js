@@ -100,7 +100,7 @@ class ClientList extends Component {
                 <a href="javascript:;"> <img className="fileIcon" src={editList} /></a></Button>
                 </Col>
                 <Col lg={{ span: 4 }}>
-                <Button className="email" onClick={() => { this.SendEmail(record) }}>
+                <Button style={record.mailstatus==true?{display:'none'}:{display:'block'}}  className="email" onClick={() => { this.SendEmail(record) }}>
                 <a href="javascript:;"><Icon type="mail" /></a></Button>
                 </Col>
             <Col lg={{ span: 4 }}></Col>
@@ -234,7 +234,8 @@ class ClientList extends Component {
             name: client.name,
             email: client.email,
             subject: 'Please Login To Your Account',
-            userId: this.state.userId
+            userId: this.state.userId,
+            clientId:client._id
         }
         console.log(data)
         this.props.actions.emailService(data)
@@ -308,7 +309,9 @@ class ClientList extends Component {
                 onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
               };
             }}
-            columns={columns} dataSource={this.state.searchedclient} />
+      
+        columns={columns}    dataSource={this.state.searchedclient} />
+  
         </Card>
         {/* clientlist */}
         <div className="deletemodal">
