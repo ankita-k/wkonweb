@@ -84,12 +84,12 @@ export function password(data, location) {
                 }
                 else {
                     dispatch(loaders(false));
-                    dispatch(toast('error', 'Wrong Password !'));
+                    dispatch(toast('error', 'Password Updation Failed !'));
                 }
             })
             .catch((error) => {
                 dispatch(loaders(false));
-                dispatch(toast('error', 'Wrong Password !'));
+                dispatch(toast('error', 'Password Updation Failed !'));
             });
     }
 }
@@ -173,17 +173,17 @@ export function createClient(data, location) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (responseJSON.error) {
-                    dispatch(toast('Warning', 'Client Creation failed!'));
+                    dispatch(toast('error', 'Client Addition Failed !'));
                     dispatch(loaders(false))
                 } else {
                     dispatch(loaders(false));
                     dispatch(menuKeys('client_list'));
-                    dispatch(toast('success', 'Client Created Sucessfully!'));
+                    dispatch(toast('success', 'Client Added Sucessfully !'));
                     location.push("../dashboard/clientlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('Warning', 'Client Creation failed!'));
+                dispatch(toast('error', 'Client Addition Failed !'));
                 dispatch(loaders(false))
             });
     }
@@ -203,12 +203,12 @@ export function clientlist(userId) {
             })
             .then((response) => response.json())
             .then((responseJSON) => {
-                dispatch(clientList(responseJSON.result))
-                dispatch(loaders(false))
+                dispatch(clientList(responseJSON.result));
+                dispatch(loaders(false));
             })
             .catch((error) => {
-                dispatch(clientList([]))
-                dispatch(loaders(false))
+                dispatch(clientList([]));
+                dispatch(loaders(false));
             });
 
     }
@@ -238,7 +238,7 @@ export function updateclient(data, id, userid, location) {
             .then((responseJSON) => {
 
                 if (responseJSON.error) {
-                    dispatch(toast('Warning', 'Client Updation failed!'));
+                    dispatch(toast('error', 'Client Updation Failed !'));
                     dispatch(loaders(false))
                 } else {
                     let url = config.apiUrl + "client/clientlist?userId=" + userid;
@@ -247,7 +247,7 @@ export function updateclient(data, id, userid, location) {
                         { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
                         .then((response) => response.json())
                         .then((responseJSON) => {
-                            dispatch(toast('success', 'Client Updated Successfully!'));
+                            dispatch(toast('success', 'Client Updated Successfully !'));
                             dispatch(clientList(responseJSON.result))
                             dispatch(loaders(false));
                             dispatch(menuKeys('client_list'));
@@ -255,14 +255,14 @@ export function updateclient(data, id, userid, location) {
                         })
                         .catch((error) => {
                             dispatch(clientList([]));
-                            dispatch(toast('warning', 'Client Updation Failed!'));
+                            dispatch(toast('error', 'Client Updation Failed !'));
                             dispatch(loaders(false))
                         });
 
                 }
             })
             .catch((error) => {
-                dispatch(toast('Warning', 'Client Updation failed!'));
+                dispatch(toast('error', 'Client Updation Failed !'));
                 dispatch(loaders(false))
             });
     }
@@ -282,7 +282,7 @@ export function deleteclient(id, userid, location) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (responseJSON.error) {
-                    dispatch(toast('Warning', 'Client Deletion failed!'));
+                    dispatch(toast('error', 'Client Deletion Failed !'));
                     dispatch(loaders(false))
                 } else {
                     let url = config.apiUrl + "client/clientlist?userId=" + userid;
@@ -291,7 +291,7 @@ export function deleteclient(id, userid, location) {
                         { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
                         .then((response) => response.json())
                         .then((responseJSON) => {
-                            dispatch(toast('success', 'Client Deleted Successfully!'));
+                            dispatch(toast('success', 'Client Deleted Successfully !'));
                             dispatch(clientList(responseJSON.result))
                             /** FETCH DASHBOARD CUSTOMER DATA*/
                             let newurl = config.apiUrl + 'user/clientDashboardDetails?id=' + userid;
@@ -312,14 +312,14 @@ export function deleteclient(id, userid, location) {
                         })
                         .catch((error) => {
                             dispatch(clientList([]));
-                            dispatch(toast('Warning', 'Client Deletion failed!'));
+                            dispatch(toast('error', 'Client Deletion Failed !'));
                             dispatch(loaders(false))
                         });
 
                 }
             })
             .catch((error) => {
-                dispatch(toast('Warning', 'Client Deletion failed!'));
+                dispatch(toast('error', 'Client Deletion Failed !'));
                 dispatch(loaders(false))
             });
 
@@ -347,17 +347,17 @@ export function addProject(data, location) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (responseJSON.error) {
-                    dispatch(toast('warning', 'Project Creation failed!'));
+                    dispatch(toast('error', 'Project Addition Failed !'));
                     dispatch(loaders(false))
                 } else {
                     dispatch(loaders(false));
                     dispatch(menuKeys('project_list'));
-                    dispatch(toast('success', 'Project Created Sucessfully!'));
+                    dispatch(toast('success', 'Project Added Sucessfully !'));
                     location.push("../dashboard/projectlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('Warning', 'Project Creation failed!'));
+                dispatch(toast('error', 'Project Addition Failed !'));
                 dispatch(loaders(false))
             });
     }
@@ -411,7 +411,7 @@ export function editproject(data, userId, id, location) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (responseJSON.error) {
-                    dispatch(toast('warning', 'Project Updation failed!'));
+                    dispatch(toast('error', 'Project Updation Failed !'));
                     dispatch(loaders(false))
                 } else {
                     let url = config.apiUrl + 'project/projectlist?userId=' + userId;
@@ -421,21 +421,21 @@ export function editproject(data, userId, id, location) {
                         .then((response) => response.json())
                         .then((responseJSON) => {
                             dispatch(Projectlist(responseJSON.result))
-                            dispatch(toast('success', 'Project Updated Successfully!'));
+                            dispatch(toast('success', 'Project Updated Successfully !'));
                             dispatch(loaders(false));
                             dispatch(menuKeys('project_list'));
                             location.push("../dashboard/projectlist")
                         })
                         .catch((error) => {
                             dispatch(Projectlist([]))
-                            dispatch(toast('warning', 'Project Updation failed!'));
+                            dispatch(toast('error', 'Project Updation Failed !'));
                             dispatch(loaders(false))
                         });
 
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'project Updation failed!'));
+                dispatch(toast('error', 'Project Updation Failed !'));
                 dispatch(loaders(false))
             });
     }
@@ -453,7 +453,7 @@ export function deleteproject(userId, id, location) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (responseJSON.error) {
-                    dispatch(toast('Warning', 'Project Deletion failed!'));
+                    dispatch(toast('error', 'Project Deletion Failed!'));
                     dispatch(loaders(false))
                 } else {
                     let url = config.apiUrl + 'project/projectlist?userId=' + userId;
@@ -463,7 +463,7 @@ export function deleteproject(userId, id, location) {
                         .then((response) => response.json())
                         .then((responseJSON) => {
                             dispatch(Projectlist(responseJSON.result))
-                            dispatch(toast('success', 'Project Deleted Successfully!'));
+                            dispatch(toast('success', 'Project Deleted Successfully !'));
                             /** FETCH DASHBOARD PROJECT DATA*/
                             let newurl = config.apiUrl + 'user/dashboardDetails?id=' + userId;
                             fetch(newurl,
@@ -484,14 +484,14 @@ export function deleteproject(userId, id, location) {
                         })
                         .catch((error) => {
                             dispatch(Projectlist([]))
-                            dispatch(toast('warning', 'Project Deletion failed!'));
+                            dispatch(toast('error', 'Project Deletion Failed !'));
                             dispatch(loaders(false))
                         });
 
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'Project Deletion failed!'));
+                dispatch(toast('error', 'Project Deletion Failed !'));
                 dispatch(loaders(false))
             });
     }
@@ -527,19 +527,19 @@ export function addMember(data, id) {
                         })
                         .then((response) => response.json())
                         .then((responseJSON) => {
-                            dispatch(toast('success', 'Member Added Sucessfully!'));
+                            dispatch(toast('success', 'Member Added To Project Sucessfully !'));
 
                         })
                         .catch((error) => {
                             dispatch(Projectlist([]))
-                            dispatch(toast('warning', 'Member Added  failed!'));
+                            dispatch(toast('error', 'Member Addition  Failed !'));
                             dispatch(loaders(false))
                         });
 
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'Member Added  failed!'));
+                dispatch(toast('error', 'Member Addition  Failed !'));
                 dispatch(loaders(false))
             });
     }
@@ -562,12 +562,12 @@ export function removeMember(data, projectId) {
             .then((responseJSON) => {
                 console.log(responseJSON.members)
                 console.log('Member Deleted', responseJSON)
-                dispatch(toast('success', 'Member Deleted!'));
+                dispatch(toast('success', 'Member Removed From Project !'));
                 dispatch(member(responseJSON.result.members));
 
             })
             .catch((error) => {
-                dispatch(toast('warning', 'Member Deleted  failed!'));
+                dispatch(toast('error', 'Member Not Removed Successfully !'));
             });
 
     }
@@ -605,17 +605,17 @@ export function createUser(data, location) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (responseJSON.error) {
-                    dispatch(toast('warning', responseJSON.message));
+                    dispatch(toast('error', responseJSON.message));
                     dispatch(loaders(false))
                 } else {
                     dispatch(loaders(false));
                     dispatch(menuKeys('user_list'));
-                    dispatch(toast('success', 'User Created Sucessfully!'));
+                    dispatch(toast('success', 'New User Created Successfully !'));
                     location.push("../dashboard/userlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('Warning', 'User Creation failed!'));
+                dispatch(toast('error', 'User Creation Failed !'));
                 dispatch(loaders(false))
             });
     }
@@ -671,7 +671,7 @@ export function editUser(data, id, location) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (responseJSON.error) {
-                    dispatch(toast('warning', 'User Updation failed!'));
+                    dispatch(toast('error', 'User Updation Failed !'));
                     dispatch(loaders(false))
                 } else {
                     let url = config.apiUrl + "user/getAllUser";
@@ -681,21 +681,21 @@ export function editUser(data, id, location) {
                         .then((response) => response.json())
                         .then((responseJSON) => {
                             dispatch(userlist(responseJSON.result))
-                            dispatch(toast('success', 'User Updated Successfully!'));
+                            dispatch(toast('success', 'User Updated Successfully !'));
                             dispatch(loaders(false));
                             dispatch(menuKeys('user_list'));
                             location.push("../dashboard/userlist")
                         })
                         .catch((error) => {
                             dispatch(userlist([]))
-                            dispatch(toast('warning', 'User Updation failed!'));
+                            dispatch(toast('error', 'User Updation Failed !'));
                             dispatch(loaders(false))
                         });
 
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'User Updation failed!'));
+                dispatch(toast('error', 'User Updation Failed !'));
                 dispatch(loaders(false))
             });
     }
@@ -713,7 +713,7 @@ export function deleteUser(id, location) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (responseJSON.error) {
-                    dispatch(toast('warning', 'User Deletion failed!'));
+                    dispatch(toast('error', 'User Deletion Failed !'));
                     dispatch(loaders(false))
                 } else {
                     let url = config.apiUrl + "user/getAllUser"
@@ -723,21 +723,21 @@ export function deleteUser(id, location) {
                         .then((response) => response.json())
                         .then((responseJSON) => {
                             dispatch(userlist(responseJSON.result))
-                            dispatch(toast('success', 'User Deleted Successfully!'));
+                            dispatch(toast('success', 'User Deleted Successfully !'));
                             dispatch(loaders(false));
                             dispatch(menuKeys('user_list'));
                             location.push("../dashboard/userlist")
                         })
                         .catch((error) => {
                             dispatch(userlist([]))
-                            dispatch(toast('warning', 'User Deletion failed!'));
+                            dispatch(toast('error', 'User Deletion Failed !'));
                             dispatch(loaders(false))
                         });
 
                 }
             })
             .catch((error) => {
-                dispatch(toast('warning', 'User Deletion failed!'));
+                dispatch(toast('error', 'User Deletion Failed !'));
                 dispatch(loaders(false))
             });
     }
@@ -763,17 +763,17 @@ export function billCreate(billdata, location) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (responseJSON.error) {
-                    dispatch(toast('warning', 'Bill Creation failed!'));
+                    dispatch(toast('error', 'Bill Creation Failed !'));
                     dispatch(loaders(false))
                 } else {
                     dispatch(loaders(false));
                     dispatch(menuKeys('bill_list'));
-                    dispatch(toast('success', 'Bill Created Sucessfully!'));
+                    dispatch(toast('success', 'Bill Created Sucessfully !'));
                     location.push("../dashboard/billlist");
                 }
             })
             .catch((error) => {
-                dispatch(toast('Warning', 'Bill Creation failed!'));
+                dispatch(toast('error', 'Bill Creation Failed !'));
                 dispatch(loaders(false))
             });
 
@@ -831,7 +831,7 @@ export function BillEdit(data, id, location) {
             .then((response) => response.json())
             .then((responseJSON) => {
                 if (responseJSON.error) {
-                    dispatch(toast('warning', 'Bill Updation failed!'));
+                    dispatch(toast('error', 'Bill Updation Failed !'));
                     dispatch(loaders(false))
                 }
                 else {
@@ -841,7 +841,7 @@ export function BillEdit(data, id, location) {
                         { headers: { 'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk=' }, method: 'GET' })
                         .then((response) => response.json())
                         .then((responseJSON) => {
-                            dispatch(toast('success', 'Bill Updated Successfully!'));
+                            dispatch(toast('success', 'Bill Updated Successfully !'));
                             dispatch(BillList(responseJSON.result))
                             dispatch(loaders(false));
                             dispatch(menuKeys('bill_list'));
@@ -849,7 +849,7 @@ export function BillEdit(data, id, location) {
                         })
                         .catch((error) => {
                             dispatch(BillList([]))
-                            dispatch(toast('warning', 'Bill Updation Failed!'));
+                            dispatch(toast('error', 'Bill Updation Failed !'));
                             dispatch(loaders(false))
                         });
 
@@ -857,7 +857,7 @@ export function BillEdit(data, id, location) {
             })
 
             .catch((error) => {
-                dispatch(toast('warning', 'Bill Updation Failed!'));
+                dispatch(toast('error', 'Bill Updation Failed !'));
                 dispatch(loaders(false))
             });
     }
@@ -1121,20 +1121,20 @@ export function addModule(data) {
                     console.log(responseJSON)
                     resolve(responseJSON)
                     if (!responseJSON.error) {
-                        dispatch(toast('success', 'Module Created Successfully'))
+                        dispatch(toast('success', 'Module Added Successfully'))
                     }
                     else if (responseJSON.message == "Module already exists") {
-                        dispatch(toast('warning', 'Module name already exist'))
+                        dispatch(toast('warning', 'Module Name Already Exist !'))
                     }
                     else {
-                        dispatch(toast('error', 'Module Creation Failed'))
+                        dispatch(toast('error', 'Module Addition  Failed'))
                     }
 
 
                 })
                 .catch((error) => {
                     reject(error)
-                    dispatch(toast('error', ' Module Creation Failed'))
+                    dispatch(toast('error', ' Module Addition  Failed'))
                 });
         })
 
@@ -1161,7 +1161,7 @@ export function editmodule(data, id) {
                     dispatch(toast('success', 'Module Updated Successfully'))
                 }
                 else if (responseJSON.message == "Module already exists") {
-                    dispatch(toast('warning', 'Module name already exist'))
+                    dispatch(toast('warning', 'Module Name Already Exist !'))
                 }
                 else {
                     dispatch(toast('error', 'Module Updation Failed'))
@@ -1289,7 +1289,7 @@ export function addSubModule(data) {
                         dispatch(toast('success', 'SubModule Added Successfully'))
                     }
                     else if (responseJSON.message == "Submodule already exist") {
-                        dispatch(toast('warning', 'Sub-Module name already exist'))
+                        dispatch(toast('warning', 'Sub-Module Name Already Exist !'))
                     }
                     else {
                         dispatch(toast('error', 'Sub-Module Addition Failed'))
@@ -1403,7 +1403,7 @@ export function editSubModule(data, id) {
                     dispatch(toast('success', 'Submodule Updated Successfully'))
                 }
                 else if (responseJSON.message == "Submodule already exist") {
-                    dispatch(toast('warning', 'Sub-Module name already exist'))
+                    dispatch(toast('warning', 'Sub-Module Name Already Exist !'))
                 }
                 else {
                     dispatch(toast('error', 'Submodule Updation Failed'))
@@ -1446,7 +1446,7 @@ export function addTask(data) {
                         dispatch(toast('success', 'Task Added Successfully'))
                     }
                     else if (responseJSON.message == "Task already exist") {
-                        dispatch(toast('warning', 'Task name already exist'))
+                        dispatch(toast('warning', 'Task Name Already Exist !'))
                     }  
                     else {
                         dispatch(toast('error', 'Task Addition Failed'))
@@ -1512,7 +1512,7 @@ export function assignDevelopersandUpdate(developerdata, updatedata, taskId) {
                         dispatch(toast('error', 'Task Assignment Failed'))
                     }
                     else {
-                        dispatch(toast('success', 'Task Assignment Successfully!'));
+                        dispatch(toast('success', 'Task Assigned Successfully'));
                         let url = config.apiUrl + "task/" + taskId;
 
                         fetch(url,
@@ -1529,12 +1529,12 @@ export function assignDevelopersandUpdate(developerdata, updatedata, taskId) {
                             .then((responseJSON) => {
                                 console.log(responseJSON)
                                 resolve(responseJSON)
-                                dispatch(toast('success', 'Task Updated Successfully!'));
+                                dispatch(toast('success', 'Task Updated Successfully'));
 
                             })
                             .catch((error) => {
                                 reject(error)
-                                dispatch(toast('warning', 'Task Updation Failed!'));
+                                dispatch(toast('error', 'Task Updation Failed'));
                             });
 
 
@@ -1571,10 +1571,10 @@ export function UpdateTask(data, taskid) {
                         dispatch(toast('error', 'Task updation falied '))
                     }
                     else if (responseJSON.message == "Task already exist") {
-                        dispatch(toast('warning', 'Task name already exist'))
+                        dispatch(toast('warning', 'Task Name Already Exist !'))
                     }  
                     else {
-                        dispatch(toast('error', 'Task updation falied'))
+                        dispatch(toast('error', 'Task Updation Failed'))
                     }
                     // else {
                     //     dispatch(toast('success', 'Task updatied Successfully '))
@@ -1582,7 +1582,7 @@ export function UpdateTask(data, taskid) {
                 })
                 .catch((error) => {
                     reject(error);
-                    dispatch(toast('error', ' Task updation falied'))
+                    dispatch(toast('error', ' Task Updation Failed'))
                 });
         })
     }
