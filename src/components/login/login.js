@@ -124,7 +124,7 @@ class NormalLoginForm extends React.Component {
                                     <span><img src={loginlogo} /></span>
                                     <Row>
                                         <Col span={24}>
-                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+                                            <p>We are what we repeatedly do.Excellence then,is not an act,but a habit.</p>
                                         </Col>
                                     </Row>
                                 </div>
