@@ -39,7 +39,10 @@ class ProjectTab extends Component {
 
     // NAVIGATE TO PROJECT CHAT SCREEN
     navigateToChat = () => {
-        this.props.history.push('../dashboard/chat')
+        this.props.history.push({
+            pathname: '../dashboard/chat',
+            data: this.state.projectdata
+        })
     }
     render() {
 
@@ -49,9 +52,9 @@ class ProjectTab extends Component {
                     <Layout>
                         <div className="prjctcontent">
                             <p className="prjctnameheading">Project Name : &nbsp; <span className="prjctnm">&nbsp;{this.state.projectName}</span></p>
-                            <p className="prjctdesc">Project Description : &nbsp;  <p className="prjcdtl">
+                            <p className="prjctdesc">Project Description : &nbsp;  <span className="prjcdtl">
                                 {this.state.projectDetails}
-                            </p>
+                            </span>
 </p>
                            
 

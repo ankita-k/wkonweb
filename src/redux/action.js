@@ -1702,3 +1702,68 @@ export function getTimesheetByDate(id, date) {
     }
 }
 /* ***************PROJECT SUB TASK CRUD  ENDS***************/
+
+/** PROJECT SPECIFIC WALL PAGE APIS */
+
+// API FOR SENDING MESSAGE
+export function createchat(data){
+    return (dispatch) => {
+            fetch(config.apiUrl + 'chat',
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON)
+                    if(!responseJSON.error){
+                    }
+                })
+                .catch((error) => {
+                    // code to handle error
+                });
+}
+}
+
+//  API FOR GETTING WALL POSTS FOR SPECIFIED PROJECTS
+export function getWall(projectId){
+    return (dispatch) => {
+        // return new Promise((resolve, reject) => {
+            fetch(config.apiUrl + 'chat/getbyprojectid?id=' +projectId ,
+                {
+                    headers: {
+                        'X-API-Key': 'GF8SEmj3T/3YrtHqnjPEjZS11fyk2fLrp10T8bdmpbk='
+                    },
+                    method: 'GET',
+                })
+                .then((response) => response.json())
+                .then((responseJSON) => {
+                    console.log(responseJSON);
+                    if(!responseJSON.error){
+                        dispatch(getWallList(responseJSON.result))
+                    }
+                    // resolve(responseJSON);
+                    //code to dispatch action for storing module list 
+                })
+                .catch((error) => {
+                    // code to handle error
+                    // reject(error);
+                });
+        }
+}
+
+
+// ACTION DISPATCHING TO REDUCER FOR WALL LIST
+function getWallList(list){
+    return {
+        type: "PROJECT_WALL_LIST",
+        list
+     }
+}
+
+/** PROJECT SPECIFIC WALL PAGE APIS ENDS */

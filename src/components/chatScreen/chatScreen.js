@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import Avatar, { Upload, Row, Col, Input, Icon, Radio, Button, Modal, Select, notification, Spin } from 'antd';
 import Waypoint from 'react-waypoint';
 import './chatScreen.css';
-
+import { connect } from "react-redux";
+import * as actioncreators from '../../redux/action';
+import { bindActionCreators } from 'redux';
+import moment from 'moment';
 const { TextArea } = Input;
 
 class ChatScreen extends Component {
@@ -10,11 +13,60 @@ class ChatScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
+            projectId: '',
+            userRole: '',
+            userName: '',
+            textValue: ''
         }
     }
 
+    componentDidMount() {
+        console.log(this.props)
+        // FETCH LOGGED USER NAME AND ROLE
+        if (this.props.loggeduserDetails) {
+            this.setState({ userName: this.props.loggeduserDetails.name })
+            this.setState({ userRole: this.props.loggeduserDetails.role })
+        }
+        // FETCH WALL PAGE PREVIOUS LIST
+        if (this.props.location.data) {
+            this.setState({
+                projectId: this.props.location.data.record._id
+            }, function () {
+                this.getWallData();
+            });
+        }
+    }
+
+    componentWillReceiveProps(props) {
+        console.log(props, this.props)
+    }
+    // GET API CALL 
+    getWallData = () => {
+        this.props.actions.getWall(this.state.projectId);
+    }
+
+    getText = (e) => {
+        console.log('text value', e.target.value)
+        this.setState({ textValue: e.target.value })
+    }
+    // CREATE WALL API CALLING
+    createWall = () => {
+        console.log('createwwall')
+        let data = {
+            type: "text",
+            target: ["Everyone"],
+            userId: this.state.userId,
+            projectId: this.state.projectId,
+            text: this.state.textValue,
+        }
+        console.log(data)
+        this.props.actions.createchat(data);
+        this.setState({ textValue: '' });
+    }
 
     render() {
+        console.log('RENDERRR')
         return (
             <div>
                 <div>
@@ -33,8 +85,8 @@ class ChatScreen extends Component {
                                             </Col>
                                             <Col span={21}>
                                                 <div className="usrview">
-                                                    <h3>Pushpendu Ghosh</h3>
-                                                    <p>Software Developer</p>
+                                                    <h3>{this.state.userName}</h3>
+                                                    <p>{this.state.userRole}</p>
                                                 </div>
 
                                             </Col>
@@ -45,7 +97,7 @@ class ChatScreen extends Component {
                                     <Row>
                                         <Col span={24}>
 
-                                            <TextArea rows={4} />
+                                            <TextArea rows={4} onChange={this.getText} />
                                             {/* <ReactQuill ref="quill_content" id="editor-content" className="textareheadng" placeholder="Write an article here" name="content" onChange={this.postContent} /> */}
 
                                         </Col>
@@ -82,7 +134,7 @@ class ChatScreen extends Component {
                                         </div>
                                         <Col span={14}>
 
-                                            <Button className="post" title="Post" loading={false}>Post</Button>
+                                            <Button onClick={this.createWall} className="post" title="Post" loading={false}>Post</Button>
                                         </Col>
 
                                     </Row>
@@ -92,25 +144,30 @@ class ChatScreen extends Component {
 
                     </div>
 
-                    <div className="postedpartcard">
-                        <div className="mitpic">
-                            <Row type="flex" justify="space-around" align="middle">
-                                <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 19 }}>
-                                    <p>Pushpendu Ghosh</p>
-                                    <h3>Software Developer</h3>
-                                </Col>
-                            </Row>
+                    {this.props.projectWallList.map((item,index) => {
+                        return(
+                            <div className="postedpartcard" key={index}>
+                            <div className="mitpic">
+                                <Row type="flex" justify="space-around" align="middle">
+                                    <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 19 }}>
+                                        <p>{item.userId.name}</p>
+                                        <h3>{item.userId.role}</h3>
+                                    </Col>
+                                </Row>
 
-                            <div className="postedimg onlytext">
-                                <img src="https://i2.wp.com/beebom.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg?resize=640%2C426" />
-                                <p className="sub_content" contentEditable='false' dangerouslySetInnerHTML={{ __html: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).' }} ></p>
+                                <div className="postedimg onlytext">
+                                    {/* <img src="https://i2.wp.com/beebom.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg?resize=640%2C426" /> */}
+                                    <p className="sub_content">{item.text}</p>
+                                </div>
+                                {/* contentEditable='false' dangerouslySetInnerHTML={{ __html: {item.text}} */}
                             </div>
-
+                            <div style={{ marginLeft: '3px' }}>
+                                {moment(item.createdDate).format('ll')}
+                            </div>
                         </div>
-                        <div style={{ marginLeft: '3px' }}>
-                            28 th July,2018
-                        </div>
-                    </div>
+                        )
+                       
+                    })}
 
                 </div>
 
@@ -124,4 +181,14 @@ class ChatScreen extends Component {
     }
 }
 
-export default (ChatScreen);
+const mapStateToProps = (state) => {
+    // console.log(state);
+    return state
+}
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(actioncreators, dispatch)
+    })
+}
+//export default ClientList;
+export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen);
