@@ -9,6 +9,7 @@ import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import { Select } from 'antd';
 import warning from '../../Images/war.png';
+import mail from '../../Images/close-envelope.svg';
 import editList from '../../Images/file.svg';
 import deleteList from '../../Images/garbage.svg';
 import { Loader } from 'react-overlay-loader';
@@ -100,7 +101,7 @@ class ClientList extends Component {
             </Col>
             <Col lg={{ span: 4 }}>
               <Button style={record.mailstatus == true ? { display: 'none' } : { display: 'block' }} className="email" onClick={() => { this.SendEmail(record) }}>
-                <a href="javascript:;"><Icon type="mail" /></a></Button>
+                <a href="javascript:;"><img className="mail" src={mail}/></a></Button>
             </Col>
             <Col lg={{ span: 4 }}></Col>
             {/* <Col lg={{ span: 10 }}>

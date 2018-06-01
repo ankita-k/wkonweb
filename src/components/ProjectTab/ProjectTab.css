@@ -57,9 +57,11 @@ p.prjctdesc {
 }
 
 p.prjcdtl {
-    font-size: 17px;
-    color: #666669;
+    font-size: 20px;
+    color: #6d6161;
     display: inline;
+    line-height: 32px;
+    font-family: Lato;
 }
 
 .prjctcontent {
