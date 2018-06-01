@@ -57,9 +57,9 @@ p.prjctdesc {
 }
 
 p.prjcdtl {
-    font-size: 19px;
-    color: #6d6161;
-    line-height: 28px;
+    font-size: 17px;
+    color: #666669;
+    display: inline;
 }
 
 .prjctcontent {

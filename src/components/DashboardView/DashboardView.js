@@ -334,7 +334,7 @@ class DashboardView extends Component {
                     </div> : ''}
                 {/* Project section end */}
                 {/* Recentactivity start*/}
-                <div className="recentactivity">
+                {/* <div className="recentactivity">
                     <h1>Recent Activity</h1>
 
                     <div className="firstman1">
@@ -382,9 +382,9 @@ class DashboardView extends Component {
                             </Col>
                         </Row>
 
-                    </div>
+                    </div> */}
 
-                    <div className="firstman1">
+                    {/* <div className="firstman1">
                         <Row>
                             <Col lg={7} className="firstman">
                                 <Row className="padng20">
@@ -433,10 +433,10 @@ class DashboardView extends Component {
 
 
 
-                </div>
+                </div> */}
                 {/* Recentactivity end*/}
                 {/* payment area start*/}
-                <div className="recentactivity recentPaymentactivity">
+                {/* <div className="recentactivity recentPaymentactivity">
                     <h1>Payment</h1>
 
                     <div className="firstman1">
@@ -534,7 +534,7 @@ class DashboardView extends Component {
 
 
 
-                </div>
+                </div> */}
                 {/* payment area end*/}
             </div>
         );

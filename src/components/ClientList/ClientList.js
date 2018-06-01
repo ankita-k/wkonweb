@@ -40,13 +40,11 @@ class ClientList extends Component {
       clientlist: [],
       show: true, //loading-bar        
       selectedId: '',  //FOR SELECT CLIENT ROW ID
-      searchedclient: [],
-      trueClientList: [],
       loading: false,
       visible: false,
       searchinput: '',
-      searchinput: '',
       allclient: 'All',
+      statussearch: '',
       userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
       addStyle: { display: 'block' },
       column: [{
@@ -128,29 +126,25 @@ class ClientList extends Component {
     //* HIDE CLIENT CREATION AND PROJECT CREATION ICON FROM ADMIN AND DEVELOPER/
     if (Object.keys(this.props.loggeduserDetails).length != 0) {
       if (this.props.loggeduserDetails.role == 'Sales') {
-          this.setState({ addStyle: { display: 'block' } })
+        this.setState({ addStyle: { display: 'block' } })
       }
       else {
-          this.setState({ addStyle: { display: 'none' } })
+        this.setState({ addStyle: { display: 'none' } })
       }
-  }
+    }
+
+    this.handleChange((this.props.location.filterValue ? this.props.location.filterValue : 'All'));
   }
 
   componentWillReceiveProps(props) {
-    console.log('--------------------------------component will receive props++++++++++++++++++++++++++++', props,this.props);
-    // this.commonFunction(props);
+    console.log('--------------------------------component will receive props++++++++++++++++++++++++++++', props, this.props);
     /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
     if (props.clientList.length > 0) {
-      this.setState({ searchedclient: [] });
-      this.setState({ searchedclient:props.clientList});
-      console.log(props.clientList);
-      console.log(this.state.searchedclient);
       this.setState({ show: false });
-      // this.showallList();
+
     }
-    this.handleChange((props.location.filterValue));
   }
- 
+
   // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
   commonFunction(props) {
     console.log(this.props)
@@ -185,88 +179,73 @@ class ClientList extends Component {
   }
 
 
-
-
-
   // SEACRH CLIENT LIST ACCORDING TO INPUT 
   searchClient = (e) => {
-    console.log('search data', e);
-    let newarray = this.props.clientList.filter(d => {
-      return d.name.toLowerCase().indexOf(e.toLowerCase()) > -1
 
-    });
-    console.log(newarray)
-    this.setState({ searchedclient: newarray })
+    this.setState({ searchinput: e })
   }
 
   // SHOW ALL CLIENT LIST
   showallList = (e) => {
-    console.log('target value', e)
     this.setState({ searchinput: e })
     if (e == '') {
-      this.setState({
-        searchedclient: this.props.clientList
-
-      });
+      this.props.clientList
     }
   }
 
   //handlechange function
   handleChange = (value) => {
-    // let searchedclient = [];
+    console.log(value)
     if (value != null || value != undefined) {
       this.setState({ statussearch: value })
-      if (value == 'All') {
-        this.setState({ statussearch: 'All' });
-        this.setState({ searchinput: '' });
-        this.setState({
-          searchedclient: this.props.clientList
-        });
-      }
-      else {
-        this.setState({
-          searchedclient:
-            this.props.clientList.filter(a => {
-              return a.status.indexOf(value) > -1
-            })
-        })
-      }
+      this.setState({ searchinput: '' });
     }
     else {
       console.log("Show client list . . . . . . . . .. . ");
-      this.setState({
-        searchedclient: this.props.clientList
-      }, function () {
-        this.forceUpdate();
-      });
+      this.setState({ statussearch: "" })
     }
 
   }
 
-  //  APICALL FOR SENDING MAIL TO USER
-  SendEmail = (client) => {
-    console.log(client);
-    let data = {
-      name: client.name,
-      email: client.email,
-      subject: 'Please Login To Your Account',
-      userId: this.state.userId,
-      clientId: client._id
+  /** LOGIC FOR SEARCHING CLIENT ACCORDING TO STATUS OR NAME */
+  logicForClientSearch = (item, value, inputvalue) => {
+    if (inputvalue == "" && value == "All") {
+      return true
     }
-    console.log(data)
-    this.props.actions.emailService(data)
+    else {
+      if (inputvalue) {
+        return item.name.toLowerCase().indexOf(inputvalue.toLowerCase()) > -1
+      }
+      else {
+        return (item.status.indexOf(value) > -1)
+      }
+    }
   }
 
-  render() {
-console.log('CLIENT LIST PAGE RENDER')
-    // modal
-    const { visible, loading ,addStyle} = this.state;
-    // modal
-    const columns = this.state.column;
-    return (
+    //  APICALL FOR SENDING MAIL TO USER
+    SendEmail = (client) => {
+      console.log(client);
+      let data = {
+        name: client.name,
+        email: client.email,
+        subject: 'Please Login To Your Account',
+        userId: this.state.userId,
+        clientId: client._id
+      }
+      console.log(data)
+      this.props.actions.emailService(data)
+    }
 
-      <div className="clientListdiv">
-        {/* {this.state.show == true ? <div className="loader">
+    render() {
+      console.log('CLIENT LIST PAGE RENDER')
+      // modal
+      const { visible, loading, addStyle, statussearch, searchinput } = this.state;
+      // modal
+      const columns = this.state.column;
+      return (
+
+        <div className="clientListdiv">
+          {/* {this.state.show == true ? <div className="loader">
           <Loader className="ldr" fullPage loading />
         </div> : ""}
 
@@ -275,96 +254,96 @@ console.log('CLIENT LIST PAGE RENDER')
           color="red"
           showSpinner={false}
         /> */}
-        <div className="projectListheader">
-          <h1 className="clientList">Client List</h1>
-          <Row>
-            <div className="addButton clientadd" style={addStyle}>
-              <Button onClick={() => { this.props.actions.menuKeys('create_client'); this.props.history.push('/dashboard/clientcreate') }}>+</Button>
-            </div>
-          </Row>
-          <Row>
-            <div className="AllProjects">
-              <Search className="SearchValue"
-                placeholder="input search text"
-                onSearch={(value) => { this.searchClient(value) }}
-                style={{ width: 200 }}
-                onChange={(e) => { this.showallList(e.target.value) }}
-                enterButton
-                value={this.state.searchinput}
-              />
-              {(this.state.statussearch) ?
-                <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
-                  <Option value="All">All</Option>
-                  <Option value="Interested">Interested</Option>
-                  <Option value="Pipeline">Pipeline</Option>
-                  <Option value="Commited">Committed</Option>
-
-
-                </Select> :
-                <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
-                  <Option value="All">All</Option>
-                  <Option value="Interested">Interested</Option>
-                  <Option value="Pipeline">Pipeline</Option>
-                  <Option value="Commited">Committed</Option>
-
-
-                </Select>
-              }
-              <Button className="allprojectbtn" onClick={() => {
-                this.handleChange('All')
-              }}>Show All</Button>
-
-            </div>
-          </Row>
-        </div>
-        {/* clientlist */}
-        <Card className="innercardContenta" bordered={false}>
-          <Table
-            onRow={(record) => {
-              return {
-                onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
-              };
-            }}
-
-            columns={columns} dataSource={this.state.searchedclient} />
-
-        </Card>
-        {/* clientlist */}
-        <div className="deletemodal">
-
-          <Modal
-            className="delmodal"
-            visible={visible}
-            wrapClassName="vertical-center-modal"
-            title="Confirm"
-            onOk={() => { this.deleteClient(this.state.selectedId) }}
-            onCancel={this.handleCancel}
-            footer={[
-              <Button className="nobtn" key="back" onClick={this.handleCancel}>NO</Button>,
-              <Button key="submit" type="primary" loading={loading} onClick={() => { this.deleteClient(this.state.selectedId) }}>
-                YES
-            </Button>,
-            ]}
-          >
+          <div className="projectListheader">
+            <h1 className="clientList">Client List</h1>
             <Row>
-              <Col lg={4}>
-                <img src={warning} />
-              </Col>
-              <Col lg={18}>
-                <p className="modaltxt">Are you sure you want to delete this client?</p>
-                <p className="modaltxt">You can't undo this action.</p>
-              </Col>
+              <div className="addButton clientadd" style={addStyle}>
+                <Button onClick={() => { this.props.actions.menuKeys('create_client'); this.props.history.push('/dashboard/clientcreate') }}>+</Button>
+              </div>
             </Row>
-          </Modal>
+            <Row>
+              <div className="AllProjects">
+                <Search className="SearchValue"
+                  placeholder="input search text"
+                  onSearch={(value) => { this.searchClient(value) }}
+                  style={{ width: 200 }}
+                  onChange={(e) => { this.showallList(e.target.value) }}
+                  enterButton
+                  value={this.state.searchinput}
+                />
+                {(this.state.statussearch) ?
+                  <Select className="scoping" value={this.state.statussearch} style={{ width: 120 }} onChange={this.handleChange}>
+                    <Option value="All">All</Option>
+                    <Option value="Interested">Interested</Option>
+                    <Option value="Pipeline">Pipeline</Option>
+                    <Option value="Committed">Committed</Option>
+
+
+                  </Select> :
+                  <Select className="scoping" defaultValue="All" style={{ width: 120 }} onChange={this.handleChange}>
+                    <Option value="All">All</Option>
+                    <Option value="Interested">Interested</Option>
+                    <Option value="Pipeline">Pipeline</Option>
+                    <Option value="Committed">Committed</Option>
+
+
+                  </Select>
+                }
+                <Button className="allprojectbtn" onClick={() => {
+                  this.handleChange('All')
+                }}>Show All</Button>
+
+              </div>
+            </Row>
+          </div>
+          {/* clientlist */}
+          <Card className="innercardContenta" bordered={false}>
+            <Table
+              onRow={(record) => {
+                return {
+                  onClick: () => { console.log(record), this.setState((prevstate) => { return { selectedId: record } }) },       // click row
+                };
+              }}
+
+              columns={columns} dataSource={this.props.clientList.filter((item) => { return this.logicForClientSearch(item, statussearch, searchinput) })} />
+
+          </Card>
+          {/* clientlist */}
+          <div className="deletemodal">
+
+            <Modal
+              className="delmodal"
+              visible={visible}
+              wrapClassName="vertical-center-modal"
+              title="Confirm"
+              onOk={() => { this.deleteClient(this.state.selectedId) }}
+              onCancel={this.handleCancel}
+              footer={[
+                <Button className="nobtn" key="back" onClick={this.handleCancel}>NO</Button>,
+                <Button key="submit" type="primary" loading={loading} onClick={() => { this.deleteClient(this.state.selectedId) }}>
+                  YES
+            </Button>,
+              ]}
+            >
+              <Row>
+                <Col lg={4}>
+                  <img src={warning} />
+                </Col>
+                <Col lg={18}>
+                  <p className="modaltxt">Are you sure you want to delete this client?</p>
+                  <p className="modaltxt">You can't undo this action.</p>
+                </Col>
+              </Row>
+            </Modal>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
-}
-const mapStateToProps = (state) => {
-  // console.log(state);
-  return state
-}
+  const mapStateToProps = (state) => {
+    // console.log(state);
+    return state
+  }
 function mapDispatchToProps(dispatch, state) {
   return ({
     actions: bindActionCreators(clientListAction, dispatch)
