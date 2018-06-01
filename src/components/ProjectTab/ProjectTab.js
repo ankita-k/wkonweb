@@ -48,12 +48,12 @@ class ProjectTab extends Component {
                 <div className="projecttabWindow">
                     <Layout>
                         <div className="prjctcontent">
-                            <p className="prjctnameheading">Project Name :<span className="prjctnm">&nbsp;{this.state.projectName}</span></p>
-                            <p className="prjctdesc">Project Description :</p>
-                            <p className="prjcdtl">
+                            <p className="prjctnameheading">Project Name : &nbsp; <span className="prjctnm">&nbsp;{this.state.projectName}</span></p>
+                            <p className="prjctdesc">Project Description : &nbsp;  <p className="prjcdtl">
                                 {this.state.projectDetails}
                             </p>
-
+</p>
+                           
 
                         </div>
                         <Row>

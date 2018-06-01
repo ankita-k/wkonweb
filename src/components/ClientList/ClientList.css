@@ -76,6 +76,19 @@ img.fileIcon {
     height: 12px;
     width: 12px;
 }
+img.mail {
+    width: 14px;
+}
+button.ant-btn.email {
+    background: transparent;
+    border: none;
+    height: 14px;
+    margin-left: 9px;
+    padding-left: 0;
+    margin-top: 5px;
+    padding-bottom: 19px;
+    padding-right: 0px;
+}
 button.ant-btn.edita {
     background: transparent;
     color: #81d2ff;
