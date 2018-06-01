@@ -38,8 +38,7 @@ class ClientList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      clientlist: [],
-      show: true, //loading-bar        
+      clientlist: [],      
       selectedId: '',  //FOR SELECT CLIENT ROW ID
       loading: false,
       visible: false,
@@ -116,13 +115,12 @@ class ClientList extends Component {
 
   componentDidMount(props) {
     console.log('++++++++++++++++component will mount++++++++++++++++', this.props);
-    this.setState({ show: true });
+    /** HIDE ACTIONS OPTIONS FOR OTHER USER LOGIN THAN SALES  */
     if (this.props.loggeduserDetails.role == "Sales") {
     }
     else {
       this.state.column.pop();   // pop the action field for any other logged user
     }
-    //this.commonFunction(props);
 
     //* HIDE CLIENT CREATION AND PROJECT CREATION ICON FROM ADMIN AND DEVELOPER/
     if (Object.keys(this.props.loggeduserDetails).length != 0) {
@@ -137,29 +135,7 @@ class ClientList extends Component {
     this.handleChange((this.props.location.filterValue ? this.props.location.filterValue : 'All'));
   }
 
-  componentWillReceiveProps(props) {
-    console.log('--------------------------------component will receive props++++++++++++++++++++++++++++', props, this.props);
-    /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
-    if (props.clientList.length > 0) {
-      this.setState({ show: false });
-
-    }
-  }
-
-  // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
-  commonFunction(props) {
-    console.log(this.props)
-    console.log(props)
-    /* SHOWING CLIENT LIST AFTER RECEIVING DATA FROM PROPS*/
-    if (this.props.clientList.length > 0) {
-
-      this.setState({ searchedclient: (this.props.clientList) });
-      this.setState({ show: false });
-    }
-    this.handleChange((this.props.location.filterValue));
-  }
-
-  //edit client
+ // GO TO EDIT PAGE OF CLIENT WITH SELECTED CLIENT DATA
   editClient = (data) => {
     this.props.actions.menuKeys('create_client');
     this.props.history.push({
@@ -173,7 +149,6 @@ class ClientList extends Component {
 
   //**DELETE CLIENT ACTION CALLING  */
   deleteClient = () => {
-    this.setState({ show: true })
     this.props.actions.deleteclient(this.state.selectedId._id, sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'), this.props.history);
     this.setState({ visible: false })
 
