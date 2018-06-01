@@ -164,9 +164,6 @@ class ClientList extends Component {
   // SHOW ALL CLIENT LIST
   showallList = (e) => {
     this.setState({ searchinput: e })
-    if (e == '') {
-      this.props.clientList
-    }
   }
 
   //handlechange function
@@ -177,7 +174,6 @@ class ClientList extends Component {
       this.setState({ searchinput: '' });
     }
     else {
-      console.log("Show client list . . . . . . . . .. . ");
       this.setState({ statussearch: "" })
     }
 

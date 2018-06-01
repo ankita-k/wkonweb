@@ -43,11 +43,8 @@ class ProjectlistView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      projectList: [],
-      searchedList: [],
       userId: sessionStorage.getItem('id') ? sessionStorage.getItem('id') : localStorage.getItem('id'),
       selectedRowKeys: [],
-      show: true,  //loading-bar
       allproject: 'All',
       addStyle: { display: 'block' },
       column: [{
@@ -113,19 +110,13 @@ class ProjectlistView extends Component {
 
 
   componentDidMount() {
-    this.setState({ show: true });
-    this.commonFunction();
-  }
-
-  componentWillReceiveProps(props) {
-    console.log(props);
     this.commonFunction();
   }
 
   // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
   commonFunction = () => {
-    this.setState({ show: false });
-    this.handleChange(this.props.location.filterValue);
+    console.log('ppppppp   PROJECT LIST ',this.props)
+    this.handleChange(this.props.location.filterValue?this.props.location.filterValue:'All');
 
     /**HIDE ACTION FROM ADMIN */
     if(this.props.loggeduserDetails.role=='admin'){
@@ -147,11 +138,10 @@ class ProjectlistView extends Component {
       }
   }
   }
-  // DELETE PROJECT 
+
+  // DELETE PROJECT  API CALL
   deleteProject = () => {
-    this.setState({ show: true });
     this.props.actions.deleteproject(this.state.userId, this.state.selectedId._id, this.props.history)
-    this.setState({ show: false });
     this.setState({ visible: false })
   }
 
@@ -187,24 +177,10 @@ class ProjectlistView extends Component {
     let searchedList;
     if (value != null || value != undefined) {
       this.setState({ statussearch: value })
-      if (value == 'All') {
-        this.setState({ searchinput: '' })
-        this.setState({ statussearch: 'All' });
-        this.setState({ searchedList: this.props.projectList });
-      }
-      else {
-        searchedList = this.props.projectList.filter(a => {
-          return a.status.indexOf(value) > -1
-        });
-        this.setState({ searchedList })
-        console.log("filtered data", this.state.searchedList);
-      }
+      this.setState({ searchinput: '' });
     }
     else {
-      console.log(this.props.projectList);
-      this.setState({
-        searchedList: this.props.projectList
-      });
+      this.setState({ statussearch: "" })
     }
 
   }
@@ -212,18 +188,12 @@ class ProjectlistView extends Component {
 
   // GET ALL PROJECT LIST
   viewProject = () => {
-    this.setState({ show: true });
     this.props.actions.projectList(this.state.userId);
   }
 
   // SearchProject ACCORDING TO INPUR GIVEN
   searchproject = (val) => {
-    let newarray = this.props.projectList.filter(f => {
-      return f.name.toLowerCase().indexOf(val.toLowerCase()) > -1
-    });
-    console.log(newarray)
-    this.setState({ searchedList: newarray })
-
+    this.setState({searchinput:val})
 
   }
 
@@ -231,11 +201,25 @@ class ProjectlistView extends Component {
   showallList = (e) => {
     console.log(e);
     this.setState({ searchinput: e })
-    if (e == '') {
-      this.setState({ searchedList: this.props.projectList })
+  }
+
+
+   /** LOGIC FOR SEARCHING PROJECT  ACCORDING TO STATUS OR NAME OR  */
+   logicForProjectSearch = (item, value, inputvalue) => {
+    if (inputvalue == "" && value == "All") {
+      return true
+    }
+    else {
+      if (inputvalue) {
+        return item.name.toLowerCase().indexOf(inputvalue.toLowerCase()) > -1
+      }
+      else {
+        return (item.status.indexOf(value) > -1)
+      }
     }
   }
 
+  
   // NAVIGATE TO PROJECT DETAIL PAGE
   detailProject = (record) => {
     this.props.history.push({
@@ -245,22 +229,20 @@ class ProjectlistView extends Component {
       }
     });
   }
-
-
   render() {
     console.log('render')
     const columns = this.state.column;
-    const { visible, loading,addStyle } = this.state;
+    const { visible, loading,addStyle,statussearch,searchinput } = this.state;
     return (
       <div className="projectListdiv">
-        {this.state.show == true ? <div className="loader">
+        {/* {this.state.show == true ? <div className="loader">
           <Loader className="ldr" fullPage loading />
         </div> : ""}
         <Loading
           show={this.state.show}
           color="red"
           showSpinner={false}
-        />
+        /> */}
 
         <div className="projectListheader">
           <h1 className="clientList">Project List</h1>
@@ -326,7 +308,7 @@ class ProjectlistView extends Component {
                 // click row
               };
             }}
-            columns={columns} dataSource={this.state.searchedList} />
+            columns={columns} dataSource={this.props.projectList.filter((item) => { return this.logicForProjectSearch(item, statussearch, searchinput) })} />
         </Card>
         {/* clientlist */}
         <div className="deletemodal">
