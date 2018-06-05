@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Avatar, { Upload, Row, Col, Icon, Radio, Button, Modal, Select, notification,Input, Badge, Menu, Dropdown, Spin } from 'antd';
+import Avatar, { Upload,message, Row, Col, Icon, Radio, Button, Modal, Select, notification,Input, Badge, Menu, Dropdown, Spin } from 'antd';
 import Waypoint from 'react-waypoint';
 import './chatScreen.css';
 import { connect } from "react-redux";
@@ -25,6 +25,23 @@ const menu = (
         <Menu.Item key="3">Sales</Menu.Item>
     </Menu>
 );
+const props = {
+    name: 'file',
+    action: '//jsonplaceholder.typicode.com/posts/',
+    headers: {
+      authorization: 'authorization-text',
+    },
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+  };
 
 class ChatScreen extends Component {
 
@@ -194,7 +211,9 @@ class ChatScreen extends Component {
 {/* // CHAT FOOTER AREA */}
 <Row className="chatfooterarea">
  <Col lg={2}>
+ <Upload {...props}>
  <Button type="primary" shape="circle" className="attachbtn" ><Icon type="paper-clip" /></Button>
+ </Upload>
  </Col>
 <Col lg={20}>
 <div>
