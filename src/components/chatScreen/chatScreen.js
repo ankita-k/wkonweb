@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Avatar, { Upload,message, Row, Col, Icon, Radio, Button, Modal, Select, notification,Input, Badge, Menu, Dropdown, Spin } from 'antd';
+import Avatar, { Upload, message, Row, Col, Icon, Radio, Button, Modal, Select, notification, Input, Badge, Menu, Dropdown, Spin } from 'antd';
 import Waypoint from 'react-waypoint';
 import './chatScreen.css';
 import { connect } from "react-redux";
@@ -7,43 +7,32 @@ import * as actioncreators from '../../redux/action';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import io from 'socket.io-client';
-const socket = io('http://mitapi.memeinfotech.com:5088/');
 import proimg from '../../Images/wkon-2-21.png';
 import proimgself from '../../Images/wkon-2-22.png';
 import send from '../../Images/send.svg';
 import dropdownn from '../../Images/morebtn.svg';
 import attach from '../../Images/attachfile.svg';
+const socket = io('http://mitapi.memeinfotech.com:5088/');
+
 
 const { TextArea } = Input;
-const menu = (
-    <Menu>
-        <Menu.Item key="0">
-            <a >Clients</a>
-        </Menu.Item>
-        <Menu.Item key="1">
-            <a>Management</a>
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="3">Sales</Menu.Item>
-    </Menu>
-);
 const props = {
     name: 'file',
     action: '//jsonplaceholder.typicode.com/posts/',
     headers: {
-      authorization: 'authorization-text',
+        authorization: 'authorization-text',
     },
     onChange(info) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
+        if (info.file.status !== 'uploading') {
+            console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+        }
     },
-  };
+};
 
 class ChatScreen extends Component {
 
@@ -74,12 +63,12 @@ class ChatScreen extends Component {
                 this.getWallData();
             });
         }
-this.connectWallSocket();
-       
+        this.connectWallSocket();
+
     }
 
-     // CONNECT SOCKET FOR Bill CREATE
-     connectWallSocket = () => {
+    // CONNECT SOCKET FOR Bill CREATE
+    connectWallSocket = () => {
         socket.on('chatCreated', (interval) => {
             console.log('......Chat created.......', interval)
 
@@ -126,7 +115,7 @@ this.connectWallSocket();
                             <div className="proimg">
                                 <img src={proimg} />
                             </div>
-                            
+
                         </Col>
                         <Col lg={10}>
                             <div className="frndnm">
@@ -136,7 +125,18 @@ this.connectWallSocket();
                         </Col>
                         <Col lg={12}>
                             <div className="actionbtns">
-                                <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
+                                <Dropdown overlay={
+                                <Menu>
+                                    <Menu.Item key="0">
+                                        <a >Clients</a>
+                                    </Menu.Item>
+                                    <Menu.Item key="1">
+                                        <a>Management</a>
+                                    </Menu.Item>
+                                    <Menu.Divider />
+                                    <Menu.Item key="3">Sales</Menu.Item>
+                                </Menu>}
+                                 placement="bottomCenter" trigger={['click']}>
                                     <Button type="default" shape="circle" className="dropdownbtn"><img src={dropdownn} /></Button>
                                 </Dropdown>
 
@@ -152,7 +152,7 @@ this.connectWallSocket();
                                 <img src={proimg} />
                             </div>
                             <p className="usernm">Nicky</p>
-                            </Col>
+                        </Col>
                         <Col lg={10}>
                             <Row className="txt">
                                 <div className="triangle"></div>
@@ -182,7 +182,7 @@ this.connectWallSocket();
                                 <img src={proimgself} />
                             </div>
                             <p className="usernm">Me</p>
-                            </Col>
+                        </Col>
                         <Col lg={10}>
                             <Row className="txtself">
                                 <div className="triangleself"></div>
@@ -207,10 +207,10 @@ this.connectWallSocket();
                                 <img src={proimg} />
                             </div>
                             <p className="usernm">Nicky</p>
-                            </Col>
+                        </Col>
                         <Col lg={10}>
-                         
-                            
+
+
                             <Row className="txt">
                                 <div className="triangle"></div>
                                 <p>It is a long established fact that a reader will be distracted by
@@ -222,31 +222,31 @@ this.connectWallSocket();
 
                         </Col>
                     </Row>
-{/* // CHAT FOOTER AREA */}
-<Row className="chatfooterarea">
- <Col lg={2}>
- <Upload {...props}>
- <Button type="primary" shape="circle" className="attachbtn" ><Icon type="paper-clip" /></Button>
- </Upload>
- </Col>
-<Col lg={20}>
-<div>
-{/* <Icon type="message" /> */}
-    <TextArea placeholder="Type your message here.."
-    autosize={{ minRows: 1, maxRows: 3 }}
-     />
-    
-  </div>
-  </Col>
-  
-  <Col lg={2}>
-  <Button className="sendbtn" shape="circle" type="default">
-  {/* <img src={send} /> */}
-  <Icon type="arrow-right" />
-  </Button>
-  </Col>
- 
-</Row>
+                    {/* // CHAT FOOTER AREA */}
+                    <Row className="chatfooterarea">
+                        <Col lg={2}>
+                            <Upload {...props}>
+                                <Button type="primary" shape="circle" className="attachbtn" ><Icon type="paper-clip" /></Button>
+                            </Upload>
+                        </Col>
+                        <Col lg={20}>
+                            <div>
+                                {/* <Icon type="message" /> */}
+                                <TextArea placeholder="Type your message here.."
+                                    autosize={{ minRows: 1, maxRows: 3 }}
+                                />
+
+                            </div>
+                        </Col>
+
+                        <Col lg={2}>
+                            <Button className="sendbtn" shape="circle" type="default">
+                                {/* <img src={send} /> */}
+                                <Icon type="arrow-right" />
+                            </Button>
+                        </Col>
+
+                    </Row>
 
 
                     {/* wall view section start */}
