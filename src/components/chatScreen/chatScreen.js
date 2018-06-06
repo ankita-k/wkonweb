@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import * as actioncreators from '../../redux/action';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
+import io from 'socket.io-client';
+const socket = io('http://mitapi.memeinfotech.com:5088/');
 import proimg from '../../Images/wkon-2-21.png';
 import proimgself from '../../Images/wkon-2-22.png';
 import dropdownn from '../../Images/morebtn.svg';
@@ -74,8 +76,20 @@ class ChatScreen extends Component {
                 this.getWallData();
             });
         }
+this.connectWallSocket();
+       
     }
 
+     // CONNECT SOCKET FOR Bill CREATE
+     connectWallSocket = () => {
+        socket.on('chatCreated', (interval) => {
+            console.log('......Chat created.......', interval)
+
+            console.log('......Chat created session.......', interval)
+            this.props.actions.getWall(this.state.projectId);
+
+        });
+    }
     componentWillReceiveProps(props) {
         console.log(props, this.props)
     }
@@ -343,16 +357,16 @@ class ChatScreen extends Component {
 
                     </div>
 
-                    {this.props.projectWallList.map((item,index) => {
-                        return(
+                    {this.props.projectWallList.map((item, index) => {
+                        return (
                             <div className="postedpartcard" key={index}>
-                            <div className="mitpic">
-                                <Row type="flex" justify="space-around" align="middle">
-                                    <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 19 }}>
-                                        <p>{item.userId.name}</p>
-                                        <h3>{item.userId.role}</h3>
-                                    </Col>
-                                </Row>
+                                <div className="mitpic">
+                                    <Row type="flex" justify="space-around" align="middle">
+                                        <Col md={{ span: 22 }} sm={{ span: 21 }} xs={{ span: 19 }}>
+                                            <p>{item.userId.name}</p>
+                                            <h3>{item.userId.role}</h3>
+                                        </Col>
+                                    </Row>
 
                                 <div className="postedimg onlytext"> */}
                     {/* <img src="https://i2.wp.com/beebom.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg?resize=640%2C426" /> */}
