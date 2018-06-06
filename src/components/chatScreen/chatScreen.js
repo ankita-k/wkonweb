@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Avatar, { Upload,message, Row, Col, Icon, Radio, Button, Modal, Select, notification,Input, Badge, Menu, Dropdown, Spin } from 'antd';
+import Avatar, { Upload, message, Row, Col, Icon, Radio, Button, Modal, Select, notification, Input, Badge, Menu, Dropdown, Spin } from 'antd';
 import Waypoint from 'react-waypoint';
 import './chatScreen.css';
 import { connect } from "react-redux";
@@ -8,40 +8,42 @@ import { bindActionCreators } from 'redux';
 import moment from 'moment';
 import proimg from '../../Images/wkon-2-21.png';
 import proimgself from '../../Images/wkon-2-22.png';
-import send from '../../Images/send.svg';
 import dropdownn from '../../Images/morebtn.svg';
-import attach from '../../Images/attachfile.svg';
 
+const Option = Select.Option;
 const { TextArea } = Input;
-const menu = (
-    <Menu>
-        <Menu.Item key="0">
-            <a >Clients</a>
-        </Menu.Item>
-        <Menu.Item key="1">
-            <a>Management</a>
-        </Menu.Item>
-        <Menu.Divider />
-        <Menu.Item key="3">Sales</Menu.Item>
-    </Menu>
-);
+function handleChange(value) {
+    console.log(`selected ${value}`);
+  }
+// const menu = (
+//     <Menu>
+//         <Menu.Item key="0">
+//             <a >Clients</a>
+//         </Menu.Item>
+//         <Menu.Item key="1">
+//             <a>Management</a>
+//         </Menu.Item>
+//         <Menu.Divider />
+//         <Menu.Item key="3">Sales</Menu.Item>
+//     </Menu>
+// );
 const props = {
     name: 'file',
     action: '//jsonplaceholder.typicode.com/posts/',
     headers: {
-      authorization: 'authorization-text',
+        authorization: 'authorization-text',
     },
     onChange(info) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === 'done') {
-        message.success(`${info.file.name} file uploaded successfully`);
-      } else if (info.file.status === 'error') {
-        message.error(`${info.file.name} file upload failed.`);
-      }
+        if (info.file.status !== 'uploading') {
+            console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+        }
     },
-  };
+};
 
 class ChatScreen extends Component {
 
@@ -112,7 +114,7 @@ class ChatScreen extends Component {
                             <div className="proimg">
                                 <img src={proimg} />
                             </div>
-                            
+
                         </Col>
                         <Col lg={10}>
                             <div className="frndnm">
@@ -122,15 +124,23 @@ class ChatScreen extends Component {
                         </Col>
                         <Col lg={12}>
                             <div className="actionbtns">
-                                <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
+                                {/* <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
                                     <Button type="default" shape="circle" className="dropdownbtn"><img src={dropdownn} /></Button>
-                                </Dropdown>
+                                </Dropdown> */}
+
+                                <Select defaultValue="Target" style={{ width: 90 }} onChange={handleChange}>
+                                    <Option value="Clients">Clients</Option>
+                                    <Option value="Management">Management</Option>
+                                    <Option value="Target" disabled>Target</Option>
+                                    <Option value="Sales">Sales</Option>
+                                </Select>
+                                
+
 
                             </div>
                         </Col>
-
-
                     </Row>
+                    <Row className="blank"></Row>
                     <Row className="chatrow">
 
                         <Col lg={2}>
@@ -138,7 +148,7 @@ class ChatScreen extends Component {
                                 <img src={proimg} />
                             </div>
                             <p className="usernm">Nicky</p>
-                            </Col>
+                        </Col>
                         <Col lg={10}>
                             <Row className="txt">
                                 <div className="triangle"></div>
@@ -168,7 +178,7 @@ class ChatScreen extends Component {
                                 <img src={proimgself} />
                             </div>
                             <p className="usernm">Me</p>
-                            </Col>
+                        </Col>
                         <Col lg={10}>
                             <Row className="txtself">
                                 <div className="triangleself"></div>
@@ -193,10 +203,8 @@ class ChatScreen extends Component {
                                 <img src={proimg} />
                             </div>
                             <p className="usernm">Nicky</p>
-                            </Col>
+                        </Col>
                         <Col lg={10}>
-                         
-                            
                             <Row className="txt">
                                 <div className="triangle"></div>
                                 <p>It is a long established fact that a reader will be distracted by
@@ -208,33 +216,59 @@ class ChatScreen extends Component {
 
                         </Col>
                     </Row>
-{/* // CHAT FOOTER AREA */}
-<Row className="chatfooterarea">
- <Col lg={2}>
- <Upload {...props}>
- <Button type="primary" shape="circle" className="attachbtn" ><Icon type="paper-clip" /></Button>
- </Upload>
- </Col>
-<Col lg={20}>
-<div>
-{/* <Icon type="message" /> */}
-    <TextArea placeholder="Type your message here.."
-    autosize={{ minRows: 1, maxRows: 3 }}
-     />
-    
-  </div>
-  </Col>
-  
-  <Col lg={2}>
-  <Button className="sendbtn" shape="circle" type="default">
-  {/* <img src={send} /> */}
-  <Icon type="arrow-right" />
-  </Button>
-  </Col>
- 
-</Row>
+                    <Row className="chatrowself">
+                        <Col lg={2}>
+                            <div className="proimg">
+                                <img src={proimgself} />
+                            </div>
+                            <p className="usernm">Me</p>
+                        </Col>
+                        <Col lg={10}>
+                            <Row className="txtself">
+                                <div className="triangleself"></div>
+                                <p>Lorem Ipsum is simply dummy text of is simply dummy text of
+                                is simply dummy text ofis simply dummy text
+                                is simply dummy text of
+                                is simply dummy text ofis simply dummy text ofofthe printing and typesetting industry.</p>
+                                <p className="timeself">11:18</p>
+                            </Row>
+                            <Row className="txtself">
+                                <div className="triangleself"></div>
+                                <p>Lorem Ipsum is simply dummy text</p>
+                                <p className="timeself">11:20</p>
+                            </Row>
 
+                        </Col>
+                        <Col lg={2} >
 
+                        </Col>
+                    </Row>
+                    <Row className="blank"></Row>
+                    {/* // CHAT FOOTER AREA */}
+                    <Row className="chatfooterarea">
+                        <Col lg={2}>
+                            <Upload {...props}>
+                                <Button type="primary" shape="circle" className="attachbtn" ><Icon type="paper-clip" /></Button>
+                            </Upload>
+                        </Col>
+                        <Col lg={20}>
+                            <div>
+                                {/* <Icon type="message" /> */}
+                                <TextArea placeholder="Type your message here.."
+                                    autosize={{ minRows: 1, maxRows: 3 }}
+                                />
+
+                            </div>
+                        </Col>
+
+                        <Col lg={2}>
+                            <Button className="sendbtn" shape="circle" type="default">
+                                {/* <img src={send} /> */}
+                                <Icon type="arrow-right" />
+                            </Button>
+                        </Col>
+
+                    </Row>
                     {/* wall view section start */}
                     {/* <div className="postarticlesec">
                         <div className="wallcard">
