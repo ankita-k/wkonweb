@@ -8,6 +8,9 @@
   .ant-layout-content {
     height: auto !important;
 }
+svg#Capa_1 {
+  fill: #fff;
+}
 button.ant-btn.wkonlogout {
   float: right;
   margin-top: 17px;
