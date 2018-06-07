@@ -9,13 +9,29 @@ import moment from 'moment';
 import io from 'socket.io-client';
 import proimg from '../../Images/wkon-2-21.png';
 import proimgself from '../../Images/wkon-2-22.png';
-import send from '../../Images/send.svg';
 import dropdownn from '../../Images/morebtn.svg';
 import attach from '../../Images/attachfile.svg';
+import placeholderHuman from '../../Images/person-placeholder.jpg';
+import profilePlacholder from '../../Images/profile-placeholder.png';
+import Scroll from "react-scroll";
+import * as ReactDOM from 'react-dom';
 const socket = io('http://mitapi.memeinfotech.com:5088/');
 
+const Option = Select.Option;
+const { TextArea } = Input; 
 
-const { TextArea } = Input;
+// const menu = (
+//     <Menu>
+//         <Menu.Item key="0">
+//             <a >Clients</a>
+//         </Menu.Item>
+//         <Menu.Item key="1">
+//             <a>Management</a>
+//         </Menu.Item>
+//         <Menu.Divider />
+//         <Menu.Item key="3">Sales</Menu.Item>
+//     </Menu>
+// );
 const props = {
     name: 'file',
     action: '//jsonplaceholder.typicode.com/posts/',
@@ -44,7 +60,10 @@ class ChatScreen extends Component {
             projectId: '',
             userRole: '',
             userName: '',
-            textValue: ''
+            textValue: '',
+            projectName: '',
+            target: [],
+            messagesEnd: ''
         }
     }
 
@@ -59,9 +78,12 @@ class ChatScreen extends Component {
         if (this.props.location.data) {
             this.setState({
                 projectId: this.props.location.data.record._id
-            }, function () {
-                this.getWallData();
-            });
+            },
+                this.setState({ projectName: this.props.location.data.record.name1 })
+                // , function () {
+                //     // this.getWallData();
+                // }
+            );
         }
         this.connectWallSocket();
 
@@ -77,9 +99,9 @@ class ChatScreen extends Component {
 
         });
     }
-    componentWillReceiveProps(props) {
-        console.log(props, this.props)
-    }
+    // componentWillReceiveProps(props) { 
+    //     console.log(props, this.props)
+    // }
     // GET API CALL 
     getWallData = () => {
         this.props.actions.getWall(this.state.projectId);
@@ -88,6 +110,11 @@ class ChatScreen extends Component {
     getText = (e) => {
         console.log('text value', e.target.value)
         this.setState({ textValue: e.target.value })
+    }
+
+    // GET SELECTED TARGET VALUE
+    handleChange = (value) => {
+        this.setState({ target: value })
     }
     // CREATE WALL API CALLING
     createWall = () => {
@@ -102,11 +129,26 @@ class ChatScreen extends Component {
         console.log(data)
         this.props.actions.createchat(data);
         this.setState({ textValue: '' });
+        this.scrollToBottom();
+
+    }
+
+    scrollToBottom = () => {
+        const { container } = this.refs;
+        console.log(container);
+        let scrollHeight = container.scrollHeight;
+        console.log(scrollHeight);
+        let height = container.clientHeight;
+        console.log(height);
+        let maxScrollTop = scrollHeight - height;
+        console.log(maxScrollTop);
+        ReactDOM.findDOMNode(container).scrollTop = 100;
     }
 
     render() {
 
-        console.log('RENDERRR')
+        console.log('RENDERRR', this.props)
+        const { userId, projectName } = this.state;
         return (
             <div>
                 <div className="chatscrn">
@@ -118,34 +160,127 @@ class ChatScreen extends Component {
 
                         </Col>
                         <Col lg={10}>
-                            <div className="frndnm">
-                                <h1>Nicky Franceska</h1>
-                                <p>Online &nbsp; <Badge status="success" /></p>
+                            <div className="frndnm" onClick={this.scrollToBottom}>
+                                <h1>{projectName}</h1>
+                                {/* <p>Online &nbsp; <Badge status="success" /></p> */}
                             </div>
                         </Col>
                         <Col lg={12}>
                             <div className="actionbtns">
-                                <Dropdown overlay={
-                                <Menu>
-                                    <Menu.Item key="0">
-                                        <a >Clients</a>
-                                    </Menu.Item>
-                                    <Menu.Item key="1">
-                                        <a>Management</a>
-                                    </Menu.Item>
-                                    <Menu.Divider />
-                                    <Menu.Item key="3">Sales</Menu.Item>
-                                </Menu>}
-                                 placement="bottomCenter" trigger={['click']}>
+                                {/* <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
                                     <Button type="default" shape="circle" className="dropdownbtn"><img src={dropdownn} /></Button>
-                                </Dropdown>
+                                </Dropdown> */}
+
+                                <Select defaultValue="Everyone" style={{ width: 90 }} onChange={this.handleChange}>
+                                    <Option value="Clients">Clients</Option>
+                                    <Option value="Everyone">Everyone</Option>
+                                    <Option value="Sales">Sales</Option>
+                                </Select>
+
+
 
                             </div>
                         </Col>
-
-
                     </Row>
-                    <Row className="chatrow">
+                    <Row className="blank"></Row>
+                    <div ref="container" >
+                        {this.props.projectWallList.map((item, index) => {
+                            if (userId == item.userId._id) {
+                                return (
+                                    <Row className="chatrowself" key={index}>
+                                        <Col lg={2}>
+                                            <div className="proimg">
+                                                <img src={placeholderHuman} />
+                                            </div>
+                                            <p className="usernm">{item.userId.name}</p>
+                                        </Col>
+                                        <Col lg={10}>
+                                            <Row className="txtself">
+                                                <div className="triangleself"></div>
+                                                <p>{item.text}</p>
+                                                <p className="timeself">{moment(item.createdDate).format('ll')}</p>
+                                            </Row>
+
+                                        </Col>
+                                        <Col lg={2} >
+
+                                        </Col>
+                                    </Row>
+                                )
+                            }
+                            else {
+                                return (
+                                    <Row className="chatrow" key={index}  >
+
+                                        <Col lg={2}>
+                                            <div className="proimg">
+                                                <img src={profilePlacholder} />
+                                            </div>
+                                            <p className="usernm">{item.userId.name}</p>
+                                        </Col>
+                                        <Col lg={10}>
+                                            <Row className="txt">
+                                                <div className="triangle"></div>
+                                                <p>{item.text}</p>
+                                                <p className="time">{moment(item.createdDate.format('ll'))}</p>
+                                            </Row>
+                                            {/* <Row className="txt">
+                                        <div className="triangle"></div>
+                                        <p>Lorem Ipsum is simply dummy text</p>
+                                        <p className="time">10:54</p>
+                                    </Row>
+                                    <Row className="txt">
+                                        <div className="triangle"></div>
+                                        <p>It is a long established fact that a reader will be distracted by
+                                            the readable content of a page when looking at its
+                                         layout. The point of using Lorem Ipsum</p>
+                                        <p className="time">10:55</p>
+                                    </Row> */}
+                                        </Col>
+                                        <Col lg={2} >
+
+                                        </Col>
+                                    </Row>
+                                )
+                            }
+
+
+                        })}
+
+                        <div ref="target" ></div>
+                        {/* {this.props.projectWallList.map((item, index) => {
+                        if (userId == item.userId._id) {
+                            return (
+                                <Row className="chatrowself" key={index}>
+                                    <Col lg={2}>
+                                        <div className="proimg">
+                                            <img src={proimgself} />
+                                        </div>
+                                        <p className="usernm">{item.userId.name}</p>
+                                    </Col>
+                                    <Col lg={10}>
+                                        <Row className="txtself">
+                                            <div className="triangleself"></div>
+                                            <p>{item.text}</p>
+                                            <p className="timeself">{moment(item.createdDate).format('ll')}</p>
+                                        </Row>
+
+                                    </Col>
+                                    <Col lg={2} >
+
+                                    </Col>
+                                </Row>
+                            )
+                        }
+                        else {
+                            return null
+                        }
+
+
+                    })} */}
+
+                    </div>
+                    {/* <Row className="chatrow">
 
                         <Col lg={2}>
                             <div className="proimg">
@@ -154,63 +289,6 @@ class ChatScreen extends Component {
                             <p className="usernm">Nicky</p>
                         </Col>
                         <Col lg={10}>
-                            <Row className="txt">
-                                <div className="triangle"></div>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                <p className="time">10:50</p>
-                            </Row>
-                            <Row className="txt">
-                                <div className="triangle"></div>
-                                <p>Lorem Ipsum is simply dummy text</p>
-                                <p className="time">10:54</p>
-                            </Row>
-                            <Row className="txt">
-                                <div className="triangle"></div>
-                                <p>It is a long established fact that a reader will be distracted by
-                                    the readable content of a page when looking at its
-                                 layout. The point of using Lorem Ipsum</p>
-                                <p className="time">10:55</p>
-                            </Row>
-                        </Col>
-                        <Col lg={2} >
-
-                        </Col>
-                    </Row>
-                    <Row className="chatrowself">
-                        <Col lg={2}>
-                            <div className="proimg">
-                                <img src={proimgself} />
-                            </div>
-                            <p className="usernm">Me</p>
-                        </Col>
-                        <Col lg={10}>
-                            <Row className="txtself">
-                                <div className="triangleself"></div>
-                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                <p className="timeself">10:58</p>
-                            </Row>
-                            <Row className="txtself">
-                                <div className="triangleself"></div>
-                                <p>Lorem Ipsum is simply dummy text</p>
-                                <p className="timeself">11:00</p>
-                            </Row>
-
-                        </Col>
-                        <Col lg={2} >
-
-                        </Col>
-                    </Row>
-                    <Row className="chatrow">
-
-                        <Col lg={2}>
-                            <div className="proimg">
-                                <img src={proimg} />
-                            </div>
-                            <p className="usernm">Nicky</p>
-                        </Col>
-                        <Col lg={10}>
-
-
                             <Row className="txt">
                                 <div className="triangle"></div>
                                 <p>It is a long established fact that a reader will be distracted by
@@ -221,7 +299,35 @@ class ChatScreen extends Component {
                         <Col lg={2} >
 
                         </Col>
-                    </Row>
+                    </Row> */}
+                    {/* <Row className="chatrowself">
+                        <Col lg={2}>
+                            <div className="proimg">
+                                <img src={proimgself} />
+                            </div>
+                            <p className="usernm">Me</p>
+                        </Col>
+                        <Col lg={10}>
+                            <Row className="txtself">
+                                <div className="triangleself"></div>
+                                <p>Lorem Ipsum is simply dummy text of is simply dummy text of
+                                is simply dummy text ofis simply dummy text
+                                is simply dummy text of
+                                is simply dummy text ofis simply dummy text ofofthe printing and typesetting industry.</p>
+                                <p className="timeself">11:18</p>
+                            </Row>
+                            <Row className="txtself">
+                                <div className="triangleself"></div>
+                                <p>Lorem Ipsum is simply dummy text</p>
+                                <p className="timeself">11:20</p>
+                            </Row>
+
+                        </Col>
+                        <Col lg={2} >
+
+                        </Col>
+                    </Row> */}
+                    <Row className="blank"></Row>
                     {/* // CHAT FOOTER AREA */}
                     <Row className="chatfooterarea">
                         <Col lg={2}>
@@ -232,7 +338,7 @@ class ChatScreen extends Component {
                         <Col lg={20}>
                             <div>
                                 {/* <Icon type="message" /> */}
-                                <TextArea placeholder="Type your message here.."
+                                <TextArea placeholder="Type your message here.." value={this.state.textValue} onChange={this.getText}
                                     autosize={{ minRows: 1, maxRows: 3 }}
                                 />
 
@@ -240,15 +346,13 @@ class ChatScreen extends Component {
                         </Col>
 
                         <Col lg={2}>
-                            <Button className="sendbtn" shape="circle" type="default">
+                            <Button className="sendbtn" shape="circle" type="default" onClick={this.createWall}>
                                 {/* <img src={send} /> */}
                                 <Icon type="arrow-right" />
                             </Button>
                         </Col>
 
                     </Row>
-
-
                     {/* wall view section start */}
                     {/* <div className="postarticlesec">
                         <div className="wallcard">
@@ -257,7 +361,6 @@ class ChatScreen extends Component {
                                     <Row>
                                         <div>
                                             <Col span={3}>
-
                                                 <div className="userprflimg"> */}
                     {/* <img src={this.state.imageUrl} /> */}
                     {/* </div>
@@ -267,7 +370,6 @@ class ChatScreen extends Component {
                                                     <h3>{this.state.userName}</h3>
                                                     <p>{this.state.userRole}</p>
                                                 </div>
-
                                             </Col>
                                         </div>
                                     </Row>
@@ -275,7 +377,6 @@ class ChatScreen extends Component {
                                 <div className="textSection">
                                     <Row>
                                         <Col span={24}>
-
                                             <TextArea rows={4} onChange={this.getText} /> */}
                     {/* <ReactQuill ref="quill_content" id="editor-content" className="textareheadng" placeholder="Write an article here" name="content" onChange={this.postContent} /> */}
 
@@ -283,19 +384,14 @@ class ChatScreen extends Component {
                                     </Row>
                                 </div>
                                 <Row type="flex" justify="center">
-
                                     <Col span={24}>
                                         <div placeholder="Write here .." className="showpostall" >
                                         </div>
-
                                     </Col>
                                 </Row>
-
-
                                 <hr className="dividerwall" />
                                 <div className="uploadimgsec">
                                     <Row >
-
                                         <div className="uploadalign">
                                             <Col span={10}> */}
                     {/* ************************ UPLOAD SECTION FOR IMAGE****************** */}
@@ -312,17 +408,13 @@ class ChatScreen extends Component {
                     {/* </Col>
                                         </div>
                                         <Col span={14}>
-
                                             <Button onClick={this.createWall} className="post" title="Post" loading={false}>Post</Button>
                                         </Col>
-
                                     </Row>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
                     {this.props.projectWallList.map((item, index) => {
                         return (
                             <div className="postedpartcard" key={index}>
@@ -333,7 +425,6 @@ class ChatScreen extends Component {
                                             <h3>{item.userId.role}</h3>
                                         </Col>
                                     </Row>
-
                                 <div className="postedimg onlytext"> */}
                     {/* <img src="https://i2.wp.com/beebom.com/wp-content/uploads/2016/01/Reverse-Image-Search-Engines-Apps-And-Its-Uses-2016.jpg?resize=640%2C426" /> */}
                     {/* <p className="sub_content">{item.text}</p>
@@ -352,7 +443,6 @@ class ChatScreen extends Component {
 
                 {/* <div>
                     <Waypoint onEnter={() => { console.log('Waypoint visible'); }} onLeave={() => { console.log("Waypoint left"); }} />
-
                     <Icon type="loading" spinning={true} style={{ fontSize: 40 }} />
                 </div> */}
 

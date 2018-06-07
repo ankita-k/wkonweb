@@ -47,10 +47,18 @@ button.ant-btn.dropdownbtn.ant-btn-default {
     margin-left: 1em;
 }
 .ant-row.chattitle {
+    position: fixed;
+    top: 78px;
+    right: 0;
     border: 1px solid #8080802b;
     margin: -15px;
     background: #fff;
     padding-top: 10px;
+    left: 214px;
+    z-index: 9;
+}
+.ant-row.blank {
+    height: 4em;
 }
 button.ant-btn.callbtn.ant-btn-primary img {
     width: 100%;
@@ -92,6 +100,7 @@ button.ant-btn.callbtn.ant-btn-primary {
     display: flex;
     flex-direction: row-reverse;
     margin-top: 1em;
+    /* margin-bottom: 2em; */
 }
 p.time {
     font-size: 12px;
@@ -141,19 +150,24 @@ i.anticon.anticon-message {
 button.ant-btn.ant-btn-primary.ant-btn-circle {
     background: #fff;
     border: none;
-    font-size: 32px;
+    font-size: 20px;
     color: #31313175;
-    line-height: 29px;
+    line-height: 27px;
     margin-left: 15px;
 }
 .ant-row.chatfooterarea {
     margin-top: 2em;
-    background: #e2e6e696;
+    background: #e2e6e6;
     padding: 1em;
     margin-right: -15px;
     margin-left: -15px;
     margin-bottom: -15px;
+    -webkit-box-shadow: 0px 0px 2px 0px #ffffff;
     box-shadow: 0px 0px 2px 0px #ffffff;
+    position: fixed;
+    bottom: 15px;
+    left: 215px;
+    right: 0;
 }
 button.ant-btn.ant-btn-primary.ant-btn-circle {
     background: #fff;
@@ -177,6 +191,7 @@ p.timeself {
 }
 .ant-row.chatrow {
     margin-top: 2em;
+    /* margin-bottom: 2em; */
 }
 p.time {
     position: absolute;
@@ -194,27 +209,37 @@ p.time {
     clip-path: polygon(83% 84%,85% 45%,60% 63%);
 }
 button.ant-btn.sendbtn.ant-btn-default {
-    border: 1px solid #7d7d7dc7;
-    width: 48px;
-    height: 48px;
-    color: rgba(0, 21, 41, 0.72);
+    color: rgb(255, 255, 255);
     margin-left: 1em;
-    background: transparent;
-    font-size: 31px;
+    background: #84b2ff;
+    font-size: 20px;
+    margin-top: 10px;
+}
+.ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active {
+    border-color: #a5aeb5;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.ant-select-selection.ant-select-selection--single {
+    background: #f7f7f7;
+    color: #9e9e9e;
+    font-size: 14px;
+    font-family: lato;
+    border: none !important;
 }
 button.ant-btn.attachbtn.ant-btn-primary.ant-btn-circle {
-    width: 48px;
-    height: 48px;
     padding-bottom: 5px;
     background: transparent;
     border: 1px solid;
+    margin-top:10px;
 }
 button.ant-btn.sendbtn.ant-btn-default.ant-btn-circle img {
     width: 62%;
     margin-right: 3px;
 }
-button.ant-btn.attachbtn.ant-btn-primary.ant-btn-circle img {
-    width: 58%;
+.ant-upload.ant-upload-select.ant-upload-select-text {
+    margin-left: 2em;
 }
 .chatfooterarea textarea.ant-input {
     height: 50px !important;

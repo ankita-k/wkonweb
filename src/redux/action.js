@@ -1708,6 +1708,7 @@ export function getTimesheetByDate(id, date) {
 // API FOR SENDING MESSAGE
 export function createchat(data){
     return (dispatch) => {
+        dispatch(loaders(true))
             fetch(config.apiUrl + 'chat',
                 {
                     headers: {
@@ -1723,8 +1724,10 @@ export function createchat(data){
                     console.log(responseJSON)
                     if(!responseJSON.error){
                     }
+                    dispatch(loaders(false))
                 })
                 .catch((error) => {
+                    dispatch(loaders(false))
                     // code to handle error
                 });
 }
@@ -1732,8 +1735,10 @@ export function createchat(data){
 
 //  API FOR GETTING WALL POSTS FOR SPECIFIED PROJECTS
 export function getWall(projectId){
+    console.log(projectId)
     return (dispatch) => {
         // return new Promise((resolve, reject) => {
+            dispatch(loaders(true))
             fetch(config.apiUrl + 'chat/getbyprojectid?id=' +projectId ,
                 {
                     headers: {
@@ -1746,11 +1751,14 @@ export function getWall(projectId){
                     console.log(responseJSON);
                     if(!responseJSON.error){
                         dispatch(getWallList(responseJSON.result))
+                       
                     }
+                    dispatch(loaders(false))
                     // resolve(responseJSON);
                     //code to dispatch action for storing module list 
                 })
                 .catch((error) => {
+                    dispatch(loaders(false))
                     // code to handle error
                     // reject(error);
                 });

@@ -4,6 +4,9 @@ import { Layout, Modal, Input, Menu, Row, Col, List, TimePicker, Avatar, DatePic
 import chats from '../../Images/chats.svg';
 import projct from '../../Images/projects.svg';
 import upload from '../../Images/upload.svg';
+import { connect } from "react-redux";
+import * as actioncreators from '../../redux/action';
+import { bindActionCreators } from 'redux';
 const { Header, Content, Footer, Sider } = Layout;
 
 class ProjectTab extends Component {
@@ -39,6 +42,7 @@ class ProjectTab extends Component {
 
     // NAVIGATE TO PROJECT CHAT SCREEN
     navigateToChat = () => {
+        this.props.actions.getWall( this.props.location.data.record._id)
         this.props.history.push({
             pathname: '../dashboard/chat',
             data: this.state.projectdata
@@ -102,7 +106,17 @@ class ProjectTab extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    // console.log(state);
+    return state
+}
+function mapDispatchToProps(dispatch, state) {
+    return ({
+        actions: bindActionCreators(actioncreators, dispatch)
+    })
+}
+//export default ClientList;
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectTab);
 
 
-export default ProjectTab;
 
