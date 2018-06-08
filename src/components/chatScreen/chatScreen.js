@@ -176,8 +176,7 @@ class ChatScreen extends Component {
                                     <Option value="Everyone">Everyone</Option>
                                     <Option value="Sales">Sales</Option>
                                 </Select>
-
-{/* "q1w2e3r4" */}
+ {/* "q1w2e3r4"  passwor*/} 
 
                             </div>
                         </Col>

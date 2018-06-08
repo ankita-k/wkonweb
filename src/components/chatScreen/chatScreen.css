@@ -43,8 +43,8 @@ button.ant-btn.dropdownbtn.ant-btn-default {
 .frndnm h1 {
     margin-bottom: 0px;
 }
-.proimg {
-    /* margin-left: 1em; */
+.proimg .ant-avatar-lg{
+    margin-left: 11px;
 }
 .ant-row.chattitle {
     position: fixed;
@@ -104,6 +104,8 @@ button.ant-btn.callbtn.ant-btn-primary {
 }
 p.time {
     font-size: 12px;
+    /* right: -11em;
+    bottom: -13px; */
 }
 p.usernm {
     text-align: center;

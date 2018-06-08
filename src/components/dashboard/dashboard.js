@@ -505,11 +505,11 @@ class Dashboard extends Component {
 
                
 
-                <Menu.Item key="ChatScreen">
+                {/* <Menu.Item key="ChatScreen">
                   <Icon type="area-chart" />
                   <span>CHAT</span>
                   <NavLink to="../dashboard/chat" activeClassName="active"></NavLink>
-                </Menu.Item>
+                </Menu.Item> */}
 
 
               </Menu>
