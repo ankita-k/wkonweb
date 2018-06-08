@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, message, Row, Col, Icon, Radio, Button, Modal, Select, notification, Input, Badge, Menu, Dropdown, Spin ,Avatar} from 'antd';
+import { Upload, message, Row, Col, Icon, Radio, Button, Modal, Select, notification, Input,Tooltip, Badge, Menu, Dropdown, Spin ,Avatar} from 'antd';
 import Waypoint from 'react-waypoint';
 import './chatScreen.css';
 import { connect } from "react-redux";
@@ -13,8 +13,10 @@ import dropdownn from '../../Images/morebtn.svg';
 import attach from '../../Images/attachfile.svg';
 import placeholderHuman from '../../Images/person-placeholder.jpg';
 import profilePlacholder from '../../Images/profile-placeholder.png';
+import projectIcon from '../../Images/projectIcon.png';
 import Scroll from "react-scroll";
 import * as ReactDOM from 'react-dom';
+import CustomScroll from 'react-custom-scroll';
 const socket = io('http://mitapi.memeinfotech.com:5088/');
 
 const Option = Select.Option;
@@ -114,6 +116,7 @@ class ChatScreen extends Component {
 
     // GET SELECTED TARGET VALUE
     handleChange = (value) => {
+        console.log(value)
         this.setState({ target: value })
     }
     // CREATE WALL API CALLING
@@ -121,7 +124,7 @@ class ChatScreen extends Component {
         console.log('createwwall')
         let data = {
             type: "text",
-            target: ["Everyone"],
+            target: this.state.target.length>0?this.state.target:"Everyone",
             userId: this.state.userId,
             projectId: this.state.projectId,
             text: this.state.textValue,
@@ -129,7 +132,9 @@ class ChatScreen extends Component {
         console.log(data)
         this.props.actions.createchat(data);
         this.setState({ textValue: '' });
-        this.scrollToBottom();
+        console.log(Scroll.scroller)
+        Scroll.scroller.scrollTo("target", {smooth: true})
+        // scroll.scrollToBottom();
 
     }
 
@@ -155,7 +160,7 @@ class ChatScreen extends Component {
                     <Row className="chattitle">
                         <Col lg={2}>
                             <div className="proimg">
-                                <img src={proimg} />
+                                <img src={projectIcon} />
                             </div>
 
                         </Col>
@@ -171,10 +176,11 @@ class ChatScreen extends Component {
                                     <Button type="default" shape="circle" className="dropdownbtn"><img src={dropdownn} /></Button>
                                 </Dropdown> */}
 
-                                <Select defaultValue="Everyone" style={{ width: 90 }} onChange={this.handleChange}>
-                                    <Option value="Clients">Clients</Option>
+                                <Select    mode="multiple" placeholder="Target Viewers" defaultValue="Everyone" style={{ width: 90 }} onChange={this.handleChange}>
+                                    <Option value="Client">Clients</Option>
                                     <Option value="Everyone">Everyone</Option>
                                     <Option value="Sales">Sales</Option>
+                                    <Option value="Developers">Developers</Option>
                                 </Select>
  {/* "q1w2e3r4"  passwor*/} 
 
@@ -183,21 +189,28 @@ class ChatScreen extends Component {
                     </Row>
                     <Row className="blank"></Row>
                     <div ref="container" >
-                        {this.props.projectWallList.map((item, index) => {
+               
+                    {/* <CustomScroll keepAtBottom={true} heightRelativeToParent="calc(100% - 20px)">  */}
+                       
+                        {this.props.projectWallList.length>0?this.props.projectWallList.map((item, index) => {
                             if (userId == item.userId._id) {
                                 return (
                                     <Row className="chatrowself" key={index}>
                                         <Col lg={2}>
                                             <div className="proimg">
                                                 {/* <img src={placeholderHuman} /> */}
+                                                <Tooltip title={item.userId.role}>
                                                 <Avatar
                                                     style={{ backgroundColor: '#FF0000'}}
                                                     size="large"  shape="circle"
                                                 >
-                                                    {item.userId.name}
+                                                    {/* {item.userId.name} */}
+                                                    {(item.userId.name).split(' ')[0].split('')[0].toUpperCase()+ ((item.userId.name).split(' ')[1] ? (item.userId.name).split(' ')[1].split('')[0] : '').toUpperCase() }
                                                 </Avatar>
+  </Tooltip>
+                                               
                                             </div>
-                                            <p className="usernm">{item.userId.name}</p>
+                                            <p className="usernm">{item.userId.name.length<13?item.userId.name:item.userId.name.slice(0,13)}</p>
                                         </Col>
                                         <Col lg={10}>
                                             <Row className="txtself">
@@ -220,14 +233,18 @@ class ChatScreen extends Component {
                                         <Col lg={2}>
                                             <div className="proimg">
                                                 {/* <img src={profilePlacholder} /> */}
+                                                <Tooltip title={item.userId.role}>
                                                 <Avatar
                                                     style={{ backgroundColor: '#800000'}}
                                                     size="large"  shape="circle"
                                                 >
-                                                    {item.userId.name}
+                                                {/* {item.userId.name} */}
+                                                {(item.userId.name).split(' ')[0].split('')[0].toUpperCase() + ((item.userId.name).split(' ')[1] ? (item.userId.name).split(' ')[1].split('')[0] :'').toUpperCase()}
                                                 </Avatar>
+                                                </Tooltip>
+                                                    
                                             </div>
-                                            <p className="usernm">{item.userId.name}</p>
+                                            <p className="usernm">{item.userId.name.length<13?item.userId.name:item.userId.name.slice(0,13)}</p>
                                         </Col>
                                         <Col lg={10}>
                                             <Row className="txt">
@@ -256,88 +273,14 @@ class ChatScreen extends Component {
                             }
 
 
-                        })}
-
-                        <div ref="target" ></div>
-                        {/* {this.props.projectWallList.map((item, index) => {
-                        if (userId == item.userId._id) {
-                            return (
-                                <Row className="chatrowself" key={index}>
-                                    <Col lg={2}>
-                                        <div className="proimg">
-                                            <img src={proimgself} />
-                                        </div>
-                                        <p className="usernm">{item.userId.name}</p>
-                                    </Col>
-                                    <Col lg={10}>
-                                        <Row className="txtself">
-                                            <div className="triangleself"></div>
-                                            <p>{item.text}</p>
-                                            <p className="timeself">{moment(item.createdDate).format('ll')}</p>
-                                        </Row>
-
-                                    </Col>
-                                    <Col lg={2} >
-
-                                    </Col>
-                                </Row>
-                            )
-                        }
-                        else {
-                            return null
-                        }
-
-
-                    })} */}
-
+                        }):
+                  <div><span>No Chat </span></div>
+                    }
+ {/* </CustomScroll>  */}
+                        <div name="target" ></div>
+                       
                     </div>
-                    {/* <Row className="chatrow">
-
-                        <Col lg={2}>
-                            <div className="proimg">
-                                <img src={proimg} />
-                            </div>
-                            <p className="usernm">Nicky</p>
-                        </Col>
-                        <Col lg={10}>
-                            <Row className="txt">
-                                <div className="triangle"></div>
-                                <p>It is a long established fact that a reader will be distracted by
-                                    the readable</p>
-                                <p className="time">11:05</p>
-                            </Row>
-                        </Col>
-                        <Col lg={2} >
-
-                        </Col>
-                    </Row> */}
-                    {/* <Row className="chatrowself">
-                        <Col lg={2}>
-                            <div className="proimg">
-                                <img src={proimgself} />
-                            </div>
-                            <p className="usernm">Me</p>
-                        </Col>
-                        <Col lg={10}>
-                            <Row className="txtself">
-                                <div className="triangleself"></div>
-                                <p>Lorem Ipsum is simply dummy text of is simply dummy text of
-                                is simply dummy text ofis simply dummy text
-                                is simply dummy text of
-                                is simply dummy text ofis simply dummy text ofofthe printing and typesetting industry.</p>
-                                <p className="timeself">11:18</p>
-                            </Row>
-                            <Row className="txtself">
-                                <div className="triangleself"></div>
-                                <p>Lorem Ipsum is simply dummy text</p>
-                                <p className="timeself">11:20</p>
-                            </Row>
-
-                        </Col>
-                        <Col lg={2} >
-
-                        </Col>
-                    </Row> */}
+                    
                     <Row className="blank"></Row>
                     {/* // CHAT FOOTER AREA */}
                     <Row className="chatfooterarea">
@@ -473,3 +416,7 @@ function mapDispatchToProps(dispatch, state) {
 }
 //export default ClientList;
 export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen);
+
+
+
+// (clinic?.clinicName).split(' ')[0].split('')[0] + ((clinic?.clinicName).split(' ')[1] ? (clinic?.clinicName).split(' ')[1].split('')[0] : '') | uppercase}}

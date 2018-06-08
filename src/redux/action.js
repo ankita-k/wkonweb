@@ -1708,7 +1708,7 @@ export function getTimesheetByDate(id, date) {
 // API FOR SENDING MESSAGE
 export function createchat(data){
     return (dispatch) => {
-        dispatch(loaders(true))
+        // dispatch(loaders(true))
             fetch(config.apiUrl + 'chat',
                 {
                     headers: {
@@ -1724,10 +1724,10 @@ export function createchat(data){
                     console.log(responseJSON)
                     if(!responseJSON.error){
                     }
-                    dispatch(loaders(false))
+                    // dispatch(loaders(false))
                 })
                 .catch((error) => {
-                    dispatch(loaders(false))
+                    // dispatch(loaders(false))
                     // code to handle error
                 });
 }
