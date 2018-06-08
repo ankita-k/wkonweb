@@ -1723,11 +1723,16 @@ export function createchat(data){
                 .then((responseJSON) => {
                     console.log(responseJSON)
                     if(!responseJSON.error){
+                        dispatch(toast('success', 'Message Sent Successfully'))
+                    }
+                    else{
+                        dispatch(toast('error', 'Message Sending Failed !'))
                     }
                     // dispatch(loaders(false))
                 })
                 .catch((error) => {
                     // dispatch(loaders(false))
+                    dispatch(toast('error', 'Message Sending Failed !'))
                     // code to handle error
                 });
 }

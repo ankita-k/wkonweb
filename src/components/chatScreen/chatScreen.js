@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, message, Row, Col, Icon, Radio, Button, Modal, Select, notification, Input,Tooltip, Badge, Menu, Dropdown, Spin ,Avatar} from 'antd';
+import { Upload, message, Row, Col, Icon, Radio, Button, Modal, Select, notification, Input, Tooltip, Badge, Menu, Dropdown, Spin, Avatar } from 'antd';
 import Waypoint from 'react-waypoint';
 import './chatScreen.css';
 import { connect } from "react-redux";
@@ -110,7 +110,8 @@ class ChatScreen extends Component {
     }
 
     getText = (e) => {
-        console.log('text value', e.target.value)
+        // e.preventDefault()
+        // console.log('text value', e, e.target.value)
         this.setState({ textValue: e.target.value })
     }
 
@@ -124,20 +125,31 @@ class ChatScreen extends Component {
         console.log('createwwall')
         let data = {
             type: "text",
-            target: this.state.target.length>0?this.state.target:"Everyone",
+            target: this.state.target.length > 0 ? this.state.target : ["Everyone"],
             userId: this.state.userId,
             projectId: this.state.projectId,
-            text: this.state.textValue,
+            text: this.state.textValue
         }
         console.log(data)
+        // .replace(/\n/g,'')
         this.props.actions.createchat(data);
         this.setState({ textValue: '' });
         console.log(Scroll.scroller)
-        Scroll.scroller.scrollTo("target", {smooth: true})
+        Scroll.scroller.scrollTo("target", { smooth: true })
         // scroll.scrollToBottom();
 
     }
 
+    sendChat = (e) => {
+        // console.log('evet key',e.nativeEvent.keyCode+'value of key'+e.shiftKey)
+        if (e.nativeEvent.keyCode === 13 && !e.nativeEvent.shiftKey) {
+            console.log('call function')
+            e.preventDefault()
+            this.createWall();
+        }
+        else if (e.nativeEvent.keyCode === 13 && e.nativeEvent.shiftKey) {
+        }
+    }
     scrollToBottom = () => {
         const { container } = this.refs;
         console.log(container);
@@ -176,23 +188,23 @@ class ChatScreen extends Component {
                                     <Button type="default" shape="circle" className="dropdownbtn"><img src={dropdownn} /></Button>
                                 </Dropdown> */}
 
-                                <Select    mode="multiple" placeholder="Target Viewers" defaultValue="Everyone" style={{ width: 90 }} onChange={this.handleChange}>
+                                <Select mode="multiple" placeholder="Target Viewers" defaultValue="Everyone" style={{ width: 90 }} onChange={this.handleChange}>
                                     <Option value="Client">Clients</Option>
                                     <Option value="Everyone">Everyone</Option>
                                     <Option value="Sales">Sales</Option>
                                     <Option value="Developers">Developers</Option>
                                 </Select>
- {/* "q1w2e3r4"  passwor*/} 
+                                {/* "q1w2e3r4"  passwor*/}
 
                             </div>
                         </Col>
                     </Row>
                     <Row className="blank"></Row>
                     <div ref="container" >
-               
-                    {/* <CustomScroll keepAtBottom={true} heightRelativeToParent="calc(100% - 20px)">  */}
-                       
-                        {this.props.projectWallList.length>0?this.props.projectWallList.map((item, index) => {
+
+                        {/* <CustomScroll keepAtBottom={true} heightRelativeToParent="calc(100% - 20px)">  */}
+
+                        {this.props.projectWallList.length > 0 ? this.props.projectWallList.map((item, index) => {
                             if (userId == item.userId._id) {
                                 return (
                                     <Row className="chatrowself" key={index}>
@@ -200,22 +212,22 @@ class ChatScreen extends Component {
                                             <div className="proimg">
                                                 {/* <img src={placeholderHuman} /> */}
                                                 <Tooltip title={item.userId.role}>
-                                                <Avatar
-                                                    style={{ backgroundColor: '#FF0000'}}
-                                                    size="large"  shape="circle"
-                                                >
-                                                    {/* {item.userId.name} */}
-                                                    {(item.userId.name).split(' ')[0].split('')[0].toUpperCase()+ ((item.userId.name).split(' ')[1] ? (item.userId.name).split(' ')[1].split('')[0] : '').toUpperCase() }
-                                                </Avatar>
-  </Tooltip>
-                                               
+                                                    <Avatar
+                                                        style={{ backgroundColor: '#FF0000' }}
+                                                        size="large" shape="circle"
+                                                    >
+                                                        {/* {item.userId.name} */}
+                                                        {(item.userId.name).split(' ')[0].split('')[0].toUpperCase() + ((item.userId.name).split(' ')[1] ? (item.userId.name).split(' ')[1].split('')[0] : '').toUpperCase()}
+                                                    </Avatar>
+                                                </Tooltip>
+
                                             </div>
-                                            <p className="usernm">{item.userId.name.length<13?item.userId.name:item.userId.name.slice(0,13)}</p>
+                                            <p className="usernm">{item.userId.name.length < 13 ? item.userId.name : item.userId.name.slice(0, 13)}</p>
                                         </Col>
                                         <Col lg={10}>
                                             <Row className="txtself">
                                                 <div className="triangleself"></div>
-                                                <p>{item.text}</p>
+                                                <pre>{item.text}</pre>
                                                 <p className="timeself">{moment(item.createdDate).format('lll')}</p>
                                             </Row>
 
@@ -234,23 +246,23 @@ class ChatScreen extends Component {
                                             <div className="proimg">
                                                 {/* <img src={profilePlacholder} /> */}
                                                 <Tooltip title={item.userId.role}>
-                                                <Avatar
-                                                    style={{ backgroundColor: '#800000'}}
-                                                    size="large"  shape="circle"
-                                                >
-                                                {/* {item.userId.name} */}
-                                                {(item.userId.name).split(' ')[0].split('')[0].toUpperCase() + ((item.userId.name).split(' ')[1] ? (item.userId.name).split(' ')[1].split('')[0] :'').toUpperCase()}
-                                                </Avatar>
+                                                    <Avatar
+                                                        style={{ backgroundColor: '#800000' }}
+                                                        size="large" shape="circle"
+                                                    >
+                                                        {/* {item.userId.name} */}
+                                                        {(item.userId.name).split(' ')[0].split('')[0].toUpperCase() + ((item.userId.name).split(' ')[1] ? (item.userId.name).split(' ')[1].split('')[0] : '').toUpperCase()}
+                                                    </Avatar>
                                                 </Tooltip>
-                                                    
+
                                             </div>
-                                            <p className="usernm">{item.userId.name.length<13?item.userId.name:item.userId.name.slice(0,13)}</p>
+                                            <p className="usernm">{item.userId.name.length < 13 ? item.userId.name : item.userId.name.slice(0, 13)}</p>
                                         </Col>
                                         <Col lg={10}>
                                             <Row className="txt">
                                                 <div className="triangle"></div>
-                                                <p>{item.text}</p>
-                                                <p className="time">{item.createdDate?moment(item.createdDate).format('lll'):''}</p>
+                                                <pre>{item.text}</pre>
+                                                <p className="time">{item.createdDate ? moment(item.createdDate).format('lll') : ''}</p>
                                             </Row>
                                             {/* <Row className="txt">
                                         <div className="triangle"></div>
@@ -273,14 +285,14 @@ class ChatScreen extends Component {
                             }
 
 
-                        }):
-                  <div><span>No Chat </span></div>
-                    }
- {/* </CustomScroll>  */}
+                        }) :
+                            <div><span>No Chat </span></div>
+                        }
+                        {/* </CustomScroll>  */}
                         <div name="target" ></div>
-                       
+
                     </div>
-                    
+
                     <Row className="blank"></Row>
                     {/* // CHAT FOOTER AREA */}
                     <Row className="chatfooterarea">
@@ -293,7 +305,7 @@ class ChatScreen extends Component {
                             <div>
                                 {/* <Icon type="message" /> */}
                                 <TextArea placeholder="Type your message here.." value={this.state.textValue} onChange={this.getText}
-                                    autosize={{ minRows: 1, maxRows: 3 }}
+                                    onKeyPress={this.sendChat} autosize={{ minRows: 1, maxRows: 3 }}
                                 />
 
                             </div>
