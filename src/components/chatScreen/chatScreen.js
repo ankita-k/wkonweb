@@ -39,21 +39,11 @@ const props = {
     action: '//jsonplaceholder.typicode.com/posts/',
     headers: {
         authorization: 'authorization-text',
-    },
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-        }
-    },
+    }
+
 };
 
 class ChatScreen extends Component {
-
 
     constructor(props) {
         super(props);
@@ -65,7 +55,11 @@ class ChatScreen extends Component {
             textValue: '',
             projectName: '',
             target: [],
-            messagesEnd: ''
+            messagesEnd: '',
+            everyone_style: { display: "block" },
+            developer_style: { display: "block" },
+            clients_style: { display: "block" },
+            sales_style: { display: "block" }
         }
     }
 
@@ -96,7 +90,7 @@ class ChatScreen extends Component {
         socket.on('chatCreated', (interval) => {
             console.log('......Chat created.......', interval)
 
-            console.log('......Chat created session.......', interval)
+   
             this.props.actions.getWall(this.state.projectId);
 
         });
@@ -116,13 +110,42 @@ class ChatScreen extends Component {
     }
 
     // GET SELECTED TARGET VALUE
-    handleChange = (value) => {
+    selectTarget = (value) => {
         console.log(value)
         this.setState({ target: value })
+        if(value.length>0){
+            if (value.indexOf('Everyone' )> -1) {
+                this.setState({ everyone_style: { display: "block" } })
+                this.setState({ developer_style: { display: "none" } })
+                this.setState({ clients_style: { display: "none" } })
+                this.setState({ sales_style: { display: "none" } })
+            }
+            else if(value.indexOf('Client' )> -1 && value.indexOf('Sales' )> -1&& value.indexOf('Developer' )> -1){
+                this.setState({ developer_style: { display: "none" } })
+                this.setState({ clients_style: { display: "none" } })
+                this.setState({ sales_style: { display: "none" } })
+                this.setState({ everyone_style: { display: "block" } }) 
+                this.setState({ target: ["Everyone"] })
+            }
+            else{
+                this.setState({ developer_style: { display: "block" } })
+                this.setState({ clients_style: { display: "block" } })
+                this.setState({ sales_style: { display: "block" } })
+                this.setState({ everyone_style: { display: "none" } })
+            }
+            
+        }
+        else{
+            this.setState({ developer_style: { display: "block" } })
+            this.setState({ clients_style: { display: "block" } })
+            this.setState({ sales_style: { display: "block" } })
+            this.setState({ everyone_style: { display: "block" } }) 
+        }
+        
     }
     // CREATE WALL API CALLING
     createWall = () => {
-        console.log('createwwall')
+      
         let data = {
             type: "text",
             target: this.state.target.length > 0 ? this.state.target : ["Everyone"],
@@ -140,6 +163,7 @@ class ChatScreen extends Component {
 
     }
 
+    // SENDCHAT MESSAGES ON DETECTING ENTER KEY PRESS
     sendChat = (e) => {
         // console.log('evet key',e.nativeEvent.keyCode+'value of key'+e.shiftKey)
         if (e.nativeEvent.keyCode === 13 && !e.nativeEvent.shiftKey) {
@@ -162,10 +186,21 @@ class ChatScreen extends Component {
         ReactDOM.findDOMNode(container).scrollTop = 100;
     }
 
+    onChange(info) {
+        if (info.file.status !== 'uploading') {
+            console.log(info.file, info.fileList);
+        }
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} file uploaded successfully`);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} file upload failed.`);
+        }
+    }
+
     render() {
 
-        console.log('RENDERRR', this.props)
-        const { userId, projectName } = this.state;
+        console.log('RENDERRR')
+        const { userId, projectName, everyone_style, developer_style, clients_style, sales_style,target } = this.state;
         return (
             <div>
                 <div className="chatscrn">
@@ -187,12 +222,15 @@ class ChatScreen extends Component {
                                 {/* <Dropdown overlay={menu} placement="bottomCenter" trigger={['click']}>
                                     <Button type="default" shape="circle" className="dropdownbtn"><img src={dropdownn} /></Button>
                                 </Dropdown> */}
-
-                                <Select mode="multiple" placeholder="Target Viewers" defaultValue="Everyone" style={{ width: 90 }} onChange={this.handleChange}>
-                                    <Option value="Client">Clients</Option>
-                                    <Option value="Everyone">Everyone</Option>
-                                    <Option value="Sales">Sales</Option>
-                                    <Option value="Developers">Developers</Option>
+ 
+                                <Select mode="multiple" placeholder="Target Viewers"  
+                                 style={{ width: 100 }} onChange={this.selectTarget}
+                                 value={target}
+                                 >
+                                    <Option value="Everyone" style={everyone_style}>Everyone</Option>
+                                    <Option value="Client" style={clients_style}>Clients</Option>
+                                    <Option value="Sales" style={sales_style}>Sales</Option>
+                                    <Option value="Developer" style={developer_style}>Developers</Option>
                                 </Select>
                                 {/* "q1w2e3r4"  passwor*/}
 
@@ -216,13 +254,14 @@ class ChatScreen extends Component {
                                                         style={{ backgroundColor: '#FF0000' }}
                                                         size="large" shape="circle"
                                                     >
-                                                        {/* {item.userId.name} */}
+                                                        {/* {me} */}
                                                         {(item.userId.name).split(' ')[0].split('')[0].toUpperCase() + ((item.userId.name).split(' ')[1] ? (item.userId.name).split(' ')[1].split('')[0] : '').toUpperCase()}
                                                     </Avatar>
                                                 </Tooltip>
 
                                             </div>
-                                            <p className="usernm">{item.userId.name.length < 13 ? item.userId.name : item.userId.name.slice(0, 13)}</p>
+                                            <p className="usernm">me</p>
+                                            {/* {item.userId.name.length < 13 ? item.userId.name : item.userId.name.slice(0, 13)} */}
                                         </Col>
                                         <Col lg={10}>
                                             <Row className="txtself">
@@ -264,18 +303,7 @@ class ChatScreen extends Component {
                                                 <pre>{item.text}</pre>
                                                 <p className="time">{item.createdDate ? moment(item.createdDate).format('lll') : ''}</p>
                                             </Row>
-                                            {/* <Row className="txt">
-                                        <div className="triangle"></div>
-                                        <p>Lorem Ipsum is simply dummy text</p>
-                                        <p className="time">10:54</p>
-                                    </Row>
-                                    <Row className="txt">
-                                        <div className="triangle"></div>
-                                        <p>It is a long established fact that a reader will be distracted by
-                                            the readable content of a page when looking at its
-                                         layout. The point of using Lorem Ipsum</p>
-                                        <p className="time">10:55</p>
-                                    </Row> */}
+
                                         </Col>
                                         <Col lg={2} >
 
