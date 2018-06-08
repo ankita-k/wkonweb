@@ -115,20 +115,14 @@ class ClientList extends Component {
 
   componentDidMount(props) {
     console.log('++++++++++++++++component will mount++++++++++++++++', this.props);
-    /** HIDE ACTIONS OPTIONS FOR OTHER USER LOGIN THAN SALES  */
-    if (this.props.loggeduserDetails.role == "Sales") {
-    }
-    else {
-      this.state.column.pop();   // pop the action field for any other logged user
-    }
-
-    //* HIDE CLIENT CREATION AND PROJECT CREATION ICON FROM ADMIN AND DEVELOPER/
+  //* HIDE CLIENT CREATION AND PROJECT CREATION ICON FROM ADMIN AND DEVELOPER && HIDE ACTIONS OPTIONS FOR OTHER USER LOGIN THAN SALES /
     if (Object.keys(this.props.loggeduserDetails).length != 0) {
       if (this.props.loggeduserDetails.role == 'Sales') {
         this.setState({ addStyle: { display: 'block' } })
       }
       else {
         this.setState({ addStyle: { display: 'none' } })
+        this.state.column.pop();
       }
     }
 

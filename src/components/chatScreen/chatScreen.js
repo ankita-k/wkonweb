@@ -430,5 +430,4 @@ function mapDispatchToProps(dispatch, state) {
 export default connect(mapStateToProps, mapDispatchToProps)(ChatScreen);
 
 
-
-// (clinic?.clinicName).split(' ')[0].split('')[0] + ((clinic?.clinicName).split(' ')[1] ? (clinic?.clinicName).split(' ')[1].split('')[0] : '') | uppercase}}
+// "q1w2e3r4"

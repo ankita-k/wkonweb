@@ -47,63 +47,9 @@ class ProjectlistView extends Component {
       selectedRowKeys: [],
       allproject: 'All',
       addStyle: { display: 'block' },
-      column: [{
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-
-
-      }, {
-        title: 'Brief Requirement',
-        dataIndex: 'requirement',
-        key: 'requirement',
-      }, {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
-      }, {
-        title: 'Technology',
-        dataIndex: 'technology',
-        key: 'technology',
-      }, {
-        title: 'Expected Start Date',
-        dataIndex: 'expectedStartDate',
-        key: 'expectedStartDate',
-      },
-      {
-        title: 'Actual Start Date',
-        dataIndex: 'actualStartDate',
-        key: 'astart',
-      },
-      {
-        title: 'Expected End Date',
-        dataIndex: 'expectedEndDate',
-        key: 'expectedtask',
-      }, {
-        title: 'Actual End Date',
-        dataIndex: 'actualEndDate',
-        key: 'taskend',
-      },
-      {
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-          <Row className="btns">
-            <Col lg={8}>
-              <Button className="edit" onClick={() => { this.editProject(record) }}>
-                <a href="javascript:;"><img className="fileIcon" src={editList} /></a></Button></Col>
-
-            <Col lg={8}>
-              <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><img className="fileIcon" src={deleteList} /></a></Button>
-            </Col>
-            <Col lg={7}>
-              <Button className="view" onClick={() => { this.detailProject(record) }}>
-                <a href="javascript:;"><Icon type="eye-o" /></a></Button></Col>
-          </Row>
-                        
-        ),
-      }
-      ]
+      edit_style: { display: 'block' },
+      delete_style: { display: 'block' },
+      view_style: { display: 'block' },
     }
   }
 
@@ -115,28 +61,45 @@ class ProjectlistView extends Component {
 
   // COMMON FUNCTION FOR PROPS FOR COMPONENT DID MOUNT AND COMPONENT WILL RECEIVE PROPS
   commonFunction = () => {
-    console.log('ppppppp   PROJECT LIST ',this.props)
-    this.handleChange(this.props.location.filterValue?this.props.location.filterValue:'All');
+    console.log('ppppppp   PROJECT LIST ', this.props)
+    this.handleChange(this.props.location.filterValue ? this.props.location.filterValue : 'All');
 
     /**HIDE ACTION FROM ADMIN */
-    if(this.props.loggeduserDetails.role=='admin'){
-      this.state.column.pop();
+    if (Object.keys(this.props.loggeduserDetails).length != 0) {
+    if (this.props.loggeduserDetails.role == 'admin') {
+      this.setState({ addStyle: { display: 'none' } })
+      this.setState({ edit_style: { display: "none" } });
+      this.setState({ delete_style: { display: "none" } });
+      this.setState({ view_style: { display: "block" } });
     }
-    else if(this.props.loggeduserDetails.role=='Developer' && this.props.loggeduserDetails.tags.length==0){
-      this.state.column.pop();
+    else if (this.props.loggeduserDetails.role == 'Developer' && this.props.loggeduserDetails.tags.length == 0) {
+      this.setState({ addStyle: { display: 'none' } })
+      this.setState({ edit_style: { display: "none" } });
+      this.setState({ delete_style: { display: "none" } });
+      this.setState({ view_style: { display: "block" } });
     }
-    else{
-
+    else if (this.props.loggeduserDetails.role == 'Developer' && this.props.loggeduserDetails.tags.length != 0) {
+      this.setState({ addStyle: { display: 'none' } })
+      this.setState({ edit_style: { display: "block" } });
+      this.setState({ delete_style: { display: "block" } });
+      this.setState({ view_style: { display: "block" } });
     }
- //* HIDE CLIENT CREATION AND PROJECT CREATION ICON FROM ADMIN AND DEVELOPER/
-     if (Object.keys(this.props.loggeduserDetails).length != 0) {
-      if (this.props.loggeduserDetails.role == 'Sales') {
-          this.setState({ addStyle: { display: 'block' } })
-      }
-      else {
-          this.setState({ addStyle: { display: 'none' } })
-      }
+    else if (this.props.loggeduserDetails.role == 'Sales') {
+      this.setState({ addStyle: { display: 'block' } })
+      this.setState({ edit_style: { display: "block" } });
+      this.setState({ delete_style: { display: "block" } });
+      this.setState({ view_style: { display: "block" } });
+    }
   }
+    //* HIDE CLIENT CREATION AND PROJECT CREATION ICON FROM ADMIN AND DEVELOPER/
+    // if (Object.keys(this.props.loggeduserDetails).length != 0) {
+    //   if (this.props.loggeduserDetails.role == 'Sales') {
+    //     this.setState({ addStyle: { display: 'block' } })
+    //   }
+    //   else {
+    //     this.setState({ addStyle: { display: 'none' } })
+    //   }
+    // }
   }
 
   // DELETE PROJECT  API CALL
@@ -157,17 +120,17 @@ class ProjectlistView extends Component {
 
   }
 
-    // NAVIAGE TO EDIT PROJECT PAGE WITH DATA
-    sendProjectData = (data) => {
-      // this.props.actions.menuKeys('create_project');    // FOR CHANGING SELECTED KEY IN MENU ITEM
-      this.props.history.push({
-        pathname: '/dashboard/singleproject',
-        data: {
-          data
-        }
-      })
-  
-    }
+  // NAVIAGE TO EDIT PROJECT PAGE WITH DATA
+  sendProjectData = (data) => {
+    // this.props.actions.menuKeys('create_project');    // FOR CHANGING SELECTED KEY IN MENU ITEM
+    this.props.history.push({
+      pathname: '/dashboard/singleproject',
+      data: {
+        data
+      }
+    })
+
+  }
 
 
 
@@ -193,7 +156,7 @@ class ProjectlistView extends Component {
 
   // SearchProject ACCORDING TO INPUR GIVEN
   searchproject = (val) => {
-    this.setState({searchinput:val})
+    this.setState({ searchinput: val })
 
   }
 
@@ -204,8 +167,8 @@ class ProjectlistView extends Component {
   }
 
 
-   /** LOGIC FOR SEARCHING PROJECT  ACCORDING TO STATUS OR NAME OR  */
-   logicForProjectSearch = (item, value, inputvalue) => {
+  /** LOGIC FOR SEARCHING PROJECT  ACCORDING TO STATUS OR NAME OR  */
+  logicForProjectSearch = (item, value, inputvalue) => {
     if (inputvalue == "" && value == "All") {
       return true
     }
@@ -219,7 +182,7 @@ class ProjectlistView extends Component {
     }
   }
 
-  
+
   // NAVIGATE TO PROJECT DETAIL PAGE
   detailProject = (record) => {
     this.props.history.push({
@@ -232,7 +195,7 @@ class ProjectlistView extends Component {
   render() {
     console.log('render')
     const columns = this.state.column;
-    const { visible, loading,addStyle,statussearch,searchinput } = this.state;
+    const { visible, loading, addStyle, statussearch, searchinput, edit_style, delete_style, view_style } = this.state;
     return (
       <div className="projectListdiv">
         {/* {this.state.show == true ? <div className="loader">
@@ -308,7 +271,66 @@ class ProjectlistView extends Component {
                 // click row
               };
             }}
-            columns={columns} dataSource={this.props.projectList.filter((item) => { return this.logicForProjectSearch(item, statussearch, searchinput) })} />
+            columns={
+              [{
+                title: 'Name',
+                dataIndex: 'name',
+                key: 'name',
+
+
+              }, {
+                title: 'Brief Requirement',
+                dataIndex: 'requirement',
+                key: 'requirement',
+              }, {
+                title: 'Status',
+                dataIndex: 'status',
+                key: 'status',
+              }, {
+                title: 'Technology',
+                dataIndex: 'technology',
+                key: 'technology',
+              }, {
+                title: 'Expected Start Date',
+                dataIndex: 'expectedStartDate',
+                key: 'expectedStartDate',
+              },
+              {
+                title: 'Actual Start Date',
+                dataIndex: 'actualStartDate',
+                key: 'astart',
+              },
+              {
+                title: 'Expected End Date',
+                dataIndex: 'expectedEndDate',
+                key: 'expectedtask',
+              }, {
+                title: 'Actual End Date',
+                dataIndex: 'actualEndDate',
+                key: 'taskend',
+              },
+              {
+                title: 'Action',
+                key: 'action',
+                render: (text, record) => (
+                  <Row className="btns">
+                    <Col lg={8} style={edit_style}>
+                      <Button className="edit" onClick={() => { this.editProject(record) }}>
+                        <a href="javascript:;"><img className="fileIcon" src={editList} /></a></Button></Col>
+
+                    <Col lg={8} style={delete_style}>
+                      <Button className="delete" onClick={this.showModal} ><a href="javascript:;"><img className="fileIcon" src={deleteList} /></a></Button>
+                    </Col>
+                    <Col lg={7} style={view_style}>
+                      <Button className="view" onClick={() => { this.detailProject(record) }}>
+                        <a href="javascript:;"><Icon type="eye-o" /></a></Button></Col>
+                  </Row>
+
+                ),
+              }
+              ]
+
+            } dataSource={this.props.projectList.filter((item) => { return this.logicForProjectSearch(item, statussearch, searchinput) })} />
         </Card>
         {/* clientlist */}
         <div className="deletemodal">
