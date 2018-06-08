@@ -44,7 +44,7 @@ button.ant-btn.dropdownbtn.ant-btn-default {
     margin-bottom: 0px;
 }
 .proimg {
-    margin-left: 1em;
+    /* margin-left: 1em; */
 }
 .ant-row.chattitle {
     position: fixed;

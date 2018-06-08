@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Avatar, { Upload, message, Row, Col, Icon, Radio, Button, Modal, Select, notification, Input, Badge, Menu, Dropdown, Spin } from 'antd';
+import { Upload, message, Row, Col, Icon, Radio, Button, Modal, Select, notification, Input, Badge, Menu, Dropdown, Spin ,Avatar} from 'antd';
 import Waypoint from 'react-waypoint';
 import './chatScreen.css';
 import { connect } from "react-redux";
@@ -18,7 +18,7 @@ import * as ReactDOM from 'react-dom';
 const socket = io('http://mitapi.memeinfotech.com:5088/');
 
 const Option = Select.Option;
-const { TextArea } = Input; 
+const { TextArea } = Input;
 
 // const menu = (
 //     <Menu>
@@ -177,7 +177,7 @@ class ChatScreen extends Component {
                                     <Option value="Sales">Sales</Option>
                                 </Select>
 
-
+{/* "q1w2e3r4" */}
 
                             </div>
                         </Col>
@@ -190,7 +190,13 @@ class ChatScreen extends Component {
                                     <Row className="chatrowself" key={index}>
                                         <Col lg={2}>
                                             <div className="proimg">
-                                                <img src={placeholderHuman} />
+                                                {/* <img src={placeholderHuman} /> */}
+                                                <Avatar
+                                                    style={{ backgroundColor: '#FF0000'}}
+                                                    size="large"  shape="circle"
+                                                >
+                                                    {item.userId.name}
+                                                </Avatar>
                                             </div>
                                             <p className="usernm">{item.userId.name}</p>
                                         </Col>
@@ -198,7 +204,7 @@ class ChatScreen extends Component {
                                             <Row className="txtself">
                                                 <div className="triangleself"></div>
                                                 <p>{item.text}</p>
-                                                <p className="timeself">{moment(item.createdDate).format('ll')}</p>
+                                                <p className="timeself">{moment(item.createdDate).format('lll')}</p>
                                             </Row>
 
                                         </Col>
@@ -214,7 +220,13 @@ class ChatScreen extends Component {
 
                                         <Col lg={2}>
                                             <div className="proimg">
-                                                <img src={profilePlacholder} />
+                                                {/* <img src={profilePlacholder} /> */}
+                                                <Avatar
+                                                    style={{ backgroundColor: '#800000'}}
+                                                    size="large"  shape="circle"
+                                                >
+                                                    {item.userId.name}
+                                                </Avatar>
                                             </div>
                                             <p className="usernm">{item.userId.name}</p>
                                         </Col>
@@ -222,7 +234,7 @@ class ChatScreen extends Component {
                                             <Row className="txt">
                                                 <div className="triangle"></div>
                                                 <p>{item.text}</p>
-                                                <p className="time">{moment(item.createdDate.format('ll'))}</p>
+                                                <p className="time">{item.createdDate?moment(item.createdDate).format('lll'):''}</p>
                                             </Row>
                                             {/* <Row className="txt">
                                         <div className="triangle"></div>
