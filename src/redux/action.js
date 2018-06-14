@@ -1549,11 +1549,11 @@ export function assignDevelopersandUpdate(developerdata, updatedata, taskId) {
     }
 }
 /*API CALL FOR UPDATING TASK */
-export function UpdateTask(data, taskid) {
-    console.log(data)
+export function UpdateTask(data, id) {
+    console.log(data,id)
     return (dispatch) => {
         return new Promise((resolve, reject) => {
-            fetch(config.apiUrl + 'task/' + taskid,
+            fetch(config.apiUrl + 'task/' + id,
                 {
                     headers: {
                         'Accept': 'application/json',
@@ -1567,8 +1567,8 @@ export function UpdateTask(data, taskid) {
                 .then((responseJSON) => {
                     resolve(responseJSON);
                     console.log(responseJSON)
-                    if (responseJSON.error) {
-                        dispatch(toast('error', 'Task updation falied '))
+                    if (!responseJSON.error) {
+                        dispatch(toast('success', 'Task updated Successfully '))
                     }
                     else if (responseJSON.message == "Task already exist") {
                         dispatch(toast('warning', 'Task Name Already Exist !'))
@@ -1576,9 +1576,6 @@ export function UpdateTask(data, taskid) {
                     else {
                         dispatch(toast('error', 'Task Updation Failed'))
                     }
-                    // else {
-                    //     dispatch(toast('success', 'Task updatied Successfully '))
-                    // }
                 })
                 .catch((error) => {
                     reject(error);
@@ -1679,6 +1676,7 @@ export function createTimeSheet(data) {
 
 /** GET USER TIMESHEET */
 export function getTimesheetByDate(id, date) {
+    console.log(id,date)
     return (dispatch) => {
         return new Promise((resolve, reject) => {
             fetch(config.apiUrl + 'task/getbyuserId?userId=' + id + '&createdDate=' + date,

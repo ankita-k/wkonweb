@@ -70,10 +70,8 @@ class WrappedtimesheetManagement extends Component {
     }
 
     componentDidMount() {
-
         console.log(this.state.date)
         this.getTimesheet(this.state.date)
-        // this.props.actions.getTimesheet('5afec2af77860e41ff84217f', '2018-05-18T12:10:23.548Z');
     }
 
     // CREATE TIMESHEET FOR LOGGED USER
@@ -171,7 +169,7 @@ class WrappedtimesheetManagement extends Component {
 
     // GET USER TIMESHHET ACCORDING TO DATE CHOOSEN
     getTimesheet = (date) => {
-        console.log(date._d.toISOString())
+        if(date){
         this.props.actions.getTimesheetByDate(this.state.userId, date._d.toISOString()).then(response => {
             console.log(response)
             if (!response.error) {
@@ -179,7 +177,7 @@ class WrappedtimesheetManagement extends Component {
                  let arr=   response.result.map(function (item, index) {
                         return {
                             name: item.name.length > 20 ? (item.name.slice(0, 15) + '...') : item.name,
-                            name1: item.name,
+                            // name1: item.name,
                             starttime: moment(item.startDate).format('LT'),
                             endtime: moment(item.endDate).format('LT'),
 
@@ -199,7 +197,7 @@ class WrappedtimesheetManagement extends Component {
 
         })
     }
-
+    }
 
     // table
 

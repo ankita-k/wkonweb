@@ -464,11 +464,11 @@ else{
     }
 
     startTask = () => {
-
         let data = {
             startDate: moment()._d.toISOString(),
             date: moment()._d.toISOString(),
-            status: 'InProgress'
+            status: 'InProgress',
+            submoduleId:this.state.submoduleId
         }
         this.props.actions.UpdateTask(data, this.state.taskId).then(response => {
             console.log(response)
@@ -483,11 +483,11 @@ else{
     }
 
     endTask = () => {
-
         let data = {
             endDate: moment()._d.toISOString(),
             date: moment()._d.toISOString(),
-            status: 'Completed'
+            status: 'Completed',
+            submoduleId:this.state.submoduleId
         }
         this.props.actions.UpdateTask(data, this.state.taskId)
             .then(response => {
@@ -733,7 +733,6 @@ else{
                                             <DatePicker />
                                         )} */}
                                         <Button className="task" onClick={this.startTask}>Start Task</Button>
-                                        {/* <Button className="task"onClick={this.endTask}>End Task</Button> */}
 
                                     </FormItem>
                                     <FormItem style={endTaskStyle}
